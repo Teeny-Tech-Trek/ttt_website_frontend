@@ -145,12 +145,12 @@ const Footer = () => {
                   href="tel:+15551234567"
                   className="text-gray-300 hover:text-white text-sm transition-colors duration-300"
                 >
-                  +1 (555) 123-4567
+                 +1 647-864-5465, +91 98558 06696
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <MapPin size={18} className="text-blue-400" />
-                <span className="text-gray-300 text-sm">San Francisco, CA</span>
+                <span className="text-gray-300 text-sm">C-201, 2nd Floor, Sebiz Square Building, Plot No. C-6, Sector-67, Mohali, SAS Nagar - 160062, Punjab, India</span>
               </li>
             </ul>
           </div>
