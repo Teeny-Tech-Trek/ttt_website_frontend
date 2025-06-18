@@ -5,30 +5,10 @@ import { Event } from "../../types/event";
 const PRIMARY = "#1f528c";
 const SECONDARY = "#3e6aa7";
 const FONT_FAMILY = "'Inter', 'Roboto', sans-serif";
-const TECH_IMAGES = [
-  "https://images.unsplash.com/photo-1677442135136-760c813a743d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-];
+const TECH_IMAGE = "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
 
-const DEMO_EVENT: Event = {
-  id: "tech-trek-1",
-  title: "Teeny Tech Trek: AI for Small Teams",
-  description: "Join us for an eye-opening evening in Tricity where innovation meets action...", // (keep your full description)
-  start_time: "2023-11-15T18:00:00",
-  end_time: "2023-11-15T21:00:00",
-  location: "Tricity Innovation Hub",
-  slug: "teeny-tech-trek",
-  created_by: "system",
-  packages_ids: [],
-  payment_required: false,
-  status: "published",
-  created_at: new Date().toISOString(),
-  updated_at: new Date().toISOString()
-};
 export default function EventDisplayPage() {
-  const [events, setEvents] = useState<Event[]>();
+  const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
@@ -39,7 +19,7 @@ export default function EventDisplayPage() {
       try {
         setLoading(true);
         const data = await getPublishedEvents();
-        if (isMounted) setEvents([DEMO_EVENT, ...(data || [])]);
+        if (isMounted) setEvents(data || []);
       } catch (err) {
         console.error("Failed to load events:", err);
         if (isMounted) setError(true);
@@ -52,10 +32,6 @@ export default function EventDisplayPage() {
       isMounted = false;
     };
   }, []);
-
-  const getRandomTechImage = () => {
-    return TECH_IMAGES[Math.floor(Math.random() * TECH_IMAGES.length)];
-  };
 
   return (
     <div
@@ -109,7 +85,7 @@ export default function EventDisplayPage() {
             Failed to load events.
           </div>
         )}
-        {!loading && !error && events?.length === 0 && (
+        {!loading && !error && events.length === 0 && (
           <div style={{ 
             color: "#888", 
             fontSize: 20, 
@@ -128,104 +104,137 @@ export default function EventDisplayPage() {
             alignItems: "stretch",
           }}
         >
-          {!loading &&
-            !error &&
-            events?.map((event) => (
+          {events.map((event) => (
+            <div
+              key={event.id}
+              style={{
+                borderRadius: 20,
+                boxShadow: "0 6px 32px 0 rgba(31,82,140,0.11), 0 1.5px 6px rgba(31,82,140,0.07)",
+                background: "#fff",
+                transition: "transform 0.25s ease, box-shadow 0.25s ease",
+                display: "flex",
+                flexDirection: "column",
+                minHeight: 430,
+                position: "relative",
+                overflow: "hidden",
+                cursor: "pointer",
+              }}
+              tabIndex={0}
+              aria-label={`View details for ${event.title}`}
+              className="event-card"
+              onClick={() => setSelectedEvent(event)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  setSelectedEvent(event);
+                }
+              }}
+            >
               <div
-                key={event.id}
                 style={{
-                  borderRadius: 20,
-                  boxShadow:
-                    "0 6px 32px 0 rgba(31,82,140,0.11), 0 1.5px 6px rgba(31,82,140,0.07)",
-                  background: "#fff",
-                  transition: "transform 0.25s ease, box-shadow 0.25s ease",
-                  display: "flex",
-                  flexDirection: "column",
-                  minHeight: 430,
-                  position: "relative",
+                  height: 180,
                   overflow: "hidden",
-                  cursor: "pointer",
-                }}
-                tabIndex={0}
-                aria-label={`View details for ${event.title}`}
-                className="event-card"
-                onClick={() => setSelectedEvent(event)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    setSelectedEvent(event);
-                  }
+                  position: "relative",
                 }}
               >
+                <img
+                  src={TECH_IMAGE}
+                  alt={event.title}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    transition: "transform 0.4s ease",
+                  }}
+                  loading="lazy"
+                />
                 <div
                   style={{
-                    height: 180,
-                    overflow: "hidden",
-                    position: "relative",
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    height: "40%",
+                    background: "linear-gradient(to top, rgba(0,0,0,0.3), transparent)",
+                  }}
+                />
+              </div>
+
+              <div
+                style={{
+                  flex: 1,
+                  padding: "28px 24px 24px 24px",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <h3
+                  style={{
+                    color: PRIMARY,
+                    fontFamily: FONT_FAMILY,
+                    fontWeight: 700,
+                    fontSize: 22,
+                    margin: "0 0 16px 0",
+                    lineHeight: 1.25,
                   }}
                 >
-                  <img
-                    src={getRandomTechImage()}
-                    alt={event.title}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      transition: "transform 0.4s ease",
-                    }}
-                    loading="lazy"
-                  />
-                  <div
-                    style={{
-                      position: "absolute",
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      height: "40%",
-                      background: "linear-gradient(to top, rgba(0,0,0,0.3), transparent)",
-                    }}
-                  />
-                </div>
+                  {event.title}
+                </h3>
 
                 <div
                   style={{
-                    flex: 1,
-                    padding: "28px 24px 24px 24px",
                     display: "flex",
-                    flexDirection: "column",
+                    gap: 10,
+                    marginBottom: 16,
+                    flexWrap: "wrap",
                   }}
                 >
-                  <h3
+                  <span
                     style={{
-                      color: PRIMARY,
-                      fontFamily: FONT_FAMILY,
-                      fontWeight: 700,
-                      fontSize: 22,
-                      margin: "0 0 16px 0",
-                      lineHeight: 1.25,
+                      display: "inline-flex",
+                      alignItems: "center",
+                      background: "#ecf3fa",
+                      color: SECONDARY,
+                      borderRadius: 8,
+                      fontWeight: 600,
+                      fontSize: 13.5,
+                      padding: "6px 14px",
+                      letterSpacing: "0.01em",
+                      gap: 6,
                     }}
                   >
-                    {event.title}
-                  </h3>
-
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: 10,
-                      marginBottom: 16,
-                      flexWrap: "wrap",
-                    }}
-                  >
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke={SECONDARY}
+                      strokeWidth="2"
+                    >
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                      <line x1="16" y1="2" x2="16" y2="6"></line>
+                      <line x1="8" y1="2" x2="8" y2="6"></line>
+                      <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    {event.start_time
+                      ? new Date(event.start_time).toLocaleDateString(undefined, {
+                          month: 'short',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })
+                      : ""}
+                  </span>
+                  {event.location && (
                     <span
                       style={{
                         display: "inline-flex",
                         alignItems: "center",
-                        background: "#ecf3fa",
-                        color: SECONDARY,
+                        background: "#f4f4f4",
+                        color: "#3e3e3e",
                         borderRadius: 8,
-                        fontWeight: 600,
+                        fontWeight: 500,
                         fontSize: 13.5,
                         padding: "6px 14px",
-                        letterSpacing: "0.01em",
                         gap: 6,
                       }}
                     >
@@ -234,101 +243,64 @@ export default function EventDisplayPage() {
                         height="14"
                         viewBox="0 0 24 24"
                         fill="none"
-                        stroke={SECONDARY}
+                        stroke="#3e3e3e"
                         strokeWidth="2"
                       >
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
                       </svg>
-                      {event.start_time
-                        ? new Date(event.start_time).toLocaleDateString(undefined, {
-                            month: 'short',
-                            day: 'numeric',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })
-                        : ""}
+                      {event.location}
                     </span>
-                    {event.location && (
-                      <span
-                        style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          background: "#f4f4f4",
-                          color: "#3e3e3e",
-                          borderRadius: 8,
-                          fontWeight: 500,
-                          fontSize: 13.5,
-                          padding: "6px 14px",
-                          gap: 6,
-                        }}
-                      >
-                        <svg
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="#3e3e3e"
-                          strokeWidth="2"
-                        >
-                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                          <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        {event.location}
-                      </span>
-                    )}
-                  </div>
-
-                  <p
-                    style={{
-                      color: "#444",
-                      fontWeight: 400,
-                      fontSize: 15,
-                      marginBottom: 20,
-                      lineHeight: "1.55",
-                      flex: 1,
-                    }}
-                  >
-                    {event.description?.slice(0, 110) ?? ""}
-                    {event.description && event.description.length > 110 && "..."}
-                  </p>
-
-                  <div
-                    style={{
-                      marginTop: "auto",
-                      textAlign: "left",
-                    }}
-                  >
-                    <div
-                      style={{
-                        color: "#fff",
-                        background: `linear-gradient(90deg, ${PRIMARY}, ${SECONDARY})`,
-                        padding: "10px 24px",
-                        borderRadius: 24,
-                        fontWeight: 600,
-                        fontSize: 15,
-                        boxShadow: "0 2px 8px rgba(62,106,167,0.15)",
-                        display: "inline-block",
-                        letterSpacing: 0.2,
-                        transition: "all 0.2s ease",
-                      }}
-                    >
-                      View Details
-                    </div>
-                  </div>
+                  )}
                 </div>
+
+                <p
+                  style={{
+                    color: "#444",
+                    fontWeight: 400,
+                    fontSize: 15,
+                    marginBottom: 20,
+                    lineHeight: "1.55",
+                    flex: 1,
+                  }}
+                >
+                  {event.description?.slice(0, 110) ?? ""}
+                  {event.description && event.description.length > 110 && "..."}
+                </p>
+
                 <div
                   style={{
-                    height: 5,
-                    background: `linear-gradient(90deg, ${PRIMARY}, ${SECONDARY})`,
-                    width: "100%",
+                    marginTop: "auto",
+                    textAlign: "left",
                   }}
-                />
+                >
+                  <div
+                    style={{
+                      color: "#fff",
+                      background: `linear-gradient(90deg, ${PRIMARY}, ${SECONDARY})`,
+                      padding: "10px 24px",
+                      borderRadius: 24,
+                      fontWeight: 600,
+                      fontSize: 15,
+                      boxShadow: "0 2px 8px rgba(62,106,167,0.15)",
+                      display: "inline-block",
+                      letterSpacing: 0.2,
+                      transition: "all 0.2s ease",
+                    }}
+                  >
+                    View Details
+                  </div>
+                </div>
               </div>
-            ))}
+              <div
+                style={{
+                  height: 5,
+                  background: `linear-gradient(90deg, ${PRIMARY}, ${SECONDARY})`,
+                  width: "100%",
+                }}
+              />
+            </div>
+          ))}
         </div>
       </div>
 
@@ -367,7 +339,7 @@ export default function EventDisplayPage() {
           >
             <div style={{ position: "relative" }}>
               <img
-                src={getRandomTechImage()}
+                src={TECH_IMAGE}
                 alt={selectedEvent.title}
                 style={{
                   width: "100%",
@@ -463,7 +435,6 @@ export default function EventDisplayPage() {
                           weekday: 'long',
                           month: 'long',
                           day: 'numeric',
-                          year: 'numeric',
                           hour: '2-digit',
                           minute: '2-digit'
                         })
@@ -521,39 +492,6 @@ export default function EventDisplayPage() {
                 >
                   {selectedEvent.description}
                 </p>
-              </div>
-
-              <div
-                style={{
-                  background: `linear-gradient(90deg, ${PRIMARY}, ${SECONDARY})`,
-                  padding: "20px",
-                  borderRadius: 12,
-                  color: "white",
-                }}
-              >
-                <h4
-                  style={{
-                    margin: "0 0 12px 0",
-                    fontSize: 18,
-                    fontWeight: 600,
-                  }}
-                >
-                  You'll Discover:
-                </h4>
-                <ul
-                  style={{
-                    margin: 0,
-                    paddingLeft: 20,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 8,
-                  }}
-                >
-                  <li>What AI can actually do for your business (with real-life demos)</li>
-                  <li>How to automate repetitive tasks and enhance decision-making</li>
-                  <li>How non-technical teams can leverage AI in under a week</li>
-                  <li>Behind-the-scenes of our lightweight tools and smart workflows</li>
-                </ul>
               </div>
             </div>
             <div
