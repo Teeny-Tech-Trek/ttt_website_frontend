@@ -5,13 +5,28 @@ import { Event } from "../../types/event";
 const PRIMARY = "#1f528c";
 const SECONDARY = "#3e6aa7";
 const FONT_FAMILY = "'Inter', 'Roboto', sans-serif";
-const DEMO_IMAGES = [
-  "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
-  "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+const TECH_IMAGES = [
+  "https://images.unsplash.com/photo-1677442135136-760c813a743d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
 ];
 
+const DEMO_EVENT: Event = {
+  id: "tech-trek-1",
+  title: "Teeny Tech Trek: AI for Small Teams",
+  description: "Join us for an eye-opening evening in Tricity where innovation meets action...", // (keep your full description)
+  start_time: "2023-11-15T18:00:00",
+  end_time: "2023-11-15T21:00:00",
+  location: "Tricity Innovation Hub",
+  slug: "teeny-tech-trek",
+  created_by: "system",
+  packages_ids: [],
+  payment_required: false,
+  status: "published",
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString()
+};
 export default function EventDisplayPage() {
   const [events, setEvents] = useState<Event[]>();
   const [loading, setLoading] = useState(true);
@@ -24,7 +39,7 @@ export default function EventDisplayPage() {
       try {
         setLoading(true);
         const data = await getPublishedEvents();
-        if (isMounted) setEvents(data);
+        if (isMounted) setEvents([DEMO_EVENT, ...(data || [])]);
       } catch (err) {
         console.error("Failed to load events:", err);
         if (isMounted) setError(true);
@@ -38,20 +53,18 @@ export default function EventDisplayPage() {
     };
   }, []);
 
-  // Function to get a random demo image
-  const getRandomImage = () => {
-    return DEMO_IMAGES[Math.floor(Math.random() * DEMO_IMAGES.length)];
+  const getRandomTechImage = () => {
+    return TECH_IMAGES[Math.floor(Math.random() * TECH_IMAGES.length)];
   };
 
   return (
     <div
       id="events"
-      className="py-20"
       style={{
         background: "#fff",
         minHeight: "100vh",
         fontFamily: FONT_FAMILY,
-        padding: "0 0 60px 0",
+        paddingBottom: 60,
       }}
     >
       <div
@@ -73,7 +86,7 @@ export default function EventDisplayPage() {
             padding: "60px 0 30px 0",
           }}
         >
-          Upcoming Events
+          Upcoming Tech Events
         </h2>
 
         {loading && (
@@ -151,7 +164,7 @@ export default function EventDisplayPage() {
                   }}
                 >
                   <img
-                    src={getRandomImage()}
+                    src={getRandomTechImage()}
                     alt={event.title}
                     style={{
                       width: "100%",
@@ -168,8 +181,7 @@ export default function EventDisplayPage() {
                       left: 0,
                       right: 0,
                       height: "40%",
-                      background:
-                        "linear-gradient(to top, rgba(0,0,0,0.3), transparent",
+                      background: "linear-gradient(to top, rgba(0,0,0,0.3), transparent)",
                     }}
                   />
                 </div>
@@ -225,23 +237,19 @@ export default function EventDisplayPage() {
                         stroke={SECONDARY}
                         strokeWidth="2"
                       >
-                        <rect
-                          x="3"
-                          y="4"
-                          width="18"
-                          height="18"
-                          rx="2"
-                          ry="2"
-                        ></rect>
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                         <line x1="16" y1="2" x2="16" y2="6"></line>
                         <line x1="8" y1="2" x2="8" y2="6"></line>
                         <line x1="3" y1="10" x2="21" y2="10"></line>
                       </svg>
                       {event.start_time
-                        ? new Date(event.start_time).toLocaleDateString()
-                        : ""}
-                      {event.end_time
-                        ? ` - ${new Date(event.end_time).toLocaleDateString()}`
+                        ? new Date(event.start_time).toLocaleDateString(undefined, {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })
                         : ""}
                     </span>
                     {event.location && (
@@ -359,13 +367,13 @@ export default function EventDisplayPage() {
           >
             <div style={{ position: "relative" }}>
               <img
-                src={getRandomImage()}
+                src={getRandomTechImage()}
                 alt={selectedEvent.title}
                 style={{
                   width: "100%",
                   height: 250,
                   objectFit: "cover",
-                  borderBottom: "4px solid " + PRIMARY,
+                  borderBottom: `4px solid ${PRIMARY}`,
                 }}
               />
               <button
@@ -444,28 +452,21 @@ export default function EventDisplayPage() {
                     stroke={SECONDARY}
                     strokeWidth="2"
                   >
-                    <rect
-                      x="3"
-                      y="4"
-                      width="18"
-                      height="18"
-                      rx="2"
-                      ry="2"
-                    ></rect>
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                     <line x1="16" y1="2" x2="16" y2="6"></line>
                     <line x1="8" y1="2" x2="8" y2="6"></line>
                     <line x1="3" y1="10" x2="21" y2="10"></line>
                   </svg>
                   <span>
                     {selectedEvent.start_time
-                      ? new Date(
-                          selectedEvent.start_time
-                        ).toLocaleDateString()
-                      : ""}
-                    {selectedEvent.end_time
-                      ? ` - ${new Date(
-                          selectedEvent.end_time
-                        ).toLocaleDateString()}`
+                      ? new Date(selectedEvent.start_time).toLocaleDateString(undefined, {
+                          weekday: 'long',
+                          month: 'long',
+                          day: 'numeric',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })
                       : ""}
                   </span>
                 </div>
@@ -520,6 +521,39 @@ export default function EventDisplayPage() {
                 >
                   {selectedEvent.description}
                 </p>
+              </div>
+
+              <div
+                style={{
+                  background: `linear-gradient(90deg, ${PRIMARY}, ${SECONDARY})`,
+                  padding: "20px",
+                  borderRadius: 12,
+                  color: "white",
+                }}
+              >
+                <h4
+                  style={{
+                    margin: "0 0 12px 0",
+                    fontSize: 18,
+                    fontWeight: 600,
+                  }}
+                >
+                  You'll Discover:
+                </h4>
+                <ul
+                  style={{
+                    margin: 0,
+                    paddingLeft: 20,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 8,
+                  }}
+                >
+                  <li>What AI can actually do for your business (with real-life demos)</li>
+                  <li>How to automate repetitive tasks and enhance decision-making</li>
+                  <li>How non-technical teams can leverage AI in under a week</li>
+                  <li>Behind-the-scenes of our lightweight tools and smart workflows</li>
+                </ul>
               </div>
             </div>
             <div

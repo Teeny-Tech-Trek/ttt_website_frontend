@@ -131,7 +131,7 @@ const Footer = () => {
             <h4 className="text-xl font-semibold mb-6 tracking-wide">Get in Touch</h4>
             <ul className="space-y-5">
               <li className="flex items-center gap-3">
-                <Mail size={18} className="text-blue-400" />
+                <Mail size={18} className="text-blue-400 flex-shrink-0" />
                 <a
                   href="mailto:anisha.singla@teenytechtrek.com"
                   className="text-gray-300 hover:text-white text-sm transition-colors duration-300"
@@ -140,7 +140,7 @@ const Footer = () => {
                 </a>
               </li>
               <li className="flex items-center gap-3">
-                <Phone size={18} className="text-blue-400" />
+                <Phone size={18} className="text-blue-400 flex-shrink-0" />
                 <a
                   href="tel:+15551234567"
                   className="text-gray-300 hover:text-white text-sm transition-colors duration-300"
@@ -148,8 +148,8 @@ const Footer = () => {
                  +1 647-864-5465, +91 98558 06696
                 </a>
               </li>
-              <li className="flex items-center gap-3">
-                <MapPin size={18} className="text-blue-400" />
+              <li className="flex items-start gap-3">
+                <MapPin size={18} className="text-blue-400 flex-shrink-0 mt-1" />
                 <span className="text-gray-300 text-sm">C-201, 2nd Floor, Sebiz Square Building, Plot No. C-6, Sector-67, Mohali, SAS Nagar - 160062, Punjab, India</span>
               </li>
             </ul>
@@ -182,4 +182,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default Footer;  
