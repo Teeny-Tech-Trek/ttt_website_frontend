@@ -5,8 +5,12 @@ import { Event } from "../../types/event";
 const PRIMARY = "#1f528c";
 const SECONDARY = "#3e6aa7";
 const FONT_FAMILY = "'Inter', 'Roboto', sans-serif";
-const PLACEHOLDER_IMAGE =
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=700&q=80";
+const DEMO_IMAGES = [
+  "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+  "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+];
 
 export default function EventDisplayPage() {
   const [events, setEvents] = useState<Event[]>();
@@ -34,6 +38,11 @@ export default function EventDisplayPage() {
     };
   }, []);
 
+  // Function to get a random demo image
+  const getRandomImage = () => {
+    return DEMO_IMAGES[Math.floor(Math.random() * DEMO_IMAGES.length)];
+  };
+
   return (
     <div
       id="events"
@@ -47,9 +56,9 @@ export default function EventDisplayPage() {
     >
       <div
         style={{
-          maxWidth: 1100,
+          maxWidth: 1200,
           margin: "0 auto",
-          padding: "0 16px",
+          padding: "0 24px",
         }}
       >
         <h2
@@ -57,10 +66,10 @@ export default function EventDisplayPage() {
             color: PRIMARY,
             fontFamily: FONT_FAMILY,
             fontWeight: 800,
-            fontSize: "clamp(28px, 4vw, 38px)",
+            fontSize: "clamp(32px, 4vw, 42px)",
             marginBottom: 18,
             textAlign: "center",
-            letterSpacing: "-0.5px",
+            letterSpacing: "-0.8px",
             padding: "60px 0 30px 0",
           }}
         >
@@ -68,38 +77,32 @@ export default function EventDisplayPage() {
         </h2>
 
         {loading && (
-          <div
-            style={{
-              color: "#888",
-              fontSize: 20,
-              textAlign: "center",
-              padding: 80,
-            }}
-          >
+          <div style={{ 
+            color: "#888", 
+            fontSize: 20, 
+            textAlign: "center", 
+            padding: 80 
+          }}>
             Loading events…
           </div>
         )}
         {error && (
-          <div
-            style={{
-              color: "#d32f2f",
-              fontSize: 20,
-              textAlign: "center",
-              padding: 80,
-            }}
-          >
+          <div style={{ 
+            color: "#d32f2f", 
+            fontSize: 20, 
+            textAlign: "center", 
+            padding: 80 
+          }}>
             Failed to load events.
           </div>
         )}
         {!loading && !error && events?.length === 0 && (
-          <div
-            style={{
-              color: "#888",
-              fontSize: 20,
-              textAlign: "center",
-              padding: 80,
-            }}
-          >
+          <div style={{ 
+            color: "#888", 
+            fontSize: 20, 
+            textAlign: "center", 
+            padding: 80 
+          }}>
             No events scheduled yet.
           </div>
         )}
@@ -122,7 +125,7 @@ export default function EventDisplayPage() {
                   boxShadow:
                     "0 6px 32px 0 rgba(31,82,140,0.11), 0 1.5px 6px rgba(31,82,140,0.07)",
                   background: "#fff",
-                  transition: "transform 0.18s cubic-bezier(.39,.58,.57,1.15), box-shadow 0.18s cubic-bezier(.39,.58,.57,1.15)",
+                  transition: "transform 0.25s ease, box-shadow 0.25s ease",
                   display: "flex",
                   flexDirection: "column",
                   minHeight: 430,
@@ -148,15 +151,26 @@ export default function EventDisplayPage() {
                   }}
                 >
                   <img
-                    src={event.slug || PLACEHOLDER_IMAGE}
+                    src={getRandomImage()}
                     alt={event.title}
                     style={{
                       width: "100%",
                       height: "100%",
                       objectFit: "cover",
-                      transition: "transform 0.3s ease",
+                      transition: "transform 0.4s ease",
                     }}
                     loading="lazy"
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      height: "40%",
+                      background:
+                        "linear-gradient(to top, rgba(0,0,0,0.3), transparent",
+                    }}
                   />
                 </div>
 
@@ -174,8 +188,8 @@ export default function EventDisplayPage() {
                       fontFamily: FONT_FAMILY,
                       fontWeight: 700,
                       fontSize: 22,
-                      margin: "0 0 14px 0",
-                      lineHeight: 1.2,
+                      margin: "0 0 16px 0",
+                      lineHeight: 1.25,
                     }}
                   >
                     {event.title}
@@ -185,40 +199,76 @@ export default function EventDisplayPage() {
                     style={{
                       display: "flex",
                       gap: 10,
-                      marginBottom: 14,
+                      marginBottom: 16,
                       flexWrap: "wrap",
                     }}
                   >
                     <span
                       style={{
-                        display: "inline-block",
+                        display: "inline-flex",
+                        alignItems: "center",
                         background: "#ecf3fa",
                         color: SECONDARY,
                         borderRadius: 8,
                         fontWeight: 600,
-                        fontSize: 14,
-                        padding: "4px 12px",
+                        fontSize: 13.5,
+                        padding: "6px 14px",
                         letterSpacing: "0.01em",
+                        gap: 6,
                       }}
                     >
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke={SECONDARY}
+                        strokeWidth="2"
+                      >
+                        <rect
+                          x="3"
+                          y="4"
+                          width="18"
+                          height="18"
+                          rx="2"
+                          ry="2"
+                        ></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                      </svg>
                       {event.start_time
                         ? new Date(event.start_time).toLocaleDateString()
                         : ""}
                       {event.end_time
-                        ? ` — ${new Date(event.end_time).toLocaleDateString()}`
+                        ? ` - ${new Date(event.end_time).toLocaleDateString()}`
                         : ""}
                     </span>
                     {event.location && (
                       <span
                         style={{
+                          display: "inline-flex",
+                          alignItems: "center",
                           background: "#f4f4f4",
                           color: "#3e3e3e",
                           borderRadius: 8,
                           fontWeight: 500,
-                          fontSize: 13,
-                          padding: "4px 12px",
+                          fontSize: 13.5,
+                          padding: "6px 14px",
+                          gap: 6,
                         }}
                       >
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="#3e3e3e"
+                          strokeWidth="2"
+                        >
+                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                          <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
                         {event.location}
                       </span>
                     )}
@@ -230,7 +280,7 @@ export default function EventDisplayPage() {
                       fontWeight: 400,
                       fontSize: 15,
                       marginBottom: 20,
-                      lineHeight: "1.5",
+                      lineHeight: "1.55",
                       flex: 1,
                     }}
                   >
@@ -252,10 +302,10 @@ export default function EventDisplayPage() {
                         borderRadius: 24,
                         fontWeight: 600,
                         fontSize: 15,
-                        boxShadow: "0 2px 8px rgba(62,106,167,0.10)",
+                        boxShadow: "0 2px 8px rgba(62,106,167,0.15)",
                         display: "inline-block",
                         letterSpacing: 0.2,
-                        transition: "background 0.16s",
+                        transition: "all 0.2s ease",
                       }}
                     >
                       View Details
@@ -283,12 +333,13 @@ export default function EventDisplayPage() {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: "rgba(0,0,0,0.5)",
+            backgroundColor: "rgba(0,0,0,0.7)",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             zIndex: 1000,
             padding: 20,
+            backdropFilter: "blur(4px)",
           }}
           onClick={() => setSelectedEvent(null)}
         >
@@ -302,18 +353,19 @@ export default function EventDisplayPage() {
               overflow: "hidden",
               display: "flex",
               flexDirection: "column",
-              boxShadow: "0 10px 40px rgba(0,0,0,0.2)",
+              boxShadow: "0 20px 50px rgba(0,0,0,0.3)",
             }}
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ position: "relative" }}>
               <img
-                src={selectedEvent.slug || PLACEHOLDER_IMAGE}
+                src={getRandomImage()}
                 alt={selectedEvent.title}
                 style={{
                   width: "100%",
                   height: 250,
                   objectFit: "cover",
+                  borderBottom: "4px solid " + PRIMARY,
                 }}
               />
               <button
@@ -321,7 +373,7 @@ export default function EventDisplayPage() {
                   position: "absolute",
                   top: 16,
                   right: 16,
-                  background: "white",
+                  background: "rgba(255,255,255,0.9)",
                   border: "none",
                   borderRadius: "50%",
                   width: 36,
@@ -330,9 +382,11 @@ export default function EventDisplayPage() {
                   alignItems: "center",
                   justifyContent: "center",
                   cursor: "pointer",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+                  boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
                   fontWeight: "bold",
-                  fontSize: 18,
+                  fontSize: 20,
+                  color: PRIMARY,
+                  transition: "all 0.2s ease",
                 }}
                 onClick={() => setSelectedEvent(null)}
                 aria-label="Close dialog"
@@ -353,8 +407,8 @@ export default function EventDisplayPage() {
                   color: PRIMARY,
                   fontFamily: FONT_FAMILY,
                   fontWeight: 700,
-                  fontSize: 26,
-                  margin: "0 0 20px 0",
+                  fontSize: 28,
+                  margin: "0 0 24px 0",
                   lineHeight: 1.2,
                 }}
               >
@@ -364,8 +418,8 @@ export default function EventDisplayPage() {
               <div
                 style={{
                   display: "flex",
-                  gap: 10,
-                  marginBottom: 24,
+                  gap: 12,
+                  marginBottom: 28,
                   flexWrap: "wrap",
                 }}
               >
@@ -376,22 +430,28 @@ export default function EventDisplayPage() {
                     gap: 8,
                     background: "#ecf3fa",
                     color: SECONDARY,
-                    borderRadius: 8,
+                    borderRadius: 10,
                     fontWeight: 600,
-                    fontSize: 14,
-                    padding: "8px 16px",
+                    fontSize: 15,
+                    padding: "10px 18px",
                   }}
                 >
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
+                    width="18"
+                    height="18"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="currentColor"
+                    stroke={SECONDARY}
                     strokeWidth="2"
                   >
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <rect
+                      x="3"
+                      y="4"
+                      width="18"
+                      height="18"
+                      rx="2"
+                      ry="2"
+                    ></rect>
                     <line x1="16" y1="2" x2="16" y2="6"></line>
                     <line x1="8" y1="2" x2="8" y2="6"></line>
                     <line x1="3" y1="10" x2="21" y2="10"></line>
@@ -403,7 +463,7 @@ export default function EventDisplayPage() {
                         ).toLocaleDateString()
                       : ""}
                     {selectedEvent.end_time
-                      ? ` — ${new Date(
+                      ? ` - ${new Date(
                           selectedEvent.end_time
                         ).toLocaleDateString()}`
                       : ""}
@@ -418,19 +478,18 @@ export default function EventDisplayPage() {
                       gap: 8,
                       background: "#f4f4f4",
                       color: "#3e3e3e",
-                      borderRadius: 8,
+                      borderRadius: 10,
                       fontWeight: 500,
-                      fontSize: 14,
-                      padding: "8px 16px",
+                      fontSize: 15,
+                      padding: "10px 18px",
                     }}
                   >
                     <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
+                      width="18"
+                      height="18"
                       viewBox="0 0 24 24"
                       fill="none"
-                      stroke="currentColor"
+                      stroke="#3e3e3e"
                       strokeWidth="2"
                     >
                       <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
@@ -443,10 +502,11 @@ export default function EventDisplayPage() {
 
               <div
                 style={{
-                  padding: "20px",
+                  padding: "22px 20px",
                   background: "#f9fbfd",
-                  borderRadius: 12,
+                  borderRadius: 14,
                   marginBottom: 24,
+                  borderLeft: `4px solid ${PRIMARY}`,
                 }}
               >
                 <p
@@ -454,41 +514,12 @@ export default function EventDisplayPage() {
                     color: "#444",
                     fontWeight: 400,
                     fontSize: 16,
-                    lineHeight: 1.6,
+                    lineHeight: 1.7,
                     margin: 0,
                   }}
                 >
                   {selectedEvent.description}
                 </p>
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  marginTop: 20,
-                }}
-              >
-                <button
-                  style={{
-                    color: "#fff",
-                    background: `linear-gradient(90deg, ${PRIMARY}, ${SECONDARY})`,
-                    padding: "12px 32px",
-                    borderRadius: 24,
-                    fontWeight: 600,
-                    fontSize: 15,
-                    border: "none",
-                    cursor: "pointer",
-                    letterSpacing: 0.2,
-                  }}
-                  onClick={() => {
-                    window.location.href = `/event/${
-                      selectedEvent.slug || selectedEvent.id
-                    }`;
-                  }}
-                >
-                  Register Now
-                </button>
               </div>
             </div>
             <div
@@ -504,15 +535,19 @@ export default function EventDisplayPage() {
 
       <style>{`
         .event-card:hover, .event-card:focus {
-          transform: translateY(-7px) scale(1.025);
-          box-shadow: 0 12px 40px 0 rgba(31,82,140,0.15), 0 4px 12px rgba(31,82,140,0.10);
+          transform: translateY(-8px);
+          box-shadow: 0 12px 40px 0 rgba(31,82,140,0.18), 0 4px 12px rgba(31,82,140,0.12);
           z-index: 1;
         }
         .event-card:hover img {
-          transform: scale(1.05);
+          transform: scale(1.08);
         }
         .event-card:active {
-          transform: scale(0.99);
+          transform: translateY(-2px);
+        }
+        button:hover {
+          transform: scale(1.05);
+          background: rgba(255,255,255,1) !important;
         }
       `}</style>
     </div>

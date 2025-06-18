@@ -276,10 +276,10 @@ const TechStack = () => {
           <motion.div
             whileHover={{ scale: 1.02, y: -5 }}
             transition={{ duration: 0.3 }}
-            className="bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 p-12 rounded-3xl text-white shadow-2xl relative overflow-hidden"
+            className="bg-primary p-12 rounded-3xl text-white shadow-2xl relative overflow-hidden"
           >
             {/* Background pattern */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:40px_40px] opacity-30" />
+            <div className="absolute inset-0 bg-primary bg-[size:40px_40px] opacity-30" />
             
             <div className="max-w-3xl mx-auto text-center relative z-10">
               <motion.h3
