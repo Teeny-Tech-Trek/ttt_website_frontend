@@ -1,4 +1,3 @@
-// src/components/layout/Navbar.tsx
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,7 +15,6 @@ const Navbar = () => {
   const { user, logout } = useAuth();
 
   const isHomePage = location.pathname === '/';
-  const isAdminPage = location.pathname.startsWith('/admin');
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -40,36 +38,27 @@ const Navbar = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Define navigation links with hash and optional path for dedicated routes
   const navLinks = [
     { name: 'Home', href: isHomePage ? '#home' : '/#home', hash: '#home', path: '/' },
     { name: 'Services', href: isHomePage ? '#services' : '/#services', hash: '#services', path: '/' },
-    { name: 'Blogs', href: isHomePage ? '#blogs' : '/blogs', hash: '#blogs', path: '/blogs' }, // Handle /blogs route
+    { name: 'Blogs', href: isHomePage ? '#blogs' : '/blogs', hash: '#blogs', path: '/blogs' },
     { name: 'Events', href: isHomePage ? '#events' : '/#events', hash: '#events', path: '/' },
     { name: 'Tech Stack', href: isHomePage ? '#tech-stack' : '/#tech-stack', hash: '#tech-stack', path: '/' },
     { name: 'Pricing', href: isHomePage ? '#pricing' : '/#pricing', hash: '#pricing', path: '/' },
     { name: 'Contact', href: isHomePage ? '#contact' : '/#contact', hash: '#contact', path: '/' },
-    
   ];
 
-  // Determine if a link is active
   const isLinkActive = (linkHash: string, linkPath: string) => {
-    const currentHash = location.hash || '#home'; // Default to #home if no hash
+    const currentHash = location.hash || '#home';
     const currentPath = location.pathname;
 
-    // Debug: Log current URL state
-    console.log(`Current Path: ${currentPath}, Current Hash: ${currentHash}, Link Hash: ${linkHash}, Link Path: ${linkPath}`);
-
-    // Check for dedicated route (e.g., /blogs)
     if (linkPath !== '/' && currentPath === linkPath) {
       return true;
     }
-
-    // Check for homepage hash-based navigation
     return currentPath === '/' && currentHash === linkHash;
   };
 
-  // Hide navbar on /admin or /login routes
+  // 🚫 Don't show navbar on /admin or /login
   if (location.pathname.startsWith('/admin') || location.pathname.startsWith('/login')) {
     return null;
   }
@@ -82,6 +71,7 @@ const Navbar = () => {
     >
       <Container>
         <nav className="flex items-center justify-between">
+          {/* Logo */}
           <Link to="/" className="flex items-center gap-2 z-50">
             <img src="/logo.svg" alt="Teeny Tech Trek Logo" className="w-8 h-8 md:w-10 md:h-10" />
             <span className="text-lg md:text-xl font-display font-semibold text-primary">
@@ -131,7 +121,7 @@ const Navbar = () => {
             <Link
               smooth
               to="/#contact"
-              className="btn btn-primary text-sm lg:text-base whitespace-nowrap min-w-[120px] text-center"
+              className="btn btn-primary px-4 py-2 text-sm lg:text-base whitespace-nowrap text-center"
             >
               Get Started
             </Link>
@@ -157,14 +147,16 @@ const Navbar = () => {
               transition={{ duration: 0.2 }}
               className="fixed inset-0 top-0 z-40 bg-white"
             >
-              <div className="flex flex-col items-center justify-center min-h-screen space-y-6 p-4">
+              <div className="flex flex-col items-center justify-center min-h-screen px-4 py-8 space-y-6 w-full">
                 {navLinks.map((link) => (
                   <Link
                     key={link.name}
                     smooth
                     to={link.href}
                     className={`text-xl font-medium transition-colors ${
-                      isLinkActive(link.hash, link.path) ? 'text-primary font-semibold' : 'text-gray-800 hover:text-primary'
+                      isLinkActive(link.hash, link.path)
+                        ? 'text-primary font-semibold'
+                        : 'text-gray-800 hover:text-primary'
                     }`}
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -204,7 +196,7 @@ const Navbar = () => {
                 <Link
                   smooth
                   to="/#contact"
-                  className="btn btn-primary mt-4 w-full max-w-[200px] text-center"
+                  className="btn btn-primary mt-4 px-4 py-2 w-full max-w-[200px] text-center"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Get Started
