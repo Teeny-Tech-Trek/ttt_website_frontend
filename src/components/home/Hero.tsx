@@ -200,7 +200,10 @@ const Hero = () => {
             {/* Central AI Brain Visualization */}
             <div 
               className="relative z-20 w-80 h-80 mx-auto"
-              style={{ transform: 'translateZ(50px)' }}
+             style={{ 
+    perspective: '1200px',
+    height: 'clamp(300px, 80vw, 400px)' // Add responsive height
+  }}
             >
               {/* Main central orb */}
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500/20 via-blue-600/30 to-indigo-600/20 backdrop-blur-xl border border-white/20 flex items-center justify-center overflow-hidden">
