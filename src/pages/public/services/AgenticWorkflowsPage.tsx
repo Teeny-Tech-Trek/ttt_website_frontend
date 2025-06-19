@@ -1,170 +1,233 @@
-// pages/services/AgenticWorkflowsPage.tsx
 import { motion } from 'framer-motion';
-import { Puzzle } from 'lucide-react';
-import Container from '../../../components/ui/Container';
-import Button from '../../../components/ui/Button';
-
+import { Puzzle, CheckCircle2 } from 'lucide-react';
+import { HashLink } from 'react-router-hash-link';
 
 const AgenticWorkflowsPage = () => {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.2, delayChildren: 0.3 },
+      transition: { staggerChildren: 0.2, delayChildren: 0.2, ease: 'easeOut' },
     },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+  };
+
+  const cardHoverVariants = {
+    hover: {
+      scale: 1.02,
+      boxShadow: '0 10px 20px rgba(0, 0, 0, 0.1)',
+      transition: { duration: 0.3, ease: 'easeOut' },
+    },
+  };
+
+  const buttonVariants = {
+    hover: { scale: 1.05, transition: { duration: 0.3 } },
+    tap: { scale: 0.95 },
   };
 
   return (
-    <>
+    <div className="bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-primary-50 to-white pt-32 pb-16">
-        <Container>
+      <section className="relative bg-gradient-to-br from-blue-50 to-white py-24 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Ccircle cx=%222%22 cy=%222%22 r=%221%22 fill=%22%23bfdbfe%22 fill-opacity=%220.3%22/%3E%3C/svg%3E')] opacity-30" />
+        <div className="container mx-auto px-6 relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
             className="text-center max-w-3xl mx-auto"
           >
-            <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Puzzle size={32} className="text-primary" />
-            </div>
-            <h1 className="text-4xl font-bold mb-4">Agentic AI Workflows</h1>
-            <p className="text-xl text-gray-600">
-              Autonomous Agents That Think, Act, and Deliver.
+            <motion.div
+              className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6"
+              whileHover={{ scale: 1.1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <Puzzle className="text-blue-600" size={28} />
+            </motion.div>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Autonomous Agentic AI Workflows
+            </h1>
+            <p className="text-lg md:text-xl text-gray-600 mb-8">
+              Empower your business with intelligent agents that think, act, and deliver autonomously.
             </p>
+            <HashLink smooth to="/#contact">
+              <motion.button
+                variants={buttonVariants}
+                whileHover="hover"
+                whileTap="tap"
+                className="bg-blue-600 text-white px-8 py-3 rounded-full font-semibold text-lg hover:bg-blue-700 transition-colors"
+              >
+                Get Started
+              </motion.button>
+            </HashLink>
           </motion.div>
-        </Container>
+        </div>
       </section>
 
       {/* What Is an Agentic Workflow */}
-      <section className="py-16">
-        <Container>
+      <section className="py-20">
+        <div className="container mx-auto px-6">
           <motion.div variants={containerVariants} initial="hidden" animate="visible">
-            <motion.h2 variants={itemVariants} className="text-3xl font-bold text-center mb-8">
-              What Is an Agentic Workflow?
+            <motion.h2
+              variants={itemVariants}
+              className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-8"
+            >
+              What Are Agentic Workflows?
             </motion.h2>
-            <motion.p variants={itemVariants} className="text-lg text-gray-600 max-w-2xl mx-auto text-center mb-12">
-              Unlike single-step automations, agentic AI workflows think dynamically, call multiple tools/APIs, remember
-              context, adapt based on data, and work independently with optional human oversight.
+            <motion.p
+              variants={itemVariants}
+              className="text-lg text-gray-600 max-w-3xl mx-auto text-center leading-relaxed"
+            >
+              Agentic AI workflows go beyond simple automations. They dynamically think, call multiple tools/APIs, retain
+              context, adapt to data, and operate independently with optional human oversight.
             </motion.p>
           </motion.div>
-        </Container>
+        </div>
       </section>
 
       {/* What Our Agents Can Do */}
-      <section className="bg-gray-50 py-16">
-        <Container>
+      <section className="bg-gray-50 py-20">
+        <div className="container mx-auto px-6">
           <motion.div variants={containerVariants} initial="hidden" animate="visible">
-            <motion.h2 variants={itemVariants} className="text-3xl font-bold text-center mb-12">
-              What Our Agents Can Do
+            <motion.h2
+              variants={itemVariants}
+              className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12"
+            >
+              Capabilities of Our Agents
             </motion.h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Data Retrieval */}
-              <motion.div variants={itemVariants} className="bg-white p-6 rounded-lg shadow-lg">
-                <h3 className="text-xl font-semibold mb-4">Data Retrieval from Anywhere</h3>
-                <p className="text-gray-600 mb-4">
-                  Agents autonomously gather and synthesize data from internal or external sources.
-                </p>
-                <ul className="list-disc pl-5 text-gray-600 mb-4">
-                  <li>Scrape competitor pricing and update Airtable</li>
-                  <li>Pull sales data from Stripe, merge with CRM</li>
-                  <li>Fetch Google Sheet reports, summarize in Slack</li>
-                </ul>
-                <p className="text-sm text-gray-500 italic">
-                  Supports APIs, databases, Google Workspace, Notion, Slack, web scraping, PDFs, CSVs.
-                </p>
-              </motion.div>
-              {/* Content Summarization */}
-              <motion.div variants={itemVariants} className="bg-white p-6 rounded-lg shadow-lg">
-                <h3 className="text-xl font-semibold mb-4">Intelligent Content Summarization</h3>
-                <p className="text-gray-600 mb-4">
-                  Summarize long documents, meeting notes, or feedback surveys into actionable insights.
-                </p>
-                <ul className="list-disc pl-5 text-gray-600 mb-4">
-                  <li>Summarize team meeting notes into action items</li>
-                  <li>Digest customer feedback and flag pain points</li>
-                  <li>Convert research papers into briefs</li>
-                </ul>
-                <p className="text-sm text-gray-500 italic">
-                  Auto-post summaries to Slack, Notion, or email.
-                </p>
-              </motion.div>
-              {/* Smart Decision-Making */}
-              <motion.div variants={itemVariants} className="bg-white p-6 rounded-lg shadow-lg">
-                <h3 className="text-xl font-semibold mb-4">Smart Decision-Making</h3>
-                <p className="text-gray-600 mb-4">
-                  Agents follow your criteria to make decisions autonomously or escalate when needed.
-                </p>
-                <ul className="list-disc pl-5 text-gray-600 mb-4">
-                  <li>Auto-score leads based on behavior</li>
-                  <li>Monitor social mentions, alert on negative sentiment</li>
-                  <li>Flag overdue invoices and escalate</li>
-                </ul>
-                <p className="text-sm text-gray-500 italic">
-                  Uses IF-THEN rules, scoring logic, or AI judgment.
-                </p>
-              </motion.div>
-              {/* Multi-Step Task Automation */}
-              <motion.div variants={itemVariants} className="bg-white p-6 rounded-lg shadow-lg">
-                <h3 className="text-xl font-semibold mb-4">Multi-Step Task Automation</h3>
-                <p className="text-gray-600 mb-4">
-                  Handle 5–15+ step processes with full logic flow on autopilot.
-                </p>
-                <ul className="list-disc pl-5 text-gray-600 mb-4">
-                  <li>Pull metrics → generate insights → create slides → post</li>
-                  <li>Review job board → shortlist resumes → schedule interviews</li>
-                  <li>Scrape trends → summarize → suggest pricing tweaks</li>
-                </ul>
-                <p className="text-sm text-gray-500 italic">
-                  Delivers outcomes without manual intervention.
-                </p>
-              </motion.div>
+              {[
+                {
+                  title: 'Data Retrieval from Anywhere',
+                  description: 'Agents autonomously gather and synthesize data from internal or external sources.',
+                  features: [
+                    'Scrape competitor pricing and update Airtable',
+                    'Pull sales data from Stripe, merge with CRM',
+                    'Fetch Google Sheet reports, summarize in Slack',
+                  ],
+                  support: 'APIs, databases, Google Workspace, Notion, Slack, web scraping, PDFs, CSVs',
+                },
+                {
+                  title: 'Intelligent Content Summarization',
+                  description: 'Summarize documents, meeting notes, or feedback surveys into actionable insights.',
+                  features: [
+                    'Summarize team meeting notes into action items',
+                    'Digest customer feedback and flag pain points',
+                    'Convert research papers into concise briefs',
+                  ],
+                  support: 'Auto-post summaries to Slack, Notion, or email',
+                },
+                {
+                  title: 'Smart Decision-Making',
+                  description: 'Agents make decisions based on your criteria or escalate when necessary.',
+                  features: [
+                    'Auto-score leads based on behavior',
+                    'Monitor social mentions, alert on negative sentiment',
+                    'Flag overdue invoices and escalate',
+                  ],
+                  support: 'Uses IF-THEN rules, scoring logic, or AI judgment',
+                },
+                {
+                  title: 'Multi-Step Task Automation',
+                  description: 'Execute complex 5–15+ step processes with full logic flow on autopilot.',
+                  features: [
+                    'Pull metrics → generate insights → create slides → post',
+                    'Review job board → shortlist resumes → schedule interviews',
+                    'Scrape trends → summarize → suggest pricing tweaks',
+                  ],
+                  support: 'Delivers outcomes without manual intervention',
+                },
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  whileHover={cardHoverVariants.hover}
+                  className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100"
+                >
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-4">{item.title}</h3>
+                  <p className="text-gray-600 mb-6">{item.description}</p>
+                  <ul className="space-y-2 mb-6">
+                    {item.features.map((feature, i) => (
+                      <li key={i} className="flex items-start">
+                        <CheckCircle2 className="text-blue-500 mr-2 mt-1 flex-shrink-0" size={18} />
+                        <span className="text-gray-600">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="text-sm text-gray-500 italic">Supports: {item.support}</p>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
-        </Container>
+        </div>
       </section>
 
       {/* Agent Infrastructure */}
-      <section className="py-16">
-        <Container>
+      <section className="py-20">
+        <div className="container mx-auto px-6">
           <motion.div variants={containerVariants} initial="hidden" animate="visible">
-            <motion.h2 variants={itemVariants} className="text-3xl font-bold text-center mb-8">
-              Agent Infrastructure We Use
+            <motion.h2
+              variants={itemVariants}
+              className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-8"
+            >
+              Our Agent Infrastructure
             </motion.h2>
-            <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-4">
+            <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-4 mb-8">
               {['LangChain', 'AutoGen', 'CrewAI'].map((framework) => (
-                <span
+                <motion.span
                   key={framework}
-                  className="bg-primary-100 text-primary px-4 py-2 rounded-full text-sm font-medium"
+                  className="bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium"
+                  whileHover={{ scale: 1.1, backgroundColor: '#bfdbfe' }}
+                  transition={{ type: 'spring', stiffness: 300 }}
                 >
                   {framework}
-                </span>
+                </motion.span>
               ))}
             </motion.div>
-            <motion.p variants={itemVariants} className="text-lg text-gray-600 max-w-2xl mx-auto text-center mt-8">
-              Combined with custom APIs, secure environments, and your tools (Sheets, Notion, CRMs, Slack, databases).
+            <motion.p
+              variants={itemVariants}
+              className="text-lg text-gray-600 max-w-3xl mx-auto text-center leading-relaxed"
+            >
+              Combined with custom APIs, secure environments, and integrations with your tools (Sheets, Notion, CRMs,
+              Slack, databases).
             </motion.p>
           </motion.div>
-        </Container>
+        </div>
       </section>
 
-      {/* CTA */}
-      <section className="bg-gray-50 py-16">
-        <Container>
+      {/* CTA Section */}
+      <section className="py-20 bg-blue-600 text-white">
+        <div className="container mx-auto px-6 text-center">
           <motion.div variants={containerVariants} initial="hidden" animate="visible">
-            <motion.h2 variants={itemVariants} className="text-3xl font-bold text-center mb-8">
+            <motion.h2
+              variants={itemVariants}
+              className="text-3xl md:text-4xl font-bold mb-6"
+            >
               Ready to Automate with Agentic AI?
             </motion.h2>
-           
+            <motion.p variants={itemVariants} className="text-lg mb-8 max-w-2xl mx-auto">
+              Transform your workflows with intelligent, autonomous agents tailored to your business.
+            </motion.p>
+            <motion.div variants={itemVariants}>
+              <HashLink smooth to="/#contact">
+                <motion.button
+                  variants={buttonVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  className="bg-white text-blue-600 px-8 py-3 rounded-full font-semibold text-lg hover:bg-gray-100 transition-colors"
+                >
+                  Contact Us Today
+                </motion.button>
+              </HashLink>
+            </motion.div>
           </motion.div>
-        </Container>
+        </div>
       </section>
-    </>
+    </div>
   );
 };
 

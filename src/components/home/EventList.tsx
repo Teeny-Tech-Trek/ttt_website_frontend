@@ -108,9 +108,10 @@ export default function EventDisplayPage() {
             <div
               key={event.id}
               style={{
-                borderRadius: 20,
-                boxShadow: "0 6px 32px 0 rgba(31,82,140,0.11), 0 1.5px 6px rgba(31,82,140,0.07)",
-                background: "#fff",
+                borderRadius: 16,
+                boxShadow: "0 10px 30px rgba(31,82,140,0.1), 0 2px 8px rgba(31,82,140,0.05)",
+                background: "rgba(255, 255, 255, 0.95)",
+                backdropFilter: "blur(8px)",
                 transition: "transform 0.25s ease, box-shadow 0.25s ease",
                 display: "flex",
                 flexDirection: "column",
@@ -172,7 +173,7 @@ export default function EventDisplayPage() {
                     color: PRIMARY,
                     fontFamily: FONT_FAMILY,
                     fontWeight: 700,
-                    fontSize: 22,
+                    fontSize: 24,
                     margin: "0 0 16px 0",
                     lineHeight: 1.25,
                   }}
@@ -192,12 +193,12 @@ export default function EventDisplayPage() {
                     style={{
                       display: "inline-flex",
                       alignItems: "center",
-                      background: "#ecf3fa",
+                      background: "rgba(236, 243, 250, 0.9)",
                       color: SECONDARY,
-                      borderRadius: 8,
+                      borderRadius: 12,
                       fontWeight: 600,
-                      fontSize: 13.5,
-                      padding: "6px 14px",
+                      fontSize: 14,
+                      padding: "8px 16px",
                       letterSpacing: "0.01em",
                       gap: 6,
                     }}
@@ -229,12 +230,12 @@ export default function EventDisplayPage() {
                       style={{
                         display: "inline-flex",
                         alignItems: "center",
-                        background: "#f4f4f4",
+                        background: "rgba(244, 244, 244, 0.9)",
                         color: "#3e3e3e",
-                        borderRadius: 8,
+                        borderRadius: 12,
                         fontWeight: 500,
-                        fontSize: 13.5,
-                        padding: "6px 14px",
+                        fontSize: 14,
+                        padding: "8px 16px",
                         gap: 6,
                       }}
                     >
@@ -258,7 +259,7 @@ export default function EventDisplayPage() {
                   style={{
                     color: "#444",
                     fontWeight: 400,
-                    fontSize: 15,
+                    fontSize: 16,
                     marginBottom: 20,
                     lineHeight: "1.55",
                     flex: 1,
@@ -319,21 +320,22 @@ export default function EventDisplayPage() {
             alignItems: "center",
             zIndex: 1000,
             padding: 20,
-            backdropFilter: "blur(4px)",
+            backdropFilter: "blur(8px)",
           }}
           onClick={() => setSelectedEvent(null)}
         >
           <div
             style={{
-              background: "#fff",
-              borderRadius: 20,
+              background: "rgba(255, 255, 255, 0.95)",
+              backdropFilter: "blur(10px)",
+              borderRadius: 16,
               maxWidth: 700,
               width: "100%",
               maxHeight: "90vh",
               overflow: "hidden",
               display: "flex",
               flexDirection: "column",
-              boxShadow: "0 20px 50px rgba(0,0,0,0.3)",
+              boxShadow: "0 20px 50px rgba(0,0,0,0.2)",
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -356,8 +358,8 @@ export default function EventDisplayPage() {
                   background: "rgba(255,255,255,0.9)",
                   border: "none",
                   borderRadius: "50%",
-                  width: 36,
-                  height: 36,
+                  width: 40,
+                  height: 40,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -408,7 +410,7 @@ export default function EventDisplayPage() {
                     display: "flex",
                     alignItems: "center",
                     gap: 8,
-                    background: "#ecf3fa",
+                    background: "rgba(236, 243, 250, 0.9)",
                     color: SECONDARY,
                     borderRadius: 10,
                     fontWeight: 600,
@@ -448,7 +450,7 @@ export default function EventDisplayPage() {
                       display: "flex",
                       alignItems: "center",
                       gap: 8,
-                      background: "#f4f4f4",
+                      background: "rgba(244, 244, 244, 0.9)",
                       color: "#3e3e3e",
                       borderRadius: 10,
                       fontWeight: 500,
@@ -475,8 +477,8 @@ export default function EventDisplayPage() {
               <div
                 style={{
                   padding: "22px 20px",
-                  background: "#f9fbfd",
-                  borderRadius: 14,
+                  background: "rgba(249, 251, 253, 0.95)",
+                  borderRadius: 12,
                   marginBottom: 24,
                   borderLeft: `4px solid ${PRIMARY}`,
                 }}

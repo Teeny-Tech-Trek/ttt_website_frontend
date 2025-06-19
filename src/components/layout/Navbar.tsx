@@ -1,14 +1,18 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { HashLink as Link } from 'react-router-hash-link';
 import Container from '../ui/Container';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 
+// Create a motion-enabled Link component
+const MotionLink = motion(Link);
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -16,12 +20,18 @@ const Navbar = () => {
 
   const isHomePage = location.pathname === '/';
 
+  // Scroll-based effects
+  const backgroundOpacity = useTransform(scrollY, [0, 100], [0, 0.9]);
+  const navHeight = useTransform(scrollY, [0, 100], [80, 64]);
+  const logoScale = useTransform(scrollY, [0, 100], [1, 0.85]);
+
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const handleLogout = () => {
     logout();
     toast.success('Log out successful!');
     navigate('/login');
+    setIsMenuOpen(false);
   };
 
   useEffect(() => {
@@ -32,7 +42,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) setIsMenuOpen(false);
+      if (window.innerWidth >= 1024) setIsMenuOpen(false);
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -48,165 +58,301 @@ const Navbar = () => {
     { name: 'Contact', href: isHomePage ? '#contact' : '/#contact', hash: '#contact', path: '/' },
   ];
 
-  const isLinkActive = (linkHash: string, linkPath: string) => {
-    const currentHash = location.hash || '#home';
-    const currentPath = location.pathname;
+  // Track active section based on scroll position
+  const [activeSection, setActiveSection] = useState('#home');
 
-    if (linkPath !== '/' && currentPath === linkPath) {
-      return true;
-    }
-    return currentPath === '/' && currentHash === linkHash;
+  useEffect(() => {
+    if (!isHomePage) return;
+
+   const handleScroll = () => {
+  const offsets = navLinks.map((link) => {
+    const element = document.querySelector(link.hash);
+    if (!element) return { hash: link.hash, visible: false, top: Infinity };
+
+    const rect = element.getBoundingClientRect();
+    return {
+      hash: link.hash,
+      visible: rect.top <= window.innerHeight * 0.5 && rect.bottom >= 100,
+      top: Math.abs(rect.top),
+    };
+  });
+
+  const visibleSection = offsets.find((section) => section.visible);
+  if (visibleSection) {
+    setActiveSection(visibleSection.hash);
+  } else {
+    // fallback: pick the nearest section by distance
+    const closest = offsets.reduce((prev, curr) =>
+      curr.top < prev.top ? curr : prev
+    );
+    setActiveSection(closest.hash);
+  }
+};
+
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isHomePage, navLinks]);
+
+  const isLinkActive = (linkHash: string, linkPath: string): boolean => {
+    if (linkPath !== '/' && location.pathname === linkPath) return true;
+    if (isHomePage && activeSection === linkHash) return true;
+    return location.pathname === '/' && location.hash === linkHash;
   };
 
-  // 🚫 Don't show navbar on /admin or /login
   if (location.pathname.startsWith('/admin') || location.pathname.startsWith('/login')) {
     return null;
   }
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
-      }`}
+    <motion.header
+      className="fixed top-0 left-0 right-0 z-50 font-sans"
+      style={{ height: navHeight }}
     >
-      <Container>
-        <nav className="flex items-center justify-between">
+      <motion.div
+        className="absolute inset-0 bg-white/80 backdrop-blur-lg border-b border-gray-100/20"
+        style={{ opacity: backgroundOpacity }}
+      />
+      <Container className="relative h-full">
+        <nav className="flex items-center justify-between h-full">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 z-50">
-            <img src="/logo.svg" alt="Teeny Tech Trek Logo" className="w-8 h-8 md:w-10 md:h-10" />
-            <span className="text-lg md:text-xl font-display font-semibold text-primary">
+          <MotionLink 
+            to="/home"
+            smooth
+            className="flex items-center gap-3 z-50"
+            style={{ scale: logoScale }}
+            whileHover={{ scale: 1.1 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
+            <motion.img 
+              src="/logo.svg" 
+              alt="Teeny Tech Trek Logo" 
+              className="w-9 h-9"
+            />
+            <motion.span
+              className="text-xl font-semibold text-blue-900 tracking-tight"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+            >
               Teeny Tech Trek
-            </span>
-          </Link>
+            </motion.span>
+          </MotionLink>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-2 lg:space-x-6">
-            <ul className="flex items-center space-x-2 lg:space-x-6 mr-4">
-              {navLinks.map((link) => (
-                <li key={link.name}>
-                  <Link
+          <div className="hidden lg:flex items-center gap-8">
+            <ul className="flex items-center gap-6">
+              {navLinks.map((link, index) => (
+                <motion.li
+                  key={link.name}
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * index, duration: 0.4 }}
+                >
+                  <MotionLink
                     smooth
                     to={link.href}
-                    className={`nav-link px-2 py-2 text-sm lg:text-base whitespace-nowrap ${
-                      isLinkActive(link.hash, link.path) ? 'active' : ''
-                    }`}
+                    className={`relative text-sm font-medium text-blue-900/70 transition-colors hover:text-blue-600 ${
+                      isLinkActive(link.hash, link.path) ? 'text-blue-600' : ''}`}
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
                   >
                     {link.name}
-                  </Link>
-                </li>
+                    {isLinkActive(link.hash, link.path) && (
+                      <motion.div
+                        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-blue-600"
+                        layoutId="underline"
+                        transition={{ type: 'spring', stiffness: 300 }}
+                      />
+                    )}
+                  </MotionLink>
+                </motion.li>
               ))}
             </ul>
 
             {user ? (
-              <>
-                <Link to="/admin" className="text-sm text-gray-600 hover:underline">
-                  Hi, {user.sub}
-                </Link>
-                <button
+              <div className="flex items-center gap-4">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                >
+                  <MotionLink
+                    to="/admin"
+                    smooth
+                    className="text-sm text-blue-900/70 hover:text-blue-600 transition-colors"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                  >
+                    Hi, {user.role}
+                  </MotionLink>
+                </motion.div>
+                <motion.button
                   onClick={handleLogout}
-                  className="text-sm text-red-600 hover:underline ml-2"
+                  className="text-sm text-red-500 hover:text-red-600 transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
                   Logout
-                </button>
-              </>
+                </motion.button>
+              </div>
             ) : (
-              <Link
-                to="/login"
-                className="text-sm lg:text-base whitespace-nowrap min-w-[120px] text-center text-primary hover:underline"
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
               >
-                Login
-              </Link>
+                <MotionLink
+                  to="/login"
+                  smooth
+                  className="text-sm text-blue-900/70 hover:text-blue-600 transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
+                >
+                  Login
+                </MotionLink>
+              </motion.div>
             )}
 
-            <Link
-              smooth
-              to="/#contact"
-              className="btn btn-primary px-4 py-2 text-sm lg:text-base whitespace-nowrap text-center"
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.6, type: 'spring', stiffness: 300 }}
             >
-              Get Started
-            </Link>
+              <MotionLink
+                smooth
+                to="/#contact"
+                className="px-8 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-full hover:bg-blue-700 transition-all shadow-sm hover:shadow-md"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Get Started
+              </MotionLink>
+            </motion.div>
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden z-50 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          <motion.button 
+            className="lg:hidden z-50 p-2 rounded-full hover:bg-blue-50/50 transition-colors"
             onClick={toggleMenu}
             aria-label="Toggle Menu"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
           >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+            {isMenuOpen ? (
+              <X size={24} className="text-blue-900" />
+            ) : (
+              <Menu size={24} className="text-blue-900" />
+            )}
+          </motion.button>
         </nav>
 
         {/* Mobile Navigation */}
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, y: '-100%' }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 top-0 z-40 bg-white"
+              exit={{ opacity: 0, y: '-100%' }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className="fixed inset-0 top-0 z-40 bg-white/95 backdrop-blur-md lg:hidden"
             >
-              <div className="flex flex-col items-center justify-center min-h-screen px-4 py-8 space-y-6 w-full">
-                {navLinks.map((link) => (
-                  <Link
+              <div className="flex flex-col items-center justify-center min-h-screen space-y-6">
+                {navLinks.map((link, index) => (
+                  <motion.div
                     key={link.name}
-                    smooth
-                    to={link.href}
-                    className={`text-xl font-medium transition-colors ${
-                      isLinkActive(link.hash, link.path)
-                        ? 'text-primary font-semibold'
-                        : 'text-gray-800 hover:text-primary'
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 * index, duration: 0.3 }}
                   >
-                    {link.name}
-                  </Link>
+                    <MotionLink
+                      smooth
+                      to={link.href}
+                      className={`text-lg font-semibold transition-colors ${
+                        isLinkActive(link.hash, link.path)
+                          ? 'text-blue-600'
+                          : 'text-blue-900/80 hover:text-blue-600'
+                      }`}
+                      onClick={() => setIsMenuOpen(false)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {link.name}
+                    </MotionLink>
+                  </motion.div>
                 ))}
 
                 {user ? (
                   <>
-                    <Link
-                      to="/admin"
-                      onClick={() => setIsMenuOpen(false)}
-                      className="text-gray-600 text-lg hover:underline"
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.7, duration: 0.3 }}
                     >
-                      Hi, {user.sub}
-                    </Link>
-                    <button
-                      onClick={() => {
-                        handleLogout();
-                        setIsMenuOpen(false);
-                      }}
-                      className="text-red-600 text-lg hover:underline"
+                      <MotionLink
+                        to="/admin"
+                        smooth
+                        className="text-lg font-medium text-blue-900/70 hover:text-blue-600"
+                        onClick={() => setIsMenuOpen(false)}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Hi, {user.sub}
+                      </MotionLink>
+                    </motion.div>
+                    <motion.button
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.8, duration: 0.3 }}
+                      onClick={handleLogout}
+                      className="text-lg font-medium text-red-500 hover:text-red-600"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
                       Logout
-                    </button>
+                    </motion.button>
                   </>
                 ) : (
-                  <Link
-                    to="/login"
-                    className="text-blue-600 text-lg hover:underline"
-                    onClick={() => setIsMenuOpen(false)}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7, duration: 0.3 }}
                   >
-                    Login
-                  </Link>
+                    <MotionLink
+                      to="/login"
+                      smooth
+                      className="text-lg font-medium text-blue-900/70 hover:text-blue-600"
+                      onClick={() => setIsMenuOpen(false)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Login
+                    </MotionLink>
+                  </motion.div>
                 )}
 
-                <Link
-                  smooth
-                  to="/#contact"
-                  className="btn btn-primary mt-4 px-4 py-2 w-full max-w-[200px] text-center"
-                  onClick={() => setIsMenuOpen(false)}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.9, duration: 0.3 }}
                 >
-                  Get Started
-                </Link>
+                  <MotionLink
+                    smooth
+                    to="/#contact"
+                    className="px-6 py-3 bg-blue-600 text-white text-lg font-medium rounded-full hover:bg-blue-700 transition-all shadow-sm hover:shadow-md"
+                    onClick={() => setIsMenuOpen(false)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Get Started
+                  </MotionLink>
+                </motion.div>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
       </Container>
-    </header>
+    </motion.header>
   );
 };
 

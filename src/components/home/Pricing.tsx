@@ -1,5 +1,3 @@
-// src/components/SubscriptionPricing.tsx
-
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
@@ -50,7 +48,9 @@ const SubscriptionPricing: React.FC = () => {
       }
     }
     fetchSubscriptions();
-    return () => { isMounted = false; };
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleBuy = async (pkg: Package) => {
@@ -64,7 +64,6 @@ const SubscriptionPricing: React.FC = () => {
       return;
     }
 
-    // Prepare amount in paise for Razorpay
     const amountPaise = pkg.price * 100;
 
     const options = {
@@ -73,12 +72,10 @@ const SubscriptionPricing: React.FC = () => {
       currency: "INR",
       name: "Teeny Tech Trek",
       description: pkg.description || pkg.name,
-      // image: '...', // Optional: logo
       handler: async function (response: any) {
         try {
-          // Send payment info to backend for verification & to create your order record
           await api.post(
-            '/orders/verify', // <-- create this endpoint on your backend
+            '/orders/verify',
             {
               razorpay_payment_id: response.razorpay_payment_id,
               package_id: pkg.id,
@@ -92,13 +89,11 @@ const SubscriptionPricing: React.FC = () => {
           setPaymentError("Payment verification failed. Please contact support.");
         }
       },
-      prefill: {
-
-      },
+      prefill: {},
       notes: {
         package_id: pkg.id,
       },
-      theme: { color: "#1976d2" }
+      theme: { color: "#3b82f6" },
     };
 
     // @ts-ignore
@@ -109,44 +104,115 @@ const SubscriptionPricing: React.FC = () => {
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
   };
+
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
   };
 
-  if (loading) return (
-    <section className="py-20 bg-gradient-to-b from-white to-primary-100/30">
-      <Container>
-        <SectionHeading title="Subscription Packages" subtitle="Loading subscription packages…" />
-        <div className="text-center py-16 text-gray-600">Loading…</div>
-      </Container>
-    </section>
-  );
-  if (error) return (
-    <section className="py-20 bg-gradient-to-b from-white to-primary-100/30">
-      <Container>
-        <SectionHeading title="Subscription Packages" subtitle="Unable to load subscription packages" />
-        <div className="text-center py-16 text-red-500">Something went wrong. Please try again later.</div>
-      </Container>
-    </section>
-  );
-  if (!packages.length) return (
-    <section className="py-20 bg-gradient-to-b from-white to-primary-100/30">
-      <Container>
-        <SectionHeading title="Subscription Packages" subtitle="Choose the perfect plan to accelerate your AI journey" />
-        <div className="text-center py-16 text-gray-600">No subscription packages found.</div>
-      </Container>
-    </section>
-  );
+  const cardHoverVariants = {
+    hover: {
+      y: -10,
+      scale: 1.03,
+      boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15)',
+      transition: {
+        duration: 0.3,
+        ease: 'easeOut',
+      },
+    },
+  };
+
+  if (loading)
+    return (
+      <section className="py-20 bg-[#f8fafc] relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(59,130,246,0.08)_1px,transparent_0)] bg-[size:40px_40px] opacity-40" />
+        </div>
+        <Container>
+          <SectionHeading
+            title="Subscription Packages"
+            subtitle="Loading subscription packages…"
+          />
+          <div className="text-center py-16 text-[#1e40af]/80">Loading…</div>
+        </Container>
+      </section>
+    );
+
+  if (error)
+    return (
+      <section className="py-20 bg-[#f8fafc] relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(59,130,246,0.08)_1px,transparent_0)] bg-[size:40px_40px] opacity-40" />
+        </div>
+        <Container>
+          <SectionHeading
+            title="Subscription Packages"
+            subtitle="Unable to load subscription packages"
+          />
+          <div className="text-center py-16 text-red-500">Something went wrong. Please try again later.</div>
+        </Container>
+      </section>
+    );
+
+  if (!packages.length)
+    return (
+      <section className="py-20 bg-[#f8fafc] relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(59,130,246,0.08)_1px,transparent_0)] bg-[size:40px_40px] opacity-40" />
+        </div>
+        <Container>
+          <SectionHeading
+            title="Subscription Packages"
+            subtitle="Choose the perfect plan to accelerate your AI journey"
+          />
+          <div className="text-center py-16 text-[#1e40af]/80">No subscription packages found.</div>
+        </Container>
+      </section>
+    );
 
   return (
-    <section id="pricing" className="py-20 bg-gradient-to-b from-white to-primary-100/30">
-      <Container>
-        <SectionHeading title="Subscription Packages" subtitle="Choose the perfect plan to accelerate your AI journey" />
+    <section id="pricing" className="py-20 bg-[#f8fafc] relative overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(59,130,246,0.08)_1px,transparent_0)] bg-[size:40px_40px] opacity-40" />
+      </div>
+      <motion.div
+        animate={{ scale: [1, 1.1, 1] }}
+        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute top-20 left-10 w-20 h-20 bg-[#93c5fd]/30 rounded-full blur-xl"
+      />
+      <motion.div
+        animate={{ scale: [1, 0.8, 1] }}
+        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute bottom-20 right-10 w-32 h-32 bg-[#3b82f6]/30 rounded-full blur-xl"
+      />
+      <Container className="relative z-10">
+        <SectionHeading
+          title="Subscription Packages"
+          subtitle="Choose the perfect plan to accelerate your AI journey"
+        />
         {paymentError && (
-          <div className="text-center text-red-500 mb-4">{paymentError}</div>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center text-red-500 mb-4 font-medium"
+          >
+            {paymentError}
+          </motion.div>
         )}
         <motion.div
           ref={ref}
@@ -163,35 +229,58 @@ const SubscriptionPricing: React.FC = () => {
               <motion.div
                 key={pkg.id}
                 variants={itemVariants}
-                className={`relative bg-white rounded-2xl shadow-lg p-8 text-center border-2 flex flex-col
-                  ${popular ? "border-blue-700" : "border-gray-200"}
-                `}
+                whileHover="hover"
+                className="relative bg-white/90 backdrop-blur-md rounded-3xl shadow-lg p-8 text-center border-2 flex flex-col perspective-1000 transform-gpu"
+                style={{ transformStyle: 'preserve-3d' }}
               >
                 {popular && (
-                  <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-700 text-white px-4 py-1 rounded-full text-xs font-semibold shadow">
+                  <motion.span
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: 0.2 }}
+                    className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#3b82f6] text-white px-4 py-1 rounded-full text-xs font-semibold shadow-md"
+                  >
                     Most Popular
-                  </span>
+                  </motion.span>
                 )}
                 <div className="flex items-center justify-center gap-2 mb-2">
-                  <span className={`inline-block w-6 h-6 rounded-full ${popular ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-400'} flex items-center justify-center`}>
+                  <motion.span
+                    className={`inline-block w-6 h-6 rounded-full ${popular ? 'bg-[#93c5fd]/20 text-[#3b82f6]' : 'bg-[#93c5fd]/10 text-[#1e40af]/80'} flex items-center justify-center animate-pulse-slow`}
+                    whileHover={{ scale: 1.2 }}
+                    transition={{ duration: 0.2 }}
+                  >
                     <Check size={18} />
-                  </span>
-                  <span className="text-lg font-semibold">{pkg.name}</span>
+                  </motion.span>
+                  <span className="text-lg font-semibold text-[#1e40af]">{pkg.name}</span>
                 </div>
-                <div className="text-gray-500 mb-3">{pkg.description}</div>
-                <div className="text-3xl font-bold mb-1 text-blue-700">{priceText}
-                  <span className="text-lg text-gray-600 font-medium ml-1">/ {durationText}</span>
+                <div className="text-[#1e40af]/80 mb-3">{pkg.description}</div>
+                <div className="text-3xl font-bold mb-1 text-[#1e40af]">
+                  {priceText}
+                  <span className="text-lg text-[#1e40af]/80 font-medium ml-1">/ {durationText}</span>
                 </div>
                 <div className="flex-grow" />
-                <div className="mt-4">
+                <motion.div
+                  className="mt-4"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   <button
                     onClick={() => handleBuy(pkg)}
                     disabled={paying === pkg.id}
-                    className="bg-blue-700 text-white py-3 px-8 rounded-xl text-lg font-semibold shadow hover:bg-blue-800 transition disabled:opacity-70"
+                    className="w-full bg-[#3b82f6] text-white py-3 px-8 rounded-xl text-lg font-semibold shadow-md hover:bg-[#1e40af] transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
                   >
                     {paying === pkg.id ? 'Processing...' : `Buy for ₹${pkg.price}`}
                   </button>
-                </div>
+                </motion.div>
+                <motion.div
+                  className="absolute inset-0 pointer-events-none"
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 0.15 }}
+                  transition={{ duration: 0.3 }}
+                  style={{
+                    background: 'radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.2), transparent 70%)',
+                  }}
+                />
               </motion.div>
             );
           })}
@@ -202,8 +291,15 @@ const SubscriptionPricing: React.FC = () => {
           transition={{ duration: 0.5, delay: 0.6 }}
           className="mt-16 text-center"
         >
-          <p className="text-gray-600 mb-4">Need a custom solution? We've got you covered.</p>
-          <a href="#contact" className="btn btn-primary inline-flex items-center gap-2">Contact Us <Check size={16} /></a>
+          <p className="text-[#1e40af]/80 mb-4">Need a custom solution? We've got you covered.</p>
+          <motion.a
+            href="#contact"
+            className="inline-flex items-center gap-2 bg-[#3b82f6] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1e40af] transition-all duration-300 shadow-md"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Contact Us <Check size={16} />
+          </motion.a>
         </motion.div>
       </Container>
     </section>
