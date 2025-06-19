@@ -360,7 +360,7 @@ const Contact = () => {
                     <motion.button
                       type="submit"
                       disabled={isSubmitting}
-                      className={`w-full flex items-center justify-center gap-2 px-6 py-3 bg-[#3b82f6] text-white font-semibold rounded-lg hover:bg-[#1e40af] transition-all duration-300 ${
+                      className={`w-full flex items-center justify-center gap-2 px-6 py-3 bg-[#3b82f6] text-white hover:text-black font-semibold rounded-lg hover:bg-[#1e40af] transition-all duration-300 ${
                         isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
                       }`}
                       whileHover={{ scale: 1.05 }}
