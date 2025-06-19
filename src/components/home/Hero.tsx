@@ -77,7 +77,7 @@ const Hero = () => {
     <section 
       ref={heroRef}
       id="home" 
-      className="min-h-screen flex items-center relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40"
+      className="min-h-screen flex items-center relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 pt-20 "
       style={{
         perspective: '1500px',
         transformStyle: 'preserve-3d'
