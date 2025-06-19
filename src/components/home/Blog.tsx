@@ -1,16 +1,7 @@
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
-import Slider from "react-slick";
+import { useEffect, useState, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { X, ChevronLeft, ChevronRight, Eye, Calendar, User, Sparkles } from "lucide-react";
 import type { Blog } from "../../types/blog";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
-const PRIMARY = "#1e40af";
-const SECONDARY = "#3b82f6";
-const LIGHT_ACCENT = "#93c5fd";
-const BG_COLOR = "#f8fafc";
-const FONT_FAMILY = "'Inter', 'Roboto', sans-serif";
 
 const sampleBlogs: Blog[] = [
   {
@@ -71,56 +62,23 @@ const sampleBlogs: Blog[] = [
   },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15, delayChildren: 0.2, ease: [0.22, 1, 0.36, 1] },
-  },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 20, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
-  },
-  hover: {
-    y: -10,
-    scale: 1.05,
-    boxShadow: "0 20px 40px rgba(0, 0, 0, 0.15)",
-    rotateX: 5,
-    transition: { duration: 0.3, ease: "easeOut" },
-  },
-};
-
-const dialogVariants = {
-  hidden: { opacity: 0, scale: 0.95, y: 20 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    y: 0,
-    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] },
-  },
-  exit: { opacity: 0, scale: 0.95, y: 20, transition: { duration: 0.3 } },
-};
-
-const textRevealVariants = {
-  hidden: { opacity: 0, y: 10 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] },
-  }),
-};
-
 export default function BlogDisplayPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const mouseRef = useRef({ x: 0, y: 0 });
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const backgroundY = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const headerY = useTransform(scrollYProgress, [0, 0.3], [0, -50]);
 
   useEffect(() => {
     try {
@@ -133,6 +91,36 @@ export default function BlogDisplayPage() {
     }
   }, []);
 
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseRef.current = {
+        x: (e.clientX / window.innerWidth) * 2 - 1,
+        y: (e.clientY / window.innerHeight) * 2 - 1,
+      };
+    };
+
+    const animateFloatingElements = () => {
+      const floatingElements = document.querySelectorAll('.floating-element');
+      floatingElements.forEach((element, index) => {
+        const htmlElement = element as HTMLElement;
+        const intensity = (index + 1) * 0.3;
+        const offsetX = mouseRef.current.x * intensity * 15;
+        const offsetY = mouseRef.current.y * intensity * 15;
+        
+        htmlElement.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0) rotate(${mouseRef.current.x * 2}deg)`;
+      });
+
+      requestAnimationFrame(animateFloatingElements);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    animateFloatingElements();
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
   const openDialog = (blog: Blog) => {
     setSelectedBlog(blog);
     document.body.style.overflow = "hidden";
@@ -143,85 +131,23 @@ export default function BlogDisplayPage() {
     document.body.style.overflow = "auto";
   };
 
-  const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    centerMode: true,
-    centerPadding: "0px",
-    focusOnSelect: true,
-    autoplay: true,
-    autoplaySpeed: 5000,
-    pauseOnHover: true,
-    arrows: true,
-    nextArrow: (
-      <div className="slick-arrow slick-next">
-       
-          <ChevronRight size={39} className="text-[#3b82f6]" />
-       
-      </div>
-    ),
-    prevArrow: (
-      <div className="slick-arrow slick-prev">
-       
-          <ChevronLeft size={39} className="text-[#3b82f6]" />
-      
-      </div>
-    ),
-    responsive: [
-      {
-        breakpoint: 1280,
-        settings: {
-          slidesToShow: 2,
-          centerMode: false,
-          arrows: true,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-          centerMode: false,
-          arrows: false,
-        },
-      },
-    ],
-    beforeChange: (current: number, next: number) => {
-      // Add animation to the center slide
-      const slides = document.querySelectorAll('.slick-slide');
-      slides.forEach((slide, index) => {
-        if (index === next) {
-          slide.classList.add('center-slide');
-        } else {
-          slide.classList.remove('center-slide');
-        }
-      });
-    },
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % blogs.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + blogs.length) % blogs.length);
   };
 
   if (loading) {
     return (
-      <section
-        id="blogs"
-        className="py-20"
-        style={{
-          background: BG_COLOR,
-          minHeight: "100vh",
-          fontFamily: FONT_FAMILY,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: PRIMARY,
-          fontSize: 18,
-        }}
-      >
+      <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40">
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="flex items-center gap-4 text-blue-600 text-xl font-medium"
         >
+          <div className="w-8 h-8 border-4 border-blue-600/30 border-t-blue-600 rounded-full animate-spin"></div>
           Loading blogs…
         </motion.div>
       </section>
@@ -230,24 +156,11 @@ export default function BlogDisplayPage() {
 
   if (error) {
     return (
-      <section
-        id="blogs"
-        className="py-20"
-        style={{
-          background: BG_COLOR,
-          minHeight: "100vh",
-          fontFamily: FONT_FAMILY,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "#d32f2f",
-          fontSize: 18,
-        }}
-      >
+      <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          className="text-red-600 text-xl font-medium"
         >
           {error}
         </motion.div>
@@ -257,353 +170,366 @@ export default function BlogDisplayPage() {
 
   return (
     <section
+      ref={containerRef}
       id="blogs"
-      className="py-20 relative overflow-hidden"
-      style={{ background: BG_COLOR, fontFamily: FONT_FAMILY }}
+      className="min-h-screen py-20 relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40"
+      style={{ perspective: '1500px' }}
     >
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(59,130,246,0.08)_1px,transparent_0)] bg-[size:40px_40px] opacity-40" />
-      </div>
-      <motion.div
-        animate={{ scale: [1, 1.1, 1] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-20 left-10 w-20 h-20 bg-[rgba(147,197,253,0.3)] rounded-full blur-xl"
-      />
-      <motion.div
-        animate={{ scale: [1, 0.8, 1] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-20 right-10 w-32 h-32 bg-[rgba(59,130,246,0.3)] rounded-full blur-xl"
-      />
-      <div
-        style={{
-          maxWidth: 1600,
-          margin: "0 auto",
-          padding: "0 60px",
-          position: "relative",
-          zIndex: 10,
-        }}
+      {/* Enhanced 3D Background */}
+      <motion.div 
+        className="absolute inset-0 overflow-hidden pointer-events-none"
+        style={{ y: backgroundY }}
       >
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          style={{
-            color: PRIMARY,
-            fontFamily: FONT_FAMILY,
-            fontWeight: 800,
-            fontSize: 42,
-            marginBottom: 24,
-            textAlign: "center",
-            letterSpacing: "-1px",
-            padding: "80px 0 40px 0",
-          }}
-        >
-          Blog Articles
-        </motion.h2>
+        {/* Dynamic gradient shapes */}
+        <div className="floating-element absolute top-1/4 left-1/6 w-96 h-96 rounded-full bg-gradient-to-br from-blue-200/40 to-blue-300/30 blur-3xl opacity-70"></div>
+        <div className="floating-element absolute bottom-1/3 right-1/5 w-[500px] h-[500px] rounded-full bg-gradient-to-tl from-indigo-200/35 to-blue-200/40 blur-3xl opacity-60"></div>
+        <div className="floating-element absolute top-1/2 left-1/2 w-80 h-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-blue-100/30 to-indigo-100/35 blur-3xl opacity-50"></div>
+        
+        {/* Floating particles */}
+        {Array.from({ length: 15 }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="floating-element absolute w-2 h-2 bg-blue-400/40 rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -20, 0],
+              opacity: [0.4, 0.8, 0.4],
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          />
+        ))}
 
-        {blogs.length === 0 && (
+        {/* Grid pattern */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(59,130,246,0.08)_1px,transparent_0)] bg-[size:40px_40px] opacity-40" />
+      </motion.div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Enhanced Header */}
+        <motion.div
+          style={{ y: headerY }}
+          className="text-center mb-16"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="relative inline-block"
+          >
+            <h2 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-4 relative z-10">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
+                Blog Articles
+              </span>
+            </h2>
+            <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 blur-xl rounded-full"></div>
+          </motion.div>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-xl text-gray-600 max-w-2xl mx-auto"
+          >
+            Discover insights, trends, and innovations in AI and automation
+          </motion.p>
+        </motion.div>
+
+        {blogs.length === 0 ? (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            style={{ color: `${PRIMARY}/80`, fontSize: 18, textAlign: "center", padding: "40px 0" }}
+            className="text-center text-gray-600 text-xl py-20"
           >
             No blogs published yet.
           </motion.div>
-        )}
-
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="relative"
-        >
-          <style>
-            {`
-              .slick-slide {
-                transition: all 0.4s ease;
-                padding: 20px 10px;
-                opacity: 0.7;
-                transform: scale(0.9);
-              }
-              
-              .slick-slide.slick-center {
-                opacity: 1;
-                transform: scale(1.05);
-              }
-              
-              .slick-slide:not(.slick-center) {
-                filter: blur(1px);
-              }
-              
-              .slick-list {
-                overflow: visible;
-                padding: 40px 0;
-              }
-              
-              .slick-track {
-                display: flex;
-                align-items: center;
-              }
-              
-              .slick-arrow {
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                z-index: 10;
-                cursor: pointer;
-              }
-              
-              .slick-prev {
-                left: -40px;
-              }
-              
-              .slick-next {
-                right: -40px;
-              }
-              
-              .slick-dots {
-                bottom: -30px;
-              }
-              
-              .slick-dots li button:before {
-                color: ${SECONDARY};
-                opacity: 0.5;
-                font-size: 10px;
-              }
-              
-              .slick-dots li.slick-active button:before {
-                color: ${SECONDARY};
-                opacity: 1;
-              }
-            `}
-          </style>
-          
-          <Slider {...sliderSettings}>
-            {blogs.map((blog) => (
-              <div key={blog.id}>
-                <motion.div
-                  variants={cardVariants}
-                  initial="hidden"
-                  animate="visible"
-                  whileHover="hover"
-                  className="relative bg-white/95 backdrop-blur-md rounded-2xl shadow-xl cursor-pointer perspective-1000 transform-gpu border border-[rgba(147,197,253,0.3)]"
-                  style={{
-                    boxShadow: "0 8px 24px rgba(0,0,0,0.1)",
-                    minHeight: 420,
-                    overflow: "hidden",
-                    transformStyle: "preserve-3d",
-                  }}
-                  onClick={() => openDialog(blog)}
-                  tabIndex={0}
-                  aria-label={`Open blog: ${blog.title}`}
-                  role="button"
-                >
-                  {blog.media_cid && (
+        ) : (
+          <div className="relative">
+            {/* Interactive Blog Carousel */}
+            <div className="relative overflow-hidden rounded-3xl">
+              <motion.div
+                className="flex transition-transform duration-700 ease-out"
+                style={{
+                  transform: `translateX(-${currentIndex * 100}%)`,
+                }}
+              >
+                {blogs.map((blog, index) => (
+                  <div key={blog.id} className="w-full flex-shrink-0 px-4">
                     <motion.div
-                      className="relative overflow-hidden"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.3 }}
+                      className="relative group cursor-pointer transform-gpu"
+                      style={{ perspective: '1000px' }}
+                      onHoverStart={() => setHoveredCard(blog.id)}
+                      onHoverEnd={() => setHoveredCard(null)}
+                      onClick={() => openDialog(blog)}
+                      whileHover={{ 
+                        scale: 1.02,
+                        rotateX: 2,
+                        rotateY: hoveredCard === blog.id ? 5 : 0,
+                      }}
+                      transition={{ duration: 0.4, ease: "easeOut" }}
                     >
-                      <img
-                        src={blog.media_cid}
-                        alt={blog.title}
-                        style={{
-                          width: "100%",
-                          height: 240,
-                          objectFit: "cover",
-                          borderTopLeftRadius: 16,
-                          borderTopRightRadius: 16,
-                        }}
-                        loading="lazy"
-                        onError={(e) => {
-                          e.currentTarget.src = "https://via.placeholder.com/1200x240";
-                        }}
-                      />
-                      <motion.div
-                        className="absolute inset-0"
-                        initial={{ opacity: 0 }}
-                        whileHover={{ opacity: 0.2 }}
-                        transition={{ duration: 0.3 }}
-                        style={{
-                          background: "radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.3), transparent 70%)",
-                        }}
-                      />
+                      <div className="bg-white/80 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl border border-white/50 relative">
+                        {/* Image Section */}
+                        <div className="relative h-80 overflow-hidden">
+                          <motion.img
+                            src={blog.media_cid}
+                            alt={blog.title}
+                            className="w-full h-full object-cover"
+                            whileHover={{ scale: 1.1 }}
+                            transition={{ duration: 0.6 }}
+                            onError={(e) => {
+                              e.currentTarget.src = "https://via.placeholder.com/1200x400";
+                            }}
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                          
+                          {/* Floating stats */}
+                          <motion.div
+                            className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 flex items-center gap-2"
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.3 }}
+                          >
+                            <Eye size={16} className="text-blue-600" />
+                            <span className="text-sm font-medium text-gray-700">{blog.views_count}</span>
+                          </motion.div>
+
+                          {/* Interactive sparkles */}
+                          {hoveredCard === blog.id && (
+                            <>
+                              {Array.from({ length: 6 }).map((_, i) => (
+                                <motion.div
+                                  key={i}
+                                  className="absolute"
+                                  style={{
+                                    left: `${20 + Math.random() * 60}%`,
+                                    top: `${20 + Math.random() * 60}%`,
+                                  }}
+                                  initial={{ opacity: 0, scale: 0 }}
+                                  animate={{ 
+                                    opacity: [0, 1, 0],
+                                    scale: [0, 1, 0],
+                                    rotate: [0, 180, 360]
+                                  }}
+                                  transition={{
+                                    duration: 1.5,
+                                    delay: i * 0.1,
+                                    repeat: Infinity,
+                                    repeatDelay: 2
+                                  }}
+                                >
+                                  <Sparkles size={16} className="text-blue-400" />
+                                </motion.div>
+                              ))}
+                            </>
+                          )}
+                        </div>
+
+                        {/* Content Section */}
+                        <div className="p-8">
+                          <motion.h3
+                            className="text-2xl font-bold text-gray-900 mb-4 line-clamp-2"
+                            layoutId={`title-${blog.id}`}
+                          >
+                            {blog.title}
+                          </motion.h3>
+                          
+                          <p className="text-gray-600 mb-6 line-clamp-3 leading-relaxed">
+                            {blog.content?.slice(0, 150)}
+                            {blog.content && blog.content.length > 150 && "..."}
+                          </p>
+
+                          {/* Author and Date */}
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
+                                <User size={16} className="text-white" />
+                              </div>
+                              <div>
+                                <p className="font-medium text-gray-900">{blog.author_id}</p>
+                                <div className="flex items-center gap-2 text-sm text-gray-500">
+                                  <Calendar size={14} />
+                                  <span>
+                                    {blog.published_at
+                                      ? new Date(blog.published_at).toLocaleDateString("en-US", {
+                                          month: "short",
+                                          day: "numeric",
+                                          year: "numeric",
+                                        })
+                                      : ""}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            <motion.div
+                              className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white opacity-0 group-hover:opacity-100"
+                              whileHover={{ scale: 1.1, rotate: 15 }}
+                              transition={{ duration: 0.2 }}
+                            >
+                              →
+                            </motion.div>
+                          </div>
+                        </div>
+
+                        {/* Gradient border */}
+                        <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-500/20 via-transparent to-indigo-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                      </div>
                     </motion.div>
-                  )}
-                  <div
-                    style={{
-                      flex: 1,
-                      padding: 24,
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 10,
-                    }}
-                  >
-                    <h3
-                      style={{
-                        color: PRIMARY,
-                        fontFamily: FONT_FAMILY,
-                        fontWeight: 700,
-                        fontSize: 24,
-                        margin: 0,
-                        lineHeight: "1.3",
-                      }}
-                    >
-                      {blog.title}
-                    </h3>
-                    <div
-                      style={{
-                        color: `${PRIMARY}/70`,
-                        fontWeight: 400,
-                        fontSize: 16,
-                        lineHeight: "1.6",
-                        flex: 1,
-                      }}
-                    >
-                      {blog.content?.slice(0, 120) ?? ""}
-                      {blog.content && blog.content.length > 120 && "..."}
-                    </div>
-                    <div
-                      style={{
-                        marginTop: "auto",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 10,
-                      }}
-                    >
-                      <span style={{ color: SECONDARY, fontWeight: 600, fontSize: 16 }}>
-                        {blog.author_id}
-                      </span>
-                      <span style={{ color: `${PRIMARY}/50` }}>•</span>
-                      <span style={{ color: `${PRIMARY}/50`, fontSize: 14 }}>
-                        {blog.published_at
-                          ? new Date(blog.published_at).toLocaleDateString("en-US", {
-                              month: "short",
-                              day: "numeric",
-                              year: "numeric",
-                            })
-                          : ""}
-                      </span>
-                    </div>
                   </div>
-                  <div
-                    style={{
-                      height: 6,
-                      background: `linear-gradient(to right, ${LIGHT_ACCENT}, ${SECONDARY})`,
-                      borderBottomLeftRadius: 16,
-                      borderBottomRightRadius: 16,
-                      width: "100%",
-                    }}
+                ))}
+              </motion.div>
+            </div>
+
+            {/* Navigation Controls */}
+            <div className="flex items-center justify-center mt-12 gap-8">
+              <motion.button
+                onClick={prevSlide}
+                className="w-14 h-14 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-white/50 text-blue-600 hover:bg-blue-50 transition-all duration-300"
+                whileHover={{ scale: 1.1, x: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <ChevronLeft size={24} />
+              </motion.button>
+
+              {/* Dots Indicator */}
+              <div className="flex gap-3">
+                {blogs.map((_, index) => (
+                  <motion.button
+                    key={index}
+                    onClick={() => setCurrentIndex(index)}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      index === currentIndex 
+                        ? 'bg-blue-600 w-8' 
+                        : 'bg-blue-300 hover:bg-blue-400'
+                    }`}
+                    whileHover={{ scale: 1.2 }}
+                    whileTap={{ scale: 0.9 }}
                   />
-                </motion.div>
+                ))}
               </div>
-            ))}
-          </Slider>
-        </motion.div>
+
+              <motion.button
+                onClick={nextSlide}
+                className="w-14 h-14 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-white/50 text-blue-600 hover:bg-blue-50 transition-all duration-300"
+                whileHover={{ scale: 1.1, x: 2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <ChevronRight size={24} />
+              </motion.button>
+            </div>
+          </div>
+        )}
       </div>
 
+      {/* Enhanced Modal */}
       <AnimatePresence>
         {selectedBlog && (
           <motion.div
-            className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={closeDialog}
           >
             <motion.div
-              variants={dialogVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              className="relative bg-white/95 backdrop-blur-md rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-[rgba(147,197,253,0.5)]"
+              className="relative bg-white/95 backdrop-blur-xl rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-white/50"
+              initial={{ opacity: 0, scale: 0.9, y: 50 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 50 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onClick={(e) => e.stopPropagation()}
             >
-              <button
+              <motion.button
                 onClick={closeDialog}
-                className="absolute top-4 right-4 p-2 bg-[rgba(147,197,253,0.2)] rounded-full hover:bg-[rgba(59,130,246,0.3)] transition-all duration-300"
-                aria-label="Close blog dialog"
+                className="absolute top-6 right-6 w-12 h-12 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-white/50 text-gray-600 hover:text-gray-900 hover:bg-white transition-all duration-300 z-10"
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <X size={24} className="text-[rgba(31,82,140)]" />
-              </button>
+                <X size={20} />
+              </motion.button>
+
               <div className="p-8">
                 {selectedBlog.media_cid && (
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="mb-6"
+                    className="mb-8 relative overflow-hidden rounded-2xl"
+                    layoutId={`image-${selectedBlog.id}`}
                   >
                     <img
                       src={selectedBlog.media_cid}
                       alt={selectedBlog.title}
-                      className="w-full h-64 object-cover rounded-2xl"
+                      className="w-full h-80 object-cover"
                       onError={(e) => {
                         e.currentTarget.src = "https://via.placeholder.com/1200x400";
                       }}
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                   </motion.div>
                 )}
+
                 <motion.h2
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  style={{
-                    color: PRIMARY,
-                    fontFamily: FONT_FAMILY,
-                    fontWeight: 700,
-                    fontSize: 28,
-                    marginBottom: 16,
-                  }}
+                  className="text-4xl font-bold text-gray-900 mb-6"
+                  layoutId={`title-${selectedBlog.id}`}
                 >
                   {selectedBlog.title}
                 </motion.h2>
+
                 <motion.div
-                  style={{
-                    color: `${PRIMARY}/80`,
-                    fontSize: 16,
-                    lineHeight: "1.6",
-                    marginBottom: 24,
-                  }}
+                  className="flex items-center gap-6 mb-8 pb-6 border-b border-gray-200"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center">
+                      <User size={18} className="text-white" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-gray-900">{selectedBlog.author_id}</p>
+                      <p className="text-sm text-gray-500">Author</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <Calendar size={16} />
+                    <span>
+                      {selectedBlog.published_at
+                        ? new Date(selectedBlog.published_at).toLocaleDateString("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                          })
+                        : ""}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <Eye size={16} />
+                    <span>{selectedBlog.views_count} views</span>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
                 >
                   {selectedBlog.content?.split(" ").map((word, i) => (
                     <motion.span
                       key={i}
-                      custom={i}
-                      variants={textRevealVariants}
-                      initial="hidden"
-                      animate="visible"
-                      className="inline-block mx-1"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.4 + (i * 0.01) }}
+                      className="inline-block mr-1"
                     >
                       {word}
                     </motion.span>
                   ))}
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 8,
-                    color: SECONDARY,
-                    fontWeight: 600,
-                    fontSize: 15,
-                  }}
-                >
-                  <span>{selectedBlog.author_id}</span>
-                  <span style={{ color: `${PRIMARY}/60` }}>•</span>
-                  <span style={{ color: `${PRIMARY}/60`, fontSize: 14 }}>
-                    {selectedBlog.published_at
-                      ? new Date(selectedBlog.published_at).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })
-                      : ""}
-                  </span>
                 </motion.div>
               </div>
             </motion.div>
