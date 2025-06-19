@@ -6,12 +6,29 @@ const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const mouseRef = useRef({ x: 0, y: 0 });
   const [activeOrb, setActiveOrb] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    // Check if mobile device
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+
     const handleMouseMove = (e: MouseEvent) => {
       mouseRef.current = {
         x: (e.clientX / window.innerWidth) * 2 - 1,
         y: (e.clientY / window.innerHeight) * 2 - 1,
+      };
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      mouseRef.current = {
+        x: (touch.clientX / window.innerWidth) * 2 - 1,
+        y: (touch.clientY / window.innerHeight) * 2 - 1,
       };
     };
 
@@ -22,9 +39,9 @@ const Hero = () => {
       
       orbs.forEach((orb, index) => {
         const element = orb as HTMLElement;
-        const intensity = (index + 1) * 0.8;
-        const offsetX = mouseRef.current.x * intensity * 8;
-        const offsetY = mouseRef.current.y * intensity * 8;
+        const intensity = (index + 1) * (isMobile ? 0.5 : 0.8);
+        const offsetX = mouseRef.current.x * intensity * (isMobile ? 4 : 8);
+        const offsetY = mouseRef.current.y * intensity * (isMobile ? 4 : 8);
         
         element.style.transform = `translate3d(${offsetX}px, ${offsetY}px, ${index * 15}px) rotateX(${mouseRef.current.y * 3}deg) rotateY(${mouseRef.current.x * 3}deg)`;
       });
@@ -32,8 +49,8 @@ const Hero = () => {
       shapes.forEach((shape, index) => {
         const element = shape as HTMLElement;
         const intensity = (index + 1) * 0.4;
-        const offsetX = mouseRef.current.x * intensity * 12;
-        const offsetY = mouseRef.current.y * intensity * 12;
+        const offsetX = mouseRef.current.x * intensity * (isMobile ? 6 : 12);
+        const offsetY = mouseRef.current.y * intensity * (isMobile ? 6 : 12);
         
         element.style.transform = `translate3d(${offsetX}px, ${offsetY}px, ${index * 25}px) rotateZ(${mouseRef.current.x * 8}deg)`;
       });
@@ -41,8 +58,8 @@ const Hero = () => {
       neurons.forEach((neuron, index) => {
         const element = neuron as HTMLElement;
         const intensity = 0.5;
-        const offsetX = mouseRef.current.x * intensity * 5;
-        const offsetY = mouseRef.current.y * intensity * 5;
+        const offsetX = mouseRef.current.x * intensity * (isMobile ? 3 : 5);
+        const offsetY = mouseRef.current.y * intensity * (isMobile ? 3 : 5);
         
         element.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0)`;
       });
@@ -51,6 +68,7 @@ const Hero = () => {
     };
 
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleTouchMove);
     animateElements();
 
     // Auto-cycle active orb
@@ -60,9 +78,11 @@ const Hero = () => {
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('resize', checkIfMobile);
       clearInterval(interval);
     };
-  }, []);
+  }, [isMobile]);
 
   const orbData = [
     { icon: Brain, color: 'from-blue-500 to-blue-600', label: 'AI Intelligence' },
@@ -77,7 +97,7 @@ const Hero = () => {
     <section 
       ref={heroRef}
       id="home" 
-      className="min-h-screen flex items-center relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 pt-20 "
+      className="min-h-screen flex items-center relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 pt-20"
       style={{
         perspective: '1500px',
         transformStyle: 'preserve-3d'
@@ -123,13 +143,13 @@ const Hero = () => {
       </div>
 
       <Container className="relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
           {/* Enhanced Text Content */}
-          <div className="text-center lg:text-left space-y-8 transform-gpu">
+          <div className="text-center lg:text-left space-y-6 lg:space-y-8 transform-gpu px-4 lg:px-0">
             <div className="relative">
-              <h1 className="font-bold mb-10 relative z-10">
+              <h1 className="font-bold mb-8 lg:mb-10 relative z-10">
                 <span 
-                  className="block text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 text-gray-900 transform-gpu transition-all duration-1000 hover:scale-105"
+                  className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-4 lg:mb-6 text-gray-900 transform-gpu transition-all duration-1000 hover:scale-105"
                   style={{
                     textShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
                     transform: 'translateZ(20px)'
@@ -138,7 +158,7 @@ const Hero = () => {
                   Small Teams.
                 </span>
                 <span 
-                  className="block text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 text-gray-800 transform-gpu transition-all duration-1000 hover:scale-105"
+                  className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-4 lg:mb-6 text-gray-800 transform-gpu transition-all duration-1000 hover:scale-105"
                   style={{
                     textShadow: '0 6px 25px rgba(59, 130, 246, 0.15)',
                     transform: 'translateZ(15px)'
@@ -147,7 +167,7 @@ const Hero = () => {
                   Big Impact.
                 </span>
                 <span 
-                  className="block text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 transform-gpu transition-all duration-1000 hover:scale-105"
+                  className="block text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 transform-gpu transition-all duration-1000 hover:scale-105"
                   style={{
                     filter: 'drop-shadow(0 8px 30px rgba(59, 130, 246, 0.3))',
                     transform: 'translateZ(25px)'
@@ -159,7 +179,7 @@ const Hero = () => {
             </div>
             
             <p 
-              className="text-xl text-gray-600 mb-12 max-w-lg mx-auto lg:mx-0 leading-relaxed transform-gpu"
+              className="text-lg sm:text-xl text-gray-600 mb-8 lg:mb-12 max-w-lg mx-auto lg:mx-0 leading-relaxed transform-gpu"
               style={{
                 transform: 'translateZ(10px)',
                 textShadow: '0 2px 10px rgba(0, 0, 0, 0.05)'
@@ -168,10 +188,10 @@ const Hero = () => {
               We build nimble, intelligent AI solutions designed for clarity, speed, and real-world results.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start transform-gpu">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center lg:justify-start transform-gpu">
               <a 
                 href="#services" 
-                className="group px-8 py-4 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white rounded-2xl font-medium flex items-center justify-center gap-3 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/25 transform-gpu hover:scale-105 hover:-translate-y-1 relative overflow-hidden"
+                className="group px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white rounded-2xl font-medium flex items-center justify-center gap-3 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/25 transform-gpu hover:scale-105 hover:-translate-y-1 relative overflow-hidden"
                 style={{
                   transform: 'translateZ(15px)',
                   boxShadow: '0 10px 40px rgba(59, 130, 246, 0.2)'
@@ -183,7 +203,7 @@ const Hero = () => {
               </a>
               <a 
                 href="#contact" 
-                className="group px-8 py-4 border-2 border-blue-500 text-blue-600 rounded-2xl font-medium transition-all duration-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:shadow-lg transform-gpu hover:scale-105 hover:-translate-y-1 relative overflow-hidden backdrop-blur-sm"
+                className="group px-6 sm:px-8 py-3 sm:py-4 border-2 border-blue-500 text-blue-600 rounded-2xl font-medium transition-all duration-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:shadow-lg transform-gpu hover:scale-105 hover:-translate-y-1 relative overflow-hidden backdrop-blur-sm"
                 style={{
                   transform: 'translateZ(12px)',
                   boxShadow: '0 5px 20px rgba(59, 130, 246, 0.1)'
@@ -196,22 +216,28 @@ const Hero = () => {
           </div>
           
           {/* Creative Interactive Visualization */}
-          <div className="relative transform-gpu" style={{ perspective: '1200px' }}>
+          <div 
+            className="relative transform-gpu w-full lg:w-auto px-4"
+            style={{ 
+              perspective: '1200px',
+              height: isMobile ? 'clamp(300px, 80vw, 400px)' : 'auto'
+            }}
+          >
             {/* Central AI Brain Visualization */}
             <div 
-              className="relative z-20 w-80 h-80 mx-auto"
-             style={{ 
-    perspective: '1200px',
-    height: 'clamp(300px, 80vw, 400px)' // Add responsive height
-  }}
+              className="relative z-20 w-[clamp(200px,70vw,320px)] h-[clamp(200px,70vw,320px)] mx-auto"
+              style={{ 
+                transform: 'translateZ(50px)',
+                marginTop: isMobile ? '1rem' : '0'
+              }}
             >
               {/* Main central orb */}
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500/20 via-blue-600/30 to-indigo-600/20 backdrop-blur-xl border border-white/20 flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 to-indigo-500/10 animate-pulse"></div>
                 <div className="relative z-10">
-                  <Cpu className="h-24 w-24 text-blue-600 animate-pulse drop-shadow-2xl" strokeWidth={1} />
+                  <Cpu className="h-16 sm:h-20 lg:h-24 w-16 sm:w-20 lg:w-24 text-blue-600 animate-pulse drop-shadow-2xl" strokeWidth={1} />
                   <div className="absolute inset-0 animate-ping opacity-30">
-                    <Cpu className="h-24 w-24 text-blue-400" strokeWidth={0.5} />
+                    <Cpu className="h-16 sm:h-20 lg:h-24 w-16 sm:w-20 lg:w-24 text-blue-400" strokeWidth={0.5} />
                   </div>
                 </div>
                 
@@ -223,7 +249,7 @@ const Hero = () => {
               {/* Orbiting elements */}
               {orbData.map((orb, index) => {
                 const angle = (index * 60) * (Math.PI / 180);
-                const radius = 160;
+                const radius = isMobile ? 100 : 160;
                 const x = Math.cos(angle) * radius;
                 const y = Math.sin(angle) * radius;
                 const IconComponent = orb.icon;
@@ -231,7 +257,7 @@ const Hero = () => {
                 return (
                   <div
                     key={index}
-                    className={`floating-orb absolute w-16 h-16 rounded-full bg-gradient-to-br ${orb.color} flex items-center justify-center transition-all duration-500 cursor-pointer group ${
+                    className={`floating-orb absolute ${isMobile ? 'w-12 h-12' : 'w-16 h-16'} rounded-full bg-gradient-to-br ${orb.color} flex items-center justify-center transition-all duration-500 cursor-pointer group ${
                       activeOrb === index ? 'scale-125 shadow-2xl' : 'scale-100 hover:scale-110'
                     }`}
                     style={{
@@ -245,14 +271,15 @@ const Hero = () => {
                       animationDelay: `${index * -3.33}s`
                     }}
                     onMouseEnter={() => setActiveOrb(index)}
+                    onTouchStart={() => setActiveOrb(index)}
                   >
                     <IconComponent 
-                      className="h-6 w-6 text-white drop-shadow-lg" 
+                      className={`${isMobile ? 'h-4 w-4' : 'h-6 w-6'} text-white drop-shadow-lg`}
                       strokeWidth={1.5} 
                     />
                     
                     {/* Tooltip */}
-                    <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                    <div className={`absolute -bottom-12 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none ${isMobile ? 'hidden' : 'block'}`}>
                       <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-lg text-xs font-medium text-gray-800 whitespace-nowrap border border-white/50">
                         {orb.label}
                       </div>
@@ -267,7 +294,7 @@ const Hero = () => {
                   key={`line-${index}`}
                   className="absolute top-1/2 left-1/2 origin-left h-px bg-gradient-to-r from-blue-400/40 to-transparent"
                   style={{
-                    width: '160px',
+                    width: `${isMobile ? 100 : 160}px`,
                     transform: `translate(-50%, -50%) rotate(${index * 60}deg)`,
                     opacity: activeOrb === index ? 0.8 : 0.3,
                     transition: 'opacity 0.5s ease'
@@ -287,7 +314,7 @@ const Hero = () => {
                     top: '50%',
                     animation: `dataFlow 4s linear infinite`,
                     animationDelay: `${i * 0.7}s`,
-                    transform: `translate(-50%, -50%) rotate(${i * 60}deg) translateX(80px)`
+                    transform: `translate(-50%, -50%) rotate(${i * 60}deg) translateX(${isMobile ? 40 : 80}px)`
                   }}
                 ></div>
               ))}
@@ -313,29 +340,39 @@ const Hero = () => {
       <style>{`
         @keyframes orbit {
           from {
-            transform: translate(-50%, -50%) rotate(0deg) translateX(160px) rotate(0deg);
+            transform: translate(-50%, -50%) rotate(0deg) translateX(${isMobile ? 100 : 160}px) rotate(0deg);
           }
           to {
-            transform: translate(-50%, -50%) rotate(360deg) translateX(160px) rotate(-360deg);
+            transform: translate(-50%, -50%) rotate(360deg) translateX(${isMobile ? 100 : 160}px) rotate(-360deg);
           }
         }
         
         @keyframes dataFlow {
           0% {
             opacity: 0;
-            transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) translateX(40px) scale(0);
+            transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) translateX(${isMobile ? 20 : 40}px) scale(0);
           }
           20% {
             opacity: 1;
-            transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) translateX(60px) scale(1);
+            transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) translateX(${isMobile ? 30 : 60}px) scale(1);
           }
           80% {
             opacity: 1;
-            transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) translateX(140px) scale(1);
+            transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) translateX(${isMobile ? 70 : 140}px) scale(1);
           }
           100% {
             opacity: 0;
-            transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) translateX(160px) scale(0);
+            transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) translateX(${isMobile ? 80 : 160}px) scale(0);
+          }
+        }
+
+        @media (max-width: 768px) {
+          .bg-shape {
+            opacity: 0.3 !important;
+            filter: blur(2rem) !important;
+          }
+          .neuron-line {
+            display: none;
           }
         }
       `}</style>
