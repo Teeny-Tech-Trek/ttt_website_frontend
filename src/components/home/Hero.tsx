@@ -1,195 +1,342 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Zap, Cpu } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { ArrowRight, Zap, Cpu, Sparkles, Target, Brain, Code, Layers, Globe } from 'lucide-react';
 import Container from '../ui/Container';
 
 const Hero = () => {
-  const { scrollYProgress } = useScroll();
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0.9]);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const [activeOrb, setActiveOrb] = useState(0);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseRef.current = {
+        x: (e.clientX / window.innerWidth) * 2 - 1,
+        y: (e.clientY / window.innerHeight) * 2 - 1,
+      };
+    };
+
+    const animateElements = () => {
+      const orbs = document.querySelectorAll('.floating-orb');
+      const shapes = document.querySelectorAll('.bg-shape');
+      const neurons = document.querySelectorAll('.neuron-line');
+      
+      orbs.forEach((orb, index) => {
+        const element = orb as HTMLElement;
+        const intensity = (index + 1) * 0.8;
+        const offsetX = mouseRef.current.x * intensity * 8;
+        const offsetY = mouseRef.current.y * intensity * 8;
+        
+        element.style.transform = `translate3d(${offsetX}px, ${offsetY}px, ${index * 15}px) rotateX(${mouseRef.current.y * 3}deg) rotateY(${mouseRef.current.x * 3}deg)`;
+      });
+
+      shapes.forEach((shape, index) => {
+        const element = shape as HTMLElement;
+        const intensity = (index + 1) * 0.4;
+        const offsetX = mouseRef.current.x * intensity * 12;
+        const offsetY = mouseRef.current.y * intensity * 12;
+        
+        element.style.transform = `translate3d(${offsetX}px, ${offsetY}px, ${index * 25}px) rotateZ(${mouseRef.current.x * 8}deg)`;
+      });
+
+      neurons.forEach((neuron, index) => {
+        const element = neuron as HTMLElement;
+        const intensity = 0.5;
+        const offsetX = mouseRef.current.x * intensity * 5;
+        const offsetY = mouseRef.current.y * intensity * 5;
+        
+        element.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0)`;
+      });
+
+      requestAnimationFrame(animateElements);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    animateElements();
+
+    // Auto-cycle active orb
+    const interval = setInterval(() => {
+      setActiveOrb(prev => (prev + 1) % 6);
+    }, 2000);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      clearInterval(interval);
+    };
+  }, []);
+
+  const orbData = [
+    { icon: Brain, color: 'from-blue-500 to-blue-600', label: 'AI Intelligence' },
+    { icon: Code, color: 'from-indigo-500 to-indigo-600', label: 'Smart Code' },
+    { icon: Layers, color: 'from-blue-400 to-blue-500', label: 'Deep Learning' },
+    { icon: Globe, color: 'from-indigo-400 to-indigo-500', label: 'Global Scale' },
+    { icon: Zap, color: 'from-blue-600 to-blue-700', label: 'Lightning Fast' },
+    { icon: Target, color: 'from-indigo-600 to-indigo-700', label: 'Precision' }
+  ];
 
   return (
-    <motion.section 
+    <section 
+      ref={heroRef}
       id="home" 
-      className="min-h-screen flex items-center relative overflow-hidden bg-white"
-      style={{ opacity }}
+      className="min-h-screen flex items-center relative overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40"
+      style={{
+        perspective: '1500px',
+        transformStyle: 'preserve-3d'
+      }}
     >
-      {/* Subtle animated background elements */}
+      {/* Enhanced 3D Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div 
-          className="absolute top-1/3 left-1/4 w-96 h-96 rounded-full bg-blue-50 blur-3xl opacity-30"
-          animate={{
-            x: [0, 40, 0],
-            y: [0, 60, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            repeatType: "mirror",
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-blue-100 blur-3xl opacity-20"
-          animate={{
-            x: [0, -60, 0],
-            y: [0, -40, 0],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            repeatType: "mirror",
-            ease: "easeInOut"
-          }}
-        />
+        {/* Dynamic gradient shapes */}
+        <div className="bg-shape absolute top-1/4 left-1/6 w-96 h-96 rounded-full bg-gradient-to-br from-blue-200/40 to-blue-300/30 blur-3xl opacity-70 animate-pulse"></div>
+        <div className="bg-shape absolute bottom-1/3 right-1/5 w-[500px] h-[500px] rounded-full bg-gradient-to-tl from-indigo-200/35 to-blue-200/40 blur-3xl opacity-60"></div>
+        <div className="bg-shape absolute top-1/2 left-1/2 w-80 h-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-blue-100/30 to-indigo-100/35 blur-3xl opacity-50"></div>
+        
+        {/* Neural network lines */}
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div
+            key={i}
+            className="neuron-line absolute opacity-20"
+            style={{
+              left: `${20 + (i * 10)}%`,
+              top: `${15 + (i * 8)}%`,
+              width: `${100 + (i * 20)}px`,
+              height: '2px',
+              background: `linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.6), transparent)`,
+              transform: `rotate(${i * 15}deg)`,
+              animation: `pulse ${2 + (i * 0.3)}s infinite alternate`
+            }}
+          ></div>
+        ))}
+
+        {/* Floating data particles */}
+        {Array.from({ length: 20 }).map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-1 h-1 bg-blue-400/40 rounded-full animate-bounce"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 4}s`,
+              animationDuration: `${2 + Math.random() * 3}s`
+            }}
+          ></div>
+        ))}
       </div>
 
       <Container className="relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Text Content */}
-          <motion.div
-            initial={{ opacity: 0, y: 60 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ 
-              duration: 1, 
-              ease: [0.16, 1, 0.3, 1] 
-            }}
-            className="text-center lg:text-left"
-          >
-            <h1 className="font-bold mb-10">
-              <motion.span 
-                className="block text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 text-gray-900"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.1 }}
-              >
-                Small Teams.
-              </motion.span>
-              <motion.span 
-                className="block text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 text-gray-800"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-              >
-                Big Impact.
-              </motion.span>
-              <motion.span 
-                className="block text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.5 }}
-              >
-                Powered by AI.
-              </motion.span>
-            </h1>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+          {/* Enhanced Text Content */}
+          <div className="text-center lg:text-left space-y-8 transform-gpu">
+            <div className="relative">
+              <h1 className="font-bold mb-10 relative z-10">
+                <span 
+                  className="block text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 text-gray-900 transform-gpu transition-all duration-1000 hover:scale-105"
+                  style={{
+                    textShadow: '0 4px 20px rgba(59, 130, 246, 0.1)',
+                    transform: 'translateZ(20px)'
+                  }}
+                >
+                  Small Teams.
+                </span>
+                <span 
+                  className="block text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 text-gray-800 transform-gpu transition-all duration-1000 hover:scale-105"
+                  style={{
+                    textShadow: '0 6px 25px rgba(59, 130, 246, 0.15)',
+                    transform: 'translateZ(15px)'
+                  }}
+                >
+                  Big Impact.
+                </span>
+                <span 
+                  className="block text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 transform-gpu transition-all duration-1000 hover:scale-105"
+                  style={{
+                    filter: 'drop-shadow(0 8px 30px rgba(59, 130, 246, 0.3))',
+                    transform: 'translateZ(25px)'
+                  }}
+                >
+                  Powered by AI.
+                </span>
+              </h1>
+            </div>
             
-            <motion.p 
-              className="text-xl text-gray-600 mb-12 max-w-lg mx-auto lg:mx-0 leading-relaxed"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.7, duration: 0.8 }}
+            <p 
+              className="text-xl text-gray-600 mb-12 max-w-lg mx-auto lg:mx-0 leading-relaxed transform-gpu"
+              style={{
+                transform: 'translateZ(10px)',
+                textShadow: '0 2px 10px rgba(0, 0, 0, 0.05)'
+              }}
             >
               We build nimble, intelligent AI solutions designed for clarity, speed, and real-world results.
-            </motion.p>
+            </p>
             
-            <motion.div 
-              className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9, duration: 0.6 }}
-            >
-              <motion.a 
+            <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start transform-gpu">
+              <a 
                 href="#services" 
-                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-xl font-medium flex items-center justify-center gap-3 group transition-all hover:shadow-lg hover:shadow-blue-100/50 hover:from-blue-700 hover:to-blue-600"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
+                className="group px-8 py-4 bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white rounded-2xl font-medium flex items-center justify-center gap-3 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/25 transform-gpu hover:scale-105 hover:-translate-y-1 relative overflow-hidden"
+                style={{
+                  transform: 'translateZ(15px)',
+                  boxShadow: '0 10px 40px rgba(59, 130, 246, 0.2)'
+                }}
               >
-                Explore Our Services
-                <ArrowRight size={20} className="transition-transform group-hover:translate-x-1" strokeWidth={1.5} />
-              </motion.a>
-              <motion.a 
+                <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <span className="relative z-10">Explore Our Services</span>
+                <ArrowRight size={20} className="relative z-10 transition-transform group-hover:translate-x-2" strokeWidth={1.5} />
+              </a>
+              <a 
                 href="#contact" 
-                className="px-8 py-4 border-2 border-blue-500 text-blue-600 rounded-xl font-medium transition-all hover:bg-blue-50/50 hover:shadow-sm"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
+                className="group px-8 py-4 border-2 border-blue-500 text-blue-600 rounded-2xl font-medium transition-all duration-300 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:shadow-lg transform-gpu hover:scale-105 hover:-translate-y-1 relative overflow-hidden backdrop-blur-sm"
+                style={{
+                  transform: 'translateZ(12px)',
+                  boxShadow: '0 5px 20px rgba(59, 130, 246, 0.1)'
+                }}
               >
-                Get in Touch
-              </motion.a>
-            </motion.div>
-          </motion.div>
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <span className="relative z-10">Get in Touch</span>
+              </a>
+            </div>
+          </div>
           
-          {/* Image Card */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ 
-              duration: 0.8, 
-              delay: 0.4, 
-              ease: [0.16, 1, 0.3, 1] 
-            }}
-            className="relative"
-          >
-            <motion.div 
-              className="relative z-10"
-              style={{ y: y1 }}
+          {/* Creative Interactive Visualization */}
+          <div className="relative transform-gpu" style={{ perspective: '1200px' }}>
+            {/* Central AI Brain Visualization */}
+            <div 
+              className="relative z-20 w-80 h-80 mx-auto"
+              style={{ transform: 'translateZ(50px)' }}
             >
-              <motion.div
-                className="bg-white p-8 rounded-3xl shadow-2xl max-w-md mx-auto border border-gray-100/50 overflow-hidden"
-                whileHover={{ y: -8 }}
-              >
-                <div className="h-80 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl flex items-center justify-center mb-6 relative overflow-hidden">
-                  <img 
-                    src="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=600"
-                    alt="AI Technology Visualization" 
-                    className="w-full h-full object-cover rounded-2xl opacity-90"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-blue-400/30 rounded-2xl flex items-center justify-center">
-                    <Cpu className="h-20 w-20 text-blue-600 animate-pulse" strokeWidth={1.5} />
+              {/* Main central orb */}
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500/20 via-blue-600/30 to-indigo-600/20 backdrop-blur-xl border border-white/20 flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 to-indigo-500/10 animate-pulse"></div>
+                <div className="relative z-10">
+                  <Cpu className="h-24 w-24 text-blue-600 animate-pulse drop-shadow-2xl" strokeWidth={1} />
+                  <div className="absolute inset-0 animate-ping opacity-30">
+                    <Cpu className="h-24 w-24 text-blue-400" strokeWidth={0.5} />
                   </div>
                 </div>
-                <div className="space-y-4">
-                  <div className="h-4 bg-gray-100 rounded-full w-3/4"></div>
-                  <div className="h-4 bg-gray-100 rounded-full w-1/2"></div>
-                  <div className="h-4 bg-gray-100 rounded-full w-5/6"></div>
-                </div>
-              </motion.div>
-              
-              {/* Floating Cards */}
-              <motion.div 
-                className="absolute -bottom-8 -right-8 bg-gradient-to-r from-blue-600 to-blue-500 text-white p-6 rounded-2xl shadow-xl w-64 backdrop-blur-sm"
-                initial={{ x: 50, y: 50, opacity: 0 }}
-                animate={{ x: 0, y: 0, opacity: 1 }}
-                transition={{ delay: 0.8, duration: 0.6, ease: "easeOut" }}
-                whileHover={{ y: -8 }}
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <Cpu className="h-5 w-5" strokeWidth={1.5} />
-                  <div className="text-sm font-semibold">AI-Powered Solutions</div>
-                </div>
-                <div className="h-px bg-white/30 rounded-full mb-3"></div>
-                <div className="h-2 bg-white/40 rounded-full mb-2"></div>
-                <div className="h-2 bg-white/40 rounded-full w-2/3"></div>
-              </motion.div>
-              
-              <motion.div 
-                className="absolute -top-8 -left-8 bg-white p-6 rounded-2xl shadow-xl w-56 border border-gray-100/50"
-                initial={{ x: -50, y: -50, opacity: 0 }}
-                animate={{ x: 0, y: 0, opacity: 1 }}
-                transition={{ delay: 1, duration: 0.6, ease: "easeOut" }}
-                whileHover={{ y: -8 }}
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <Zap className="h-5 w-5 text-blue-600" strokeWidth={1.5} />
-                  <div className="text-sm font-semibold text-gray-800">Fast Implementation</div>
-                </div>
-                <div className="h-px bg-gray-200 rounded-full mb-3"></div>
-                <div className="h-2 bg-blue-100 rounded-full mb-2"></div>
-                <div className="h-2 bg-blue-100 rounded-full w-3/4"></div>
-              </motion.div>
-            </motion.div>
-          </motion.div>
+                
+                {/* Rotating rings */}
+                <div className="absolute inset-4 border-2 border-blue-400/30 rounded-full animate-spin" style={{ animationDuration: '20s' }}></div>
+                <div className="absolute inset-8 border border-indigo-400/20 rounded-full animate-spin" style={{ animationDuration: '15s', animationDirection: 'reverse' }}></div>
+              </div>
+
+              {/* Orbiting elements */}
+              {orbData.map((orb, index) => {
+                const angle = (index * 60) * (Math.PI / 180);
+                const radius = 160;
+                const x = Math.cos(angle) * radius;
+                const y = Math.sin(angle) * radius;
+                const IconComponent = orb.icon;
+                
+                return (
+                  <div
+                    key={index}
+                    className={`floating-orb absolute w-16 h-16 rounded-full bg-gradient-to-br ${orb.color} flex items-center justify-center transition-all duration-500 cursor-pointer group ${
+                      activeOrb === index ? 'scale-125 shadow-2xl' : 'scale-100 hover:scale-110'
+                    }`}
+                    style={{
+                      left: '50%',
+                      top: '50%',
+                      transform: `translate(-50%, -50%) translate(${x}px, ${y}px) translateZ(${activeOrb === index ? 40 : 20}px)`,
+                      boxShadow: activeOrb === index 
+                        ? '0 20px 60px rgba(59, 130, 246, 0.4)' 
+                        : '0 10px 30px rgba(59, 130, 246, 0.2)',
+                      animation: `orbit 20s linear infinite`,
+                      animationDelay: `${index * -3.33}s`
+                    }}
+                    onMouseEnter={() => setActiveOrb(index)}
+                  >
+                    <IconComponent 
+                      className="h-6 w-6 text-white drop-shadow-lg" 
+                      strokeWidth={1.5} 
+                    />
+                    
+                    {/* Tooltip */}
+                    <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                      <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-lg text-xs font-medium text-gray-800 whitespace-nowrap border border-white/50">
+                        {orb.label}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* Connection lines */}
+              {orbData.map((_, index) => (
+                <div
+                  key={`line-${index}`}
+                  className="absolute top-1/2 left-1/2 origin-left h-px bg-gradient-to-r from-blue-400/40 to-transparent"
+                  style={{
+                    width: '160px',
+                    transform: `translate(-50%, -50%) rotate(${index * 60}deg)`,
+                    opacity: activeOrb === index ? 0.8 : 0.3,
+                    transition: 'opacity 0.5s ease'
+                  }}
+                ></div>
+              ))}
+            </div>
+
+            {/* Data flow visualization */}
+            <div className="absolute inset-0 pointer-events-none">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div
+                  key={`flow-${i}`}
+                  className="absolute w-2 h-2 bg-blue-400/60 rounded-full"
+                  style={{
+                    left: '50%',
+                    top: '50%',
+                    animation: `dataFlow 4s linear infinite`,
+                    animationDelay: `${i * 0.7}s`,
+                    transform: `translate(-50%, -50%) rotate(${i * 60}deg) translateX(80px)`
+                  }}
+                ></div>
+              ))}
+            </div>
+
+            {/* Ambient glow effect */}
+            <div 
+              className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500/10 via-transparent to-indigo-500/10 blur-3xl scale-150"
+              style={{ transform: 'translateZ(-20px)' }}
+            ></div>
+          </div>
         </div>
       </Container>
-    </motion.section>
+
+      {/* Enhanced scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="w-6 h-10 border-2 border-blue-400/50 rounded-full flex justify-center backdrop-blur-sm">
+          <div className="w-1 h-3 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full mt-2 animate-pulse"></div>
+        </div>
+      </div>
+
+      {/* Custom CSS animations */}
+      <style>{`
+        @keyframes orbit {
+          from {
+            transform: translate(-50%, -50%) rotate(0deg) translateX(160px) rotate(0deg);
+          }
+          to {
+            transform: translate(-50%, -50%) rotate(360deg) translateX(160px) rotate(-360deg);
+          }
+        }
+        
+        @keyframes dataFlow {
+          0% {
+            opacity: 0;
+            transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) translateX(40px) scale(0);
+          }
+          20% {
+            opacity: 1;
+            transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) translateX(60px) scale(1);
+          }
+          80% {
+            opacity: 1;
+            transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) translateX(140px) scale(1);
+          }
+          100% {
+            opacity: 0;
+            transform: translate(-50%, -50%) rotate(var(--rotation, 0deg)) translateX(160px) scale(0);
+          }
+        }
+      `}</style>
+    </section>
   );
 };
 
