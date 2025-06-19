@@ -304,7 +304,7 @@ const Navbar = () => {
                   transition={{ delay: 0.5 }}
                 >
                   <MotionLink
-                    to="/dashboard"
+                    to="/admin"
                     smooth
                     className="text-sm font-medium text-blue-900/70 hover:text-blue-600 transition-colors flex items-center gap-2"
                     whileHover={{ scale: 1.05 }}
