@@ -339,7 +339,7 @@ const Navbar = () => {
               onClick={handleTalkToAI}
               disabled={!isWidgetReady}
               className={`px-5 py-2 text-sm font-medium rounded-full transition-all shadow-sm hover:shadow-md flex items-center gap-2 relative overflow-hidden ${isWidgetReady
-                  ? 'bg-black text-white hover:text-white'
+                  ? 'bg-black text-white hover:text-blue-500'
                   : 'bg-gray-300 text-black-500 cursor-not-allowed'
                 }`}
               whileHover={isWidgetReady ? { scale: 1.05 } : {}}
