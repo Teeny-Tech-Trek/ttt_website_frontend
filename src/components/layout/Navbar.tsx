@@ -17,8 +17,23 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-
   const isHomePage = location.pathname === '/';
+
+  // State for Convai widget
+  const [isWidgetReady, setIsWidgetReady] = useState(false);
+  const [isWidgetVisible, setIsWidgetVisible] = useState(false);
+  const [convaiError, setConvaiError] = useState<string | null>(null);
+
+  // Initialize activeSection based on URL hash
+  const [activeSection, setActiveSection] = useState(() => {
+    // Only use hash if we're on the home page
+    if (isHomePage && location.hash) {
+      return location.hash;
+    }
+    // For other pages, check if we're on a specific route
+    if (location.pathname === '/blogs') return '#blogs';
+    return '#home';
+  });
 
   // Scroll-based effects
   const backgroundOpacity = useTransform(scrollY, [0, 100], [0, 0.9]);
@@ -34,6 +49,102 @@ const Navbar = () => {
     setIsMenuOpen(false);
   };
 
+  // Monitor Convai SDK and widget element
+  useEffect(() => {
+    const checkWidget = () => {
+      const convaiElement = document.querySelector('elevenlabs-convai');
+      const convai = (window as any).Convai || (window as any).ElevenLabsConvai || (window as any).convai;
+
+      if (convaiElement) {
+        setIsWidgetReady(true);
+        console.log('Found elevenlabs-convai element:', convaiElement);
+      }
+
+      if (convai) {
+        console.log('Convai SDK loaded successfully:', convai);
+        console.dir(convai);
+      } else {
+        console.log('Convai SDK not detected. Global objects checked:', Object.keys(window).filter(key => key.toLowerCase().includes('convai')));
+      }
+    };
+
+    // Initial check
+    checkWidget();
+
+    // Poll every 500ms, timeout after 20s
+    const maxAttempts = 40; // 20s / 500ms
+    let attempts = 0;
+    const interval = setInterval(() => {
+      checkWidget();
+      attempts++;
+      if (isWidgetReady || attempts >= maxAttempts) {
+        clearInterval(interval);
+        if (!isWidgetReady) {
+          setConvaiError('AI Assistant widget not found. Please refresh the page.');
+          console.error('Convai widget not detected after 20 seconds');
+        }
+      }
+    }, 500);
+
+    // Listen for script load/error
+    const script = document.querySelector('script[src="https://elevenlabs.io/convai-widget/index.js"]');
+    if (script) {
+      script.addEventListener('load', () => {
+        console.log('Convai script loaded');
+        checkWidget();
+      });
+      script.addEventListener('error', () => {
+        setConvaiError('Failed to load AI Assistant script. Check your network or contact support.');
+        console.error('Convai script failed to load');
+      });
+    } else {
+      console.warn('Convai script tag not found in DOM');
+    }
+
+    return () => clearInterval(interval);
+  }, [isWidgetReady]);
+
+  // Handle Talk to AI button click
+  const handleTalkToAI = () => {
+    if (!isWidgetReady) {
+      toast.error(convaiError || 'AI Assistant is still loading...');
+      return;
+    }
+
+    try {
+      const convaiElement = document.querySelector('elevenlabs-convai');
+      const backdrop = document.getElementById('convai-backdrop');
+
+      if (convaiElement && backdrop) {
+        // Show widget and backdrop
+        convaiElement.classList.add('visible');
+        backdrop.classList.add('visible');
+        setIsWidgetVisible(true);
+
+        // Optional: Trigger widget initialization (adjust based on docs)
+        convaiElement.dispatchEvent(new CustomEvent('open-convai-widget'));
+        console.log('Displayed elevenlabs-convai widget');
+
+        // Add click handler to hide widget when clicking backdrop
+        const hideWidget = () => {
+          convaiElement.classList.remove('visible');
+          backdrop.classList.remove('visible');
+          setIsWidgetVisible(false);
+          backdrop.removeEventListener('click', hideWidget);
+        };
+        backdrop.addEventListener('click', hideWidget);
+
+        toast.success('AI Assistant opened!');
+      } else {
+        throw new Error('Convai widget or backdrop not found');
+      }
+    } catch (error) {
+      console.error('Failed to open AI Assistant:', error);
+      toast.error('Failed to open AI Assistant. Please try again.');
+    }
+  };
+
+  // Scroll and resize effects
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
@@ -59,29 +170,28 @@ const Navbar = () => {
   ];
 
   // Track active section based on scroll position
-  const [activeSection, setActiveSection] = useState('#home');
-
   useEffect(() => {
     if (!isHomePage) return;
 
-    const handleScroll = () => {
-      const offsets = navLinks.map((link) => {
-        const element = document.querySelector(link.hash);
-        if (!element) return { hash: link.hash, visible: false, top: Infinity };
+    const updateActiveSection = () => {
+      const offsets = navLinks
+        .filter(link => link.path === '/') // Only consider links that are on the home page
+        .map((link) => {
+          const element = document.querySelector(link.hash);
+          if (!element) return { hash: link.hash, visible: false, top: Infinity };
 
-        const rect = element.getBoundingClientRect();
-        return {
-          hash: link.hash,
-          visible: rect.top <= window.innerHeight * 0.5 && rect.bottom >= 100,
-          top: Math.abs(rect.top),
-        };
-      });
+          const rect = element.getBoundingClientRect();
+          return {
+            hash: link.hash,
+            visible: rect.top <= window.innerHeight * 0.5 && rect.bottom >= 100,
+            top: Math.abs(rect.top),
+          };
+        });
 
       const visibleSection = offsets.find((section) => section.visible);
       if (visibleSection) {
         setActiveSection(visibleSection.hash);
       } else {
-        // fallback: pick the nearest section by distance
         const closest = offsets.reduce((prev, curr) =>
           curr.top < prev.top ? curr : prev
         );
@@ -89,14 +199,30 @@ const Navbar = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    updateActiveSection();
+    window.addEventListener('scroll', updateActiveSection);
+    return () => window.removeEventListener('scroll', updateActiveSection);
   }, [isHomePage, navLinks]);
 
+  // Sync activeSection with location
+  useEffect(() => {
+    if (isHomePage && location.hash) {
+      setActiveSection(location.hash);
+    } else if (location.pathname === '/blogs') {
+      setActiveSection('#blogs');
+    } else if (!isHomePage) {
+      setActiveSection('#home');
+    }
+  }, [location.hash, location.pathname, isHomePage]);
+
   const isLinkActive = (linkHash: string, linkPath: string): boolean => {
-    if (linkPath !== '/' && location.pathname === linkPath) return true;
-    if (isHomePage && activeSection === linkHash) return true;
-    return location.pathname === '/' && location.hash === linkHash;
+    // For non-home pages
+    if (!isHomePage) {
+      return location.pathname === linkPath;
+    }
+    
+    // For home page
+    return activeSection === linkHash;
   };
 
   if (location.pathname.startsWith('/admin') || location.pathname.startsWith('/login')) {
@@ -116,12 +242,13 @@ const Navbar = () => {
         <nav className="flex items-center justify-between h-full">
           {/* Logo */}
           <MotionLink
-            to="/home"
+            to="/#home"
             smooth
             className="flex items-center gap-3 z-50"
             style={{ scale: logoScale }}
             whileHover={{ scale: 1.1 }}
             transition={{ type: 'spring', stiffness: 300 }}
+            onClick={() => setActiveSection('#home')}
           >
             <motion.img
               src="/logo.svg"
@@ -154,6 +281,7 @@ const Navbar = () => {
                     className={`relative text-sm font-medium text-blue-900/70 transition-colors hover:text-blue-600 ${isLinkActive(link.hash, link.path) ? 'text-blue-600' : ''}`}
                     whileHover={{ scale: 1.05 }}
                     transition={{ type: 'spring', stiffness: 300 }}
+                    onClick={() => setActiveSection(link.hash)}
                   >
                     {link.name}
                     {isLinkActive(link.hash, link.path) && (
@@ -178,7 +306,7 @@ const Navbar = () => {
                   <MotionLink
                     to="/dashboard"
                     smooth
-                    className="text-sm text-blue-900/70 hover:text-blue-600 transition-colors flex items-center gap-2"
+                    className="text-sm font-medium text-blue-900/70 hover:text-blue-600 transition-colors flex items-center gap-2"
                     whileHover={{ scale: 1.05 }}
                     transition={{ type: 'spring', stiffness: 300 }}
                   >
@@ -198,7 +326,7 @@ const Navbar = () => {
                 <MotionLink
                   to="/login"
                   smooth
-                  className="text-sm text-blue-900/70 hover:text-blue-600 transition-colors"
+                  className="text-sm font-medium text-blue-900/70 hover:text-blue-600 transition-colors"
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: 'spring', stiffness: 300 }}
                 >
@@ -207,24 +335,32 @@ const Navbar = () => {
               </motion.div>
             )}
 
-          <motion.button
-  onClick={() => {
-    if ((window as any).Convai) {
-      (window as any).Convai.init({
-        agentId: "3WGuwGNjztohfQ0Rddlv"
-      });
-    } else {
-      toast.error("AI Assistant is still loading...");
-    }
-  }}
-  className="px-5 py-2 bg-black text-white text-sm font-medium rounded-full hover:text-black transition-all shadow-sm hover:shadow-md flex items-center gap-2"
-  whileHover={{ scale: 1.05 }}
-  whileTap={{ scale: 0.95 }}
->
-  <Bot size={16} />
-  Talk to AI
-</motion.button>
+            <motion.button
+              onClick={handleTalkToAI}
+              disabled={!isWidgetReady}
+              className={`px-5 py-2 text-sm font-medium rounded-full transition-all shadow-sm hover:shadow-md flex items-center gap-2 relative overflow-hidden ${isWidgetReady
+                  ? 'bg-black text-white hover:text-black'
+                  : 'bg-gray-300 text-black-500 cursor-not-allowed'
+                }`}
+              whileHover={isWidgetReady ? { scale: 1.05 } : {}}
+              whileTap={isWidgetReady ? { scale: 0.95 } : {}}
+            >
+              {/* Background animation on hover */}
+              {isWidgetReady && (
+                <motion.span
+                  className="absolute inset-0 bg-white z-0"
+                  initial={{ scale: 0 }}
+                  whileHover={{ scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                />
+              )}
 
+              {/* Content with z-index to appear above background */}
+              <motion.span className="flex items-center gap-2 z-10 relative">
+                <Bot size={16} />
+                Start a call with AI
+              </motion.span>
+            </motion.button>
 
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -234,9 +370,10 @@ const Navbar = () => {
               <MotionLink
                 smooth
                 to="/#contact"
-                className="px-8 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-full hover:bg-blue-700 transition-all shadow-sm hover:shadow-md"
+                className="px-8 py-2.5 bg-blue-600   mr-[-2rem] text-white text-sm font-medium rounded-full hover:bg-blue-700 transition-all shadow-sm hover:shadow-md"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => setActiveSection('#contact')}
               >
                 Get Started
               </MotionLink>
@@ -284,7 +421,10 @@ const Navbar = () => {
                           ? 'text-blue-600'
                           : 'text-blue-900/80 hover:text-blue-600'
                         }`}
-                      onClick={() => setIsMenuOpen(false)}
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        setActiveSection(link.hash);
+                      }}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -301,10 +441,13 @@ const Navbar = () => {
                       transition={{ delay: 0.7, duration: 0.3 }}
                     >
                       <MotionLink
-                        to="/dashboard"
+                        to="/admin"
                         smooth
                         className="text-lg font-medium text-blue-900/70 hover:text-blue-600 flex items-center gap-2"
-                        onClick={() => setIsMenuOpen(false)}
+                        onClick={() => {
+                          setIsMenuOpen(false);
+                          setActiveSection('');
+                        }}
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -336,7 +479,10 @@ const Navbar = () => {
                       to="/login"
                       smooth
                       className="text-lg font-medium text-blue-900/70 hover:text-blue-600"
-                      onClick={() => setIsMenuOpen(false)}
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        setActiveSection('');
+                      }}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -354,7 +500,10 @@ const Navbar = () => {
                     smooth
                     to="/#contact"
                     className="px-6 py-3 bg-blue-600 text-white text-lg font-medium rounded-full hover:bg-blue-700 transition-colors shadow-sm hover:shadow-md"
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      setActiveSection('#contact');
+                    }}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
