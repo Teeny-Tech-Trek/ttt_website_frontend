@@ -5,9 +5,10 @@ import { useInView } from 'react-intersection-observer';
 interface SectionHeadingProps {
   title: string;
   subtitle?: string;
+  subtitleClassName?: string;
 }
 
-const SectionHeading: React.FC<SectionHeadingProps> = ({ title, subtitle }) => {
+const SectionHeading: React.FC<SectionHeadingProps> = ({ title, subtitle, subtitleClassName = '' }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -22,7 +23,20 @@ const SectionHeading: React.FC<SectionHeadingProps> = ({ title, subtitle }) => {
       className="text-center mb-12"
     >
       <h2 className="section-title gradient-text inline-block">{title}</h2>
-      {subtitle && <p className="section-subtitle">{subtitle}</p>}
+     {subtitle && (
+  <p
+    className={`section-subtitle ${subtitleClassName} leading-relaxed text-base text-gray-600 mt-4 whitespace-normal`}
+    style={{
+      lineHeight: '1.625',      // manually enforce line-height
+      overflowWrap: 'break-word',
+      wordBreak: 'break-word',
+      WebkitFontSmoothing: 'antialiased',
+    }}
+  >
+    {subtitle}
+  </p>
+)}
+
     </motion.div>
   );
 };

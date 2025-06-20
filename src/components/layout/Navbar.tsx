@@ -220,7 +220,7 @@ const Navbar = () => {
     if (!isHomePage) {
       return location.pathname === linkPath;
     }
-    
+
     // For home page
     return activeSection === linkHash;
   };
@@ -339,8 +339,8 @@ const Navbar = () => {
               onClick={handleTalkToAI}
               disabled={!isWidgetReady}
               className={`px-5 py-2 text-sm font-medium rounded-full transition-all shadow-sm hover:shadow-md flex items-center gap-2 relative overflow-hidden ${isWidgetReady
-                  ? 'bg-black text-white hover:text-blue-500'
-                  : 'bg-gray-300 text-black-500 cursor-not-allowed'
+                ? 'bg-black text-white hover:text-blue-500'
+                : 'bg-gray-300 text-black-500 cursor-not-allowed'
                 }`}
               whileHover={isWidgetReady ? { scale: 1.05 } : {}}
               whileTap={isWidgetReady ? { scale: 0.95 } : {}}
@@ -418,8 +418,8 @@ const Navbar = () => {
                       smooth
                       to={link.href}
                       className={`text-lg font-semibold transition-colors ${isLinkActive(link.hash, link.path)
-                          ? 'text-blue-600'
-                          : 'text-blue-900/80 hover:text-blue-600'
+                        ? 'text-blue-600'
+                        : 'text-blue-900/80 hover:text-blue-600'
                         }`}
                       onClick={() => {
                         setIsMenuOpen(false);
@@ -490,7 +490,7 @@ const Navbar = () => {
                     </MotionLink>
                   </motion.div>
                 )}
-
+            
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -510,6 +510,18 @@ const Navbar = () => {
                     Get Started
                   </MotionLink>
                 </motion.div>
+                    {isWidgetReady && (
+                  <motion.button
+                    onClick={handleTalkToAI}
+                    className="px-6 py-3 bg-black text-white text-lg font-medium rounded-full hover:text-blue-500 transition-all shadow-sm hover:shadow-md flex items-center gap-2"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Bot size={18} />
+                    Start a call with AI
+                  </motion.button>
+                )}
+
               </div>
             </motion.div>
           )}

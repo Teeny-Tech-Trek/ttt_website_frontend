@@ -173,11 +173,14 @@ const Footer = () => {
             © {new Date().getFullYear()} Teeny Tech Trek. All rights reserved.
           </p>
           <div className="flex gap-8 text-xs text-[#93c5fd]">
-            <a href="#" className="hover:text-white transition-colors duration-300">
+            <a href="privacy" className="hover:text-white transition-colors duration-300">
               Privacy Policy
             </a>
-            <a href="#" className="hover:text-white transition-colors duration-300">
+            <a href="terms" className="hover:text-white transition-colors duration-300">
               Terms of Service
+            </a>
+            <a href="/refund" className="hover:text-white transition-colors duration-300">
+              Refund Policy
             </a>
           </div>
           <button
