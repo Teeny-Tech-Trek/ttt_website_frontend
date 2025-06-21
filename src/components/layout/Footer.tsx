@@ -38,7 +38,7 @@ const Footer = () => {
   try {
     await subscribeNewsletter(email); // pass email here
 
-    setMessage('Successfully subscribed! Please check your email to verify.');
+    setMessage('Successfully subscribed!');
     setEmail('');
   } catch (error: any) {
     if (error.response?.status === 409) {
