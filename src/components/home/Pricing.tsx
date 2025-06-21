@@ -340,21 +340,26 @@ const SubscriptionPricing: React.FC = () => {
                   </div>
                 )}
                 <div className="flex-grow" />
-                <motion.div
+              <motion.div
                   className="mt-4"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   <button
-                    onClick={() => handleBuy(pkg)}
+                    onClick={() => {
+                      if (typeof pkg.price === "number") {
+                        handleBuy(pkg);
+                      } else {
+                        const el = document.querySelector("#contact");
+                        if (el) {
+                          el.scrollIntoView({ behavior: "smooth" });
+                        }
+                      }
+                    }}
                     disabled={paying === pkg.id}
                     className="w-full bg-[#3b82f6] text-white py-3 px-8 rounded-xl text-lg font-semibold shadow-md hover:bg-[#1e40af] transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
-                    >
-                    {paying === pkg.id
-                      ? "Processing..."
-                      : typeof pkg.price === "number"
-                      ? `Book for ₹${pkg.price}`
-                      : "Contact for Quote"}
+                  >
+                    {paying === pkg.id ? 'Processing...' : typeof pkg.price === "number" ? `Book for ₹${pkg.price}` : 'Contact for Quote'}
                   </button>
                 </motion.div>
                 <motion.div
