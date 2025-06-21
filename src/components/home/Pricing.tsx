@@ -114,7 +114,7 @@ const SubscriptionPricing: React.FC = () => {
     // Create Razorpay order
     let razorpayOrder;
     try {
-      const response = await api.post("/orders/razorpay", {
+      const response = await api.post("/orders/create-order", {
         package_id: pkg.id,
         amount: pkg.price,
         scheduled_date_time: selectedDateTime.toISOString(),
