@@ -25,7 +25,7 @@ const loadRazorpay = () => {
 
 const packages = [
   {
-    id: "starter1",
+    id: "asdas324asd",
     name: "Starter Strategy Call",
     description: "Unlock the potential of AI for your business in just 45 minutes.",
     price: 1200,
@@ -39,7 +39,7 @@ const packages = [
     ],
   },
   {
-    id: "ai1",
+    id: "asd43asd",
     name: "AI Readiness Audit",
     description: "A 90-minute deep-dive designed for business owners.",
     price: 2100,
@@ -53,7 +53,7 @@ const packages = [
     ],
   },
   {
-    id: "custom1",
+    id: "as234asd23",
     name: "Custom AI Roadmap",
     description: "Turn your AI vision into a ready-to-execute plan.",
     price: "Custom",
