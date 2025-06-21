@@ -323,7 +323,7 @@ const SubscriptionPricing: React.FC = () => {
                   </motion.span>
                 )}
                 <div className="flex items-center justify-center gap-2 mb-2">
-                  <motion.span
+                  <motion.span  
                     className={`inline-block w-6 h-6 rounded-full ${popular ? "bg-[#93c5fd]/20 text-[#3b82f6]" : "bg-[#93c5fd]/10 text-[#1e40af]/80"} flex items-center justify-center animate-pulse-slow`}
                     whileHover={{ scale: 1.2 }}
                     transition={{ duration: 0.2 }}
