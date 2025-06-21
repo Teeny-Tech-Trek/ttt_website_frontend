@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ArrowUp, Mail, Phone, MapPin } from 'lucide-react';
 import { FaInstagram, FaLinkedinIn } from 'react-icons/fa';
@@ -19,12 +20,47 @@ const services: Service[] = [
 
 const Footer = () => {
   const location = useLocation();
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     });
+  };
+
+  // Handle newsletter subscription
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setMessage('');
+
+    try {
+      const response = await fetch('/api/newsletter/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.status === 201) {
+        setMessage('Successfully subscribed! Please check your email to verify.');
+        setEmail('');
+      } else if (response.status === 409) {
+        setMessage('This email is already subscribed.');
+      } else {
+        setMessage(data.message || 'An error occurred. Please try again.');
+      }
+    } catch (error) {
+      setMessage('An error occurred. Please try again later.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Hide footer on admin or login routes
@@ -155,7 +191,6 @@ const Footer = () => {
                 >
                   +1 647-864-5465<br />+91 98558 06696
                 </a>
-
               </li>
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-[#3b82f6] flex-shrink-0 mt-1" />
@@ -167,16 +202,51 @@ const Footer = () => {
           </div>
         </div>
 
+        {/* Newsletter Section - Centered */}
+        <div className="max-w-2xl mx-auto mb-16 text-center">
+          <h5 className="text-2xl font-semibold mb-4">Subscribe to Our Newsletter</h5>
+          <p className="text-[#93c5fd] mb-6 text-sm">
+            Stay updated with our latest news and offers
+          </p>
+          <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 justify-center">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              className="px-4 py-3 rounded-md bg-[#3b82f6]/10 text-white border border-[#3b82f6]/30 focus:outline-none focus:border-[#3b82f6] transition-colors duration-300 flex-grow max-w-md"
+              required
+              disabled={isLoading}
+            />
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="px-6 py-3 bg-[#3b82f6] rounded-md hover:bg-[#2563eb] transition-colors duration-300 text-sm font-medium whitespace-nowrap"
+            >
+              {isLoading ? 'Subscribing...' : 'Subscribe'}
+            </button>
+          </form>
+          {message && (
+            <p
+              className={`mt-3 text-sm ${
+                message.includes('Successfully') ? 'text-green-300' : 'text-red-300'
+              }`}
+            >
+              {message}
+            </p>
+          )}
+        </div>
+
         {/* Bottom Section */}
         <div className="pt-10 border-t border-[#93c5fd]/20 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-[#93c5fd] text-xs text-center md:text-left">
             © {new Date().getFullYear()} Teeny Tech Trek. All rights reserved.
           </p>
           <div className="flex gap-8 text-xs text-[#93c5fd]">
-            <a href="privacy" className="hover:text-white transition-colors duration-300">
+            <a href="/privacy" className="hover:text-white transition-colors duration-300">
               Privacy Policy
             </a>
-            <a href="terms" className="hover:text-white transition-colors duration-300">
+            <a href="/terms" className="hover:text-white transition-colors duration-300">
               Terms of Service
             </a>
             <a href="/refund" className="hover:text-white transition-colors duration-300">
