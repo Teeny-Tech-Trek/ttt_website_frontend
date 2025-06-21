@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Check } from "lucide-react";
@@ -10,9 +10,7 @@ import Container from "../ui/Container";
 import SectionHeading from "../ui/SectionHeading";
 import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
-// Import the useAuth hook
 
-// Load Razorpay SDK
 const loadRazorpay = () => {
   return new Promise((resolve) => {
     if (document.getElementById("razorpay-sdk")) return resolve(true);
@@ -73,7 +71,7 @@ const packages = [
 ];
 
 const SubscriptionPricing: React.FC = () => {
-  const { user, accessToken, loading } = useAuth(); // Get auth context
+  const { user, accessToken, loading } = useAuth();
   const navigate = useNavigate();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [paymentError, setPaymentError] = useState("");
@@ -81,8 +79,6 @@ const SubscriptionPricing: React.FC = () => {
   const [selectedDateTime, setSelectedDateTime] = useState<Date | null>(null);
   const [showForm, setShowForm] = useState<string | null>(null);
   const [email, setEmail] = useState("");
-
- 
 
   const validateEmail = (email: string) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -92,7 +88,7 @@ const SubscriptionPricing: React.FC = () => {
   const handleBuy = async (pkg: typeof packages[0]) => {
     if (!user || !accessToken) {
       navigate("/login");
-
+      toast("Please sign in to continue booking!");
       return;
     }
 
@@ -116,110 +112,87 @@ const SubscriptionPricing: React.FC = () => {
     setPaymentError("");
     setPaying(pkg.id);
 
-    const sdkLoaded = await loadRazorpay();
-    if (!sdkLoaded) {
-      setPaymentError("Failed to load Razorpay SDK.");
-      setPaying(null);
-      return;
-    }
-
-    // Create Razorpay order
-    let razorpayOrder;
     try {
-      const response = await api.post(
+      const sdkLoaded = await loadRazorpay();
+      if (!sdkLoaded) throw new Error("Failed to load Razorpay SDK");
+
+      // 1. Create Razorpay order
+      const orderResponse = await api.post(
         "/orders/create-order",
-        {
-          package_id: pkg.id,
-          amount: pkg.price,
-          scheduled_date_time: selectedDateTime.toISOString(),
-          attendee_email: email,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`, // Include access token
-          },
-        }
+        { package_id: pkg.id, amount: pkg.price },
+        { headers: { Authorization: `Bearer ${accessToken}` } }
       );
-      razorpayOrder = response.data;
-    } catch (e) {
-      setPaymentError("Failed to create Razorpay order. Please try again.");
-      setPaying(null);
-      return;
-    }
 
-    const amountPaise = typeof pkg.price === "number" ? pkg.price * 100 : 0;
-    const durationMinutes = pkg.duration === "45 mins" ? 45 : pkg.duration === "90 mins" ? 90 : 60;
+      const { razorpayOrderId, dbOrderId } = orderResponse.data;
+      const durationMinutes = pkg.duration === "45 mins" ? 45 : 90;
 
-    const options = {
-      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-      amount: amountPaise,
-      currency: "INR",
-      name: "Teeny Tech Trek",
-      description: `${pkg.name} - Scheduled for ${selectedDateTime.toLocaleString()}`,
-      order_id: razorpayOrder.razorpayOrderId,
-      handler: async function (response: any) {
-        try {
-          // Verify payment
-          await api.post(
-            "/orders/verify",
-            {
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              db_order_id: razorpayOrder.dbOrderId,
-              scheduled_date_time: selectedDateTime.toISOString(),
-              attendee_email: email,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${accessToken}`, // Include access token
+      // 2. Initialize Razorpay payment
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+amount: Number(pkg.price) * 100,
+
+        currency: "INR",
+        name: "Teeny Tech Trek",
+        description: pkg.name,
+        order_id: razorpayOrderId,
+        handler: async (response: any) => {
+          try {
+            // 3. Verify payment
+            await api.post(
+              "/orders/verify",
+              {
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                db_order_id: dbOrderId
               },
-            }
-          );
+              { headers: { Authorization: `Bearer ${accessToken}` } }
+            );
 
-          // Create Google Calendar event
-          await api.post(
-            "/calendar/create-event",
-            {
-              packageId: pkg.id,
-              startDateTime: selectedDateTime.toISOString(),
-              endDateTime: new Date(selectedDateTime.getTime() + durationMinutes * 60000).toISOString(),
-              attendeeEmail: email,
-              summary: `${pkg.name} Consultancy Booking`,
-              description: `Consultancy session for ${pkg.name} booked by ${email}`,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${accessToken}`, // Include access token
+            // 4. Create calendar event
+            await api.post(
+              "/calendar/create-event",
+              {
+                startDateTime: selectedDateTime.toISOString(),
+                endDateTime: new Date(
+                  selectedDateTime.getTime() + durationMinutes * 60000
+                ).toISOString(),
+                attendeeEmail: email,
+                summary: `${pkg.name} Booking`,
+                description: `Scheduled consultation for ${pkg.name}`
               },
-            }
-          );
+              { headers: { Authorization: `Bearer ${accessToken}` } }
+            );
 
-          alert(
-            `Payment successful! Your ${pkg.name} consultancy is scheduled for ${selectedDateTime.toLocaleString()}. Added to calendar.`
-          );
-          setSelectedDateTime(null);
-          setShowForm(null);
-          setEmail("");
-          navigate("/orders");
-        } catch (e) {
-          setPaymentError("Payment or calendar booking failed. Please contact support.");
-        } finally {
-          setPaying(null);
+            toast.success(
+              `Booking confirmed! Check your email for calendar invite.`,
+              { duration: 5000 }
+            );
+            navigate("/orders");
+          } catch (error) {
+            console.error("Payment processing error:", error);
+            toast.error("Payment verification failed. Please contact support.");
+          } finally {
+            setPaying(null);
+          }
+        },
+        prefill: { email },
+        theme: { color: "#3b82f6" },
+        modal: {
+          ondismiss: () => {
+            setPaying(null);
+            toast("Payment window closed");
+          }
         }
-      },
-      prefill: { email },
-      notes: {
-        package_id: pkg.id,
-        scheduled_date_time: selectedDateTime.toISOString(),
-        attendee_email: email,
-      },
-      theme: { color: "#3b82f6" },
-    };
+      };
 
-    // @ts-ignore
-    const razorpay = new window.Razorpay(options);
-    razorpay.open();
+      const razorpay = new (window as any).Razorpay(options);
+      razorpay.open();
+    } catch (error:any) {
+      console.error("Order creation error:", error);
+      setPaymentError(error.response?.data?.error || "Payment initiation failed");
+      setPaying(null);
+    }
   };
 
   const handleFormSubmit = (pkgId: string) => {
@@ -240,10 +213,7 @@ const SubscriptionPricing: React.FC = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        ease: [0.22, 1, 0.36, 1],
-      },
+      transition: { staggerChildren: 0.1, ease: [0.22, 1, 0.36, 1] },
     },
   };
 
@@ -252,17 +222,11 @@ const SubscriptionPricing: React.FC = () => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.5,
-        ease: [0.22, 1, 0.36, 1],
-      },
+      transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
     },
   };
 
-  // Show loading state while checking authentication
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  if (loading) return <div>Loading...</div>;
 
   return (
     <section className="py-20 bg-[#f8fafc] relative overflow-hidden">
@@ -308,15 +272,12 @@ const SubscriptionPricing: React.FC = () => {
               <motion.div
                 key={pkg.id}
                 variants={itemVariants}
-                whileHover="hover"
-                className="relative bg-white/90 backdrop-blur-md rounded-3xl shadow-lg p-8 text-center border-2 flex flex-col perspective-1000 transform-gpu"
-                style={{ transformStyle: "preserve-3d" }}
+                className="relative bg-white/90 backdrop-blur-md rounded-3xl shadow-lg p-8 text-center border-2 flex flex-col"
               >
                 {popular && (
                   <motion.span
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: 0.2 }}
                     className="absolute -top-4 left-[8.5rem] -translate-x-1/2 bg-[#3b82f6] text-white px-4 py-1 rounded-full text-xs font-semibold shadow-md"
                   >
                     Most Popular
@@ -325,8 +286,6 @@ const SubscriptionPricing: React.FC = () => {
                 <div className="flex items-center justify-center gap-2 mb-2">
                   <motion.span  
                     className={`inline-block w-6 h-6 rounded-full ${popular ? "bg-[#93c5fd]/20 text-[#3b82f6]" : "bg-[#93c5fd]/10 text-[#1e40af]/80"} flex items-center justify-center animate-pulse-slow`}
-                    whileHover={{ scale: 1.2 }}
-                    transition={{ duration: 0.2 }}
                   >
                     <Check size={18} />
                   </motion.span>
@@ -365,8 +324,9 @@ const SubscriptionPricing: React.FC = () => {
                         showTimeSelect
                         timeIntervals={15}
                         dateFormat="MMMM d, yyyy h:mm aa"
-                        minDate={new Date("2025-06-21T11:21:00+05:30")}
-                        timeCaption="Time"
+                        minDate={new Date()}
+                        minTime={new Date(new Date().setHours(9, 0, 0))}
+                        maxTime={new Date(new Date().setHours(18, 0, 0))}
                         className="w-full p-2 border rounded-lg text-[#1e40af]"
                         placeholderText="Choose a date and time"
                       />
@@ -381,40 +341,26 @@ const SubscriptionPricing: React.FC = () => {
                   </div>
                 )}
                 <div className="flex-grow" />
-                <motion.div className="mt-4" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <button
                     onClick={() => {
                       if (typeof pkg.price === "number") {
                         if (!user) {
                           navigate("/login");
-                                toast("Please sign in to continue booking!");
                           return;
                         }
                         handleBuy(pkg);
                       } else {
                         const el = document.querySelector("#contact");
-                        if (el) {
-                          el.scrollIntoView({ behavior: "smooth" });
-                        }
+                        if (el) el.scrollIntoView({ behavior: "smooth" });
                       }
                     }}
-
                     disabled={paying === pkg.id}
                     className="w-full bg-[#3b82f6] text-white py-3 px-8 rounded-xl text-lg font-semibold shadow-md hover:bg-[#1e40af] transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
                   >
                     {paying === pkg.id ? 'Processing...' : typeof pkg.price === "number" ? `Book for ₹${pkg.price}` : 'Contact for Quote'}
                   </button>
                 </motion.div>
-
-                <motion.div
-                  className="absolute inset-0 pointer-events-none"
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 0.15 }}
-                  transition={{ duration: 0.3 }}
-                  style={{
-                    background: "radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.2), transparent 70%)",
-                  }}
-                />
               </motion.div>
             );
           })}
@@ -422,7 +368,6 @@ const SubscriptionPricing: React.FC = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
           className="mt-16 text-center"
         >
           <p className="text-[#1e40af]/80 mb-4">Need a custom solution? We've got you covered.</p>
