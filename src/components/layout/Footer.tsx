@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { ArrowUp, Mail, Phone, MapPin } from 'lucide-react';
 import { FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import Container from '../ui/Container';
+import { subscribeNewsletter } from '../../services/newsletterService';
 
 interface Service {
   title: string;
@@ -30,35 +31,28 @@ const Footer = () => {
   };
 
   const handleSubscribe = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setMessage('');
+  e.preventDefault();
+  setIsLoading(true);
+  setMessage('');
 
-    try {
-      const response = await fetch('/api/newsletter/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
+  try {
+    await subscribeNewsletter(email); // pass email here
 
-      const data = await response.json();
-
-      if (response.status === 201) {
-        setMessage('Successfully subscribed! Please check your email to verify.');
-        setEmail('');
-      } else if (response.status === 409) {
-        setMessage('This email is already subscribed.');
-      } else {
-        setMessage(data.message || 'An error occurred. Please try again.');
-      }
-    } catch (error) {
+    setMessage('Successfully subscribed! Please check your email to verify.');
+    setEmail('');
+  } catch (error: any) {
+    if (error.response?.status === 409) {
+      setMessage('This email is already subscribed.');
+    } else if (error.response?.data?.message) {
+      setMessage(error.response.data.message);
+    } else {
       setMessage('An error occurred. Please try again later.');
-    } finally {
-      setIsLoading(false);
     }
-  };
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   if (location.pathname.startsWith('/admin') || location.pathname.startsWith('/login')) {
     return null;
