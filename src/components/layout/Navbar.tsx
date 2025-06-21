@@ -163,7 +163,7 @@ const Navbar = () => {
     { name: 'Home', href: isHomePage ? '#home' : '/#home', hash: '#home', path: '/' },
     { name: 'Services', href: isHomePage ? '#services' : '/#services', hash: '#services', path: '/' },
         { name: 'Tech Stack', href: isHomePage ? '#tech-stack' : '/#tech-stack', hash: '#tech-stack', path: '/' },
-    { name: 'Pricing', href: isHomePage ? '#pricing' : '/#pricing', hash: '#pricing', path: '/' },
+    { name: 'Book Consultation', href: isHomePage ? '#pricing' : '/#pricing', hash: '#pricing', path: '/' },
     { name: 'Blogs', href: isHomePage ? '#blogs' : '/blogs', hash: '#blogs', path: '/' },
     { name: 'Events', href: isHomePage ? '#events' : '/#events', hash: '#events', path: '/' },
 

@@ -17,6 +17,7 @@ export interface Order {
 
 export const createOrder = async (data: Order) => {
   const res = await api.post('/orders', data);
+  
   return res.data;
 };
 
