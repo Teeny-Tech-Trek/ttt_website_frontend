@@ -59,21 +59,22 @@ const sectionTop = (section as HTMLElement).offsetTop;
       <section id="about">
         <About />
       </section>
-      <section id="blogs">
+      <section id="tech-stack">
+        <TechStack />
+      </section>
+         <section id="pricing">
+        <Pricing />
+      </section>
+        <section id="blogs">
         <Blogs />
       </section>
       <section id="events">
         <Events />
       </section>
-      <section id="tech-stack">
-        <TechStack />
-      </section>
       <section id="why-us">
         <WhyUs />
       </section>
-      <section id="pricing">
-        <Pricing />
-      </section>
+   
       <section id="contact">
         <Contact />
       </section>
