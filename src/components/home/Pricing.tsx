@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Check } from "lucide-react";
-import Container from "../ui/Container";
-import SectionHeading from "../ui/SectionHeading";
-import { useAuth } from "../../context/AuthContext";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
+import Container from "../ui/Container";
+import SectionHeading from "../ui/SectionHeading";
 
+// Load Razorpay SDK
 const loadRazorpay = () => {
   return new Promise((resolve) => {
     if (document.getElementById("razorpay-sdk")) return resolve(true);
@@ -24,7 +26,7 @@ const packages = [
   {
     id: "starter-strategy-call",
     name: "Starter Strategy Call",
-    description: "Unlock the potential of AI for your business in just 45 minutes. Designed for founders, solopreneurs, and creators who are curious about AI but unsure where to begin.",
+    description: "Unlock the potential of AI for your business in just 45 minutes.",
     price: 1200,
     duration: "45 mins",
     benefits: [
@@ -32,52 +34,70 @@ const packages = [
       "Tactical quick wins you can implement fast",
       "A no-fluff roadmap for future AI adoption",
       "Guidance on ROI and effort vs. impact",
-      "A curated resource pack to take things forward"
-    ]
+      "A curated resource pack to take things forward",
+    ],
   },
   {
     id: "ai-readiness-audit",
     name: "AI Readiness Audit",
-    description: "A 90-minute deep-dive designed for business owners, team leads, and decision-makers who want to evaluate where and how AI can be integrated effectively.",
+    description: "A 90-minute deep-dive designed for business owners.",
     price: 2100,
     duration: "90 mins",
     benefits: [
-      "A thorough consultation uncovering process bottlenecks and automation potential",
+      "A thorough consultation uncovering process bottlenecks",
       "An objective AI readiness score across your operations",
-      "A customized 3-month action plan with key next steps",
-      "A detailed PDF report with tool recommendations, risks, and roadmap",
-      "Expert insight into integration feasibility and ROI"
-    ]
+      "A customized 3-month action plan",
+      "A detailed PDF report with tool recommendations",
+      "Expert insight into integration feasibility and ROI",
+    ],
   },
   {
     id: "custom-ai-roadmap",
     name: "Custom AI Roadmap",
-    description: "Turn your AI vision into a ready-to-execute plan — tailored to your team, tools, and timeline. Designed for growth-stage teams and startups.",
+    description: "Turn your AI vision into a ready-to-execute plan.",
     price: "Custom",
     duration: "Custom",
     benefits: [
-      "In-depth analysis of your workflows, pain points, and data sources",
-      "A custom AI implementation plan with projected ROI and impact",
-      "A technical requirements document to align with devs or vendors",
-      "Recommended tools, platforms, and integration strategies",
-      "Defined timeline, milestones, and team responsibilities",
-      "Risk mitigation strategies to avoid costly missteps",
-      "A team training outline to get everyone AI-ready"
-    ]
-  }
+      "In-depth analysis of your workflows",
+      "A custom AI implementation plan",
+      "A technical requirements document",
+      "Recommended tools and platforms",
+      "Defined timeline and milestones",
+      "Risk mitigation strategies",
+      "A team training outline",
+    ],
+  },
 ];
 
 const SubscriptionPricing: React.FC = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [paymentError, setPaymentError] = useState("");
   const [paying, setPaying] = useState<string | null>(null);
-
-  const { user, accessToken } = useAuth();
+  const [selectedDateTime, setSelectedDateTime] = useState<Date | null>(null);
+  const [showForm, setShowForm] = useState<string | null>(null);
+  const [email, setEmail] = useState("");
   const navigate = useNavigate();
+
+  const validateEmail = (email: string) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
 
   const handleBuy = async (pkg: typeof packages[0]) => {
     if (pkg.price === "Custom") {
       navigate("/contact");
+      return;
+    }
+
+    if (!email || !validateEmail(email)) {
+      setPaymentError("Please enter a valid email address.");
+      setShowForm(pkg.id);
+      return;
+    }
+
+    if (!selectedDateTime) {
+      setPaymentError("Please select a date and time.");
+      setShowForm(pkg.id);
       return;
     }
 
@@ -91,34 +111,72 @@ const SubscriptionPricing: React.FC = () => {
       return;
     }
 
+    // Create Razorpay order
+    let razorpayOrder;
+    try {
+      const response = await api.post("/orders/razorpay", {
+        package_id: pkg.id,
+        amount: pkg.price,
+        scheduled_date_time: selectedDateTime.toISOString(),
+        attendee_email: email,
+      });
+      razorpayOrder = response.data;
+    } catch (e) {
+      setPaymentError("Failed to create Razorpay order. Please try again.");
+      setPaying(null);
+      return;
+    }
+
     const amountPaise = typeof pkg.price === "number" ? pkg.price * 100 : 0;
+    const durationMinutes = pkg.duration === "45 mins" ? 45 : pkg.duration === "90 mins" ? 90 : 60;
 
     const options = {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
       amount: amountPaise,
       currency: "INR",
       name: "Teeny Tech Trek",
-      description: pkg.description || pkg.name,
+      description: `${pkg.name} - Scheduled for ${selectedDateTime.toLocaleString()}`,
+      order_id: razorpayOrder.razorpayOrderId, // Use Razorpay order ID
       handler: async function (response: any) {
         try {
-          await api.post(
-            '/orders/verify',
-            {
-              razorpay_payment_id: response.razorpay_payment_id,
-              package_id: pkg.id,
-              amount: pkg.price,
-            },
-            { headers: { Authorization: `Bearer ${accessToken}` } }
+          // Verify payment
+          await api.post("/orders/verify", {
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+            db_order_id: razorpayOrder.dbOrderId,
+            scheduled_date_time: selectedDateTime.toISOString(),
+            attendee_email: email,
+          });
+
+          // Create Google Calendar event
+          await api.post("/calendar/create-event", {
+            packageId: pkg.id,
+            startDateTime: selectedDateTime.toISOString(),
+            endDateTime: new Date(selectedDateTime.getTime() + durationMinutes * 60000).toISOString(),
+            attendeeEmail: email,
+            summary: `${pkg.name} Consultancy Booking`,
+            description: `Consultancy session for ${pkg.name} booked by ${email}`,
+          });
+
+          alert(
+            `Payment successful! Your ${pkg.name} consultancy is scheduled for ${selectedDateTime.toLocaleString()}. Added to calendar.`
           );
-          alert("Payment successful! Your consultancy booking will be scheduled and added to our calendar soon.");
+          setSelectedDateTime(null);
+          setShowForm(null);
+          setEmail("");
           navigate("/orders");
-        } catch (e: any) {
-          setPaymentError("Payment verification failed. Please contact support.");
+        } catch (e) {
+          setPaymentError("Payment or calendar booking failed. Please contact support.");
+        } finally {
+          setPaying(null);
         }
       },
-      prefill: {},
+      prefill: { email },
       notes: {
         package_id: pkg.id,
+        scheduled_date_time: selectedDateTime.toISOString(),
+        attendee_email: email,
       },
       theme: { color: "#3b82f6" },
     };
@@ -126,7 +184,20 @@ const SubscriptionPricing: React.FC = () => {
     // @ts-ignore
     const razorpay = new window.Razorpay(options);
     razorpay.open();
-    setPaying(null);
+  };
+
+  const handleFormSubmit = (pkgId: string) => {
+    if (!email || !validateEmail(email)) {
+      setPaymentError("Please enter a valid email address.");
+      return;
+    }
+    if (!selectedDateTime) {
+      setPaymentError("Please select a date and time.");
+      return;
+    }
+    setShowForm(null);
+    const pkg = packages.find((p) => p.id === pkgId);
+    if (pkg) handleBuy(pkg);
   };
 
   const containerVariants = {
@@ -153,18 +224,18 @@ const SubscriptionPricing: React.FC = () => {
   };
 
   return (
-    <section id="pricing" className="py-20 bg-[#f8fafc] relative overflow-hidden">
+    <section className="py-20 bg-[#f8fafc] relative overflow-hidden">
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(59,130,246,0.08)_1px,transparent_0)] bg-[size:40px_40px] opacity-40" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(59,130,246,0.08)_1px,transparent_0)] bg-[size:40px_40px] opacity-80" />
       </div>
       <motion.div
         animate={{ scale: [1, 1.1, 1] }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         className="absolute top-20 left-10 w-20 h-20 bg-[#93c5fd]/30 rounded-full blur-xl"
       />
       <motion.div
         animate={{ scale: [1, 0.8, 1] }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         className="absolute bottom-20 right-10 w-32 h-32 bg-[#3b82f6]/30 rounded-full blur-xl"
       />
       <Container className="relative z-10">
@@ -198,7 +269,7 @@ const SubscriptionPricing: React.FC = () => {
                 variants={itemVariants}
                 whileHover="hover"
                 className="relative bg-white/90 backdrop-blur-md rounded-3xl shadow-lg p-8 text-center border-2 flex flex-col perspective-1000 transform-gpu"
-                style={{ transformStyle: 'preserve-3d' }}
+                style={{ transformStyle: "preserve-3d" }}
               >
                 {popular && (
                   <motion.span
@@ -212,7 +283,7 @@ const SubscriptionPricing: React.FC = () => {
                 )}
                 <div className="flex items-center justify-center gap-2 mb-2">
                   <motion.span
-                    className={`inline-block w-6 h-6 rounded-full ${popular ? 'bg-[#93c5fd]/20 text-[#3b82f6]' : 'bg-[#93c5fd]/10 text-[#1e40af]/80'} flex items-center justify-center animate-pulse-slow`}
+                    className={`inline-block w-6 h-6 rounded-full ${popular ? "bg-[#93c5fd]/20 text-[#3b82f6]" : "bg-[#93c5fd]/10 text-[#1e40af]/80"} flex items-center justify-center animate-pulse-slow`}
                     whileHover={{ scale: 1.2 }}
                     transition={{ duration: 0.2 }}
                   >
@@ -233,6 +304,41 @@ const SubscriptionPricing: React.FC = () => {
                     </li>
                   ))}
                 </ul>
+                {showForm === pkg.id && (
+                  <div className="mb-4 space-y-4">
+                    <div>
+                      <label className="block text-[#1e40af] mb-2">Your Email</label>
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter your email"
+                        className="w-full p-2 border rounded-lg text-[#1e40af]"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[#1e40af] mb-2">Select Date and Time (IST)</label>
+                      <DatePicker
+                        selected={selectedDateTime}
+                        onChange={(date: Date | null) => setSelectedDateTime(date)} // Fixed TypeScript error
+                        showTimeSelect
+                        timeIntervals={15}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        minDate={new Date("2025-06-21T11:21:00+05:30")} // Current date: June 21, 2025, 11:21 AM IST
+                        timeCaption="Time"
+                        className="w-full p-2 border rounded-lg text-[#1e40af]"
+                        placeholderText="Choose a date and time"
+                      />
+                    </div>
+                    <button
+                      onClick={() => handleFormSubmit(pkg.id)}
+                      disabled={!selectedDateTime || !email}
+                      className="w-full bg-[#3b82f6] text-white py-2 px-4 rounded-lg font-semibold hover:bg-[#1e40af] transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                      Proceed to Payment
+                    </button>
+                  </div>
+                )}
                 <div className="flex-grow" />
                 <motion.div
                   className="mt-4"
@@ -240,30 +346,24 @@ const SubscriptionPricing: React.FC = () => {
                   whileTap={{ scale: 0.95 }}
                 >
                   <button
-                    onClick={() => {
-                      if (typeof pkg.price === "number") {
-                        handleBuy(pkg);
-                      } else {
-                        const el = document.querySelector("#contact");
-                        if (el) {
-                          el.scrollIntoView({ behavior: "smooth" });
-                        }
-                      }
-                    }}
+                    onClick={() => handleBuy(pkg)}
                     disabled={paying === pkg.id}
                     className="w-full bg-[#3b82f6] text-white py-3 px-8 rounded-xl text-lg font-semibold shadow-md hover:bg-[#1e40af] transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
-                  >
-                    {paying === pkg.id ? 'Processing...' : typeof pkg.price === "number" ? `Book for ₹${pkg.price}` : 'Contact for Quote'}
+                    >
+                    {paying === pkg.id
+                      ? "Processing..."
+                      : typeof pkg.price === "number"
+                      ? `Book for ₹${pkg.price}`
+                      : "Contact for Quote"}
                   </button>
                 </motion.div>
-
                 <motion.div
                   className="absolute inset-0 pointer-events-none"
                   initial={{ opacity: 0 }}
                   whileHover={{ opacity: 0.15 }}
                   transition={{ duration: 0.3 }}
                   style={{
-                    background: 'radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.2), transparent 70%)',
+                    background: "radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.2), transparent 70%)",
                   }}
                 />
               </motion.div>
