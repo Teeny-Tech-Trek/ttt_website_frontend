@@ -162,7 +162,7 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Home', href: isHomePage ? '#home' : '/#home', hash: '#home', path: '/' },
     { name: 'Services', href: isHomePage ? '#services' : '/#services', hash: '#services', path: '/' },
-    { name: 'Tech Stack', href: isHomePage ? '#tech-stack' : '/#tech-stack', hash: '#tech-stack', path: '/' },
+        { name: 'Tech Stack', href: isHomePage ? '#tech-stack' : '/#tech-stack', hash: '#tech-stack', path: '/' },
     { name: 'Book Consultation', href: isHomePage ? '#pricing' : '/#pricing', hash: '#pricing', path: '/' },
     { name: 'Blogs', href: isHomePage ? '#blogs' : '/blogs', hash: '#blogs', path: '/' },
     { name: 'Events', href: isHomePage ? '#events' : '/#events', hash: '#events', path: '/' },
@@ -299,25 +299,24 @@ const Navbar = () => {
 
             {user ? (
               <div className="flex items-center gap-4">
-                {!user && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.6, type: 'spring', stiffness: 300 }}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                >
+                  <MotionLink
+                    to="/admin"
+                    smooth
+                    className="text-sm font-medium text-blue-900/70 hover:text-blue-600 transition-colors flex items-center gap-2"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
                   >
-                    <MotionLink
-                      smooth
-                      to="/#contact"
-                      className="px-8 py-2.5 bg-blue-600 mr-[-2rem] text-white text-sm font-medium rounded-full hover:bg-blue-700 transition-all shadow-sm hover:shadow-md"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => setActiveSection('#contact')}
-                    >
-                      Get Started
-                    </MotionLink>
-                  </motion.div>
-                )}
-
+                    Hi, {user.role}
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2V9a2 2 0 00-2-2h-2a2 2 0 00-2 2v10m0 0a2 2 0 01-2 2H5a2 2 0 01-2-2V9" />
+                    </svg>
+                  </MotionLink>
+                </motion.div>
               </div>
             ) : (
               <motion.div
@@ -364,22 +363,25 @@ const Navbar = () => {
               </motion.span>
             </motion.button>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.6, type: 'spring', stiffness: 300 }}
-            >
-              <MotionLink
-                smooth
-                to="/#contact"
-                className="px-8 py-2.5 bg-blue-600   mr-[-2rem] text-white text-sm font-medium rounded-full hover:bg-blue-700 transition-all shadow-sm hover:shadow-md"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setActiveSection('#contact')}
-              >
-                Get Started
-              </MotionLink>
-            </motion.div>
+         {!user && (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.9 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ delay: 0.6, type: 'spring', stiffness: 300 }}
+  >
+    <MotionLink
+      smooth
+      to="/#contact"
+      className="px-8 py-2.5 bg-blue-600 mr-[-2rem] text-white text-sm font-medium rounded-full hover:bg-blue-700 transition-all shadow-sm hover:shadow-md"
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      onClick={() => setActiveSection('#contact')}
+    >
+      Get Started
+    </MotionLink>
+  </motion.div>
+)}
+
           </div>
 
           {/* Mobile Menu Button */}
@@ -492,7 +494,7 @@ const Navbar = () => {
                     </MotionLink>
                   </motion.div>
                 )}
-
+            
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -512,7 +514,7 @@ const Navbar = () => {
                     Get Started
                   </MotionLink>
                 </motion.div>
-                {isWidgetReady && (
+                    {isWidgetReady && (
                   <motion.button
                     onClick={handleTalkToAI}
                     className="px-6 py-3 bg-black text-white text-lg font-medium rounded-full hover:text-blue-500 transition-all shadow-sm hover:shadow-md flex items-center gap-2"
