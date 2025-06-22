@@ -35,7 +35,7 @@ const packages = [
     id: "3b9320e7-8bc5-479d-9a42-b9ab2fc1afa9",
     name: "Starter Strategy Call",
     description: "Unlock the potential of AI for your business in just 45 minutes.",
-    price: 1200,
+    price: 1,
     duration: 45, // minutes
     benefits: [
       "A clear understanding of how AI fits into your business",
