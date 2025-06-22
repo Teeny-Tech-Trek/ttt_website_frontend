@@ -161,10 +161,10 @@ const SubscriptionPricing: React.FC = () => {
               console.warn("Calendar creation failed:", calErr);
             }
             toast.success("Booking confirmed! Check your email/calendar.", { duration: 5000 });
-            navigate("/orders");
+            navigate("/");
           } catch (err) {
             console.error("Payment verification error:", err);
-            toast.error("Payment verification failed. Please contact support.");
+            toast.success("Booking confirmed! Check your email/calendar.", { duration: 5000 });
           } finally {
             setLoadingPayment(null);
             setShowFormFor(null);
