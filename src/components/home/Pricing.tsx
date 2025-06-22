@@ -123,14 +123,13 @@ const SubscriptionPricing: React.FC = () => {
         { headers: { Authorization: `Bearer ${accessToken}` } }
       );
 
-      const { razorpayOrderId, dbOrderId } = orderResponse.data;
+      const { razorpayOrderId } = orderResponse.data; // Removed dbOrderId
       const durationMinutes = pkg.duration === "45 mins" ? 45 : 90;
 
       // 2. Initialize Razorpay payment
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-amount: Number(pkg.price) * 100,
-
+        amount: Number(pkg.price) * 100,
         currency: "INR",
         name: "Teeny Tech Trek",
         description: pkg.name,
@@ -144,7 +143,6 @@ amount: Number(pkg.price) * 100,
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_signature: response.razorpay_signature,
-                db_order_id: dbOrderId
               },
               { headers: { Authorization: `Bearer ${accessToken}` } }
             );
@@ -159,7 +157,7 @@ amount: Number(pkg.price) * 100,
                 ).toISOString(),
                 attendeeEmail: email,
                 summary: `${pkg.name} Booking`,
-                description: `Scheduled consultation for ${pkg.name}`
+                description: `Scheduled consultation for ${pkg.name}`,
               },
               { headers: { Authorization: `Bearer ${accessToken}` } }
             );
@@ -182,13 +180,13 @@ amount: Number(pkg.price) * 100,
           ondismiss: () => {
             setPaying(null);
             toast("Payment window closed");
-          }
-        }
+          },
+        },
       };
 
       const razorpay = new (window as any).Razorpay(options);
       razorpay.open();
-    } catch (error:any) {
+    } catch (error: any) {
       console.error("Order creation error:", error);
       setPaymentError(error.response?.data?.error || "Payment initiation failed");
       setPaying(null);
@@ -284,8 +282,10 @@ amount: Number(pkg.price) * 100,
                   </motion.span>
                 )}
                 <div className="flex items-center justify-center gap-2 mb-2">
-                  <motion.span  
-                    className={`inline-block w-6 h-6 rounded-full ${popular ? "bg-[#93c5fd]/20 text-[#3b82f6]" : "bg-[#93c5fd]/10 text-[#1e40af]/80"} flex items-center justify-center animate-pulse-slow`}
+                  <motion.span
+                    className={`inline-block w-6 h-6 rounded-full ${
+                      popular ? "bg-[#93c5fd]/20 text-[#3b82f6]" : "bg-[#93c5fd]/10 text-[#1e40af]/80"
+                    } flex items-center justify-center animate-pulse-slow`}
                   >
                     <Check size={18} />
                   </motion.span>
