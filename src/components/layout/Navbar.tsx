@@ -26,11 +26,9 @@ const Navbar = () => {
 
   // Initialize activeSection based on URL hash
   const [activeSection, setActiveSection] = useState(() => {
-    // Only use hash if we're on the home page
     if (isHomePage && location.hash) {
       return location.hash;
     }
-    // For other pages, check if we're on a specific route
     if (location.pathname === '/blogs') return '#blogs';
     return '#home';
   });
@@ -68,11 +66,9 @@ const Navbar = () => {
       }
     };
 
-    // Initial check
     checkWidget();
 
-    // Poll every 500ms, timeout after 20s
-    const maxAttempts = 40; // 20s / 500ms
+    const maxAttempts = 40;
     let attempts = 0;
     const interval = setInterval(() => {
       checkWidget();
@@ -86,7 +82,6 @@ const Navbar = () => {
       }
     }, 500);
 
-    // Listen for script load/error
     const script = document.querySelector('script[src="https://elevenlabs.io/convai-widget/index.js"]');
     if (script) {
       script.addEventListener('load', () => {
@@ -116,16 +111,13 @@ const Navbar = () => {
       const backdrop = document.getElementById('convai-backdrop');
 
       if (convaiElement && backdrop) {
-        // Show widget and backdrop
         convaiElement.classList.add('visible');
         backdrop.classList.add('visible');
         setIsWidgetVisible(true);
 
-        // Optional: Trigger widget initialization (adjust based on docs)
         convaiElement.dispatchEvent(new CustomEvent('open-convai-widget'));
         console.log('Displayed elevenlabs-convai widget');
 
-        // Add click handler to hide widget when clicking backdrop
         const hideWidget = () => {
           convaiElement.classList.remove('visible');
           backdrop.classList.remove('visible');
@@ -162,11 +154,10 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Home', href: isHomePage ? '#home' : '/#home', hash: '#home', path: '/' },
     { name: 'Services', href: isHomePage ? '#services' : '/#services', hash: '#services', path: '/' },
-        { name: 'Tech Stack', href: isHomePage ? '#tech-stack' : '/#tech-stack', hash: '#tech-stack', path: '/' },
+    { name: 'Tech Stack', href: isHomePage ? '#tech-stack' : '/#tech-stack', hash: '#tech-stack', path: '/' },
     { name: 'Book Consultation', href: isHomePage ? '#pricing' : '/#pricing', hash: '#pricing', path: '/' },
-    { name: 'Blogs', href: isHomePage ? '#blogs' : '/blogs', hash: '#blogs', path: '/' },
+    { name: 'Blogs', href: isHomePage ? '#blogs' : '/blogs', hash: '#blogs', path: '/blogs' },
     { name: 'Events', href: isHomePage ? '#events' : '/#events', hash: '#events', path: '/' },
-
     { name: 'Contact', href: isHomePage ? '#contact' : '/#contact', hash: '#contact', path: '/' },
   ];
 
@@ -176,7 +167,7 @@ const Navbar = () => {
 
     const updateActiveSection = () => {
       const offsets = navLinks
-        .filter(link => link.path === '/') // Only consider links that are on the home page
+        .filter(link => link.path === '/')
         .map((link) => {
           const element = document.querySelector(link.hash);
           if (!element) return { hash: link.hash, visible: false, top: Infinity };
@@ -217,12 +208,9 @@ const Navbar = () => {
   }, [location.hash, location.pathname, isHomePage]);
 
   const isLinkActive = (linkHash: string, linkPath: string): boolean => {
-    // For non-home pages
     if (!isHomePage) {
       return location.pathname === linkPath;
     }
-
-    // For home page
     return activeSection === linkHash;
   };
 
@@ -254,7 +242,7 @@ const Navbar = () => {
             <motion.img
               src="/logo.svg"
               alt="Teeny Tech Trek Logo"
-              className="w-9 h-9"
+              className="w-12 h-15 ml-[-15px]"
             />
             <motion.span
               className="text-xl font-semibold text-blue-900 tracking-tight"
@@ -317,6 +305,17 @@ const Navbar = () => {
                     </svg>
                   </MotionLink>
                 </motion.div>
+                <motion.button
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.6 }}
+                  onClick={handleLogout}
+                  className="text-sm font-medium text-red-500 hover:text-red-600"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Logout
+                </motion.button>
               </div>
             ) : (
               <motion.div
@@ -346,7 +345,6 @@ const Navbar = () => {
               whileHover={isWidgetReady ? { scale: 1.05 } : {}}
               whileTap={isWidgetReady ? { scale: 0.95 } : {}}
             >
-              {/* Background animation on hover */}
               {isWidgetReady && (
                 <motion.span
                   className="absolute inset-0 bg-white z-0"
@@ -355,52 +353,75 @@ const Navbar = () => {
                   transition={{ duration: 0.3 }}
                 />
               )}
-
-              {/* Content with z-index to appear above background */}
               <motion.span className="flex items-center gap-2 z-10 relative">
                 <Bot size={16} />
                 Start a call with AI
               </motion.span>
             </motion.button>
 
-         {!user && (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.9 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ delay: 0.6, type: 'spring', stiffness: 300 }}
-  >
-    <MotionLink
-      smooth
-      to="/#contact"
-      className="px-8 py-2.5 bg-blue-600 mr-[-2rem] text-white text-sm font-medium rounded-full hover:bg-blue-700 transition-all shadow-sm hover:shadow-md"
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      onClick={() => setActiveSection('#contact')}
-    >
-      Get Started
-    </MotionLink>
-  </motion.div>
-)}
-
+            {!user && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.6, type: 'spring', stiffness: 300 }}
+              >
+                <MotionLink
+                  smooth
+                  to="/#contact"
+                  className="px-8 py-2.5 bg-blue-600 mr-[-2rem] text-white text-sm font-medium rounded-full hover:bg-blue-700 transition-all shadow-sm hover:shadow-md"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setActiveSection('#contact')}
+                >
+                  Get Started
+                </MotionLink>
+              </motion.div>
+            )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <motion.button
-            className="lg:hidden z-50 p-2 rounded-full hover:bg-blue-50/50 transition-colors"
-            onClick={toggleMenu}
-            aria-label="Toggle Menu"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            {isMenuOpen ? (
-              <X size={24} className="text-blue-900" />
-            ) : (
-              <Menu size={24} className="text-blue-900" />
-            )}
-          </motion.button>
+          {/* Mobile Navigation: Center "Start a call with AI" Button and Menu Toggle */}
+          <div className="flex items-center gap-2 lg:hidden">
+            <motion.button
+              onClick={handleTalkToAI}
+              disabled={!isWidgetReady}
+              className={`px-4 py-1.5 text-sm font-medium rounded-full transition-all flex items-center gap-2 relative overflow-hidden ${isWidgetReady
+                ? 'bg-black text-white hover:text-blue-500'
+                : 'bg-gray-300 text-black-500 cursor-not-allowed'
+                }`}
+              whileHover={isWidgetReady ? { scale: 1.05 } : {}}
+              whileTap={isWidgetReady ? { scale: 0.95 } : {}}
+            >
+              {isWidgetReady && (
+                <motion.span
+                  className="absolute inset-0 bg-white z-0"
+                  initial={{ scale: 0 }}
+                  whileHover={{ scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                />
+              )}
+              <motion.span className="flex items-center gap-1 z-10 relative">
+                <Bot size={14} />
+                AI Call
+              </motion.span>
+            </motion.button>
+
+            <motion.button
+              className="p-2 rounded-full hover:bg-blue-50/50 transition-colors z-50"
+              onClick={toggleMenu}
+              aria-label="Toggle Menu"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              {isMenuOpen ? (
+                <X size={24} className="text-blue-900" />
+              ) : (
+                <Menu size={24} className="text-blue-900" />
+              )}
+            </motion.button>
+          </div>
         </nav>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Menu */}
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
@@ -408,7 +429,7 @@ const Navbar = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: '-100%' }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="fixed inset-0 top-0 z-40 bg-white/95 backdrop-blur-md lg:hidden"
+              className="fixed inset-0 top-[80px] z-40 bg-white/95 backdrop-blur-md lg:hidden"
             >
               <div className="flex flex-col items-center justify-center min-h-screen space-y-6">
                 {navLinks.map((link, index) => (
@@ -461,17 +482,20 @@ const Navbar = () => {
                         </svg>
                       </MotionLink>
                     </motion.div>
-                    <motion.button
+                    <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.8, duration: 0.3 }}
-                      onClick={handleLogout}
-                      className="text-lg font-medium text-red-500 hover:text-red-600"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
                     >
-                      Logout
-                    </motion.button>
+                      <motion.button
+                        onClick={handleLogout}
+                        className="text-lg font-medium text-red-500 hover:text-red-600"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Logout
+                      </motion.button>
+                    </motion.div>
                   </>
                 ) : (
                   <motion.div
@@ -494,38 +518,28 @@ const Navbar = () => {
                     </MotionLink>
                   </motion.div>
                 )}
-            
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.9, duration: 0.3 }}
-                >
-                  <MotionLink
-                    smooth
-                    to="/#contact"
-                    className="px-6 py-3 bg-blue-600 text-white text-lg font-medium rounded-full hover:bg-blue-700 transition-colors shadow-sm hover:shadow-md"
-                    onClick={() => {
-                      setIsMenuOpen(false);
-                      setActiveSection('#contact');
-                    }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Get Started
-                  </MotionLink>
-                </motion.div>
-                    {isWidgetReady && (
-                  <motion.button
-                    onClick={handleTalkToAI}
-                    className="px-6 py-3 bg-black text-white text-lg font-medium rounded-full hover:text-blue-500 transition-all shadow-sm hover:shadow-md flex items-center gap-2"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Bot size={18} />
-                    Start a call with AI
-                  </motion.button>
-                )}
 
+                {!user && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.9, duration: 0.3 }}
+                  >
+                    <MotionLink
+                      smooth
+                      to="/#contact"
+                      className="px-6 py-3 bg-blue-600 text-white text-lg font-medium rounded-full hover:bg-blue-700 transition-colors shadow-sm hover:shadow-md"
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        setActiveSection('#contact');
+                      }}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Get Started
+                    </MotionLink>
+                  </motion.div>
+                )}
               </div>
             </motion.div>
           )}

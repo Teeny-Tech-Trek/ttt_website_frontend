@@ -298,7 +298,7 @@ const AuthPage: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.5 }}
           >
-            <GoogleLogin
+            {/* <GoogleLogin
               onSuccess={async (credentialResponse: CredentialResponse) => {
                 if (credentialResponse.credential) {
                   try {
@@ -318,7 +318,7 @@ const AuthPage: React.FC = () => {
                 toast.error("Google login failed");
               }}
               useOneTap
-            />
+            /> */}
           </motion.div>
         </form>
 

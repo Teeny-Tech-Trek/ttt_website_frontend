@@ -63,7 +63,6 @@ const sampleEvents: Event[] = [
   }
 ];
 
-
 export default function EventDisplayPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
@@ -169,7 +168,7 @@ export default function EventDisplayPage() {
 
     const googleCalendarUrl = new URL('https://calendar.google.com/calendar/render');
     googleCalendarUrl.searchParams.set('action', 'TEMPLATE');
-googleCalendarUrl.searchParams.set('text', event.title ?? '');
+    googleCalendarUrl.searchParams.set('text', event.title ?? '');
     googleCalendarUrl.searchParams.set('dates', `${formatDate(startDate)}/${formatDate(endDate)}`);
     googleCalendarUrl.searchParams.set('details', event.description || '');
     googleCalendarUrl.searchParams.set('location', event.location || '');
@@ -259,7 +258,7 @@ googleCalendarUrl.searchParams.set('text', event.title ?? '');
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xl text-gray-600 max-w-2xl mx-auto"
+            className="text-xl text-gray600 max-w-2xl mx-auto"
           >
             Join us for cutting-edge technology events and networking opportunities
           </motion.p>
@@ -609,6 +608,17 @@ googleCalendarUrl.searchParams.set('text', event.title ?? '');
                   >
                     <Calendar size={20} />
                     <span>Add to Google Calendar</span>
+                    <ExternalLink size={16} />
+                  </motion.button>
+                  
+                  <motion.button
+                    onClick={() => window.open('https://lu.ma/zwtsqc9v', '_blank')}
+                    className="flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-2xl font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Users size={20} />
+                    <span>Register Now</span>
                     <ExternalLink size={16} />
                   </motion.button>
                   

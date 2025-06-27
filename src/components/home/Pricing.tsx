@@ -228,19 +228,17 @@ const SubscriptionPricing: React.FC = () => {
   };
 
   return (
-    <section className="py-20 bg-[#f8fafc] relative overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(59,130,246,0.08)_1px,transparent_0)] bg-[size:40px_40px] opacity-80" />
-      </div>
+    <section className="py-20 bg-gray-50 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-white/50" />
       <motion.div
         animate={{ scale: [1, 1.1, 1] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-20 left-10 w-20 h-20 bg-[#93c5fd]/30 rounded-full blur-xl"
+        className="absolute top-20 left-10 w-20 h-20 bg-blue-200/30 rounded-full blur-xl"
       />
       <motion.div
         animate={{ scale: [1, 0.8, 1] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-20 right-10 w-32 h-32 bg-[#3b82f6]/30 rounded-full blur-xl"
+        className="absolute bottom-20 right-10 w-32 h-32 bg-blue-300/30 rounded-full blur-xl"
       />
       <Container className="relative z-10">
         <SectionHeading
@@ -273,47 +271,46 @@ const SubscriptionPricing: React.FC = () => {
               <motion.div
                 key={pkg.id}
                 variants={itemVariants}
-                className="relative bg-white/90 backdrop-blur-md rounded-3xl shadow-lg p-8 text-center border-2 flex flex-col"
+                className={`relative bg-white rounded-xl shadow-sm p-6 text-center border border-gray-100 flex flex-col transition-all hover:shadow-md hover:border-blue-100 ${
+                  popular ? "ring-2 ring-blue-500" : ""
+                }`}
               >
                 {popular && (
                   <motion.span
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="absolute -top-4 left-[8.5rem] -translate-x-1/2 bg-[#3b82f6] text-white px-4 py-1 rounded-full text-xs font-semibold shadow-md"
+                    className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium"
                   >
                     Most Popular
                   </motion.span>
                 )}
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <motion.span
-                    className={`inline-block w-6 h-6 rounded-full ${
-                      popular
-                        ? "bg-[#93c5fd]/20 text-[#3b82f6]"
-                        : "bg-[#93c5fd]/10 text-[#1e40af]/80"
-                    } flex items-center justify-center animate-pulse-slow`}
-                  >
-                    <Check size={18} />
-                  </motion.span>
-                  <span className="text-lg font-semibold text-[#1e40af]">
+                <div className="mb-4">
+                  <h3 className="text-xl font-bold text-gray-900 mb-1">
                     {pkg.name}
-                  </span>
+                  </h3>
+                  <p className="text-gray-600 text-sm">
+                    {pkg.description}
+                  </p>
                 </div>
-                <div className="text-[#1e40af]/80 mb-3">
-                  {pkg.description}
+                <div className="mb-6">
+                  <div className="text-3xl font-bold text-gray-900 mb-1">
+                    {priceText}
+                    {typeof pkg.price === "number" && (
+                      <span className="text-base text-gray-500 font-medium ml-1">
+                        / {pkg.duration} mins
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <div className="text-3xl font-bold mb-1 text-[#1e40af]">
-                  {priceText}
-                  {typeof pkg.price === "number" && (
-                    <span className="text-lg text-[#1e40af]/80 font-medium ml-1">
-                      / {pkg.duration} mins
-                    </span>
-                  )}
-                </div>
-                <ul className="text-left text-[#1e40af]/80 mb-6">
+                <ul className="text-left text-gray-700 mb-6 space-y-3">
                   {pkg.benefits.map((benefit, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <Check size={16} className="mt-1 text-[#3b82f6]" />
-                      <span>{benefit}</span>
+                    <li key={i} className="flex items-start gap-3">
+                      <div className="flex-shrink-0 mt-0.5">
+                        <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                      <span className="text-sm">{benefit}</span>
                     </li>
                   ))}
                 </ul>
@@ -321,7 +318,7 @@ const SubscriptionPricing: React.FC = () => {
                 {showFormFor === pkg.id && typeof pkg.price === "number" && (
                   <div className="mb-4 space-y-4">
                     <div>
-                      <label className="block text-[#1e40af] mb-2">
+                      <label className="block text-gray-700 text-sm font-medium mb-1">
                         Your Email
                       </label>
                       <input
@@ -329,11 +326,11 @@ const SubscriptionPricing: React.FC = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Enter your email"
-                        className="w-full p-2 border rounded-lg text-[#1e40af]"
+                        className="w-full p-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-blue-500 focus:border-blue-500"
                       />
                     </div>
                     <div>
-                      <label className="block text-[#1e40af] mb-2">
+                      <label className="block text-gray-700 text-sm font-medium mb-1">
                         Select Date and Time (IST)
                       </label>
                       <DatePicker
@@ -345,19 +342,18 @@ const SubscriptionPricing: React.FC = () => {
                         timeIntervals={15}
                         dateFormat="MMMM d, yyyy h:mm aa"
                         minDate={new Date()}
-                        // Optionally restrict time window:
                         filterTime={(time) => {
                           const hour = time.getHours();
                           return hour >= 9 && hour <= 18;
                         }}
-                        className="w-full p-2 border rounded-lg text-[#1e40af]"
+                        className="w-full p-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-blue-500 focus:border-blue-500"
                         placeholderText="Choose a date and time"
                       />
                     </div>
                     <button
                       onClick={() => handleFormSubmit(pkg)}
                       disabled={!selectedDateTime || !email || loadingPayment===pkg.id}
-                      className="w-full bg-[#3b82f6] text-white py-2 px-4 rounded-lg font-semibold hover:bg-[#1e40af] transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
+                      className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
                     >
                       {loadingPayment === pkg.id
                         ? 'Processing...'
@@ -367,11 +363,15 @@ const SubscriptionPricing: React.FC = () => {
                 )}
 
                 <div className="flex-grow" />
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                   <button
                     onClick={() => onBookClick(pkg)}
                     disabled={loadingPayment === pkg.id}
-                    className="w-full bg-[#3b82f6] text-white py-3 px-8 rounded-xl text-lg font-semibold shadow-md hover:bg-[#1e40af] transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
+                    className={`w-full py-3 px-6 rounded-lg text-base font-medium transition-colors duration-200 ${
+                      popular 
+                        ? 'bg-blue-600 text-white hover:bg-blue-700'
+                        : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                    } shadow-sm disabled:opacity-70 disabled:cursor-not-allowed`}
                   >
                     {loadingPayment === pkg.id
                       ? 'Processing...'
@@ -390,16 +390,16 @@ const SubscriptionPricing: React.FC = () => {
           animate={inView ? { opacity: 1 } : { opacity: 0 }}
           className="mt-16 text-center"
         >
-          <p className="text-[#1e40af]/80 mb-4">
+          <p className="text-gray-600 mb-4">
             Need a custom solution? We've got you covered.
           </p>
           <motion.a
             href="#contact"
-            className="inline-flex items-center gap-2 bg-[#3b82f6] text-white px-6 py-3 rounded-xl font-semibold hover:bg-[#1e40af] transition-all duration-300 shadow-md"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200 shadow-sm"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
           >
-            Contact Us <Check size={16} />
+            Contact Us
           </motion.a>
         </motion.div>
       </Container>
