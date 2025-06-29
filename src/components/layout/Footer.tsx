@@ -102,7 +102,7 @@ const Footer = () => {
               <img
                 src="/logo.svg"
                 alt="Teeny Tech Trek Logo"
-                className="w-50 h-50 bg-white p-1.5 rounded-lg shadow-md"
+                className="w-15 h-10  rounded-lg shadow-md"
                 onError={(e) => {
                   e.currentTarget.src = 'https://via.placeholder.com/40';
                 }}
