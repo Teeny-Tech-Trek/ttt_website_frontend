@@ -10,6 +10,7 @@ import Blogs from '../../components/home/Blog';
 import Events from '../../components/home/EventList';
 import About from '../../components/home/About';
 import WhyUs from '../../components/home/WhyUs';
+import { Helmet } from 'react-helmet-async';
 
 const HomePage = () => {
   useEffect(() => {
@@ -49,6 +50,15 @@ const sectionTop = (section as HTMLElement).offsetTop;
 
   return (
     <main>
+       <Helmet>
+        <title>Teeny Tech Trek – AI Automation for Lean Teams</title>
+        <meta name="description" content="Build small, launch fast. Custom AI chatbots and automation tools for startups and solopreneurs." />
+        <meta property="og:title" content="Teeny Tech Trek – AI Automation for Lean Teams" />
+        <meta property="og:description" content="Scale smart with custom AI agents and automation tools tailored for lean product teams." />
+        <meta property="og:image" content="https://www.teenytechtrek.com/og-image.jpg" />
+        <meta property="og:url" content="https://www.teenytechtrek.com/" />
+        <link rel="canonical" href="https://www.teenytechtrek.com/" />
+      </Helmet>
       <section id="home" className="relative">
         <Particles />
         <Hero />
