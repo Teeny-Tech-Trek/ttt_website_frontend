@@ -14,6 +14,7 @@ import PackageDetailPage from '../pages/public/PackageDetail';
 import Refund from '../components/policy/Refund';
 import Terms from '../components/policy/Terms';
 import Privacy from '../components/policy/Privacy';
+import Community from '../pages/Community';
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -36,7 +37,7 @@ const AppRoutes = () => (
          <Route path="/refund" element={<Refund />} />
             <Route path="/privacy" element={<Privacy />} />
                <Route path="/terms" element={<Terms />} />
-      
+        <Route path="/community" element={<Community />} />
 
       {/* ←── New public route for "single blog" */}
       <Route path="/blog/:slug" element={<BlogSingleView />} />
