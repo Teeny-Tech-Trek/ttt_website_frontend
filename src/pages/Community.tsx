@@ -18,30 +18,38 @@ const Community = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formError, setFormError] = useState('');
 
-  // Team members data
+  // Updated team members data
   const teamMembers = [
+  
     { 
-      name: "Pawan Sharma", 
-      role: "AI Research Lead", 
-      bio: "Specializes in neural network optimization and model compression. Published 5 papers on efficient AI systems.",
-      color: "from-blue-500 to-blue-600",
-      skills: ["Deep Learning", "Model Optimization", "Python"],
-      social: { twitter: "#", linkedin: "#", github: "#" }
-    },
-    { 
-      name: "Ansha Singla", 
-      role: "Frontend & AI Integration", 
-      bio: "Creates intuitive interfaces for complex AI systems. Passionate about human-centered AI design.",
+      name: "Anisha Singla", 
+      role: "Business & AI Consultancy", 
+      bio: "Drives business growth through AI solutions and strategic consulting. Specializes in aligning technology with business goals.",
       color: "from-indigo-500 to-indigo-600",
-      skills: ["React", "UI/UX", "TensorFlow.js"],
+      skills: ["Business Strategy", "AI Consulting", "Client Solutions","Marketing"],
       social: { twitter: "#", linkedin: "#", github: "#" }
     },
     { 
       name: "Sahiavik Semwal", 
-      role: "Backend & Infrastructure", 
-      bio: "Builds scalable AI deployment pipelines. Focused on optimizing inference performance.",
+      role: "Blockchain & Web3 Specialist", 
+      bio: "Develops decentralized applications and smart contracts. Proficient in Golang and blockchain technologies.",
       color: "from-blue-400 to-indigo-500",
-      skills: ["Kubernetes", "Cloud Architecture", "MLOps"],
+      skills: ["Blockchain", "Web3", "Golang", "Smart Contracts"],
+      social: { twitter: "#", linkedin: "#", github: "#" }
+    },
+    { 
+      name: "Ekshika Sharma", 
+      role: "Design & Architecture Expert", 
+      bio: "Creates intuitive user experiences and robust system architectures. Focused on scalable and maintainable design patterns.",
+      color: "from-pink-500 to-pink-600",
+      skills: ["System Design", "UX/UI", "Software Architecture", "Design Patterns"],
+      social: { twitter: "#", linkedin: "#", github: "#" }
+    },  { 
+      name: "Pawan Sharma", 
+      role: "Backend & DevOps Engineer", 
+      bio: "Expert in full-stack development with MERN and .NET. Implements robust DevOps practices for scalable applications.",
+      color: "from-blue-500 to-blue-600",
+      skills: ["MERN Stack", ".NET", "DevOps","OPEN AI","Scalable Web Applications", "Cloud Infrastructure"],
       social: { twitter: "#", linkedin: "#", github: "#" }
     }
   ];
@@ -159,7 +167,7 @@ const Community = () => {
       clearInterval(memberInterval);
       clearInterval(benefitInterval);
     };
-  }, [isMobile]);
+  }, [isMobile, teamMembers.length]);
 
   // Handle email submission
   const handleSubmit = (e: React.FormEvent) => {
@@ -252,10 +260,10 @@ const Community = () => {
         {/* Team Spotlight */}
         <div className="mb-24">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-16 text-gray-800">
-            Meet Our Core Team
+            Meet Our Expert Team
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {teamMembers.map((member, index) => (
               <div 
                 key={index}
@@ -356,7 +364,7 @@ const Community = () => {
                 <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-gray-900">Join Our AI Community</h2>
                 <p className="text-lg text-gray-600 mb-6">
                   Get exclusive access to community events, project updates, and AI resources. 
-                  Connect with innovators like Pawan, Ansha, and Sahiavik.
+                  Connect with innovators like Pawan, Anisha, Sahiavik, and Ekshika.
                 </p>
                 <ul className="space-y-2 mb-6">
                   <li className="flex items-center gap-2 text-gray-700">
@@ -542,7 +550,7 @@ const Community = () => {
               Transform Your Ideas into AI Solutions
             </h2>
             <p className="text-lg text-blue-100 mb-8">
-              Join innovators like Pawan, Ansha, and Sahiavik in building the future of AI
+              Join innovators like Pawan, Anisha, Sahiavik, and Ekshika in building the future of AI
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -553,13 +561,7 @@ const Community = () => {
                 <span>Get Started</span>
                 <ArrowRight size={20} />
               </a>
-              <a 
-                href="#" 
-                className="px-6 py-3 bg-blue-700/50 text-white rounded-xl font-medium flex items-center justify-center gap-3 transition-all hover:bg-blue-700/70 hover:shadow-lg hover:-translate-y-1 border border-blue-500/30"
-              >
-                <span>View Case Studies</span>
-                <BookOpen size={20} />
-              </a>
+             
             </div>
           </div>
         </div>
@@ -568,7 +570,7 @@ const Community = () => {
       {/* Footer */}
       <div className="max-w-7xl mx-auto px-4 pb-8 text-center text-gray-600 text-sm">
         <p>© {new Date().getFullYear()} AI Innovation Community. All rights reserved.</p>
-        <p className="mt-2">Connect with us: hello@aicommunity.example.com</p>
+
       </div>
 
       {/* Custom Animations */}
