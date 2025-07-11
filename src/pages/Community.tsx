@@ -30,7 +30,7 @@ const Community = () => {
       social: { twitter: "#", linkedin: "#", github: "#" }
     },
     { 
-      name: "Sahiavik Semwal", 
+      name: "Shaivik Semwal", 
       role: "Blockchain & Web3 Specialist", 
       bio: "Develops decentralized applications and smart contracts. Proficient in Golang and blockchain technologies.",
       color: "from-blue-400 to-indigo-500",
