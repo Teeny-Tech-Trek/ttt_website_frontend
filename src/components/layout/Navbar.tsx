@@ -151,15 +151,16 @@ const Navbar = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const navLinks = [
-    { name: 'Home', href: isHomePage ? '#home' : '/#home', hash: '#home', path: '/' },
-    { name: 'Services', href: isHomePage ? '#services' : '/#services', hash: '#services', path: '/' },
-    { name: 'Tech Stack', href: isHomePage ? '#tech-stack' : '/#tech-stack', hash: '#tech-stack', path: '/' },
-    { name: 'Book Consultation', href: isHomePage ? '#pricing' : '/#pricing', hash: '#pricing', path: '/' },
-    { name: 'Blogs', href: isHomePage ? '#blogs' : '/blogs', hash: '#blogs', path: '/blogs' },
-    { name: 'Events', href: isHomePage ? '#events' : '/#events', hash: '#events', path: '/' },
-    { name: 'Contact', href: isHomePage ? '#contact' : '/#contact', hash: '#contact', path: '/' },
-  ];
+const navLinks = [
+  { name: 'Home', href: isHomePage ? '#home' : '/#home', hash: '#home', path: '/' },
+  { name: 'Services', href: isHomePage ? '#services' : '/#services', hash: '#services', path: '/' },
+  { name: 'Tech Stack', href: isHomePage ? '#tech-stack' : '/#tech-stack', hash: '#tech-stack', path: '/' },
+  { name: 'Book Consultation', href: isHomePage ? '#pricing' : '/#pricing', hash: '#pricing', path: '/' },
+  { name: 'Community', href: '/community', hash: '#community', path: '/community' }, // ✅ Changed here
+  // { name: 'Events', href: isHomePage ? '#events' : '/#events', hash: '#events', path: '/' },
+  { name: 'Contact', href: isHomePage ? '#contact' : '/#contact', hash: '#contact', path: '/' },
+];
+
 
   // Track active section based on scroll position
   useEffect(() => {

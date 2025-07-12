@@ -6,7 +6,8 @@ import {
   Twitter, Linkedin, Github, Code, BrainCircuit, 
   Rocket, Palette, Server, Database, Check, ArrowRight
 } from 'lucide-react';
-
+import Blogs from '../components/home/Blog';
+import Events from '../components/home/EventList';
 const Community = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const mouseRef = useRef({ x: 0, y: 0 });
@@ -470,6 +471,19 @@ const Community = () => {
             </div>
           </div>
         </div>
+
+{/* Events Section */}
+<div className="mb-24">
+ 
+  <Events />
+</div>
+
+{/* Blogs Section */}
+<div className="mb-24">
+ 
+  <Blogs />
+</div>
+
 
         {/* Global Network Visualization */}
         <div className="relative rounded-3xl overflow-hidden border border-white/30 bg-gradient-to-br from-blue-50/30 to-indigo-50/40 backdrop-blur-sm p-8 mb-24 h-[500px] flex items-center justify-center">

@@ -6,8 +6,7 @@ import Services from '../../components/home/ServicesList';
 import TechStack from '../../components/home/TechStack';
 import Pricing from '../../components/home/Pricing';
 import Contact from '../../components/home/Contact';
-import Blogs from '../../components/home/Blog';
-import Events from '../../components/home/EventList';
+
 import About from '../../components/home/About';
 import WhyUs from '../../components/home/WhyUs';
 import { Helmet } from 'react-helmet-async';
@@ -75,12 +74,12 @@ const sectionTop = (section as HTMLElement).offsetTop;
          <section id="pricing">
         <Pricing />
       </section>
-        <section id="blogs">
+        {/* <section id="blogs">
         <Blogs />
       </section>
       <section id="events">
         <Events />
-      </section>
+      </section> */}
       <section id="why-us">
         <WhyUs />
       </section>
