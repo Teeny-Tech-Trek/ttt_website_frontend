@@ -30,14 +30,14 @@ const Community = () => {
       skills: ["Business Strategy", "AI Consulting", "Client Solutions","Marketing"],
       social: { twitter: "#", linkedin: "#", github: "#" }
     },
-    { 
-      name: "Shaivik Semwal", 
-      role: "Blockchain & Web3 Specialist", 
-      bio: "Develops decentralized applications and smart contracts. Proficient in Golang and blockchain technologies.",
-      color: "from-blue-400 to-indigo-500",
-      skills: ["Blockchain", "Web3", "Golang", "Smart Contracts"],
-      social: { twitter: "#", linkedin: "#", github: "#" }
-    },
+    // { 
+    //   name: "Shaivik Semwal", 
+    //   role: "Blockchain & Web3 Specialist", 
+    //   bio: "Develops decentralized applications and smart contracts. Proficient in Golang and blockchain technologies.",
+    //   color: "from-blue-400 to-indigo-500",
+    //   skills: ["Blockchain", "Web3", "Golang", "Smart Contracts"],
+    //   social: { twitter: "#", linkedin: "#", github: "#" }
+    // },
     { 
       name: "Ekshika Sharma", 
       role: "Design & Architecture Expert", 
@@ -50,7 +50,7 @@ const Community = () => {
       role: "Backend & DevOps Engineer", 
       bio: "Expert in full-stack development with MERN and .NET. Implements robust DevOps practices for scalable applications.",
       color: "from-blue-500 to-blue-600",
-      skills: ["MERN Stack", ".NET", "DevOps","OPEN AI","Scalable Web Applications", "Cloud Infrastructure"],
+      skills: ["MERN Stack", ".NET", "DevOps","OPEN AI","Scalable Web Applications", "Cloud Infrastructure","Blockchain", "Web3", "Rust", "Smart Contracts"],
       social: { twitter: "#", linkedin: "#", github: "#" }
     }
   ];
