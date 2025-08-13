@@ -8,6 +8,8 @@ const clientId = "1021289055013-jr520ma85ncm14vguhm62i541eq56m5g.apps.googleuser
 
 import App from "./App";
 import "./index.css";
+import React from "react";
+import ChatbotButton from "./pages/ChatbotButton";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -18,4 +20,10 @@ createRoot(document.getElementById("root")!).render(
       </AuthProvider>
     </GoogleOAuthProvider>
   </StrictMode>
+);
+
+createRoot(document.getElementById('chatbot-button-root')!).render(
+  <React.StrictMode>
+    <ChatbotButton />
+  </React.StrictMode>
 );

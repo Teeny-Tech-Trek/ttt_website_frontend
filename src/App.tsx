@@ -5,6 +5,7 @@ import Footer from './components/layout/Footer';
 import AppRoutes from './routes/Routes';
 import { AuthProvider } from './context/AuthContext';
 import { HelmetProvider } from 'react-helmet-async';
+import ChatbotButton from './pages/ChatbotButton';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <div className="relative overflow-hidden">
           <Navbar />
               <HelmetProvider>
+                    <ChatbotButton />
           <AppRoutes />
           </HelmetProvider>
           <Footer />

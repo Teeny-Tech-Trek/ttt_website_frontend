@@ -24,13 +24,11 @@
         z-index: 1000;
         max-width: 90vw;
         max-height: 90vh;
-        width: 500px; /* Adjust based on widget size */
-        height: 600px; /* Adjust based on widget size */
-      
+        width: 500px;
+        height: 600px;
         border-radius: 8px;
         overflow: auto;
       }
-      /* Optional: Add a backdrop when widget is visible */
       .convai-backdrop {
         display: none;
         position: fixed;
@@ -45,24 +43,15 @@
         display: block;
       }
       ._poweredBy_1f9vw_251 {
-        display:none;
+        display: none;
       }
     </style>
     <elevenlabs-convai agent-id="agent_01jy7cx20df6es5cgg1fe2hmvz"></elevenlabs-convai>
     <script src="https://elevenlabs.io/convai-widget/index.js" async type="text/javascript"></script>
   </head>
   <body class="font-sans text-gray-800 overflow-x-hidden">
-    <!-- Backdrop for widget -->
     <div class="convai-backdrop" id="convai-backdrop"></div>
     <div id="root"></div>
-<button onclick="window.location.href='/community'" 
-        class="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-medium text-base px-6 py-3 rounded-full shadow-xl backdrop-blur-sm transition duration-300 ease-in-out hover:backdrop-blur-md hover:bg-opacity-80 hover:scale-105">
-  💬 Join Our Community
-</button>
-
-
-
-
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
