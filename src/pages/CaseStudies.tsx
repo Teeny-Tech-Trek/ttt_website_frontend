@@ -417,13 +417,14 @@ const CaseStudies: React.FC<CaseStudyProps> = ({ id = 'case-studies', className 
 
         {/* CTA */}
         <div className="text-center mt-16">
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold transition-all hover:shadow-lg hover:scale-105"
-          >
-            <span>{currentCaseStudy.ctaText}</span>
-            <ArrowRight className="w-5 h-5" />
-          </a>
+        <a
+  href="/#contact"
+  className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold transition-all hover:shadow-lg hover:scale-105"
+>
+  <span>{currentCaseStudy.ctaText}</span>
+  <ArrowRight className="w-5 h-5" />
+</a>
+
           <p className="text-gray-600 mt-4">{currentCaseStudy.timeline.length}-week implementation • Starts at {currentCaseStudy.cost}</p>
         </div>
       </div>
