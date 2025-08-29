@@ -79,7 +79,6 @@ const Hero = () => {
             {/* Badge */}
             <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-sm font-medium mb-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
               <Award className="w-4 h-4" />
-              <span>Trusted by Fortune 500 Companies</span>
             </div>
 
             {/* Main Headline */}
@@ -119,7 +118,7 @@ const Hero = () => {
             {/* CTA Buttons */}
             <div className={`flex flex-col sm:flex-row gap-4 mb-8 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
               <a 
-                href="#demo" 
+                href="#contact" 
                 className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold flex items-center justify-center gap-3 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/25 hover:scale-105 relative overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -128,7 +127,7 @@ const Hero = () => {
               </a>
               
               <a 
-                href="#case-studies" 
+                href="/case" 
                 className="group px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold flex items-center justify-center gap-3 transition-all duration-300 hover:bg-gray-50 hover:border-gray-400 hover:scale-105"
               >
                 <Play className="w-5 h-5" />
