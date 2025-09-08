@@ -148,7 +148,7 @@ const WhyUs = () => {
   };
 
   return (
-    <section id="why-us" className="py-24 bg-[#f8fafc] relative overflow-hidden">
+    <section id="why-us" className="py-10 bg-[#f8fafc] relative overflow-hidden">
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(59,130,246,0.08)_1px,transparent_0)] bg-[size:60px_60px] opacity-40" />
       </div>

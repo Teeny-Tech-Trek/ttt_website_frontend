@@ -228,7 +228,7 @@ const SubscriptionPricing: React.FC = () => {
   };
 
   return (
-    <section className="py-20 bg-gray-50 relative overflow-hidden">
+    <section className="py-6 bg-gray-50 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-white/50" />
       <motion.div
         animate={{ scale: [1, 1.1, 1] }}

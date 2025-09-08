@@ -16,6 +16,11 @@ import Terms from '../components/policy/Terms';
 import Privacy from '../components/policy/Privacy';
 import Community from '../pages/Community';
 import CaseStudies from '../pages/CaseStudies';
+import Healthcare from '../view-cases/healthcare/healthcare';
+import MainD2C from '../view-cases/D2C/Main';
+// import Healthcare from '../view-cases/healthcare/healthcare';
+// import HealthcareSection from '../view-cases/healthcare/healthcare';
+// import Healthcare from '../view-cases/healthcare/healthcare';
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -40,6 +45,8 @@ const AppRoutes = () => (
                <Route path="/terms" element={<Terms />} />
         <Route path="/community" element={<Community />} />
          <Route path="/case" element={<CaseStudies />} />
+         <Route path="/healthcare" element={<Healthcare />} />
+         <Route path="/ecommerce" element={<MainD2C />} />
 
       {/* ←── New public route for "single blog" */}
       <Route path="/blog/:slug" element={<BlogSingleView />} />

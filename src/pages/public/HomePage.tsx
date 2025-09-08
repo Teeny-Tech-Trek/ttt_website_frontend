@@ -68,9 +68,9 @@ const sectionTop = (section as HTMLElement).offsetTop;
       <section id="about">
         <About />
       </section>
-      <section id="tech-stack">
+      {/* <section id="tech-stack">
         <TechStack />
-      </section>
+      </section> */}
          <section id="pricing">
         <Pricing />
       </section>

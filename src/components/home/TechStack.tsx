@@ -184,7 +184,7 @@ const TechStack = () => {
             return (
               <motion.div
                 key={index}
-                className="relative group cursor-pointer transform-gpu"
+                className="relative group  transform-gpu h-80"
                 style={{ perspective: '1000px' }}
                 onHoverStart={() => setHoveredCard(tech.category)}
                 onHoverEnd={() => setHoveredCard(null)}
@@ -196,11 +196,11 @@ const TechStack = () => {
                 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
               >
-                <div className={`bg-white/80 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl border border-white/50 relative transition-all duration-500 ${
+                <div className={`bg-white/80 backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl border border-white/50 relative transition-all duration-500 h-full flex flex-col ${
                   isActive ? 'ring-2 ring-blue-500/50' : ''
                 }`}>
                   {/* Header Section */}
-                  <div className={`relative h-32 bg-gradient-to-br ${tech.bgGradient} overflow-hidden`}>
+                  <div className={`relative h-32 bg-gradient-to-br ${tech.bgGradient} overflow-hidden flex-shrink-0`}>
                     <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
                     
                     {/* Floating icon */}
@@ -249,7 +249,7 @@ const TechStack = () => {
                   </div>
 
                   {/* Content Section */}
-                  <div className="p-6">
+                  <div className="p-6 flex-1 flex flex-col">
                     <motion.h3
                       className="text-xl font-bold text-gray-900 mb-2"
                       layoutId={`title-${tech.category}`}
@@ -262,11 +262,11 @@ const TechStack = () => {
                     </p>
 
                     {/* Technology Tags */}
-                    <div className="flex flex-wrap gap-2 mb-4">
+                    <div className="flex flex-wrap gap-2 flex-1">
                       {tech.items.map((item, i) => (
                         <motion.span
                           key={i}
-                          className={`px-3 py-1.5 rounded-xl text-xs font-medium bg-gradient-to-r ${tech.bgGradient} text-gray-700 border border-white/50`}
+                          className={`px-3 py-1.5 rounded-xl text-xs font-medium bg-gradient-to-r ${tech.bgGradient} text-gray-700 border border-white/50 h-fit`}
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: 0.1 * i }}
@@ -275,19 +275,6 @@ const TechStack = () => {
                           {item}
                         </motion.span>
                       ))}
-                    </div>
-
-                    {/* Progress indicator */}
-                    <div className="relative">
-                      <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
-                        <motion.div
-                          className={`h-full bg-gradient-to-r ${tech.gradient} rounded-full`}
-                          initial={{ width: 0 }}
-                          animate={{ width: isActive ? '100%' : '70%' }}
-                          transition={{ duration: 1, ease: "easeOut" }}
-                        />
-                      </div>
-                      <span className="text-xs text-gray-500 mt-1 block">Expertise</span>
                     </div>
                   </div>
 

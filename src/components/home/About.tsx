@@ -55,7 +55,7 @@ const About = () => {
   return (
     <motion.section
       id="about"
-      className="py-24 relative overflow-hidden bg-gray-50 font-sans"
+      className=" relative overflow-hidden bg-gray-50  font-sans"
       style={{ opacity }}
     >
       {/* Animated background elements */}
@@ -134,7 +134,7 @@ const About = () => {
           ))}
         </motion.div>
 
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -205,7 +205,7 @@ const About = () => {
               </div>
             </motion.div>
           </div>
-        </motion.div>
+        </motion.div> */}
       </Container>
     </motion.section>
   );
