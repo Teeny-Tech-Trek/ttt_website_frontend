@@ -1,5 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import realEstateImg from "../../Images/WhatsApp Image 2025-09-15 at 10.16.38 PM (1).jpeg"
+import educationImg from "../../Images/WhatsApp Image 2025-09-15 at 10.16.48 PM (1).jpeg"
+import ecommerceImg from "../../Images/WhatsApp Image 2025-09-15 at 10.16.44 PM (1).jpeg"
 
 const AIServicesCards = () => {
   const navigate = useNavigate();
@@ -10,7 +13,7 @@ const AIServicesCards = () => {
       date: "September 15, 2025",
       title: "Your AI Workforce for Real Estate",
       description: "Intelligent systems capable of analyzing markets, empowering your sales team, and enhancing property outcomes",
-      image: "https://images.unsplash.com/photo-1560472354-b43ff0c44a43?w=400&h=250&fit=crop&crop=entropy",
+      image: realEstateImg,
       category: "AI",
       route: "/real-estate"
     },
@@ -19,7 +22,7 @@ const AIServicesCards = () => {
       date: "September 15, 2025", 
       title: "Transform Your D2C Business with Intelligent AI Chatbots",
       description: "Teeny Tech Trek empowers D2C brands with cutting-edge chatbot solutions. Automate customer support, boost sales conversions, and scale your operations with our intelligent chatbots designed specifically for direct-to-consumer businesses.",
-      image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=400&h=250&fit=crop&crop=entropy",
+      image: ecommerceImg,
       category: "AI",
       route: "/ecommerce"
     },
@@ -28,7 +31,7 @@ const AIServicesCards = () => {
       date: "September 15, 2025",
       title: "AI-Powered Education Solutions", 
       description: "Transform educational institutions through intelligent collaboration platforms and comprehensive AI workshops that empower educators and students.",
-      image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=250&fit=crop&crop=entropy",
+      image: educationImg,
       category: "AI",
       route: "/education"
     }

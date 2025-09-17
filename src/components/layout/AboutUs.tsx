@@ -98,7 +98,7 @@ const AboutUs = () => {
                 className="mb-6 text-4xl font-bold leading-tight text-black md:text-5xl lg:text-6xl"
                 variants={fadeInUp}
               >
-                The tiny studio behind
+                The tiny studio behind 
                 <span className="block text-blue-900">
                   outsized results
                 </span>

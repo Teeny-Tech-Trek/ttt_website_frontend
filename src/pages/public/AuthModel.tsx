@@ -218,11 +218,42 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMode = 'l
             </p>
           </motion.div>
 
+          {/* Google Login - Show for login and signup only */}
+          {!isForgot && (
+            <motion.div
+              className="relative z-10 mb-6"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.4 }}
+            >
+              <div className="flex justify-center">
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={() => {
+                    toast.error("Google login failed");
+                  }}
+                  text={isLogin ? "signin_with" : "signup_with"}
+                  shape="rectangular"
+                  theme="outline"
+                  size="large"
+                  width="100%"
+                />
+              </div>
+              
+              {/* Divider */}
+              <div className="flex items-center my-6">
+                <div className="flex-1 h-px bg-gray-300"></div>
+                <span className="px-4 text-sm text-blue-900/60">or</span>
+                <div className="flex-1 h-px bg-gray-300"></div>
+              </div>
+            </motion.div>
+          )}
+
           <form onSubmit={handleSubmit} className="relative z-10 space-y-5">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2, duration: 0.4 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
             >
               <label
                 htmlFor="username"
@@ -360,25 +391,6 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMode = 'l
                 ? "Log In"
                 : "Sign Up"}
             </motion.button>
-
-            {/* Google Login */}
-            {!isForgot && (
-              <motion.div
-                className="flex justify-center"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.4 }}
-              >
-                {/* Uncomment when you want to enable Google login */}
-                {/* <GoogleLogin
-                  onSuccess={handleGoogleSuccess}
-                  onError={() => {
-                    toast.error("Google login failed");
-                  }}
-                  useOneTap
-                /> */}
-              </motion.div>
-            )}
           </form>
 
           <div className="relative z-10 mt-6 space-y-3 text-sm text-center text-blue-900/70">
