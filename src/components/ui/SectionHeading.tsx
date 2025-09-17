@@ -20,9 +20,9 @@ const SectionHeading: React.FC<SectionHeadingProps> = ({ title, subtitle, subtit
       initial={{ opacity: 0, y: 20 }}
       animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
       transition={{ duration: 0.5 }}
-      className="text-center mb-12"
+      className="mb-12 text-center"
     >
-      <h2 className="section-title gradient-text inline-block">{title}</h2>
+      <h2 className="inline-block section-title gradient-text">{title}</h2>
      {subtitle && (
   <p
     className={`section-subtitle ${subtitleClassName} leading-relaxed text-base text-gray-600 mt-4 whitespace-normal`}

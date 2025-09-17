@@ -55,19 +55,19 @@ const About = () => {
   return (
     <motion.section
       id="about"
-      className=" relative overflow-hidden bg-gray-50  font-sans"
+      className="relative overflow-hidden font-sans bg-gray-50"
       style={{ opacity }}
     >
       {/* Animated background elements */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div
-          className="absolute top-1/5 left-1/4 w-96 h-96 rounded-full bg-blue-100 blur-3xl opacity-15"
+          className="absolute bg-blue-100 rounded-full top-1/5 left-1/4 w-96 h-96 blur-3xl opacity-15"
           animate={{ x: [0, 50, 0], y: [0, 70, 0] }}
           transition={{ duration: 18, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut' }}
           style={{ y: y1 }}
         />
         <motion.div
-          className="absolute bottom-1/5 right-1/4 w-80 h-80 rounded-full bg-blue-200 blur-3xl opacity-10"
+          className="absolute bg-blue-200 rounded-full bottom-1/5 right-1/4 w-80 h-80 blur-3xl opacity-10"
           animate={{ x: [0, -40, 0], y: [0, -60, 0] }}
           transition={{ duration: 22, repeat: Infinity, repeatType: 'mirror', ease: 'easeInOut' }}
           style={{ y: y2 }}
@@ -101,13 +101,13 @@ const About = () => {
           variants={{
             visible: { transition: { staggerChildren: 0.15 } },
           }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12"
+          className="grid grid-cols-1 gap-8 mt-12 md:grid-cols-2"
         >
           {missions.map((mission, index) => (
             <motion.div
               key={index}
               variants={cardVariants}
-              className="relative bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-gray-100/20 group overflow-hidden flex flex-col items-center text-center transition-all duration-300"
+              className="relative flex flex-col items-center p-8 overflow-hidden text-center transition-all duration-300 border shadow-lg bg-white/95 backdrop-blur-sm rounded-2xl border-gray-100/20 group"
               whileHover={{
                 scale: 1.04,
                 boxShadow: '0 10px 30px rgba(59, 130, 246, 0.2)',
@@ -115,11 +115,11 @@ const About = () => {
               }}
             >
               <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-blue-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-r from-blue-500/10 to-blue-600/10 group-hover:opacity-100"
                 style={{ borderRadius: 'inherit' }}
               />
               <motion.div
-                className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600/20 transition-colors"
+                className="flex items-center justify-center w-16 h-16 mb-6 transition-colors bg-blue-100 rounded-xl group-hover:bg-blue-600/20"
                 animate={{ rotate: [0, 5, 0] }}
                 transition={{ duration: 8, repeat: Infinity, repeatType: 'loop' }}
                 whileHover={{ rotate: 15, scale: 1.1 }}
@@ -128,29 +128,30 @@ const About = () => {
                   className: 'h-7 w-7 text-blue-600 group-hover:text-blue-700 transition-colors',
                 })}
               </motion.div>
-              <h3 className="text-xl font-bold text-blue-900 mb-4 tracking-tight">{mission.title}</h3>
-              <p className="text-blue-900/70 leading-relaxed">{mission.description}</p>
+              <h3 className="mb-4 text-xl font-bold tracking-tight text-blue-900">{mission.title}</h3>
+              <p className="leading-relaxed text-blue-900/70">{mission.description}</p>
             </motion.div>
           ))}
         </motion.div>
+        
 
         {/* <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-12 bg-white/95 backdrop-blur-lg rounded-2xl shadow-xl border border-gray-100/20 p-8"
+          className="p-8 mt-12 border shadow-xl bg-white/95 backdrop-blur-lg rounded-2xl border-gray-100/20"
         >
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+          <div className="grid items-center grid-cols-1 gap-8 lg:grid-cols-5">
             <motion.div
               className="lg:col-span-3"
               initial={{ opacity: 0, x: -20 }}
               animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <h3 className="text-3xl font-bold text-blue-900 mb-4 tracking-tight">
+              <h3 className="mb-4 text-3xl font-bold tracking-tight text-blue-900">
                 Lean Teams, Big Impact
               </h3>
-              <p className="text-blue-900/70 mb-6 leading-relaxed">
+              <p className="mb-6 leading-relaxed text-blue-900/70">
                 At Teeny Tech Trek, we harness AI to empower focused teams. Our custom AI chatbots, autonomous agents, and automation systems enable startups, solopreneurs, and product teams to achieve more without the need for extensive engineering resources.
               </p>
               <div className="flex flex-wrap gap-6">
@@ -183,20 +184,20 @@ const About = () => {
               transition={{ duration: 0.5, delay: 0.4 }}
             >
               <div className="relative group">
-                <div className="aspect-square bg-blue-100/50 rounded-xl flex items-center justify-center overflow-hidden">
+                <div className="flex items-center justify-center overflow-hidden aspect-square bg-blue-100/50 rounded-xl">
                   <img
                     src="/mission.svg"
                     alt="AI Neural Network"
-                    className="w-5/6 h-5/6 object-contain"
+                    className="object-contain w-5/6 h-5/6"
                   />
                   <motion.div
-                    className="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-blue-500/10 group-hover:opacity-100"
                     animate={{ scale: [1, 1.05, 1] }}
                     transition={{ duration: 6, repeat: Infinity, repeatType: 'mirror' }}
                   />
                 </div>
                 <motion.div
-                  className="absolute -bottom-4 -right-4 bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-semibold"
+                  className="absolute px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg -bottom-4 -right-4"
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: 'spring', stiffness: 300 }}
                 >

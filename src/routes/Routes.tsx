@@ -4,7 +4,8 @@ import { useEffect } from 'react';
 import { withAuthGuard } from './RouteGuards';
 
 import HomePage from '../pages/public/HomePage';
-import AuthPage from '../pages/public/AuthPage';
+// Remove AuthPage import since we're using modal now
+// import AuthPage from '../pages/public/AuthPage';
 import ServicesRoutes from './ServicesRoutes';
 import AdminDashboard from '../pages/admin/AdminDashboard';
 import AdminRoutes from './Admin/AdminRoutes';
@@ -18,9 +19,13 @@ import Community from '../pages/Community';
 import CaseStudies from '../pages/CaseStudies';
 import Healthcare from '../view-cases/healthcare/healthcare';
 import MainD2C from '../view-cases/D2C/Main';
-// import Healthcare from '../view-cases/healthcare/healthcare';
-// import HealthcareSection from '../view-cases/healthcare/healthcare';
-// import Healthcare from '../view-cases/healthcare/healthcare';
+import FinancialServices from '../view-cases/financial/financialServices';
+import RealEstateIndex from '../view-cases/real-estate/hero';
+import ManufacturingLogisticsIndex from '../view-cases/manufacturing-&-logistics/hero';
+import HospitalityIndex from '../view-cases/hospitality/hero';
+import EducationIndex from '../view-cases/education/main';
+import AboutUs from '../components/layout/AboutUs';
+import AEOIndex from '../view-cases/AGO/GEO/main';
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -39,19 +44,27 @@ const AppRoutes = () => (
     <Routes>
       {/* Public routes */}
       <Route path="/" element={<HomePage />} />
-      <Route path="/login" element={<AuthPage />} />
-         <Route path="/refund" element={<Refund />} />
-            <Route path="/privacy" element={<Privacy />} />
-               <Route path="/terms" element={<Terms />} />
-        <Route path="/community" element={<Community />} />
-         <Route path="/case" element={<CaseStudies />} />
-         <Route path="/healthcare" element={<Healthcare />} />
-         <Route path="/ecommerce" element={<MainD2C />} />
+      
+      {/* Remove the login route since we're using modal */}
+      {/* <Route path="/login" element={<AuthPage />} /> */}
+      
+      <Route path="/refund" element={<Refund />} />
+      <Route path="/privacy" element={<Privacy />} />
+      <Route path="/terms" element={<Terms />} />
+      <Route path="/aboutUs" element={<AboutUs />} />
+      <Route path="/community" element={<Community />} />
+      <Route path="/case" element={<CaseStudies />} />
+      <Route path="/healthcare" element={<Healthcare />} />
+      <Route path="/ecommerce" element={<MainD2C />} />
+      <Route path="/financial-services" element={<FinancialServices />} />
+      <Route path="/real-estate" element={<RealEstateIndex />} />
+      <Route path="/logistics" element={<ManufacturingLogisticsIndex />} />
+      <Route path="/education" element={<EducationIndex />} />
+      <Route path="/hospitality" element={<HospitalityIndex />} />
+      <Route path="/aeo-geo" element={<AEOIndex />} />
 
-      {/* ←── New public route for "single blog" */}
+      {/* Blog and event routes */}
       <Route path="/blog/:slug" element={<BlogSingleView />} />
-
-      {/* ←── New public route for "single blog" */}
       <Route path="/event/:slug" element={<SingleEventPage />} />
 
       {/* Package details */}

@@ -16,7 +16,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user, logout, openAuthModal } = useAuth(); // Added openAuthModal
   const isHomePage = location.pathname === '/';
 
   // State for Convai widget
@@ -43,8 +43,14 @@ const Navbar = () => {
   const handleLogout = () => {
     logout();
     toast.success('Log out successful!');
-    navigate('/login');
+    // Remove navigation to /login since we're using modal
     setIsMenuOpen(false);
+  };
+
+  // Handle login button click - open modal instead of navigating
+  const handleLoginClick = () => {
+    openAuthModal('login');
+    setIsMenuOpen(false); // Close mobile menu if open
   };
 
   // Monitor Convai SDK and widget element
@@ -156,11 +162,9 @@ const navLinks = [
   { name: 'Services', href: isHomePage ? '#services' : '/#services', hash: '#services', path: '/' },
   { name: 'Tech Stack', href: isHomePage ? '#tech-stack' : '/#tech-stack', hash: '#tech-stack', path: '/' },
   { name: 'Book Consultation', href: isHomePage ? '#pricing' : '/#pricing', hash: '#pricing', path: '/' },
-  { name: 'Community', href: '/community', hash: '#community', path: '/community' }, // ✅ Changed here
-  // { name: 'Events', href: isHomePage ? '#events' : '/#events', hash: '#events', path: '/' },
+  { name: 'Community', href: '/community', hash: '#community', path: '/community' },
   { name: 'Contact', href: isHomePage ? '#contact' : '/#contact', hash: '#contact', path: '/' },
 ];
-
 
   // Track active section based on scroll position
   useEffect(() => {
@@ -215,7 +219,7 @@ const navLinks = [
     return activeSection === linkHash;
   };
 
-  if (location.pathname.startsWith('/admin') || location.pathname.startsWith('/login')) {
+  if (location.pathname.startsWith('/admin')) {
     return null;
   }
 
@@ -225,7 +229,7 @@ const navLinks = [
       style={{ height: navHeight }}
     >
       <motion.div
-        className="absolute inset-0 bg-white/80 backdrop-blur-lg border-b border-gray-100/20"
+        className="absolute inset-0 border-b bg-white/80 backdrop-blur-lg border-gray-100/20"
         style={{ opacity: backgroundOpacity }}
       />
       <Container className="relative h-full">
@@ -234,7 +238,7 @@ const navLinks = [
           <MotionLink
             to="/#home"
             smooth
-            className="flex items-center gap-3 z-50"
+            className="z-50 flex items-center gap-3"
             style={{ scale: logoScale }}
             whileHover={{ scale: 1.1 }}
             transition={{ type: 'spring', stiffness: 300 }}
@@ -246,7 +250,7 @@ const navLinks = [
               className="w-12 h-15 ml-[-15px]"
             />
             <motion.span
-              className="text-xl font-semibold text-blue-900 tracking-tight"
+              className="text-xl font-semibold tracking-tight text-blue-900"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
@@ -256,7 +260,7 @@ const navLinks = [
           </MotionLink>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="items-center hidden gap-8 lg:flex">
             <ul className="flex items-center gap-6">
               {navLinks.map((link, index) => (
                 <motion.li
@@ -296,12 +300,12 @@ const navLinks = [
                   <MotionLink
                     to="/admin"
                     smooth
-                    className="text-sm font-medium text-blue-900/70 hover:text-blue-600 transition-colors flex items-center gap-2"
+                    className="flex items-center gap-2 text-sm font-medium transition-colors text-blue-900/70 hover:text-blue-600"
                     whileHover={{ scale: 1.05 }}
                     transition={{ type: 'spring', stiffness: 300 }}
                   >
                     Hi, {user.role}
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2V9a2 2 0 00-2-2h-2a2 2 0 00-2 2v10m0 0a2 2 0 01-2 2H5a2 2 0 01-2-2V9" />
                     </svg>
                   </MotionLink>
@@ -324,15 +328,14 @@ const navLinks = [
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
               >
-                <MotionLink
-                  to="/login"
-                  smooth
-                  className="text-sm font-medium text-blue-900/70 hover:text-blue-600 transition-colors"
+                <motion.button
+                  onClick={handleLoginClick}
+                  className="text-sm font-medium transition-colors text-blue-900/70 hover:text-blue-600"
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: 'spring', stiffness: 300 }}
                 >
                   Login
-                </MotionLink>
+                </motion.button>
               </motion.div>
             )}
 
@@ -348,13 +351,13 @@ const navLinks = [
             >
               {isWidgetReady && (
                 <motion.span
-                  className="absolute inset-0 bg-white z-0"
+                  className="absolute inset-0 z-0 bg-white"
                   initial={{ scale: 0 }}
                   whileHover={{ scale: 1 }}
                   transition={{ duration: 0.3 }}
                 />
               )}
-              <motion.span className="flex items-center gap-2 z-10 relative">
+              <motion.span className="relative z-10 flex items-center gap-2">
                 <Bot size={16} />
                 Start a call with AI
               </motion.span>
@@ -394,20 +397,20 @@ const navLinks = [
             >
               {isWidgetReady && (
                 <motion.span
-                  className="absolute inset-0 bg-white z-0"
+                  className="absolute inset-0 z-0 bg-white"
                   initial={{ scale: 0 }}
                   whileHover={{ scale: 1 }}
                   transition={{ duration: 0.3 }}
                 />
               )}
-              <motion.span className="flex items-center gap-1 z-10 relative">
+              <motion.span className="relative z-10 flex items-center gap-1">
                 <Bot size={14} />
                 AI Call
               </motion.span>
             </motion.button>
 
             <motion.button
-              className="p-2 rounded-full hover:bg-blue-50/50 transition-colors z-50"
+              className="z-50 p-2 transition-colors rounded-full hover:bg-blue-50/50"
               onClick={toggleMenu}
               aria-label="Toggle Menu"
               whileHover={{ scale: 1.1 }}
@@ -469,7 +472,7 @@ const navLinks = [
                       <MotionLink
                         to="/admin"
                         smooth
-                        className="text-lg font-medium text-blue-900/70 hover:text-blue-600 flex items-center gap-2"
+                        className="flex items-center gap-2 text-lg font-medium text-blue-900/70 hover:text-blue-600"
                         onClick={() => {
                           setIsMenuOpen(false);
                           setActiveSection('');
@@ -478,7 +481,7 @@ const navLinks = [
                         whileTap={{ scale: 0.95 }}
                       >
                         Hi, {user.role}
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2h4a2 2 0 00-2-2h6a2 2 0 00-2-2v6a2 2 0 002 2h2a2 2 0 002-2V9a2 2 0 00-2-2h-2a2 2 0 00-2 2v10m0 0a2 2 0 01-2 2h-5a2 2 0 01-2-2V9" />
                         </svg>
                       </MotionLink>
@@ -504,19 +507,14 @@ const navLinks = [
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.7, duration: 0.3 }}
                   >
-                    <MotionLink
-                      to="/login"
-                      smooth
+                    <motion.button
+                      onClick={handleLoginClick}
                       className="text-lg font-medium text-blue-900/70 hover:text-blue-600"
-                      onClick={() => {
-                        setIsMenuOpen(false);
-                        setActiveSection('');
-                      }}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
                       Login
-                    </MotionLink>
+                    </motion.button>
                   </motion.div>
                 )}
 
@@ -529,7 +527,7 @@ const navLinks = [
                     <MotionLink
                       smooth
                       to="/#contact"
-                      className="px-6 py-3 bg-blue-600 text-white text-lg font-medium rounded-full hover:bg-blue-700 transition-colors shadow-sm hover:shadow-md"
+                      className="px-6 py-3 text-lg font-medium text-white transition-colors bg-blue-600 rounded-full shadow-sm hover:bg-blue-700 hover:shadow-md"
                       onClick={() => {
                         setIsMenuOpen(false);
                         setActiveSection('#contact');

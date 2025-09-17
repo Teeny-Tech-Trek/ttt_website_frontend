@@ -1,60 +1,84 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Zap, Target, Users, Shield, Quote } from 'lucide-react';
-import Container from '../ui/Container';
-import SectionHeading from '../ui/SectionHeading';
+import { Rocket, Brain, Zap, ShieldCheck, Quote, Target, Users } from 'lucide-react';
+import React from 'react';
+
+// Mock Container and SectionHeading components
+const Container = ({ children, className = "" }) => (
+  <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${className}`}>
+    {children}
+  </div>
+);
+
+const SectionHeading = ({ title, subtitle }) => (
+  <div className="mb-16 text-center">
+    <motion.h2 
+      className="mb-4 text-4xl font-bold text-black md:text-5xl"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
+      {title}
+    </motion.h2>
+    <motion.p 
+      className="max-w-3xl mx-auto text-xl leading-relaxed text-gray-700"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.2 }}
+    >
+      {subtitle}
+    </motion.p>
+  </div>
+);
 
 const WhyUs = () => {
   const [ref, inView] = useInView({
     triggerOnce: true,
-    threshold: 0.1,
-  });
-
-  const [quoteRef, quoteInView] = useInView({
-    triggerOnce: true,
     threshold: 0.2,
+    rootMargin: '100px 0px',
   });
 
-  const reasons = [
+  const { scrollYProgress } = useScroll();
+  const y1 = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const backgroundOpacity = useTransform(scrollYProgress, [0, 0.5], [0.05, 0.15]);
+
+  const allFeatures = [
     {
-      icon: Zap,
-      title: 'Speed with Intention',
-      description: 'MVPs and workflows delivered fast, but with thoughtful planning and execution.',
-      color: 'bg-[#93c5fd]/20',
-      hoverColor: 'hover:bg-[#93c5fd]/30',
-      textColor: 'text-[#1e40af]',
-      iconColor: 'text-[#3b82f6]',
-      borderColor: 'border-[#93c5fd]/50',
+      icon: <Rocket className="text-blue-900" size={32} />,
+      title: "Build Small. Launch Fast.",
+      description: "We create lean AI solutions that get to market quickly without sacrificing quality.",
+      category: "Speed"
     },
     {
-      icon: Target,
-      title: 'Clarity over Complexity',
-      description: 'No black boxes, just clean, understandable systems that make sense for your business.',
-      color: 'bg-[#93c5fd]/20',
-      hoverColor: 'hover:bg-[#93c5fd]/30',
-      textColor: 'text-[#1e40af]',
-      iconColor: 'text-[#3b82f6]',
-      borderColor: 'border-[#93c5fd]/50',
+      icon: <Brain className="text-blue-900" size={32} />,
+      title: "Intelligent Integration.",
+      description: "Our AI systems integrate seamlessly with your existing tools and workflows.",
+      category: "Intelligence"
     },
     {
-      icon: Users,
-      title: 'True Collaboration',
-      description: 'We integrate like a teammate, not a vendor, focusing on your goals and processes.',
-      color: 'bg-[#93c5fd]/20',
-      hoverColor: 'hover:bg-[#93c5fd]/30',
-      textColor: 'text-[#1e40af]',
-      iconColor: 'text-[#3b82f6]',
-      borderColor: 'border-[#93c5fd]/50',
+      icon: <Target className="text-blue-900" size={32} />,
+      title: "Clarity over Complexity",
+      description: "No black boxes, just clean, understandable systems that make sense for your business.",
+      category: "Clarity"
     },
     {
-      icon: Shield,
-      title: 'Innovation at the Edge',
-      description: 'Every solution is custom-crafted and future-ready using the latest AI advancements.',
-      color: 'bg-[#93c5fd]/20',
-      hoverColor: 'hover:bg-[#93c5fd]/30',
-      textColor: 'text-[#1e40af]',
-      iconColor: 'text-[#3b82f6]',
-      borderColor: 'border-[#93c5fd]/50',
+      icon: <Zap className="text-blue-900" size={32} />,
+      title: "Scale Smart.",
+      description: "Solutions designed to grow efficiently alongside your business needs.",
+      category: "Scale"
+    },
+    {
+      icon: <Users className="text-blue-900" size={32} />,
+      title: "True Collaboration",
+      description: "We integrate like a teammate, not a vendor, focusing on your goals and processes.",
+      category: "Partnership"
+    },
+    {
+      icon: <ShieldCheck className="text-blue-900" size={32} />,
+      title: "Trust by Design.",
+      description: "We prioritize security, privacy, and transparency in every AI solution we build.",
+      category: "Security"
     },
   ];
 
@@ -63,295 +87,254 @@ const WhyUs = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
+        staggerChildren: 0.1,
+        delayChildren: 0.3,
       },
     },
   };
 
-  const itemVariants = {
+  const featureVariants = {
     hidden: {
       opacity: 0,
-      y: 40,
-      scale: 0.95,
-      rotateX: -10,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      rotateX: 0,
-      transition: {
-        duration: 0.7,
-        ease: [0.22, 1, 0.36, 1],
-        type: 'spring',
-        damping: 20,
-        stiffness: 100,
-      },
-    },
-  };
-
-  const cardHoverVariants = {
-    hover: {
-      y: -10,
-      scale: 1.03,
-      rotateY: 3,
-      boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15)',
-      transition: {
-        duration: 0.3,
-        ease: 'easeOut',
-      },
-    },
-  };
-
-  const iconVariants = {
-    hover: {
-      scale: 1.3,
-      rotate: [0, 10, -10, 0],
-      transition: {
-        duration: 0.4,
-        ease: 'backOut',
-        rotate: { duration: 0.6, times: [0, 0.3, 0.7, 1] },
-      },
-    },
-  };
-
-  const quoteVariants = {
-    hidden: {
-      opacity: 0,
-      y: 50,
+      y: 30,
       scale: 0.95,
     },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: {
-        duration: 0.8,
-        ease: [0.22, 1, 0.36, 1],
-        delay: 0.3,
-      },
-    },
-  };
-
-  const textRevealVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
       transition: {
         duration: 0.6,
-        delay: 0.4 + i * 0.1,
         ease: [0.22, 1, 0.36, 1],
       },
-    }),
+    },
   };
 
   return (
-    <section id="why-us" className="py-10 bg-[#f8fafc] relative overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(59,130,246,0.08)_1px,transparent_0)] bg-[size:60px_60px] opacity-40" />
-      </div>
-
-      <motion.div
-        animate={{
-          scale: [1, 1.1, 1],
-          x: [0, 20, 0],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: 'easeInOut',
-          x: { duration: 12, repeat: Infinity, ease: 'easeInOut' },
-        }}
-        className="absolute top-20 right-10 w-24 h-24 bg-[#93c5fd]/30 rounded-full blur-xl"
-      />
-      <motion.div
-        animate={{
-          scale: [1, 0.8, 1],
-          y: [0, -30, 0],
-        }}
-        transition={{
-          duration: 25,
-          repeat: Infinity,
-          ease: 'easeInOut',
-          y: { duration: 10, repeat: Infinity, ease: 'easeInOut' },
-        }}
-        className="absolute bottom-20 left-10 w-32 h-32 bg-[#3b82f6]/30 rounded-full blur-xl"
-      />
+    <section 
+      id="why-us" 
+      className="relative min-h-screen py-24 bg-white"
+    >
 
       <Container className="relative z-10">
         <SectionHeading
           title="Why Teeny Tech Trek?"
-          subtitle="We don't just build tech — we build momentum with purpose and precision."
+          subtitle="Empowering visionary teams with AI solutions that simplify complexity and amplify impact through speed, clarity, and true collaboration."
         />
 
+        {/* Main Content Area */}
         <motion.div
           ref={ref}
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
           variants={containerVariants}
-          className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-20"
+          className="relative"
         >
-          {reasons.map((reason, index) => (
-            <motion.div
-              key={index}
-              variants={itemVariants}
-              whileHover="hover"
-              className="group perspective-1000"
-            >
-              <motion.div
-                variants={cardHoverVariants}
-                className={`bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-lg ${reason.borderColor} border-2 hover:shadow-2xl transition-all duration-500 relative overflow-hidden transform-gpu`}
-                style={{ transformStyle: 'preserve-3d' }}
-              >
-                <div className={`absolute inset-0 ${reason.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl`} />
-
-                <div className="flex items-start gap-6 relative z-10">
-                  <motion.div
-                    variants={iconVariants}
-                    className={`w-14 h-14 flex items-center justify-center ${reason.color} rounded-2xl border ${reason.borderColor} group-hover:shadow-lg transition-all duration-300 shrink-0`}
-                  >
-                    <reason.icon size={28} className={`${reason.iconColor} animate-pulse-slow`} />
-                  </motion.div>
-
-                  <div className="flex-1">
-                    <motion.h3
-                      className={`text-xl font-bold mb-3 ${reason.textColor} tracking-tight group-hover:${reason.textColor}/90 transition-colors duration-300`}
-                      whileHover={{ x: 5 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      {reason.title}
-                    </motion.h3>
-                    <motion.p
-                      className="text-[#1e40af]/80 leading-relaxed group-hover:text-[#1e40af]/90 transition-colors duration-300"
-                      initial={{ opacity: 0.8 }}
-                      whileHover={{ opacity: 1 }}
-                    >
-                      {reason.description}
-                    </motion.p>
-                  </div>
-                </div>
-
-                <motion.div
-                  className="absolute inset-0 pointer-events-none"
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 0.15 }}
-                  transition={{ duration: 0.3 }}
-                  style={{
-                    background: 'radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.2), transparent 70%)',
-                  }}
-                />
-              </motion.div>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        <motion.div
-          ref={quoteRef}
-          initial="hidden"
-          animate={quoteInView ? 'visible' : 'hidden'}
-          variants={quoteVariants}
-          className="mt-20"
-        >
-          <motion.div
-            whileHover={{ scale: 1.01, y: -5 }}
-            transition={{ duration: 0.3 }}
-            className="relative overflow-hidden rounded-3xl bg-white/95 backdrop-blur-md shadow-2xl border border-[#93c5fd]/50"
+          {/* Main Features Container */}
+          <motion.div 
+            className="relative overflow-hidden bg-white border border-gray-200 shadow-2xl rounded-3xl"
+            whileHover={{ 
+              boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15)" 
+            }}
+            transition={{ duration: 0.4 }}
           >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.05)_1px,transparent_1px)] bg-[size:40px_40px] opacity-60" />
-
-            <div className="p-12 md:p-16 relative z-10">
-              <div className="max-w-4xl mx-auto text-center">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  className="flex items-center justify-center mb-10 relative"
-                >
+            {/* Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-blue-50/30" />
+            
+            {/* Features Grid */}
+            <div className="relative z-10 p-8 md:p-12">
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 md:gap-12">
+                {allFeatures.map((feature, index) => (
                   <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-                    className="absolute inset-0 bg-[#93c5fd]/20 rounded-full blur-lg w-32 h-32"
-                  />
-                  <img
-                    src="/logo.svg"
-                    alt="Teeny Tech Trek Logo"
-                    className="relative w-16 h-16 rounded-lg shadow-md"
-                    onError={(e) => {
-                      e.currentTarget.src = 'https://via.placeholder.com/64';
-                    }}
-                  />
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                  className="flex justify-center mb-8"
-                >
-                  <div className="w-16 h-16 bg-[#93c5fd]/20 rounded-full flex items-center justify-center border border-[#93c5fd]/50">
-                    <Quote className="w-8 h-8 text-[#3b82f6]" />
-                  </div>
-                </motion.div>
-
-                <motion.blockquote
-                  initial="hidden"
-                  animate="visible"
-                  className="text-2xl md:text-3xl text-center text-[#1e40af] font-medium leading-relaxed mb-10 tracking-tight"
-                >
-                  {`"We believe that lean teams can move mountains when empowered by the right tools. That's why we build nimble, intelligent AI solutions designed for clarity, speed, and real-world results."`
-                    .split(' ')
-                    .map((word, i) => (
-                      <motion.span
-                        key={i}
-                        custom={i}
-                        variants={textRevealVariants}
-                        className="inline-block mx-1"
+                    key={index}
+                    variants={featureVariants}
+                    className="relative group"
+                  >
+                    {/* Feature Content */}
+                    <div className="flex flex-col items-center space-y-4 text-center">
+                      {/* Icon Container */}
+                      <motion.div
+                        className="relative flex items-center justify-center w-20 h-20 transition-all duration-300 bg-blue-100 border border-blue-200 rounded-2xl group-hover:bg-blue-200"
+                        whileHover={{ 
+                          scale: 1.1,
+                          rotate: [0, -5, 5, 0],
+                        }}
+                        transition={{ 
+                          duration: 0.3,
+                          rotate: { duration: 0.6 }
+                        }}
                       >
-                        {word}
-                      </motion.span>
-                    ))}
-                </motion.blockquote>
+                        {React.cloneElement(feature.icon, {
+                          className: 'text-blue-900 group-hover:text-blue-800 transition-colors duration-300',
+                        })}
+                        
+                        {/* Icon Glow Effect */}
+                        <motion.div
+                          className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-blue-500/20 rounded-2xl blur-xl group-hover:opacity-100"
+                          animate={{
+                            scale: [1, 1.2, 1],
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                          }}
+                        />
+                      </motion.div>
 
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.8 }}
-                  className="text-center"
-                >
-                  <p className="font-bold text-xl text-[#1e40af] mb-2">The Teeny Tech Trek Team</p>
-                  <p className="text-[#1e40af]/80 text-lg">Building small. Launching fast. Scaling smart.</p>
-                </motion.div>
+                      {/* Category Badge */}
+                      <motion.span
+                        className="px-3 py-1 text-xs font-semibold text-blue-900 bg-blue-100 border border-blue-200 rounded-full"
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 + index * 0.05 }}
+                      >
+                        {feature.category}
+                      </motion.span>
+
+                      {/* Title */}
+                      <motion.h3
+                        className="text-xl font-bold text-blue-900 transition-colors duration-300 group-hover:text-blue-800"
+                        whileHover={{ y: -2 }}
+                      >
+                        {feature.title}
+                      </motion.h3>
+
+                      {/* Description */}
+                      <motion.p
+                        className="max-w-xs leading-relaxed text-black transition-colors duration-300 group-hover:text-gray-900"
+                        initial={{ opacity: 0.8 }}
+                        whileHover={{ opacity: 1 }}
+                      >
+                        {feature.description}
+                      </motion.p>
+                    </div>
+
+                    {/* Hover Effect Lines */}
+                    <motion.div
+                      className="absolute inset-0 pointer-events-none"
+                      initial={{ opacity: 0 }}
+                      whileHover={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <div className="absolute inset-0 border-2 border-blue-300 rounded-2xl" />
+                    </motion.div>
+                  </motion.div>
+                ))}
               </div>
             </div>
 
+            {/* Decorative Elements */}
             <motion.div
               animate={{
-                scale: [1, 1.2, 1],
                 rotate: 360,
               }}
               transition={{
-                duration: 20,
+                duration: 30,
                 repeat: Infinity,
                 ease: 'linear',
-                scale: { duration: 4, repeat: Infinity, ease: 'easeInOut' },
               }}
-              className="absolute -top-10 -right-10 w-40 h-40 bg-[#93c5fd]/20 rounded-full blur-2xl"
+              className="absolute w-32 h-32 bg-blue-100 rounded-full opacity-50 -top-10 -right-10 blur-2xl"
             />
             <motion.div
               animate={{
-                scale: [1, 0.8, 1],
                 rotate: -360,
               }}
               transition={{
-                duration: 15,
+                duration: 25,
                 repeat: Infinity,
                 ease: 'linear',
-                scale: { duration: 6, repeat: Infinity, ease: 'easeInOut' },
               }}
-              className="absolute -bottom-10 -left-10 w-60 h-60 bg-[#93c5fd]/20 rounded-full blur-2xl"
+              className="absolute w-40 h-40 rounded-full opacity-50 -bottom-10 -left-10 bg-blue-50 blur-2xl"
             />
+          </motion.div>
+
+          {/* Separate Quote Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="relative mt-12"
+          >
+            {/* Quote Container */}
+            <motion.div 
+              className="relative overflow-hidden bg-blue-900 shadow-2xl rounded-3xl"
+              whileHover={{ 
+                scale: 1.02,
+                boxShadow: "0 30px 60px rgba(37, 99, 235, 0.25)" 
+              }}
+              transition={{ duration: 0.4 }}
+            >
+
+              <div className="relative z-10 p-8 md:p-12 lg:p-16">
+                <div className="max-w-4xl mx-auto text-center">
+                  {/* Quote Icon */}
+                  <motion.div
+                    className="flex justify-center mb-8"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="relative flex items-center justify-center w-20 h-20 border rounded-full shadow-2xl bg-white/20 backdrop-blur-sm border-white/30">
+                      <Quote className="w-10 h-10 text-white" />
+                      <div className="absolute inset-0 scale-150 rounded-full bg-white/20 blur-xl" />
+                    </div>
+                  </motion.div>
+
+                  {/* Main Quote */}
+                  <motion.blockquote
+                    className="mb-10 text-2xl font-bold leading-tight tracking-tight text-white md:text-4xl lg:text-5xl"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 1, delay: 0.2 }}
+                    style={{
+                      textShadow: '0 2px 20px rgba(0, 0, 0, 0.3)'
+                    }}
+                  >
+                    "We believe that <span className="text-blue-200">lean teams</span> can move mountains when empowered by the <span className="text-blue-200">right tools</span>. 
+                    That's why we build nimble, intelligent AI solutions designed for <span className="text-blue-200">clarity, speed, and real-world results</span>."
+                  </motion.blockquote>
+
+                  {/* Attribution */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
+                    className="flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6"
+                  >
+                    {/* Logo/Avatar */}
+                    <motion.div 
+                      className="relative flex items-center justify-center w-16 h-16 border rounded-full shadow-xl bg-white/20 backdrop-blur-sm border-white/30"
+                      whileHover={{ scale: 1.1, rotate: 10 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <span className="text-xl font-bold text-white">T³</span>
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+                        className="absolute inset-0 border-2 rounded-full border-white/20 border-t-white/60"
+                      />
+                    </motion.div>
+                    
+                    {/* Team Info */}
+                    <div className="text-center sm:text-left">
+                      <p className="mb-1 text-xl font-bold text-white">The Teeny Tech Trek Team</p>
+                      <div className="flex flex-wrap justify-center gap-2 text-blue-200 sm:justify-start">
+                        <span className="px-3 py-1 text-sm font-medium border rounded-full bg-white/10 backdrop-blur-sm border-white/20">
+                          Building small
+                        </span>
+                        <span className="px-3 py-1 text-sm font-medium border rounded-full bg-white/10 backdrop-blur-sm border-white/20">
+                          Launching fast
+                        </span>
+                        <span className="px-3 py-1 text-sm font-medium border rounded-full bg-white/10 backdrop-blur-sm border-white/20">
+                          Scaling smart
+                        </span>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
         </motion.div>
       </Container>

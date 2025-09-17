@@ -79,7 +79,7 @@ const Footer = () => {
   }));
 
   const companyLinks = [
-    { name: 'About', href: '/#about' },
+    { name: 'About', href: '/aboutUs' },
     { name: 'Services', href: '/#services' },
     { name: 'Tech Stack', href: '/#tech-stack' },
     { name: 'Why Us', href: '/#why-us' },
@@ -95,14 +95,14 @@ const Footer = () => {
        
 
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+        <div className="grid grid-cols-1 gap-12 mb-16 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand Column */}
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <img
                 src="/logo.svg"
                 alt="Teeny Tech Trek Logo"
-                className="w-15 h-10  rounded-lg shadow-md"
+                className="h-10 rounded-lg shadow-md w-15"
                 onError={(e) => {
                   e.currentTarget.src = 'https://via.placeholder.com/40';
                 }}
@@ -132,7 +132,7 @@ const Footer = () => {
 
           {/* Services Column */}
           <div>
-            <h4 className="text-lg font-semibold mb-6">Our Services</h4>
+            <h4 className="mb-6 text-lg font-semibold">Our Services</h4>
             <ul className="space-y-3">
               {serviceLinks.map((service, index) => (
                 <li key={index}>
@@ -150,7 +150,7 @@ const Footer = () => {
 
           {/* Company Column */}
           <div>
-            <h4 className="text-lg font-semibold mb-6">Company</h4>
+            <h4 className="mb-6 text-lg font-semibold">Company</h4>
             <ul className="space-y-3">
               {companyLinks.map((link, index) => (
                 <li key={index}>
@@ -168,7 +168,7 @@ const Footer = () => {
 
           {/* Contact Column */}
           <div>
-            <h4 className="text-lg font-semibold mb-6">Contact Us</h4>
+            <h4 className="mb-6 text-lg font-semibold">Contact Us</h4>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <Mail size={18} className="text-[#3b82f6] mt-1 flex-shrink-0" />
@@ -182,10 +182,10 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <Phone size={18} className="text-[#3b82f6] mt-1 flex-shrink-0" />
                 <div className="text-[#93c5fd] text-sm">
-                  <a href="tel:+16478645465" className="hover:text-white transition-colors duration-300 block">
+                  <a href="tel:+16478645465" className="block transition-colors duration-300 hover:text-white">
                     +1 647-864-5465
                   </a>
-                  <a href="tel:+919855806696" className="hover:text-white transition-colors duration-300 block">
+                  <a href="tel:+919855806696" className="block transition-colors duration-300 hover:text-white">
                     +91 98558 06696
                   </a>
                 </div>
@@ -201,11 +201,11 @@ const Footer = () => {
         </div>
 
          <div className="max-w-3xl mx-auto mb-16 text-center bg-[#3b82f6]/10 p-8 rounded-xl backdrop-blur-sm border border-[#3b82f6]/20">
-          <h3 className="text-2xl font-bold mb-3">Stay Updated</h3>
+          <h3 className="mb-3 text-2xl font-bold">Stay Updated</h3>
           <p className="text-[#93c5fd] mb-6">
             Subscribe to our newsletter for the latest AI trends and company updates
           </p>
-          <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 justify-center">
+          <form onSubmit={handleSubscribe} className="flex flex-col justify-center gap-3 sm:flex-row">
             <input
               type="email"
               value={email}
@@ -236,13 +236,13 @@ const Footer = () => {
             © {new Date().getFullYear()} Teeny Tech Trek. All rights reserved.
           </p>
           <div className="flex gap-6 text-xs text-[#93c5fd]">
-            <a href="/privacy" className="hover:text-white transition-colors duration-300">
+            <a href="/privacy" className="transition-colors duration-300 hover:text-white">
               Privacy Policy
             </a>
-            <a href="/terms" className="hover:text-white transition-colors duration-300">
+            <a href="/terms" className="transition-colors duration-300 hover:text-white">
               Terms of Service
             </a>
-            <a href="/refund" className="hover:text-white transition-colors duration-300">
+            <a href="/refund" className="transition-colors duration-300 hover:text-white">
               Refund Policy
             </a>
           </div>

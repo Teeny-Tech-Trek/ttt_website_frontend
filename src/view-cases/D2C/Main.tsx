@@ -1,23 +1,24 @@
-import AIAgentsSection from "./AIAgents"
-import BenefitsSection from "./Benefits"
-import CTASection from "./CTA"
-import GettingStartedSection from "./GettingStarted"
-import HeroSection from "./HeroSection"
-import IntegrationsSection from "./Integration"
-import TrustedSection from "./TrustedSection"
-import AIVoiceAgents from "./VoiceAi"
+import React from 'react';
+import HeroSection from './HeroSection';
+import ChatbotSolutionsSection from './chatbot';
+import ChatbotDemoSection from './chatbotdemo';
+import BenefitsSection from './Benefits';
+import GettingStartedSection from './GettingStarted';
+import StatsSection from './stats';
+import FinalCTASection from './CTA';
 
 const MainD2C = () => {
-    return <>
-    <HeroSection/>
-    <AIAgentsSection/>
-    <AIVoiceAgents />
-    <TrustedSection/>
-    <BenefitsSection />
-    <IntegrationsSection/>
-    <GettingStartedSection/>
-    <CTASection />
-    </>
-}
+  return (
+    <div className="min-h-screen">
+      <HeroSection />
+      <ChatbotSolutionsSection />
+      <ChatbotDemoSection />
+      <BenefitsSection />
+      <GettingStartedSection />
+      <StatsSection />
+      <FinalCTASection />
+    </div>
+  );
+};
 
 export default MainD2C;

@@ -1,3 +1,102 @@
+// import React, { useState } from 'react';
+// import { MessageCircle, X } from 'lucide-react';
+
+// export default function TeenyBotAssistant() {
+//   const [isOpen, setIsOpen] = useState(true);
+//   const [selectedAction, setSelectedAction] = useState(null);
+
+//   const actions = [
+//     { id: 'support', label: 'Customer Support', color: 'bg-sky-100 text-sky-700 border-sky-200' },
+//     { id: 'sales', label: 'Sales Assistant', color: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
+//     { id: 'tracking', label: 'Order Tracking', color: 'bg-violet-100 text-violet-700 border-violet-200' }
+//   ];
+
+//   return (
+//     <div className="fixed z-50 bottom-6 right-6">
+//       {/* Chat Button */}
+//       {!isOpen && (
+//         <button
+//           onClick={() => setIsOpen(true)}
+//           className="p-4 text-white transition-all duration-300 rounded-full shadow-lg bg-sky-500 hover:bg-sky-600 hover:scale-105"
+//         >
+//           <MessageCircle size={24} />
+//         </button>
+//       )}
+
+//       {/* Chat Widget */}
+//       {isOpen && (
+//         <div className="max-w-sm bg-white border shadow-2xl rounded-2xl w-80 border-sky-100">
+//           {/* Header */}
+//           <div className="flex items-center justify-between p-4 text-white bg-gradient-to-r from-sky-400 to-sky-500 rounded-t-2xl">
+//             <div className="flex items-center gap-3">
+//               <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/20">
+//                 <div className="flex items-center justify-center w-4 h-4 rounded-full bg-sky-200">
+//                   <div className="w-2 h-2 bg-white rounded-full"></div>
+//                 </div>
+//               </div>
+//               <span className="font-semibold">TeenyBot Assistant</span>
+//             </div>
+//             <button
+//               onClick={() => setIsOpen(false)}
+//               className="transition-colors text-white/80 hover:text-white"
+//             >
+//               <X size={20} />
+//             </button>
+//           </div>
+
+//           {/* Message */}
+//           <div className="p-4">
+//             <div className="p-4 mb-4 text-white rounded-tl-sm shadow-sm bg-gradient-to-br from-sky-400 to-sky-500 rounded-2xl">
+//               <p className="text-sm leading-relaxed">
+//                 Hi! I'm your AI chatbot. I can help customers find products, track orders, and even handle returns. What would you like me to help with today?
+//               </p>
+//             </div>
+
+//             {/* Action Buttons */}
+//             <div className="space-y-3">
+//               <p className="text-sm font-medium text-gray-600">Choose an action:</p>
+//               <div className="flex flex-wrap gap-2">
+//                 {actions.map((action) => (
+//                   <button
+//                     key={action.id}
+//                     onClick={() => setSelectedAction(action.id)}
+//                     className={`px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 hover:scale-105 ${
+//                       selectedAction === action.id
+//                         ? 'bg-sky-100 text-sky-700 border-sky-300 ring-2 ring-sky-200'
+//                         : action.color + ' hover:shadow-md'
+//                     }`}
+//                   >
+//                     {action.label}
+//                   </button>
+//                 ))}
+//               </div>
+//             </div>
+
+//             {/* Input Area */}
+//             <div className="pt-4 mt-4 border-t border-gray-100">
+//               <div className="flex gap-2">
+//                 <input
+//                   type="text"
+//                   placeholder="Type your message..."
+//                   className="flex-1 px-3 py-2 text-sm border rounded-lg border-sky-200 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-400"
+//                 />
+//                 <button className="px-4 py-2 text-sm font-medium text-white transition-colors rounded-lg bg-sky-500 hover:bg-sky-600">
+//                   Send
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* Status Indicator */}
+//           <div className="absolute -top-1 -left-1">
+//             <div className="w-4 h-4 border-2 border-white rounded-full bg-emerald-400 animate-pulse"></div>
+//           </div>
+//         </div>
+//       )}
+//     </div>
+//   );
+// }
+
 import React, { useState, useEffect } from 'react';
 import { Bot, CheckCircle, TrendingUp, MessageCircle, Users, ShoppingCart, BarChart3, Headphones, Zap, Target, Brain, Eye, Star, ArrowRight } from 'lucide-react';
 
@@ -11,7 +110,6 @@ const AIAgentsSection = () => {
       title: 'AI Sales Conversion Agent',
       description: 'Advanced AI that analyzes customer behavior in real-time to maximize conversions through personalized recommendations and dynamic pricing strategies.',
       icon: TrendingUp,
-      color: 'emerald',
       badge: 'Conversion Optimizer',
       metrics: { conversion: '+47%', revenue: '+32%', aov: '+23%' },
       features: [
@@ -36,7 +134,6 @@ const AIAgentsSection = () => {
       title: 'AI Customer Success Agent',
       description: 'Intelligent support system that resolves 90% of queries instantly while learning from every interaction to improve customer satisfaction.',
       icon: Headphones,
-      color: 'blue',
       badge: 'Success Optimizer',
       metrics: { resolution: '90%', satisfaction: '4.9/5', time: '<30s' },
       features: [
@@ -61,7 +158,6 @@ const AIAgentsSection = () => {
       title: 'AI Business Intelligence Agent',
       description: 'Advanced analytics engine that provides real-time insights, predictive modeling, and automated optimization recommendations for your D2C operations.',
       icon: BarChart3,
-      color: 'purple',
       badge: 'Intelligence Engine',
       metrics: { accuracy: '94%', insights: '50+/day', roi: '+156%' },
       features: [
@@ -85,7 +181,6 @@ const AIAgentsSection = () => {
       title: 'AI Relationship Manager',
       description: 'Sophisticated engagement system that builds long-term customer relationships through personalized journeys and predictive communication strategies.',
       icon: MessageCircle,
-      color: 'rose',
       badge: 'Loyalty Builder',
       metrics: { retention: '+65%', ltv: '+89%', engagement: '+124%' },
       features: [
@@ -108,39 +203,16 @@ const AIAgentsSection = () => {
     }
   };
   
-  const colorClasses = {
-    emerald: { 
-      bg: 'bg-emerald-50', 
-      text: 'text-emerald-600', 
-      border: 'border-emerald-200', 
-      button: 'bg-emerald-500',
-      gradient: 'from-emerald-500 to-green-500',
-      glow: 'shadow-emerald-200'
-    },
-    blue: { 
-      bg: 'bg-blue-50', 
-      text: 'text-blue-600', 
-      border: 'border-blue-200', 
-      button: 'bg-blue-500',
-      gradient: 'from-blue-500 to-cyan-500',
-      glow: 'shadow-blue-200'
-    },
-    purple: { 
-      bg: 'bg-purple-50', 
-      text: 'text-purple-600', 
-      border: 'border-purple-200', 
-      button: 'bg-purple-500',
-      gradient: 'from-purple-500 to-pink-500',
-      glow: 'shadow-purple-200'
-    },
-    rose: { 
-      bg: 'bg-rose-50', 
-      text: 'text-rose-600', 
-      border: 'border-rose-200', 
-      button: 'bg-rose-500',
-      gradient: 'from-rose-500 to-pink-500',
-      glow: 'shadow-rose-200'
-    }
+  // Unified light blue color scheme
+  const lightBlueColors = {
+    bg: 'bg-sky-50',
+    text: 'text-sky-600',
+    border: 'border-sky-200',
+    button: 'bg-sky-500',
+    gradient: 'from-sky-400 to-sky-500',
+    glow: 'shadow-sky-200',
+    darkText: 'text-sky-700',
+    lightBg: 'bg-sky-100'
   };
 
   // Auto-play demo messages
@@ -169,27 +241,26 @@ const AIAgentsSection = () => {
   }, [activeAgent]);
   
   return (
-    <div className="py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-20">
-          <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
+    <div className="py-20 bg-gradient-to-br from-sky-50 via-blue-50 to-sky-100">
+      <div className="px-6 mx-auto max-w-7xl">
+        <div className="mb-20 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 text-sm font-medium rounded-full bg-sky-100 text-sky-700">
             <Brain className="w-4 h-4" />
             Next-Generation AI Agents
           </div>
-          <h2 className="text-5xl font-bold text-gray-900 mb-6">
-            Meet Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">AI Dream Team</span>
+          <h2 className="mb-6 text-5xl font-bold text-gray-900">
+            Meet Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-sky-600">AI Dream Team</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+          <p className="max-w-4xl mx-auto text-xl leading-relaxed text-gray-600">
             Each AI agent is powered by advanced machine learning models, designed to excel in specific areas of your D2C business while working together seamlessly.
           </p>
         </div>
         
-        <div className="grid lg:grid-cols-3 gap-8 items-start">
+        <div className="grid items-start gap-8 lg:grid-cols-3">
           {/* Agent Selection */}
-          <div className="lg:col-span-1 space-y-4">
+          <div className="space-y-4 lg:col-span-1">
             {Object.entries(agents).map(([key, agent]) => {
               const IconComponent = agent.icon;
-              const colors = colorClasses[agent.color];
               const isActive = activeAgent === key;
               
               return (
@@ -197,22 +268,22 @@ const AIAgentsSection = () => {
                   key={key}
                   className={`group relative p-6 rounded-2xl border-2 cursor-pointer transition-all duration-300 overflow-hidden ${
                     isActive 
-                      ? `${colors.border} ${colors.bg} shadow-xl ${colors.glow}` 
-                      : 'border-gray-200 hover:border-gray-300 bg-white hover:shadow-lg'
+                      ? `${lightBlueColors.border} ${lightBlueColors.bg} shadow-xl ${lightBlueColors.glow}` 
+                      : 'border-gray-200 hover:border-sky-200 bg-white hover:shadow-lg hover:bg-sky-50/30'
                   }`}
                   onClick={() => setActiveAgent(key)}
                 >
                   {/* Animated background gradient for active state */}
                   {isActive && (
-                    <div className={`absolute inset-0 bg-gradient-to-r ${colors.gradient} opacity-5 animate-pulse`}></div>
+                    <div className={`absolute inset-0 bg-gradient-to-r ${lightBlueColors.gradient} opacity-5 animate-pulse`}></div>
                   )}
                   
                   <div className="relative">
                     <div className="flex items-start gap-4">
-                      <div className={`relative p-3 rounded-xl ${isActive ? colors.bg : 'bg-gray-50'} ${colors.border} border transition-all duration-300`}>
-                        <IconComponent className={`w-6 h-6 ${isActive ? colors.text : 'text-gray-600'} transition-colors duration-300`} />
+                      <div className={`relative p-3 rounded-xl ${isActive ? lightBlueColors.bg : 'bg-gray-50'} ${lightBlueColors.border} border transition-all duration-300`}>
+                        <IconComponent className={`w-6 h-6 ${isActive ? lightBlueColors.text : 'text-gray-600'} transition-colors duration-300`} />
                         {isActive && (
-                          <div className={`absolute -inset-1 rounded-xl bg-gradient-to-r ${colors.gradient} opacity-30 blur animate-pulse`}></div>
+                          <div className={`absolute -inset-1 rounded-xl bg-gradient-to-r ${lightBlueColors.gradient} opacity-30 blur animate-pulse`}></div>
                         )}
                       </div>
                       
@@ -221,27 +292,27 @@ const AIAgentsSection = () => {
                           <h3 className="text-lg font-bold text-gray-900 truncate">{agent.title}</h3>
                           {isActive && (
                             <div className="flex items-center gap-1">
-                              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                              <span className="text-xs text-green-600 font-medium">ACTIVE</span>
+                              <div className="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></div>
+                              <span className="text-xs font-medium text-sky-600">ACTIVE</span>
                             </div>
                           )}
                         </div>
                         
                         <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium mb-3 ${
-                          isActive ? `${colors.bg} ${colors.text}` : 'bg-gray-100 text-gray-600'
+                          isActive ? `${lightBlueColors.lightBg} ${lightBlueColors.darkText}` : 'bg-gray-100 text-gray-600'
                         }`}>
                           <Star className="w-3 h-3" />
                           {agent.badge}
                         </div>
                         
-                        <p className="text-sm text-gray-600 leading-relaxed">{agent.description}</p>
+                        <p className="text-sm leading-relaxed text-gray-600">{agent.description}</p>
                         
                         {isActive && (
                           <div className="mt-4 space-y-2">
                             <div className="grid grid-cols-3 gap-2">
                               {Object.entries(agent.metrics).map(([key, value]) => (
                                 <div key={key} className="text-center">
-                                  <div className={`text-lg font-bold ${colors.text}`}>{value}</div>
+                                  <div className={`text-lg font-bold ${lightBlueColors.text}`}>{value}</div>
                                   <div className="text-xs text-gray-500 capitalize">{key}</div>
                                 </div>
                               ))}
@@ -258,45 +329,45 @@ const AIAgentsSection = () => {
           
           {/* Demo Interface */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
+            <div className="overflow-hidden bg-white border border-gray-200 shadow-2xl rounded-2xl">
               {/* Header */}
-              <div className={`p-6 bg-gradient-to-r ${colorClasses[agents[activeAgent].color].gradient} text-white`}>
+              <div className={`p-6 bg-gradient-to-r ${lightBlueColors.gradient} text-white`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="relative">
-                      <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                      <div className="flex items-center justify-center w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl">
                         <Bot className="w-6 h-6" />
                       </div>
-                      <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white"></div>
+                      <div className="absolute w-4 h-4 border-2 border-white rounded-full -bottom-1 -right-1 bg-sky-300"></div>
                     </div>
                     <div>
-                      <div className="font-bold text-lg">TeenyBot {agents[activeAgent].badge}</div>
-                      <div className="text-white/80 text-sm">Advanced AI Agent • Online</div>
+                      <div className="text-lg font-bold">TeenyBot {agents[activeAgent].badge}</div>
+                      <div className="text-sm text-white/80">Advanced AI Agent • Online</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <Eye className="w-5 h-5 text-white/60" />
-                    <span className="text-white/80 text-sm">Live Demo</span>
+                    <span className="text-sm text-white/80">Live Demo</span>
                   </div>
                 </div>
               </div>
               
               {/* Chat Interface */}
-              <div className="p-6 min-h-96 max-h-96 overflow-y-auto bg-gray-50">
+              <div className="p-6 overflow-y-auto min-h-96 max-h-96 bg-gray-50">
                 <div className="space-y-4">
                   {agents[activeAgent].demo.messages.slice(0, currentMessageIndex + 1).map((message, index) => (
                     <div key={index} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
                       {message.type === 'system' && (
-                        <div className="w-full bg-blue-100 border border-blue-200 rounded-lg p-3 text-center">
-                          <div className="text-xs text-blue-600 font-medium">{message.text}</div>
+                        <div className="w-full p-3 text-center border rounded-lg bg-sky-100 border-sky-200">
+                          <div className="text-xs font-medium text-sky-600">{message.text}</div>
                         </div>
                       )}
                       
                       {message.type === 'analytics' && (
-                        <div className="w-full bg-green-100 border border-green-200 rounded-lg p-3">
+                        <div className="w-full p-3 border rounded-lg bg-sky-100 border-sky-200">
                           <div className="flex items-center gap-2">
-                            <BarChart3 className="w-4 h-4 text-green-600" />
-                            <div className="text-xs text-green-700 font-medium">{message.text}</div>
+                            <BarChart3 className="w-4 h-4 text-sky-600" />
+                            <div className="text-xs font-medium text-sky-700">{message.text}</div>
                           </div>
                         </div>
                       )}
@@ -306,11 +377,11 @@ const AIAgentsSection = () => {
                           <div className={`p-4 rounded-2xl shadow-sm ${
                             message.type === 'user' 
                               ? 'bg-gray-200 text-gray-800 rounded-tr-md' 
-                              : `bg-gradient-to-r ${colorClasses[agents[activeAgent].color].gradient} text-white rounded-tl-md`
+                              : `bg-gradient-to-r ${lightBlueColors.gradient} text-white rounded-tl-md`
                           }`}>
                             <p className="text-sm leading-relaxed">{message.text}</p>
                           </div>
-                          <div className="text-xs text-gray-500 mt-1 px-2">
+                          <div className="px-2 mt-1 text-xs text-gray-500">
                             {message.type === 'bot' ? 'TeenyBot' : 'Customer'} • Just now
                           </div>
                         </div>
@@ -320,11 +391,11 @@ const AIAgentsSection = () => {
                   
                   {isTyping && (
                     <div className="flex justify-start mr-12">
-                      <div className={`p-4 rounded-2xl rounded-tl-md bg-gradient-to-r ${colorClasses[agents[activeAgent].color].gradient} text-white`}>
+                      <div className={`p-4 rounded-2xl rounded-tl-md bg-gradient-to-r ${lightBlueColors.gradient} text-white`}>
                         <div className="flex items-center gap-1">
-                          <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce"></div>
-                          <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                          <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                          <div className="w-2 h-2 rounded-full bg-white/60 animate-bounce"></div>
+                          <div className="w-2 h-2 rounded-full bg-white/60 animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                          <div className="w-2 h-2 rounded-full bg-white/60 animate-bounce" style={{animationDelay: '0.2s'}}></div>
                         </div>
                       </div>
                     </div>
@@ -336,7 +407,7 @@ const AIAgentsSection = () => {
               <div className="p-6 bg-white border-t border-gray-100">
                 <div className="flex flex-wrap gap-2">
                   {agents[activeAgent].features.slice(0, 6).map((feature, index) => (
-                    <div key={index} className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${colorClasses[agents[activeAgent].color].bg} ${colorClasses[agents[activeAgent].color].text} border ${colorClasses[agents[activeAgent].color].border}`}>
+                    <div key={index} className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${lightBlueColors.bg} ${lightBlueColors.text} border ${lightBlueColors.border}`}>
                       <Zap className="w-3 h-3" />
                       {feature}
                     </div>
@@ -349,12 +420,12 @@ const AIAgentsSection = () => {
         
         {/* CTA Section */}
         <div className="mt-16 text-center">
-          <div className="bg-white rounded-2xl p-8 shadow-xl border border-gray-200">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Ready to Deploy Your AI Dream Team?</h3>
-            <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+          <div className="p-8 bg-white border border-gray-200 shadow-xl rounded-2xl">
+            <h3 className="mb-4 text-2xl font-bold text-gray-900">Ready to Deploy Your AI Dream Team?</h3>
+            <p className="max-w-2xl mx-auto mb-6 text-gray-600">
               Start with one agent or deploy the full suite. Each AI agent learns and improves automatically, delivering better results over time.
             </p>
-            <button className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 mx-auto shadow-lg hover:shadow-xl">
+            <button className="flex items-center gap-2 px-8 py-4 mx-auto font-semibold text-white transition-all duration-300 rounded-lg shadow-lg bg-gradient-to-r from-sky-400 to-sky-500 hover:from-sky-500 hover:to-sky-600 hover:shadow-xl">
               Start Free Trial <ArrowRight className="w-5 h-5" />
             </button>
           </div>

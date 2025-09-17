@@ -1,3 +1,4 @@
+// src/context/AuthContext.tsx
 import {
   createContext,
   useContext,
@@ -15,6 +16,10 @@ interface AuthContextType {
   loading: boolean;
   login: (token: string) => void;
   logout: () => void;
+  isAuthModalOpen: boolean;
+  openAuthModal: (mode?: 'login' | 'signup') => void;
+  closeAuthModal: () => void;
+  authModalMode: 'login' | 'signup';
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -25,6 +30,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [user, setUser] = useState<{ sub: string; role: string } | null>(null);
   const [loading, setLoading] = useState(true);
+  
+  // Modal state
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
 
   const login = (token: string) => {
     setAccessToken(token);
@@ -67,6 +76,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
+  const openAuthModal = (mode: 'login' | 'signup' = 'login') => {
+    setAuthModalMode(mode);
+    setIsAuthModalOpen(true);
+  };
+
+  const closeAuthModal = () => {
+    setIsAuthModalOpen(false);
+  };
+
   useEffect(() => {
     refreshToken().finally(() => setLoading(false));
   }, [refreshToken]);
@@ -107,7 +125,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [refreshToken]);
 
   return (
-    <AuthContext.Provider value={{ user, accessToken, loading, login, logout }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      accessToken, 
+      loading, 
+      login, 
+      logout,
+      isAuthModalOpen,
+      openAuthModal,
+      closeAuthModal,
+      authModalMode
+    }}>
       {children}
     </AuthContext.Provider>
   );

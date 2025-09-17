@@ -1,136 +1,111 @@
 import React from 'react';
-import { CheckCircle, ArrowRight, Database, Cog, Clock, DollarSign, FileText, Camera, Mic, Globe, Mail, MessageCircle, Phone, BarChart3 } from 'lucide-react';
+import { 
+  CheckCircle,
+  Database,
+  Cog,
+  Clock,
+  FileText,
+  Camera,
+  Mic,
+  Globe,
+  Mail,
+  MessageCircle,
+  Phone,
+  BarChart3
+} from 'lucide-react';
 
 const BenefitsSection = () => {
   return (
-    <div className="py-20 bg-gradient-to-br from-slate-50 to-gray-100">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-800 mb-6">
-            Maximize <span className="text-blue-600">ROI</span> with Smart <span className="text-purple-600">Automation</span>
+    <div className="py-20 bg-white">
+      <div className="px-6 mx-auto max-w-7xl">
+        <div className="mb-16 text-center">
+          <h2 className="mb-6 text-4xl font-bold text-black">
+            Maximize <span className="text-blue-900">ROI</span> with Smart <span className="text-blue-900">Automation</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="max-w-3xl mx-auto text-xl text-black">
             Reduce operational costs while improving customer experience and driving revenue growth
           </p>
         </div>
         
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="grid items-center gap-12 lg:grid-cols-2">
           <div className="space-y-8">
             <div className="space-y-6">
-              <div className="p-6 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+              <div className="p-6 transition-shadow bg-white border border-gray-200 shadow-sm rounded-xl hover:shadow-md">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-blue-100 rounded-lg">
-                      <Database className="w-6 h-6 text-blue-600" />
+                    <div className="p-2 bg-gray-100 rounded-lg">
+                      <Database className="w-6 h-6 text-blue-900" />
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-800">Smart Knowledge Base</h3>
+                    <h3 className="text-xl font-semibold text-blue-900">Smart Knowledge Base</h3>
                   </div>
-                  <CheckCircle className="w-6 h-6 text-green-500" />
+                  <CheckCircle className="w-6 h-6 text-blue-900" />
                 </div>
-                <p className="text-gray-600">Import all your product catalogs, FAQs, support documents, and brand guidelines. Our AI learns your business inside-out.</p>
+                <p className="text-black">Import all your product catalogs, FAQs, support documents, and brand guidelines. Our chatbot learns your business inside-out.</p>
               </div>
               
-              <div className="p-6 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+              <div className="p-6 transition-shadow bg-white border border-gray-200 shadow-sm rounded-xl hover:shadow-md">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-green-100 rounded-lg">
-                      <Cog className="w-6 h-6 text-green-600" />
+                    <div className="p-2 bg-gray-100 rounded-lg">
+                      <Cog className="w-6 h-6 text-blue-900" />
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-800">Seamless Platform Integration</h3>
+                    <h3 className="text-xl font-semibold text-blue-900">Seamless Platform Integration</h3>
                   </div>
-                  <CheckCircle className="w-6 h-6 text-green-500" />
+                  <CheckCircle className="w-6 h-6 text-blue-900" />
                 </div>
-                <p className="text-gray-600">Connect with Shopify, WooCommerce, Klaviyo, and 100+ other platforms your D2C business already uses.</p>
+                <p className="text-black">Connect with Shopify, WooCommerce, Klaviyo, and 100+ other platforms your D2C business already uses.</p>
               </div>
               
-              <div className="p-6 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+              <div className="p-6 transition-shadow bg-white border border-gray-200 shadow-sm rounded-xl hover:shadow-md">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-purple-100 rounded-lg">
-                      <Clock className="w-6 h-6 text-purple-600" />
+                    <div className="p-2 bg-gray-100 rounded-lg">
+                      <Clock className="w-6 h-6 text-blue-900" />
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-800">Rapid Deployment</h3>
+                    <h3 className="text-xl font-semibold text-blue-900">Rapid Deployment</h3>
                   </div>
-                  <CheckCircle className="w-6 h-6 text-green-500" />
+                  <CheckCircle className="w-6 h-6 text-blue-900" />
                 </div>
-                <p className="text-gray-600">Launch your AI agents in days, not months. Pre-trained models specifically designed for D2C businesses.</p>
-              </div>
-              
-              <div className="p-6 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-orange-100 rounded-lg">
-                      <DollarSign className="w-6 h-6 text-orange-600" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-800">Cost Optimization</h3>
-                  </div>
-                  <CheckCircle className="w-6 h-6 text-green-500" />
-                </div>
-                <p className="text-gray-600">Reduce customer service costs by up to 70% while improving response times and customer satisfaction.</p>
+                <p className="text-black">Launch your chatbots in days, not months. Pre-trained models specifically designed for D2C businesses.</p>
               </div>
             </div>
-            
-            <button className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold transition-colors flex items-center gap-2">
-              Get Started Today <ArrowRight className="w-5 h-5" />
-            </button>
           </div>
           
           <div className="relative">
-            <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-lg">
-              <div className="text-center mb-6">
-                <h3 className="text-lg font-semibold text-blue-600 mb-2">AI Knowledge Integration Hub</h3>
-                <p className="text-gray-600 text-sm">Connect all your business data sources</p>
+            <div className="p-6 bg-white border border-gray-200 shadow-lg rounded-2xl">
+              <div className="mb-6 text-center">
+                <h3 className="mb-2 text-lg font-semibold text-blue-900">Chatbot Integration Hub</h3>
+                <p className="text-sm text-black">Connect all your business data sources</p>
               </div>
               
               <div className="space-y-4">
                 <div className="grid grid-cols-4 gap-3">
                   {[
-                    { icon: FileText, label: 'Docs', color: 'bg-blue-500' },
-                    { icon: Camera, label: 'Media', color: 'bg-green-500' },
-                    { icon: Mic, label: 'Audio', color: 'bg-purple-500' },
-                    { icon: Globe, label: 'Web', color: 'bg-orange-500' },
-                    { icon: Mail, label: 'Email', color: 'bg-red-500' },
-                    { icon: MessageCircle, label: 'Chat', color: 'bg-yellow-500' },
-                    { icon: Phone, label: 'Calls', color: 'bg-pink-500' },
-                    { icon: BarChart3, label: 'Analytics', color: 'bg-cyan-500' }
+                    { icon: FileText, label: 'Docs' },
+                    { icon: Camera, label: 'Media' },
+                    { icon: Mic, label: 'Audio' },
+                    { icon: Globe, label: 'Web' },
+                    { icon: Mail, label: 'Email' },
+                    { icon: MessageCircle, label: 'Chat' },
+                    { icon: Phone, label: 'Calls' },
+                    { icon: BarChart3, label: 'Analytics' }
                   ].map((item, index) => (
-                    <div key={index} className={`${item.color} p-3 rounded-lg flex flex-col items-center text-center text-white`}>
+                    <div key={index} className="flex flex-col items-center p-3 text-center text-white bg-blue-900 rounded-lg">
                       <item.icon className="w-5 h-5 mb-1" />
                       <span className="text-xs">{item.label}</span>
                     </div>
                   ))}
                 </div>
                 
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <div className="text-sm text-gray-700 mb-3 font-medium">Popular D2C Integrations</div>
+                <div className="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                  <div className="mb-3 text-sm font-medium text-blue-900">Popular D2C Integrations</div>
                   <div className="flex flex-wrap gap-2">
-                    <span className="bg-green-500 text-white px-3 py-1 rounded-full text-xs">Shopify</span>
-                    <span className="bg-purple-500 text-white px-3 py-1 rounded-full text-xs">WooCommerce</span>
-                    <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-xs">Klaviyo</span>
-                    <span className="bg-orange-500 text-white px-3 py-1 rounded-full text-xs">Mailchimp</span>
-                    <span className="bg-red-500 text-white px-3 py-1 rounded-full text-xs">Facebook Ads</span>
-                    <span className="bg-yellow-500 text-white px-3 py-1 rounded-full text-xs">Google Analytics</span>
-                    <span className="bg-pink-500 text-white px-3 py-1 rounded-full text-xs">Zendesk</span>
-                    <span className="bg-cyan-500 text-white px-3 py-1 rounded-full text-xs">Stripe</span>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-500" />
-                    <span className="text-sm text-gray-700">Auto-Scaling</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-500" />
-                    <span className="text-sm text-gray-700">Multi-Channel</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-500" />
-                    <span className="text-sm text-gray-700">Personalized</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-green-500" />
-                    <span className="text-sm text-gray-700">Real-time</span>
+                    <span className="px-3 py-1 text-xs text-white bg-blue-900 rounded-full">Shopify</span>
+                    <span className="px-3 py-1 text-xs text-white bg-blue-900 rounded-full">WooCommerce</span>
+                    <span className="px-3 py-1 text-xs text-white bg-blue-900 rounded-full">Klaviyo</span>
+                    <span className="px-3 py-1 text-xs text-white bg-blue-900 rounded-full">Mailchimp</span>
+                    <span className="px-3 py-1 text-xs text-white bg-blue-900 rounded-full">Facebook Ads</span>
+                    <span className="px-3 py-1 text-xs text-white bg-blue-900 rounded-full">Google Analytics</span>
                   </div>
                 </div>
               </div>

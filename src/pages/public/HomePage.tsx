@@ -10,6 +10,9 @@ import Contact from '../../components/home/Contact';
 import About from '../../components/home/About';
 import WhyUs from '../../components/home/WhyUs';
 import { Helmet } from 'react-helmet-async';
+import Industries from '../../components/home/industries';
+import AboutPage from '../../components/layout/AboutUs';
+import AIServicesCards from '../../components/home/featuredCase';
 
 const HomePage = () => {
   useEffect(() => {
@@ -65,8 +68,15 @@ const sectionTop = (section as HTMLElement).offsetTop;
       <section id="services">
         <Services />
       </section>
-      <section id="about">
+     
+      {/* <section id="about">
         <About />
+      </section> */}
+       <section id="industries">
+        <Industries />
+      </section>
+       <section id="featuredCase">
+        <AIServicesCards />
       </section>
       {/* <section id="tech-stack">
         <TechStack />
