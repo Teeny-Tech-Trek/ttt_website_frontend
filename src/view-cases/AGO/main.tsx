@@ -9,7 +9,8 @@ import {
   Zap, 
   ArrowRight, 
   Target,
-
+  Clock,
+  DollarSign,
   MessageCircle,
   PieChart,
   Calendar

@@ -25,7 +25,7 @@ import ManufacturingLogisticsIndex from '../view-cases/manufacturing-&-logistics
 import HospitalityIndex from '../view-cases/hospitality/hero';
 import EducationIndex from '../view-cases/education/main';
 import AboutUs from '../components/layout/AboutUs';
-import AEOIndex from '../view-cases/AGO/GEO/main';
+import AEOIndex from '../view-cases/AGO/main';
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
