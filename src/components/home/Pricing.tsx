@@ -209,7 +209,7 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
 
   try {
     // 1️⃣ Create Razorpay order
-    const orderResponse = await fetch("http://13.60.236.70/consultations/create-order", {
+    const orderResponse = await fetch("https://api.teenytechtrek.com/consultations/create-order", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -247,7 +247,7 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
       // 3️⃣ Payment success handler
       handler: async (response: any) => {
         try {
-          const bookingRes = await fetch("http://13.60.236.70/consultations/create", {
+          const bookingRes = await fetch("https://api.teenytechtrek.com/consultations/create", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
