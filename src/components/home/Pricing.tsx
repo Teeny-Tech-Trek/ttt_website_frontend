@@ -1,17 +1,30 @@
-// src/components/SubscriptionPricing.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Check } from "lucide-react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
-
 import toast from "react-hot-toast";
 import { useAuth } from "../../context/AuthContext";
-import api from "../../api/axios";
 import Container from "../ui/Container";
 import SectionHeading from "../ui/SectionHeading";
+
+const loadCalendly = (): Promise<boolean> => {
+  return new Promise((resolve) => {
+    if (document.getElementById("calendly-sdk")) {
+      return resolve(true);
+    }
+    const script = document.createElement("script");
+    script.id = "calendly-sdk";
+    script.src = "https://assets.calendly.com/assets/external/widget.js";
+    script.async = true;
+    script.onload = () => resolve(true);
+    script.onerror = () => {
+      console.error("Failed to load Calendly SDK");
+      resolve(false);
+    };
+    document.body.appendChild(script);
+  });
+};
 
 const loadRazorpay = (): Promise<boolean> => {
   return new Promise((resolve) => {
@@ -21,6 +34,7 @@ const loadRazorpay = (): Promise<boolean> => {
     const script = document.createElement("script");
     script.id = "razorpay-sdk";
     script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.async = true;
     script.onload = () => resolve(true);
     script.onerror = () => {
       console.error("Failed to load Razorpay SDK");
@@ -32,191 +46,261 @@ const loadRazorpay = (): Promise<boolean> => {
 
 const packages = [
   {
-    id: "3b9320e7-8bc5-479d-9a42-b9ab2fc1afa9",
-    name: "Starter Strategy Call",
-    description: "Unlock the potential of AI for your business in just 45 minutes.",
-    price: 1200,
-    duration: 45, // minutes
-    benefits: [
-      "A clear understanding of how AI fits into your business",
-      "Tactical quick wins you can implement fast",
-      "A no-fluff roadmap for future AI adoption",
-      "Guidance on ROI and effort vs. impact",
-      "A curated resource pack to take things forward",
+    id: "d0f1c2a3-b456-4c78-9abc-def123456789",
+    name: "DIY Audit Kit",
+    description: "Best for browsing, early scoping, sharing with your team.",
+    price: 0,
+    duration: 0,
+    for: "Anyone",
+    ledBy: "Self-guided",
+    deliverables: [
+      "AI Readiness Audit (Lite) — 8-page PDF checklist",
+      "Ops Inventory Sheet (CSV) — log top 10 processes",
+      "3 sample prompts to test your data",
     ],
+    followUp: "Optional email tips (48–72h)",
+    cta: "Download the audit kit",
+    schemaType: "Product",
+  },
+  {
+    id: "3b9320e7-8bc5-479d-9a42-b9ab2fc1afa9",
+    name: "Strategy Call",
+    description: "Best for founders/solo operators who want a crisp plan now.",
+    price: 1200,
+    duration: 45,
+    for: "Founder",
+    ledBy: "Anisha (Founder & Product/AI)",
+    deliverables: [
+      "1-page plan (PDF) — goal, stack, 2–3 next actions",
+      "Mini prompt pack — 3 starter prompts",
+      "Loom recap (5–7 min) — next 2 weeks",
+    ],
+    followUp: "7 days email support",
+    cta: "Book the 45-min call",
+    schemaType: "Product",
+    mostBooked: true,
   },
   {
     id: "c46c37e2-de78-4443-abb2-12589fad1a5b",
-    name: "AI Readiness Audit",
-    description: "A 90-minute deep-dive designed for business owners.",
+    name: "Audit & Roadmap",
+    description: "Best for service studios/marketing agencies adding AI.",
     price: 2100,
     duration: 90,
-    benefits: [
-      "A thorough consultation uncovering process bottlenecks",
-      "An objective AI readiness score across your operations",
-      "A customized 3-month action plan",
-      "A detailed PDF report with tool recommendations",
-      "Expert insight into integration feasibility and ROI",
+    for: "Agencies",
+    ledBy: "Anisha + Lead AI Architect",
+    deliverables: [
+      "Roadmap (PDF, 2–3 pages) — 90-day plan, pilot scope",
+      "Integration notes — HubSpot/Zapier/Make/Sheets",
+      "Guardrails sheet — what not to ship",
     ],
+    followUp: "14 days async Q&A (email/WhatsApp)",
+    cta: "Schedule the 90-min audit",
+    schemaType: "Product",
+    mostBooked: true,
   },
   {
     id: "6a71c226-d189-4f92-89df-c3896c25fc6c",
-    name: "Custom AI Roadmap",
-    description: "Turn your AI vision into a ready-to-execute plan.",
-    price: "Custom",
-    duration: 0,
-    benefits: [
-      "In-depth analysis of your workflows",
-      "A custom AI implementation plan",
-      "A technical requirements document",
-      "Recommended tools and platforms",
-      "Defined timeline and milestones",
-      "Risk mitigation strategies",
-      "A team training outline",
+    name: "Strategy Workshop",
+    description: "Best for teams with multiple stakeholders and compliance needs.",
+    price: 9500,
+    duration: 120,
+    for: "Teams",
+    ledBy: "Anisha + Lead AI Architect",
+    deliverables: [
+      "Executive brief (PDF, 3–5 pages) — objectives, KPIs",
+      "Reference architecture — diagram, auth & logging",
+      "Budget & timeline bands — pilot to run costs",
+      "Risk register & mitigation — data, safety",
     ],
+    followUp: "30 days async Q&A + 1 30-min call",
+    cta: "Book the 120-min workshop",
+    schemaType: "Product",
   },
+];
+
+const addOns = [
+  { id: "roi", name: "ROI calculator deep-dive", price: 500 },
+  { id: "pitch", name: "Proposal/pitch deck skeleton", price: 300 },
+  { id: "case", name: "Case study pack", price: 400 },
+  { id: "security", name: "Security mini-review", price: 600 },
+  { id: "backlog", name: "Pre-pilot backlog", price: 350 },
 ];
 
 const SubscriptionPricing: React.FC = () => {
   const { user, accessToken, loading } = useAuth();
   const navigate = useNavigate();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
-  const [paymentError, setPaymentError] = useState("");
-  const [loadingPayment, setLoadingPayment] = useState<string | null>(null);
-  const [selectedDateTime, setSelectedDateTime] = useState<Date | null>(null);
-  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [loadingAction, setLoadingAction] = useState<string | null>(null);
+  const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
   const [showFormFor, setShowFormFor] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    goals: "",
+    tools: "",
+    dataSources: "",
+    mustHaveOutcome: "",
+  });
 
-  const validateEmail = (email: string) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
+  useEffect(() => {
+    loadCalendly();
+    loadRazorpay();
+  }, []);
+
+  const validateForm = () => {
+    if (!formData.goals || !formData.tools || !formData.dataSources || !formData.mustHaveOutcome) {
+      setError("Please fill out all required fields.");
+      return false;
+    }
+    setError("");
+    return true;
   };
 
-  const handleFormSubmit = (pkg: typeof packages[0]) => {
-    // Validate before proceeding
-    if (!email || !validateEmail(email)) {
-      setPaymentError("Please enter a valid email address.");
-      return;
-    }
-    if (!selectedDateTime) {
-      setPaymentError("Please select a date and time.");
-      return;
-    }
-    setPaymentError("");
-    // Proceed to payment
-    initiatePayment(pkg);
+  const handleAddOnChange = (addOnId: string) => {
+    setSelectedAddOns((prev) =>
+      prev.includes(addOnId) ? prev.filter((id) => id !== addOnId) : [...prev, addOnId]
+    );
+    window.dataLayer?.push({ event: "consult_addon_select", addon: addOns.find((addOn) => addOn.id === addOnId)?.name });
   };
 
-  const initiatePayment = async (pkg: typeof packages[0]) => {
-    setLoadingPayment(pkg.id);
-    try {
-      // 1. Load Razorpay SDK
-      const sdkLoaded = await loadRazorpay();
-      if (!sdkLoaded) throw new Error("Failed to load Razorpay SDK");
-
-      // 2. Create Razorpay order on backend
-      const orderResponse = await api.post(
-        "/orders/create-order",
-        { package_id: pkg.id, amount: pkg.price },
-        { headers: { Authorization: `Bearer ${accessToken}` } }
-      );
-      const { razorpayOrderId } = orderResponse.data;
-
-      // 3. Open Razorpay checkout
-      const options: any = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-        amount: Number(pkg.price) * 100, // in paise
-        currency: "INR",
-        name: "Your Business Name",
-        description: pkg.name,
-        order_id: razorpayOrderId,
-        handler: async (response: any) => {
-          // Called on successful payment
-          try {
-            await api.post(
-              "/orders/verify",
-              {
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-              },
-              { headers: { Authorization: `Bearer ${accessToken}` } }
-            );
-            // Optionally: create calendar event
-            try {
-              await api.post(
-                "/calendar/create-event",
-                {
-                  startDateTime: selectedDateTime!.toISOString(),
-                  endDateTime: new Date(
-                    selectedDateTime!.getTime() + pkg.duration * 60000
-                  ).toISOString(),
-                  attendeeEmail: email,
-                  summary: `${pkg.name} Booking`,
-                  description: `Scheduled consultation for ${pkg.name}`,
-                },
-                { headers: { Authorization: `Bearer ${accessToken}` } }
-              );
-            } catch (calErr) {
-              console.warn("Calendar creation failed:", calErr);
-            }
-            toast.success("Booking confirmed! Check your email/calendar.", { duration: 5000 });
-            navigate("/");
-          } catch (err) {
-            console.error("Payment verification error:", err);
-            toast.success("Booking confirmed! Check your email/calendar.", { duration: 5000 });
-          } finally {
-            setLoadingPayment(null);
-            setShowFormFor(null);
-          }
-        },
-        prefill: { email },
-        theme: { color: "#3b82f6" },
-        modal: {
-          ondismiss: () => {
-            setLoadingPayment(null);
-            toast("Payment window closed");
-          },
-        },
-      };
-      const rzp = new (window as any).Razorpay(options);
-      rzp.open();
-    } catch (error: any) {
-      console.error("Order creation/initiation error:", error);
-      const msg =
-        error.response?.data?.error ||
-        error.message ||
-        "Payment initiation failed";
-      setPaymentError(msg);
-      setLoadingPayment(null);
-    }
+  const calculateTotal = (pkg: typeof packages[0]) => {
+    const basePrice = typeof pkg.price === "number" ? pkg.price : 0;
+    const addOnTotal = addOns
+      .filter((addOn) => selectedAddOns.includes(addOn.id))
+      .reduce((sum, addOn) => sum + addOn.price, 0);
+    return basePrice + addOnTotal;
   };
 
-  const onBookClick = (pkg: typeof packages[0]) => {
+  const handleBookClick = (pkg: typeof packages[0]) => {
     if (!user || !accessToken) {
-      navigate("/login");
+      navigate("/");
       toast("Please sign in to continue booking!");
       return;
     }
-    if (pkg.price === "Custom") {
-      // Navigate to contact or show contact form
-      navigate("/contact");
+    if (pkg.price === 0) {
+      setLoadingAction(pkg.id);
+      window.dataLayer?.push({ event: "consult_file_download", file: "audit_kit" });
+      toast.success("Audit kit download link sent to your email!");
+      setLoadingAction(null);
       return;
     }
-    // Toggle form display
     if (showFormFor === pkg.id) {
-      // already showing form; maybe user changed mind: close it
       setShowFormFor(null);
+      setSelectedAddOns([]);
     } else {
       setShowFormFor(pkg.id);
-      // Reset previous inputs/errors
-      setPaymentError("");
-      setEmail("");
-      setSelectedDateTime(null);
+      setError("");
+      setFormData({ goals: "", tools: "", dataSources: "", mustHaveOutcome: "" });
+      setSelectedAddOns([]);
+      window.dataLayer?.push({ event: "consult_tier_select", tier: pkg.name });
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+const handleFormSubmit = async (pkg: typeof packages[0]) => {
+  if (!user || !accessToken) {
+    navigate("/login");
+    toast("Please sign in to continue booking!");
+    return;
+  }
+
+  if (!validateForm()) return;
+
+  setLoadingAction(pkg.id);
+  window.dataLayer?.push({ event: "calendly_open", tier: pkg.name });
+
+  try {
+    // 1️⃣ Create Razorpay order
+    const orderResponse = await fetch("http://localhost:5000/consultations/create-order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        package_id: pkg.id,
+        add_ons: selectedAddOns,
+        form_data: formData,
+        total_amount: calculateTotal(pkg),
+      }),
+    });
+
+    if (!orderResponse.ok) {
+      const errorData = await orderResponse.json();
+      throw new Error(errorData.message || "Failed to create payment order.");
+    }
+
+    const { orderId, key, amount, currency } = await orderResponse.json();
+
+    // 2️⃣ Razorpay payment options
+    const options = {
+      key,
+      amount: amount * 100, // Razorpay expects paise
+      currency,
+      name: "TeenyTechTrek",
+      description: `${pkg.name} Consultation`,
+      order_id: orderId,
+      prefill: {
+        name: user?.username || "",
+        email: user?.email || "",
+      },
+      theme: { color: "#2563EB" },
+
+      // 3️⃣ Payment success handler
+      handler: async (response: any) => {
+        try {
+          const bookingRes = await fetch("http://localhost:5000/consultations/create", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify({
+              package_id: pkg.id,
+              add_ons: selectedAddOns,
+              form_data: formData,
+              total_amount: calculateTotal(pkg),
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature,
+            }),
+          });
+
+          if (!bookingRes.ok) {
+            const errorData = await bookingRes.json();
+            throw new Error(errorData.message || "Booking failed. Please try again.");
+          }
+
+          window.dataLayer?.push({ event: "calendly_booked", tier: pkg.name });
+          toast.success("Booking confirmed! Check your email for confirmation.");
+
+          // Reset form & UI
+          setShowFormFor(null);
+          setFormData({ goals: "", tools: "", dataSources: "", mustHaveOutcome: "" });
+          setSelectedAddOns([]);
+        } catch (err: any) {
+          setError(err.message || "Booking failed. Please try again.");
+        }
+      },
+
+      // Optional: handle payment failures
+      modal: {
+        ondismiss: () => {
+          setError("Payment was cancelled.");
+        },
+      },
+    };
+
+    // 4️⃣ Open Razorpay checkout
+    const rzp = new (window as any).Razorpay(options);
+    rzp.open();
+  } catch (err: any) {
+    setError(err.message || "Failed to create payment order.");
+  } finally {
+    setLoadingAction(null);
+  }
+};
+
+
+  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -228,179 +312,270 @@ const SubscriptionPricing: React.FC = () => {
   };
 
   return (
-    <section className="py-6 bg-gray-50 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-white/50" />
-      <motion.div
-        animate={{ scale: [1, 1.1, 1] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-20 left-10 w-20 h-20 bg-blue-200/30 rounded-full blur-xl"
-      />
-      <motion.div
-        animate={{ scale: [1, 0.8, 1] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-20 right-10 w-32 h-32 bg-blue-300/30 rounded-full blur-xl"
-      />
+    <section className="py-20 bg-gray-50 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-white/50" />
       <Container className="relative z-10">
         <SectionHeading
-          title="Book Consultation"
-          subtitle="Choose the perfect plan to kickstart your AI journey"
+          title="Pick the consultation that fits you"
+          subtitle="From a free DIY audit to a deep-dive workshop—every tier ends with a clear, practical action plan."
+         
         />
-        {paymentError && (
+        
+        {error && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center text-red-500 mb-4 font-medium"
+            className="text-center text-red-500 mb-6 font-medium bg-red-50 py-3 px-4 rounded-lg max-w-2xl mx-auto"
           >
-            {paymentError}
+            {error}
           </motion.div>
         )}
+        
         <motion.div
           ref={ref}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
           variants={containerVariants}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
         >
-          {packages.map((pkg, index) => {
-            const priceText =
-              typeof pkg.price === "number"
-                ? `₹${pkg.price.toLocaleString()}`
-                : pkg.price;
-            const popular = index === 0;
+          {packages.map((pkg) => {
+            const priceText = pkg.price === 0 ? "Free" : `₹${pkg.price.toLocaleString()}`;
             return (
-              <motion.div
+              <motion.div 
                 key={pkg.id}
                 variants={itemVariants}
-                className={`relative bg-white rounded-xl shadow-sm p-6 text-center border border-gray-100 flex flex-col transition-all hover:shadow-md hover:border-blue-100 ${
-                  popular ? "ring-2 ring-blue-500" : ""
+                className={`relative bg-white rounded-2xl shadow-sm p-8 border border-gray-100 flex flex-col transition-all hover:shadow-lg hover:border-blue-100 ${
+                  pkg.mostBooked ? "ring-2 ring-blue-500 shadow-md" : ""
                 }`}
+                itemScope
+                itemType="http://schema.org/Product"
               >
-                {popular && (
+                {pkg.mostBooked && (
                   <motion.span
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-medium"
+                    className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-medium shadow-md"
                   >
-                    Most Popular
+                    Most Booked
                   </motion.span>
                 )}
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold text-gray-900 mb-1">
-                    {pkg.name}
-                  </h3>
-                  <p className="text-gray-600 text-sm">
-                    {pkg.description}
-                  </p>
+                
+                <meta itemProp="name" content={pkg.name} />
+                <meta itemProp="description" content={pkg.description} />
+                {pkg.price !== 0 && <meta itemProp="price" content={pkg.price.toString()} />}
+                {pkg.duration !== 0 && <meta itemProp="duration" content={`PT${pkg.duration}M`} />}
+                
+                <div className="mb-6">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{pkg.name}</h3>
+                  <p className="text-gray-600 text-sm mb-4">{pkg.description}</p>
+                  <div className="space-y-1.5">
+                    <p className="text-sm text-gray-500 flex items-center">
+                      <span className="font-medium mr-1.5">For:</span> {pkg.for}
+                    </p>
+                    <p className="text-sm text-gray-500 flex items-center">
+                      <span className="font-medium mr-1.5">Led by:</span> {pkg.ledBy}
+                    </p>
+                  </div>
                 </div>
+                
                 <div className="mb-6">
                   <div className="text-3xl font-bold text-gray-900 mb-1">
                     {priceText}
-                    {typeof pkg.price === "number" && (
-                      <span className="text-base text-gray-500 font-medium ml-1">
+                    {pkg.duration > 0 && (
+                      <span className="text-base text-gray-500 font-medium ml-1.5">
                         / {pkg.duration} mins
                       </span>
                     )}
                   </div>
                 </div>
-                <ul className="text-left text-gray-700 mb-6 space-y-3">
-                  {pkg.benefits.map((benefit, i) => (
+                
+                <ul className="text-left text-gray-700 mb-8 space-y-3.5">
+                  {pkg.deliverables.map((deliverable, i) => (
                     <li key={i} className="flex items-start gap-3">
-                      <div className="flex-shrink-0 mt-0.5">
-                        <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                      </div>
-                      <span className="text-sm">{benefit}</span>
+                      <Check className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
+                      <span className="text-sm">{deliverable}</span>
                     </li>
                   ))}
+                  <li className="flex items-start gap-3 pt-2 border-t border-gray-100">
+                    <Check className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm"><span className="font-medium">Follow-up:</span> {pkg.followUp}</span>
+                  </li>
                 </ul>
-
-                {showFormFor === pkg.id && typeof pkg.price === "number" && (
-                  <div className="mb-4 space-y-4">
+                
+                {showFormFor === pkg.id && pkg.price > 0 && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="mb-6 space-y-5 p-4 bg-gray-50 rounded-lg border border-gray-200"
+                  >
                     <div>
-                      <label className="block text-gray-700 text-sm font-medium mb-1">
-                        Your Email
+                      <label className="block text-gray-700 text-sm font-medium mb-2">
+                        Your Goals
                       </label>
                       <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Enter your email"
-                        className="w-full p-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-blue-500 focus:border-blue-500"
+                        type="text"
+                        value={formData.goals}
+                        onChange={(e) => setFormData({ ...formData, goals: e.target.value })}
+                        placeholder="What do you want to achieve?"
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-700 text-sm font-medium mb-1">
-                        Select Date and Time (IST)
+                      <label className="block text-gray-700 text-sm font-medium mb-2">
+                        Current Tools
                       </label>
-                      <DatePicker
-                        selected={selectedDateTime}
-                        onChange={(date: Date | null) =>
-                          setSelectedDateTime(date)
-                        }
-                        showTimeSelect
-                        timeIntervals={15}
-                        dateFormat="MMMM d, yyyy h:mm aa"
-                        minDate={new Date()}
-                        filterTime={(time) => {
-                          const hour = time.getHours();
-                          return hour >= 9 && hour <= 18;
-                        }}
-                        className="w-full p-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-blue-500 focus:border-blue-500"
-                        placeholderText="Choose a date and time"
+                      <input
+                        type="text"
+                        value={formData.tools}
+                        onChange={(e) => setFormData({ ...formData, tools: e.target.value })}
+                        placeholder="List tools you currently use"
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                       />
                     </div>
+                    <div>
+                      <label className="block text-gray-700 text-sm font-medium mb-2">
+                        Data Sources
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.dataSources}
+                        onChange={(e) => setFormData({ ...formData, dataSources: e.target.value })}
+                        placeholder="What data sources do you have?"
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-700 text-sm font-medium mb-2">
+                        Must-Have Outcome
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.mustHaveOutcome}
+                        onChange={(e) => setFormData({ ...formData, mustHaveOutcome: e.target.value })}
+                        placeholder="What's your key outcome?"
+                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      />
+                    </div>
+                    
+                    <div className="pt-2 border-t border-gray-200">
+                      <label className="block text-gray-700 text-sm font-medium mb-3">
+                        Optional Add-Ons
+                      </label>
+                      <div className="space-y-2">
+                        {addOns.map((addOn) => (
+                          <div key={addOn.id} className="flex items-center gap-3">
+                            <input
+                              type="checkbox"
+                              id={`${pkg.id}-${addOn.id}`}
+                              checked={selectedAddOns.includes(addOn.id)}
+                              onChange={() => handleAddOnChange(addOn.id)}
+                              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                            />
+                            <label htmlFor={`${pkg.id}-${addOn.id}`} className="text-sm text-gray-700">
+                              {addOn.name} (₹{addOn.price})
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="text-lg font-semibold text-gray-900 pt-3 border-t border-gray-200">
+                      Total: ₹{calculateTotal(pkg).toLocaleString()}
+                    </div>
+                    
                     <button
                       onClick={() => handleFormSubmit(pkg)}
-                      disabled={!selectedDateTime || !email || loadingPayment===pkg.id}
-                      className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200 disabled:opacity-70 disabled:cursor-not-allowed"
+                      disabled={loadingAction === pkg.id}
+                      className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed shadow-sm"
                     >
-                      {loadingPayment === pkg.id
-                        ? 'Processing...'
-                        : `Proceed to Payment`}
+                      {loadingAction === pkg.id ? "Processing..." : "Confirm Booking"}
                     </button>
-                  </div>
+                  </motion.div>
                 )}
-
-                <div className="flex-grow" />
-                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                  <button
-                    onClick={() => onBookClick(pkg)}
-                    disabled={loadingPayment === pkg.id}
-                    className={`w-full py-3 px-6 rounded-lg text-base font-medium transition-colors duration-200 ${
-                      popular 
-                        ? 'bg-blue-600 text-white hover:bg-blue-700'
-                        : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-                    } shadow-sm disabled:opacity-70 disabled:cursor-not-allowed`}
-                  >
-                    {loadingPayment === pkg.id
-                      ? 'Processing...'
-                      : typeof pkg.price === "number"
-                      ? (showFormFor === pkg.id ? "Cancel" : `Book for ₹${pkg.price}`)
-                      : 'Contact for Quote'}
-                  </button>
-                </motion.div>
+                
+                <div className="mt-auto pt-4">
+                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                    <button
+                      onClick={() => handleBookClick(pkg)}
+                      disabled={loadingAction === pkg.id}
+                      className={`w-full py-3.5 px-6 rounded-lg text-base font-medium transition-colors shadow-sm ${
+                        pkg.mostBooked
+                          ? "bg-blue-600 text-white hover:bg-blue-700 shadow-md"
+                          : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                      } disabled:opacity-70 disabled:cursor-not-allowed`}
+                    >
+                      {loadingAction === pkg.id ? "Processing..." : pkg.cta}
+                    </button>
+                  </motion.div>
+                  
+                  <div className="flex flex-wrap gap-2 mt-4 justify-center">
+                    <span className="text-xs bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">Founder-led</span>
+                    <span className="text-xs bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">PDF deliverable</span>
+                    {pkg.price > 0 && (
+                      <span className="text-xs bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">Fee credited to pilot</span>
+                    )}
+                  </div>
+                </div>
               </motion.div>
             );
           })}
         </motion.div>
-
+        
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : { opacity: 0 }}
-          className="mt-16 text-center"
+          className="mt-20 text-center"
         >
-          <p className="text-gray-600 mb-4">
-            Need a custom solution? We've got you covered.
+          <h2 className="text-3xl font-bold text-gray-900 mb-6">
+            Book a time that works for you
+          </h2>
+          <p className="text-gray-600 text-lg max-w-3xl mx-auto mb-6 leading-relaxed">
+            All times shown in your local time. Bookings include a calendar invite with Google Meet link. 
+            Reschedule up to 24h before your slot.
           </p>
-          <motion.a
-            href="#contact"
-            className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200 shadow-sm"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            Contact Us
-          </motion.a>
+          <p className="text-gray-600 text-lg mt-6">
+            Can't use the widget? Email us at{" "}
+            <a href="mailto:anisha.singla@teenytechtrek.com" className="text-blue-600 hover:underline font-medium">
+              anisha.singla@teenytechtrek.com
+            </a>
+          </p>
+        </motion.div>
+        
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : { opacity: 0 }}
+          className="mt-20"
+        >
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">FAQs</h2>
+          <div className="space-y-8 max-w-3xl mx-auto">
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                Can we apply the consultation fee to a pilot?
+              </h3>
+              <p className="text-gray-600">
+                Yes—credit 100% of your consultation toward a 4-week Pilot if you start within 30 days.
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">What if we need to reschedule?</h3>
+              <p className="text-gray-600">
+                You can reschedule up to 24 hours before the slot—link in your invite.
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Do you sign NDAs?</h3>
+              <p className="text-gray-600">
+                Yes. We can sign a mutual NDA before the session if required.
+              </p>
+            </div>
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">Will you sell us a generic chatbot?</h3>
+              <p className="text-gray-600">
+                No. The goal is a clear, specific plan that fits your stack and constraints.
+              </p>
+            </div>
+          </div>
         </motion.div>
       </Container>
     </section>

@@ -1,18 +1,43 @@
-// src/services/authService.ts
-import api from '../api/axios';
+// services/authService.ts - Updated to integrate with your backend endpoints
+import axios from 'axios';
 
-export const loginUser = async (username: string, password: string) => {
-  return api.post('/auth/login', { username, password });
-};
+const API_BASE = 'http://localhost:5000/api'; // Adjust base URL as needed (e.g., for production)
 
 export const registerUser = async (username: string, email: string, password: string) => {
-  return api.post('/users/register', { username, email, password });
+  const response = await axios.post(`${API_BASE}/auth/signup`, {
+    username,
+    email,
+    password,
+  });
+  if (!response.data.success) {
+    throw new Error(response.data.message || 'Signup failed');
+  }
+  return response.data;
 };
 
-export const forgotPassword = async (username: string) => {
-  return api.post('/users/forgot-password', { username });
+export const loginUser = async (identifier: string, password: string) => {
+  const response = await axios.post(`${API_BASE}/auth/signin`, {
+    identifier,
+    password,
+  });
+  if (!response.data.success) {
+    throw new Error(response.data.message || 'Login failed');
+  }
+  return response.data;
 };
 
 export const googleLogin = async (idToken: string) => {
-  return api.post('/auth/oAuth-login', { idToken }, { withCredentials: true });
+  const response = await axios.post(`${API_BASE}/auth/google`, {
+    idToken,
+  });
+  if (!response.data.success) {
+    throw new Error(response.data.message || 'Google login failed');
+  }
+  return response.data;
 };
+
+// Note: Forgot password endpoint not provided in backend. Implement /auth/forgot-password in your backend if needed.
+// export const forgotPassword = async (username: string) => {
+//   // Placeholder - throws error until backend endpoint is added
+//   throw new Error('Forgot password not implemented in backend yet');
+// };
