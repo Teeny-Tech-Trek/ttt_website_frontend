@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-hot-toast";
 import { Eye, EyeOff, Lock, Mail, User, X } from "lucide-react";
-import { useAuth } from "../../context/AuthContext.tsx";
+import { useAuth } from "../../context/AuthContext";
 import { GoogleLogin } from "@react-oauth/google";
 import { CredentialResponse } from "@react-oauth/google";
-import { loginUser, registerUser, googleLogin } from "../../services/authService.ts";
+import { loginUser, registerUser, googleLogin } from "../../services/authService";
 
 interface AuthModalProps {
   isOpen: boolean;

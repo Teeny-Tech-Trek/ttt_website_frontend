@@ -4,7 +4,7 @@ import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./context/AuthContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
-const clientId = "1021289055013-jr520ma85ncm14vguhm62i541eq56m5g.apps.googleusercontent.com";
+const clientId = "164996085144-l2fddeq06oqnsm5lrd6ch0ab8frq7leg.apps.googleusercontent.com";
 
 import App from "./App";
 import "./index.css";
