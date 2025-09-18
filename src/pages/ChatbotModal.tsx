@@ -51,7 +51,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
   // Fetch intro message from backend
   const fetchIntroMessage = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/chatbot/intro");
+      const res = await fetch("http://13.60.236.70/api/chatbot/intro");
       const data = await res.json();
       setMessages([{
         text: data.message || "Hello! I'm your AI assistant.",
@@ -75,7 +75,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
     try {
       setIsTyping(true);
 
-      const response = await fetch("http://localhost:5000/api/chatbot/chat", {
+      const response = await fetch("http://13.60.236.70/api/chatbot/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: userMessage }),
