@@ -259,7 +259,7 @@ const WhyUs = () => {
           >
             {/* Quote Container */}
             <motion.div 
-              className="relative overflow-hidden bg-blue-900 shadow-2xl rounded-3xl"
+              className="relative overflow-hidden bg-[#1e40af] shadow-2xl rounded-3xl"
               whileHover={{ 
                 scale: 1.02,
                 boxShadow: "0 30px 60px rgba(37, 99, 235, 0.25)" 

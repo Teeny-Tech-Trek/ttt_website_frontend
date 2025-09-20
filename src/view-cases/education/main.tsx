@@ -38,6 +38,8 @@ import {
   Laptop
 } from 'lucide-react';
 
+import educationImage from "../../Images/Case Studies/Education.png"
+
 // Animation variants
 const slideFromLeft = {
   hidden: { x: -100, opacity: 0 },
@@ -150,8 +152,7 @@ const Hero: React.FC = () => {
             variants={slideFromRight}
           >
             <img 
-              src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-              alt="Students collaborating with AI technology in modern classroom"
+              src={educationImage}
               className="w-full h-[500px] object-cover rounded-2xl shadow-xl"
             />
           </motion.div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database, GitBranch, Workflow, Search, CheckSquare, AlertTriangle, Activity, Layers, Mail, Upload, Bell, Slack, Filter, AlertCircle, RefreshCw, Lock, RotateCcw } from 'lucide-react';
+import AutomationVideo from "../../../videos/SmartAutomations.mp4"
 
 // Animation variants
 const fadeInUp = {
@@ -174,52 +175,29 @@ const ProcessAutomationPage = () => {
               </motion.div>
             </motion.div>
             
-            {/* Pipeline Visualization */}
-            <motion.div 
-              className="relative"
-              initial={{ opacity: 0, x: 60 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
-            >
-              <div className="p-8 bg-white border border-gray-200 shadow-2xl rounded-3xl">
-                <div className="mb-6">
-                  <h3 className="text-xl font-bold text-blue-900">Automation Pipeline</h3>
-                  <p className="text-black">Live processing flow</p>
-                </div>
-                <div className="space-y-3">
-                  {automationFlow.map((step, index) => (
-                    <motion.div 
-                      key={index}
-                      className={`flex items-center gap-4 p-4 rounded-2xl transition-all ${
-                        index <= currentStep ? 'bg-blue-100 border-2 border-blue-200' : 'bg-gray-50 border-2 border-gray-200'
-                      }`}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                    >
-                      <div className={`flex items-center justify-center w-12 h-12 rounded-2xl ${
-                        index < currentStep ? 'bg-blue-900' : 
-                        index === currentStep ? 'bg-blue-700 animate-pulse' : 'bg-gray-300'
-                      }`}>
-                        <step.icon className={`w-6 h-6 ${index <= currentStep ? 'text-white' : 'text-gray-600'}`} />
-                      </div>
-                      <div className="flex-1">
-                        <div className={`font-semibold ${index <= currentStep ? 'text-blue-900' : 'text-gray-500'}`}>
-                          {step.step}
-                        </div>
-                        <div className={`text-sm ${index <= currentStep ? 'text-black' : 'text-gray-400'}`}>
-                          {step.desc}
-                        </div>
-                      </div>
-                      {index < automationFlow.length - 1 && (
-                        <ArrowRight className="w-5 h-5 text-gray-400" />
-                      )}
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
+          {/* Video Demo Section */}
+      
+          <motion.div 
+            className="relative"
+            initial={{ opacity: 0, x: 60 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+          >
+            <div className="relative overflow-hidden bg-black shadow-2xl rounded-3xl aspect-video">
+              <video
+                className="object-cover w-full h-full"
+                autoPlay
+                loop
+                muted
+                playsInline
+              >
+                <source src={AutomationVideo} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </motion.div>
+
+
           </div>
         </div>
       </section>

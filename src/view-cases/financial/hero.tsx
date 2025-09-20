@@ -43,18 +43,7 @@ const FinancialHeroSection = () => {
   return (
     <div className="relative min-h-screen overflow-hidden bg-white">
       <div className="relative z-10 px-6 pt-20 pb-16 mx-auto max-w-7xl">
-        {/* Trust badge */}
-        {/* <div className="flex justify-center mb-12">
-          <div className="inline-flex items-center gap-3 px-6 py-3 text-black bg-white border border-gray-200 rounded-full shadow">
-            <Shield className="w-5 h-5 text-blue-900" />
-            <span className="font-semibold">Trusted by 500+ Financial Institutions</span>
-            <div className="flex gap-1">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <Star key={i} className="w-4 h-4 text-blue-900 fill-blue-900" />
-              ))}
-            </div>
-          </div>
-        </div> */}
+       
 
         <div className="grid items-center gap-16 lg:grid-cols-2">
           {/* Left content */}

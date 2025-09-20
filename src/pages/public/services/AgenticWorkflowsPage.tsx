@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database, GitBranch, Workflow, Search, CheckSquare, AlertTriangle, Activity, Layers } from 'lucide-react';
+import AutomationVideo from "../../../videos/AgentHandover.mov"
 
 // Animation variants
 const fadeInUp = {
@@ -201,26 +202,28 @@ const AgenticWorkflowsPage = () => {
             </motion.div>
             
             {/* Architecture Diagram */}
+            
+           {/* Video Demo Section */}
             <motion.div 
               className="relative"
               initial={{ opacity: 0, x: 60 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
             >
-              <motion.div 
-                className="p-8 bg-white border border-gray-200 shadow-xl rounded-2xl"
-                whileHover={{ y: -10, transition: { duration: 0.3 } }}
-              >
-                <img 
-                  src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                  alt="Layered agent architecture with tools and logs"
-                  className="object-cover w-full h-64 rounded-lg"
-                />
-                <div className="mt-4 text-center">
-                  <div className="text-sm text-gray-600">5-layer architecture: Apps/UI → Orchestrator → Tools → Data/Vector → Observability</div>
-                </div>
-              </motion.div>
+              <div className="relative overflow-hidden bg-black shadow-2xl rounded-3xl aspect-video">
+                <video
+                  className="object-cover w-full h-full"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                >
+                  <source src={AutomationVideo} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
             </motion.div>
+
           </div>
         </div>
       </section>

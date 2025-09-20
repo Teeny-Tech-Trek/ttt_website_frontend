@@ -1,4 +1,4 @@
-// src/routes/AppRoutes.tsx
+// src/routes/AppRoutes.tsx    
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { withAuthGuard } from './RouteGuards';

@@ -15,6 +15,8 @@ import {
   Calendar
 } from 'lucide-react';
 
+import realEstateImage from "../../Images/Case Studies/RealEstate.png"
+
 // Animation variants
 const slideFromLeft = {
   hidden: { x: -100, opacity: 0 },
@@ -133,10 +135,9 @@ const Hero: React.FC = () => {
                 </div>
               </div>
 
-              <div className="relative h-64 overflow-hidden">
+              <div className="relative overflow-hidden h-80">
                 <img 
-                  src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-                  alt="Modern real estate property"
+                  src={realEstateImage  }
                   className="object-cover w-full h-full"
                 />
                 <div className="absolute inset-0 bg-black/20"></div>
@@ -209,7 +210,7 @@ const CleanSolutions: React.FC = () => {
   const activeSolution = solutions[activeTab as keyof typeof solutions];
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-6 bg-white">
       <div className="px-6 mx-auto max-w-7xl">
         <motion.div 
           className="mb-16 text-center"
@@ -435,7 +436,7 @@ const CleanMetrics: React.FC = () => {
 // CTA Section
 const LightCTA: React.FC = () => {
   return (
-    <section className="py-20 bg-white">
+    <section className="py-10 bg-white">
       <div className="max-w-4xl px-6 mx-auto text-center">
         <motion.div
           initial="hidden"

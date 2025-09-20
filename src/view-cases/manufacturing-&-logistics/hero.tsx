@@ -6,6 +6,8 @@ import {
   Settings, FileText 
 } from 'lucide-react';
 
+import heroImage from "../../Images/Case Studies/Logistics_Manufacturing.png"
+
 // Animation variants
 const slideFromLeft = { hidden: { x: -100, opacity: 0 }, visible: { x: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" } } };
 const slideFromRight = { hidden: { x: 100, opacity: 0 }, visible: { x: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" } } };
@@ -47,7 +49,7 @@ const Hero: React.FC = () => (
         {/* Right */}
         <motion.div className="relative" initial="hidden" animate="visible" variants={slideFromRight}>
           <img 
-            src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
+            src={heroImage}
             alt="Manufacturing and logistics facility"
             className="w-full h-[500px] object-cover rounded-2xl shadow-xl"
           />

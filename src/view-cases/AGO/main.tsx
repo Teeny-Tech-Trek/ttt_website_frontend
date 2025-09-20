@@ -16,6 +16,8 @@ import {
   Calendar
 } from 'lucide-react';
 
+import imageOfAgo from "../../Images/Case Studies/AEO_GEO.png"
+
 // Animation variants
 const slideFromLeft = {
   hidden: { x: -100, opacity: 0 },
@@ -103,9 +105,9 @@ const Hero: React.FC = () => {
                 </div>
               </div>
 
-              <div className="relative h-64 overflow-hidden">
+              <div className="relative overflow-hidden h-96">
                 <img 
-                  src="https://images.unsplash.com/photo-1581092918380-22c83a69ad70?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+                  src={imageOfAgo}
                   alt="Global supply chain"
                   className="object-cover w-full h-full"
                 />

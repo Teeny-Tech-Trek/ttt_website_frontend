@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Play, CheckCircle, TrendingUp, Shield, Zap, Brain, Globe, Users, Award } from 'lucide-react';
 import Container from '../ui/Container';
+import ChatbotModal from '../../pages/ChatbotModal'; // Import the ChatbotModal component
 
 const Hero = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const [activeFeature, setActiveFeature] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false); // State for chatbot modal
 
   useEffect(() => {
     setIsVisible(true);
@@ -16,6 +18,18 @@ const Hero = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  // Function to open chatbot modal
+  const openChatbot = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsChatbotOpen(true);
+  };
+
+  // Function to close chatbot modal
+  const closeChatbot = () => {
+    setIsChatbotOpen(false);
+  };
 
   const features = [
     { icon: Brain, title: 'Advanced AI', description: 'Cutting-edge machine learning solutions' },
@@ -31,298 +45,340 @@ const Hero = () => {
     { value: '24/7', label: 'Expert Support' }
   ];
 
-  const trustedBy = [
-    'Microsoft', 'Google', 'Amazon', 'IBM', 'Oracle', 'Salesforce'
-  ];
+  const getResponsiveRadius = () => {
+    if (typeof window === 'undefined') return 120;
+    if (window.innerWidth >= 2560) return 200; // 2560px+ displays
+    if (window.innerWidth >= 1440) return 180; // XL displays
+    if (window.innerWidth >= 1024) return 160; // Large displays
+    if (window.innerWidth >= 640) return 140;  // Medium displays
+    return 120; // Small displays
+  };
+
+  const getResponsiveLineWidth = () => {
+    if (typeof window === 'undefined') return 100;
+    if (window.innerWidth >= 2560) return 180;
+    if (window.innerWidth >= 1440) return 160;
+    if (window.innerWidth >= 1024) return 140;
+    if (window.innerWidth >= 640) return 120;
+    return 100;
+  };
 
   return (
-    <section 
-      ref={heroRef}
-      id="home" 
-      className="min-h-screen flex items-center relative overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50/30 pt-16 sm:pt-20"
-    >
-      {/* Subtle Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Grid Pattern */}
-        <div 
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
-                             linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)`,
-            backgroundSize: '50px 50px'
-          }}
-        ></div>
-        
-        {/* Gradient Orbs - Responsive positioning */}
-        <div className="absolute top-20 -right-20 sm:-right-40 w-40 h-40 sm:w-80 sm:h-80 rounded-full bg-gradient-to-br from-blue-100/30 to-indigo-100/20 blur-3xl opacity-60"></div>
-        <div className="absolute bottom-40 -left-20 sm:-left-40 w-48 h-48 sm:w-96 sm:h-96 rounded-full bg-gradient-to-tr from-indigo-100/25 to-blue-100/30 blur-3xl opacity-50"></div>
-        
-        {/* Floating Data Points - Responsive */}
-        {Array.from({ length: 12 }).map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-0.5 h-0.5 sm:w-1 sm:h-1 bg-blue-400/30 rounded-full"
+    <>
+      <section 
+        ref={heroRef}
+        id="home" 
+        className="relative flex items-center min-h-screen pt-12 overflow-hidden bg-gradient-to-br from-slate-50 via-white to-blue-50/30 sm:pt-16 md:pt-20 lg:pt-24 xl:pt-28 2xl:pt-32"
+      >
+        {/* Responsive Background Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {/* Grid Pattern */}
+          <div 
+            className="absolute inset-0 opacity-[0.02]"
             style={{
-              left: `${20 + (i * 8)}%`,
-              top: `${15 + (i * 7)}%`,
-              animation: `float ${3 + (i * 0.2)}s ease-in-out infinite alternate`,
-              animationDelay: `${i * 0.3}s`
+              backgroundImage: `linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+                               linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)`,
+              backgroundSize: '50px 50px'
             }}
           ></div>
-        ))}
-      </div>
-
-      <Container className="relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* Main Content */}
-          <div className="lg:col-span-7 text-center lg:text-left px-4 sm:px-0">
-            {/* Badge */}
-            {/* <div className={`inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs sm:text-sm font-medium mb-4 sm:mb-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-              <Award className="w-3 h-3 sm:w-4 sm:h-4" />
-              <span className="hidden sm:inline">Industry Leading AI Platform</span>
-              <span className="sm:hidden">AI Platform Leader</span>
-            </div> */}
-
-            {/* Main Headline - Fully Responsive */}
-            <h1 className={`font-bold mb-4 sm:mb-6 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-gray-900 mb-1 sm:mb-2">
-                Transform Your Business
-              </span>
-              <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-gray-900 mb-2 sm:mb-4">
-                with Enterprise
-              </span>
-              <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                AI Solutions
-              </span>
-            </h1>
-            
-            {/* Subtitle - Responsive text size */}
-            <p className={`text-base sm:text-lg lg:text-xl text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              Deploy intelligent automation, predictive analytics, and AI-driven insights that deliver measurable ROI. 
-              Purpose-built for enterprise scale, security, and compliance.
-            </p>
-
-            {/* Key Benefits - Responsive grid */}
-            <div className={`grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8 transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              {[
-                'Deploy in 30 days or less',
-                '99.9% uptime SLA guarantee',
-                'SOC2 & ISO certified security',
-                '24/7 dedicated support'
-              ].map((benefit, index) => (
-                <div key={index} className="flex items-center gap-2 sm:gap-3">
-                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0" />
-                  <span className="text-sm sm:text-base text-gray-700 font-medium">{benefit}</span>
-                </div>
-              ))}
-            </div>
-            
-            {/* CTA Buttons - Responsive sizing */}
-            <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 sm:mb-8 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              <a 
-                href="#contact" 
-                className="group px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-semibold flex items-center justify-center gap-2 sm:gap-3 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/25 hover:scale-105 relative overflow-hidden text-sm sm:text-base"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-indigo-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <span className="relative z-10">Schedule Demo</span>
-                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 relative z-10 transition-transform group-hover:translate-x-1" />
-              </a>
-              
-              <a 
-                href="/case" 
-                className="group px-6 sm:px-8 py-3 sm:py-4 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold flex items-center justify-center gap-2 sm:gap-3 transition-all duration-300 hover:bg-gray-50 hover:border-gray-400 hover:scale-105 text-sm sm:text-base"
-              >
-                <Play className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span>View Case Studies</span>
-              </a>
-            </div>
-
-            {/* Stats - Responsive grid */}
-            <div className={`grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 transition-all duration-1000 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              {stats.map((stat, index) => (
-                <div key={index} className="text-center lg:text-left">
-                  <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-1">{stat.value}</div>
-                  <div className="text-xs sm:text-sm text-gray-600">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
           
-          {/* Interactive Visualization - Fully Responsive */}
-          <div className="lg:col-span-5 relative mt-8 lg:mt-0 px-4 sm:px-0">
-            <div className="relative max-w-sm sm:max-w-md lg:max-w-lg mx-auto">
-              {/* Central AI Hub - Responsive sizing */}
-              <div className="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-80 lg:h-80 xl:w-96 xl:h-96 mx-auto">
-                <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-white to-blue-50 border border-gray-200/50 backdrop-blur-xl shadow-2xl overflow-hidden">
-                  {/* Content */}
-                  <div className="absolute inset-0 p-4 sm:p-6 lg:p-8 flex flex-col items-center justify-center">
-                    <div className="w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-3 sm:mb-4 lg:mb-6 shadow-lg">
-                      <Brain className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-white" />
-                    </div>
-                    
-                    <h3 className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 mb-1 sm:mb-2 text-center">
-                      AI Intelligence Hub
-                    </h3>
-                    <p className="text-gray-600 text-center text-xs sm:text-sm mb-3 sm:mb-4 lg:mb-6 px-2">
-                      Unified platform for all your AI operations
-                    </p>
+          {/* Gradient Orbs - Fully responsive */}
+          <div className="absolute rounded-full bg-gradient-to-br from-blue-100/30 to-indigo-100/20 blur-3xl opacity-60
+                          top-20 -right-20 w-32 h-32
+                          sm:w-40 sm:h-40 sm:-right-32
+                          md:w-64 md:h-64 md:-right-40
+                          lg:w-80 lg:h-80
+                          xl:w-96 xl:h-96
+                          2xl:w-[32rem] 2xl:h-[32rem] 2xl:-right-48"></div>
+          <div className="absolute rounded-full bg-gradient-to-tr from-indigo-100/25 to-blue-100/30 blur-3xl opacity-50
+                          bottom-40 -left-20 w-40 h-40
+                          sm:w-48 sm:h-48 sm:-left-32
+                          md:w-72 md:h-72 md:-left-40
+                          lg:w-96 lg:h-96
+                          xl:w-[28rem] xl:h-[28rem]
+                          2xl:w-[36rem] 2xl:h-[36rem] 2xl:-left-48"></div>
+          
+          {/* Floating Data Points - Responsive count and size */}
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div
+              key={i}
+              className="absolute rounded-full bg-blue-400/30
+                         w-0.5 h-0.5
+                         sm:w-1 sm:h-1
+                         lg:w-1.5 lg:h-1.5
+                         2xl:w-2 2xl:h-2"
+              style={{
+                left: `${20 + (i * 8)}%`,
+                top: `${15 + (i * 7)}%`,
+                animation: `float ${3 + (i * 0.2)}s ease-in-out infinite alternate`,
+                animationDelay: `${i * 0.3}s`
+              }}
+            ></div>
+          ))}
+        </div>
 
-                    {/* Feature Indicators */}
-                    <div className="flex gap-1 sm:gap-2">
-                      {features.map((_, index) => (
-                        <div
-                          key={index}
-                          className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-500 ${
-                            activeFeature === index ? 'bg-blue-500' : 'bg-gray-300'
-                          }`}
-                        ></div>
-                      ))}
+        <Container className="relative z-10 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 max-w-none">
+          <div className="max-w-7xl mx-auto
+                          2xl:max-w-[1600px]">
+            <div className="grid items-center grid-cols-1 gap-8 lg:grid-cols-12 sm:gap-10 md:gap-12 lg:gap-16 xl:gap-20 2xl:gap-24">
+              {/* Main Content */}
+              <div className="text-center lg:col-span-7 lg:text-left">
+                {/* Main Headline - Ultra responsive */}
+                <h1 className={`font-bold mb-4 sm:mb-6 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+                  <span className="block mb-1 text-2xl font-bold tracking-tight text-gray-900 sm:mb-2 sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
+                    Transform Your Business
+                  </span>
+                  <span className="block mb-2 text-2xl font-bold tracking-tight text-gray-900 sm:mb-4 sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
+                    with Enterprise
+                  </span>
+                  <span className="block text-2xl font-bold tracking-tight text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl">
+                    AI Solutions
+                  </span>
+                </h1>
+                
+                {/* Subtitle - Responsive text size */}
+                <p className={`text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed transition-all duration-1000 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+                              text-base
+                              sm:text-lg
+                              lg:text-xl
+                              xl:text-2xl
+                              2xl:text-2xl 2xl:max-w-3xl`}>
+                  Deploy intelligent automation, predictive analytics, and AI-driven insights that deliver measurable ROI. 
+                  Purpose-built for enterprise scale, security, and compliance.
+                </p>
+
+                {/* Key Benefits - Responsive grid */}
+                <div className={`grid gap-3 sm:gap-4 mb-6 sm:mb-8 transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+                                grid-cols-1
+                                sm:grid-cols-2
+                                2xl:gap-6`}>
+                  {[
+                    'Deploy in 30 days or less',
+                    '99.9% uptime SLA guarantee',
+                    'SOC2 & ISO certified security',
+                    '24/7 dedicated support'
+                  ].map((benefit, index) => (
+                    <div key={index} className="flex items-center gap-2 sm:gap-3 2xl:gap-4">
+                      <CheckCircle className="flex-shrink-0 w-4 h-4 text-green-500 sm:w-5 sm:h-5 xl:w-6 xl:h-6 2xl:w-7 2xl:h-7" />
+                      <span className="text-sm font-medium text-gray-700 sm:text-base xl:text-lg 2xl:text-xl">{benefit}</span>
                     </div>
-                  </div>
+                  ))}
+                </div>
+                
+                {/* CTA Buttons - Responsive sizing */}
+                <div className={`flex gap-3 sm:gap-4 mb-6 sm:mb-8 transition-all duration-1000 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+                                flex-col
+                                sm:flex-row
+                                2xl:gap-6 2xl:mb-12`}>
+                  <button
+                    onClick={openChatbot}
+                    className="relative flex items-center justify-center gap-2 px-6 py-3 overflow-hidden text-sm font-semibold text-white transition-all duration-300 group bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl sm:gap-3 hover:shadow-xl hover:shadow-blue-500/25 hover:scale-105 sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 xl:px-12 xl:py-6 xl:text-lg 2xl:px-16 2xl:py-8 2xl:text-xl 2xl:rounded-2xl"
+                  >
+                    <div className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-r from-blue-700 to-indigo-700 group-hover:opacity-100"></div>
+                    <span className="relative z-10">Chat with AI</span>
+                    <ArrowRight className="relative z-10 w-4 h-4 transition-transform group-hover:translate-x-1 sm:w-5 sm:h-5 xl:w-6 xl:h-6 2xl:w-7 2xl:h-7" />
+                  </button>
                   
-                  {/* Animated Border */}
-                  <div className="absolute inset-0 rounded-2xl sm:rounded-3xl border border-blue-200 opacity-50">
-                    <div 
-                      className="absolute inset-0 rounded-2xl sm:rounded-3xl border-2 border-blue-400"
-                      style={{
-                        animation: 'pulse 2s ease-in-out infinite',
-                        clipPath: `circle(${activeFeature * 25 + 25}% at 50% 50%)`
-                      }}
-                    ></div>
-                  </div>
+                  <a 
+                    href="/#pricing" 
+                    className="flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-gray-700 transition-all duration-300 border-2 border-gray-300 group rounded-xl sm:gap-3 hover:bg-gray-50 hover:border-gray-400 hover:scale-105 sm:px-8 sm:py-4 sm:text-base lg:px-10 lg:py-5 xl:px-12 xl:py-6 xl:text-lg 2xl:px-16 2xl:py-8 2xl:text-xl 2xl:rounded-2xl"
+                  >
+                    <Play className="w-4 h-4 sm:w-5 sm:h-5 xl:w-6 xl:h-6 2xl:w-7 2xl:h-7" />
+                    <span>Book a Consultation.</span>
+                  </a>
                 </div>
 
-                {/* Orbiting Features - Responsive positioning and sizing */}
-                {features.map((feature, index) => {
-                  const angle = (index * 90) * (Math.PI / 180);
-                  // Responsive radius based on screen size
-                  const radius = window.innerWidth < 640 ? 120 : window.innerWidth < 1024 ? 140 : 160;
-                  const x = Math.cos(angle) * radius;
-                  const y = Math.sin(angle) * radius;
-                  const IconComponent = feature.icon;
-                  
-                  return (
-                    <div
-                      key={index}
-                      className={`absolute w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 rounded-lg sm:rounded-xl lg:rounded-2xl bg-white border-2 flex items-center justify-center transition-all duration-500 shadow-lg ${
-                        activeFeature === index 
-                          ? 'border-blue-500 scale-110 shadow-blue-500/25' 
-                          : 'border-gray-200 hover:border-blue-300'
-                      }`}
-                      style={{
-                        left: '50%',
-                        top: '50%',
-                        transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`
-                      }}
-                    >
-                      <IconComponent 
-                        className={`w-4 h-4 sm:w-5 sm:h-5 lg:w-7 lg:h-7 ${
-                          activeFeature === index ? 'text-blue-600' : 'text-gray-600'
-                        }`}
-                      />
-                      
-                      {/* Tooltip - Hidden on mobile, visible on larger screens */}
-                      <div className={`absolute -bottom-12 sm:-bottom-16 left-1/2 transform -translate-x-1/2 transition-opacity duration-300 hidden sm:block ${
-                        activeFeature === index ? 'opacity-100' : 'opacity-0'
-                      }`}>
-                        <div className="bg-white px-2 sm:px-3 py-1 sm:py-2 rounded-lg shadow-lg border text-center whitespace-nowrap">
-                          <div className="text-xs sm:text-sm font-semibold text-gray-900">{feature.title}</div>
-                          <div className="text-xs text-gray-600 hidden lg:block">{feature.description}</div>
+                {/* Stats - Responsive grid */}
+                <div className={`grid gap-4 sm:gap-6 transition-all duration-1000 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+                                grid-cols-2
+                                lg:grid-cols-4
+                                2xl:gap-8`}>
+                  {stats.map((stat, index) => (
+                    <div key={index} className="text-center lg:text-left">
+                      <div className="mb-1 text-xl font-bold text-gray-900 sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl">{stat.value}</div>
+                      <div className="text-xs text-gray-600 sm:text-sm lg:text-base xl:text-lg 2xl:text-xl">{stat.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Interactive Visualization - Ultra responsive */}
+              <div className="relative mt-8 lg:col-span-5 lg:mt-0">
+                <div className="relative max-w-sm mx-auto sm:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl">
+                  {/* Central AI Hub - Responsive sizing */}
+                  <div className="relative mx-auto
+                                  w-64 h-64
+                                  sm:w-80 sm:h-80
+                                  lg:w-80 lg:h-80
+                                  xl:w-96 xl:h-96
+                                  2xl:w-[28rem] 2xl:h-[28rem]">
+                    <div className="absolute inset-0 bg-gradient-to-br from-white to-blue-50 border border-gray-200/50 
+                                    backdrop-blur-xl shadow-2xl overflow-hidden
+                                    rounded-2xl
+                                    sm:rounded-3xl
+                                    2xl:rounded-[2rem]">
+                      {/* Content */}
+                      <div className="absolute inset-0 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 xl:p-10 2xl:p-12">
+                        <div className="flex items-center justify-center w-12 h-12 mb-3 shadow-lg rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 sm:w-16 sm:h-16 sm:mb-4 sm:rounded-2xl lg:w-20 lg:h-20 lg:mb-6 xl:w-24 xl:h-24 xl:mb-8 2xl:w-28 2xl:h-28 2xl:mb-10">
+                          <Brain className="w-6 h-6 text-white sm:w-8 sm:h-8 lg:w-10 lg:h-10 xl:w-12 xl:h-12 2xl:w-14 2xl:h-14" />
+                        </div>
+                        
+                        <h3 className="mb-1 text-base font-bold text-center text-gray-900 sm:mb-2 sm:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl">
+                          AI Intelligence Hub
+                        </h3>
+                        <p className="px-2 mb-3 text-xs text-center text-gray-600 sm:text-sm sm:mb-4 lg:mb-6 xl:text-base xl:mb-8 2xl:text-lg 2xl:mb-10">
+                          Unified platform for all your AI operations
+                        </p>
+
+                        {/* Feature Indicators */}
+                        <div className="flex gap-1 sm:gap-2 2xl:gap-3">
+                          {features.map((_, index) => (
+                            <div
+                              key={index}
+                              className={`rounded-full transition-all duration-500 ${
+                                activeFeature === index ? 'bg-blue-500' : 'bg-gray-300'
+                              }
+                              w-1.5 h-1.5
+                              sm:w-2 sm:h-2
+                              2xl:w-3 2xl:h-3`}
+                            ></div>
+                          ))}
                         </div>
                       </div>
+                      
+                      {/* Animated Border */}
+                      <div className="absolute inset-0 border border-blue-200 opacity-50
+                                      rounded-2xl
+                                      sm:rounded-3xl
+                                      2xl:rounded-[2rem]">
+                        <div 
+                          className="absolute inset-0 border-2 border-blue-400
+                                     rounded-2xl
+                                     sm:rounded-3xl
+                                     2xl:rounded-[2rem]"
+                          style={{
+                            animation: 'pulse 2s ease-in-out infinite',
+                            clipPath: `circle(${activeFeature * 25 + 25}% at 50% 50%)`
+                          }}
+                        ></div>
+                      </div>
                     </div>
-                  );
-                })}
 
-                {/* Connection Lines - Responsive */}
-                {features.map((_, index) => (
-                  <div
-                    key={`line-${index}`}
-                    className="absolute top-1/2 left-1/2 origin-left h-px bg-gradient-to-r from-gray-300 to-transparent"
-                    style={{
-                      width: window.innerWidth < 640 ? '100px' : window.innerWidth < 1024 ? '120px' : '140px',
-                      transform: `translate(-50%, -50%) rotate(${index * 90}deg)`,
-                      opacity: activeFeature === index ? 0.8 : 0.3,
-                      transition: 'opacity 0.5s ease'
-                    }}
-                  ></div>
-                ))}
+                    {/* Orbiting Features - Ultra responsive */}
+                    {features.map((feature, index) => {
+                      const angle = (index * 90) * (Math.PI / 180);
+                      const radius = getResponsiveRadius();
+                      const x = Math.cos(angle) * radius;
+                      const y = Math.sin(angle) * radius;
+                      const IconComponent = feature.icon;
+                      
+                      return (
+                        <div
+                          key={index}
+                          className={`absolute bg-white border-2 flex items-center justify-center 
+                                     transition-all duration-500 shadow-lg ${
+                            activeFeature === index 
+                              ? 'border-blue-500 scale-110 shadow-blue-500/25' 
+                              : 'border-gray-200 hover:border-blue-300'
+                          }
+                          w-10 h-10 rounded-lg
+                          sm:w-12 sm:h-12 sm:rounded-xl
+                          lg:w-16 lg:h-16 lg:rounded-2xl
+                          xl:w-20 xl:h-20
+                          2xl:w-24 2xl:h-24 2xl:rounded-3xl`}
+                          style={{
+                            left: '50%',
+                            top: '50%',
+                            transform: `translate(-50%, -50%) translate(${x}px, ${y}px)`
+                          }}
+                        >
+                          <IconComponent 
+                            className={`${
+                              activeFeature === index ? 'text-blue-600' : 'text-gray-600'
+                            }
+                            w-4 h-4
+                            sm:w-5 sm:h-5
+                            lg:w-7 lg:h-7
+                            xl:w-9 xl:h-9
+                            2xl:w-11 2xl:h-11`}
+                          />
+                          
+                          {/* Tooltip - Responsive visibility */}
+                          <div className={`absolute left-1/2 transform -translate-x-1/2 transition-opacity duration-300 ${
+                            activeFeature === index ? 'opacity-100' : 'opacity-0'
+                          }
+                          -bottom-12 hidden sm:block
+                          sm:-bottom-16
+                          lg:-bottom-20
+                          2xl:-bottom-24`}>
+                            <div className="px-2 py-1 text-center bg-white border rounded-lg shadow-lg whitespace-nowrap sm:px-3 sm:py-2 2xl:px-4 2xl:py-3 2xl:rounded-xl">
+                              <div className="text-xs font-semibold text-gray-900 sm:text-sm 2xl:text-base">{feature.title}</div>
+                              <div className="hidden text-xs text-gray-600 lg:block 2xl:text-sm">{feature.description}</div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
 
-                {/* Ambient Glow */}
-                <div className="absolute inset-0 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-blue-500/5 to-indigo-500/10 blur-xl scale-150 -z-10"></div>
-              </div>
+                    {/* Connection Lines - Responsive */}
+                    {features.map((_, index) => (
+                      <div
+                        key={`line-${index}`}
+                        className="absolute h-px origin-left top-1/2 left-1/2 bg-gradient-to-r from-gray-300 to-transparent"
+                        style={{
+                          width: `${getResponsiveLineWidth()}px`,
+                          transform: `translate(-50%, -50%) rotate(${index * 90}deg)`,
+                          opacity: activeFeature === index ? 0.8 : 0.3,
+                          transition: 'opacity 0.5s ease'
+                        }}
+                      ></div>
+                    ))}
 
-              {/* Mobile Feature Labels - Only visible on small screens */}
-              <div className="mt-6 sm:hidden">
-                <div className="text-center">
-                  <div className="text-sm font-semibold text-gray-900">{features[activeFeature].title}</div>
-                  <div className="text-xs text-gray-600">{features[activeFeature].description}</div>
+                    {/* Ambient Glow */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-indigo-500/10 blur-xl scale-150 -z-10
+                                    rounded-2xl
+                                    sm:rounded-3xl
+                                    2xl:rounded-[2rem]"></div>
+                  </div>
+
+                  {/* Mobile Feature Labels - Only visible on small screens */}
+                  <div className="mt-6 sm:hidden">
+                    <div className="text-center">
+                      <div className="text-sm font-semibold text-gray-900">{features[activeFeature].title}</div>
+                      <div className="text-xs text-gray-600">{features[activeFeature].description}</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </Container>
 
-        {/* Trusted By Section - Responsive */}
-        {/* Uncomment if needed
-        <div className={`mt-12 sm:mt-16 lg:mt-20 transition-all duration-1000 delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <div className="text-center mb-6 sm:mb-8">
-            <p className="text-xs sm:text-sm text-gray-500 font-medium uppercase tracking-wider">Trusted by industry leaders</p>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 sm:gap-6 lg:gap-8 items-center opacity-60">
-            {trustedBy.map((company, index) => (
-              <div key={index} className="text-center">
-                <div className="text-sm sm:text-lg lg:text-xl font-bold text-gray-400 hover:text-gray-600 transition-colors duration-300 cursor-pointer">
-                  {company}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-        */}
-      </Container>
+        {/* Custom Animations */}
+        <style>{`
+          @keyframes float {
+            0%, 100% {
+              transform: translateY(0px);
+            }
+            50% {
+              transform: translateY(-10px);
+            }
+          }
+          
+          @keyframes pulse {
+            0%, 100% {
+              opacity: 0.4;
+            }
+            50% {
+              opacity: 1;
+            }
+          }
+        `}</style>
+      </section>
 
-      {/* Scroll Indicator - Hidden on very small screens
-      <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce hidden sm:block">
-        <div className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-gray-400/30 rounded-full flex justify-center">
-          <div className="w-0.5 sm:w-1 h-2 sm:h-3 bg-gradient-to-b from-gray-400 to-gray-600 rounded-full mt-1 sm:mt-2"></div>
-        </div>
-      </div> */}
-
-      {/* Custom Animations */}
-      <style>{`
-        @keyframes float {
-          0%, 100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
-        }
-        
-        @keyframes pulse {
-          0%, 100% {
-            opacity: 0.4;
-          }
-          50% {
-            opacity: 1;
-          }
-        }
-
-        /* Responsive breakpoint helpers */
-        @media (max-width: 640px) {
-          .hero-mobile-spacing {
-            padding-top: 4rem;
-          }
-        }
-        
-        @media (min-width: 1920px) {
-          .hero-4k-text {
-            font-size: 4.5rem;
-          }
-        }
-      `}</style>
-    </section>
+      {/* ChatbotModal Component */}
+      <ChatbotModal isOpen={isChatbotOpen} onClose={closeChatbot} />
+    </>
   );
 };
 

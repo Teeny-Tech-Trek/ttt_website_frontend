@@ -32,6 +32,8 @@ import {
   Home
 } from 'lucide-react';
 
+import hospitalityImage from "../../Images/Case Studies/Hospitality.png"
+
 // Clean Split-Screen Hero for Hospitality
 const Hero: React.FC = () => {
   return (
@@ -68,8 +70,7 @@ const Hero: React.FC = () => {
           {/* Right Visual - Simple Hotel Image */}
           <div className="relative">
             <img 
-              src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
-              alt="Luxury hotel lobby and hospitality"
+              src={hospitalityImage}
               className="w-full h-[500px] object-cover rounded-2xl shadow-xl"
             />
           </div>

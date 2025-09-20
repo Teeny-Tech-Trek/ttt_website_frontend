@@ -20,6 +20,9 @@ import {
   Target
 } from 'lucide-react';
 
+import healthcareImage from "../../Images/Case Studies/Healthcare.png"
+
+
 // Animation variants
 const slideFromLeft = {
   hidden: { x: -100, opacity: 0 },
@@ -135,23 +138,23 @@ const HeroSection = () => {
             animate="visible"
             variants={slideFromRight}
           >
-            <div className="relative p-8 bg-white shadow-2xl rounded-2xl">
+            <div className="relative pt-8 bg-white shadow-2xl rounded-2xl">
               {/* Chat bubble */}
               <div className="absolute px-6 py-3 text-white bg-blue-900 rounded-bl-none shadow-lg -top-4 left-8 rounded-2xl">
                 <p className="text-sm font-medium">How are you feeling since your last visit?</p>
               </div>
               
               {/* Dashboard mockup */}
-              <div className="mt-8 space-y-6">
-                <div className="flex items-center justify-between">
+              <div className="mt-2 space-y-6">
+                {/* <div className="flex items-center justify-between">
                   <div className="w-32 h-4 bg-gray-200 rounded"></div>
                   <div className="w-20 h-4 bg-gray-200 rounded"></div>
-                </div>
+                </div> */}
                 
                 {/* Chart area with image */}
-                <div className="relative h-48 overflow-hidden rounded-lg bg-gradient-to-br from-blue-100 to-gray-100">
+                <div className="relative overflow-hidden rounded-lg h-72 bg-gradient-to-br from-blue-100 to-gray-100">
                   <img 
-                    src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                    src={healthcareImage}
                     alt="Healthcare professional with patient" 
                     className="object-cover w-full h-full rounded-lg"
                   />

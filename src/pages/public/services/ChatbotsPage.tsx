@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database } from 'lucide-react';
+import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap,Star, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database } from 'lucide-react';
+
+import heroImage from "../../../Images/Chatbots/ChatGPT Image Aug 12, 2025, 04_06_26 PM.png"
 
 // Animation variants
 const fadeInUp = {
@@ -97,7 +99,7 @@ const ChatbotsPage = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden bg-white">
+      <section className="relative overflow-hidden bg-white">
         <div className="absolute inset-0">
           <motion.div 
             className="absolute top-0 right-0 bg-gray-100 rounded-full w-96 h-96 blur-3xl opacity-30"
@@ -183,13 +185,13 @@ const ChatbotsPage = () => {
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
             >
               <motion.div 
-                className="p-8 bg-white border border-gray-200 shadow-xl rounded-2xl"
+                className="p-8 rounded-2xl"
                 whileHover={{ y: -10, transition: { duration: 0.3 } }}
               >
                 <img 
-                  src="https://images.unsplash.com/photo-1531746790731-6c087fecd65a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                  src={heroImage}
                   alt="AI Assistant retrieves policy and creates a helpdesk ticket"
-                  className="object-cover w-full h-64 rounded-lg"
+                  className="object-cover w-full rounded-lg h-fit"
                 />
                 <div className="mt-4 text-center">
                   <div className="text-sm text-gray-600">Hero diagram: Docs → Agent → Actions</div>
@@ -200,176 +202,198 @@ const ChatbotsPage = () => {
         </div>
       </section>
 
-      {/* Live Demo Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="px-6 mx-auto max-w-7xl">
-          <motion.div 
-            className="mb-16 text-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            <h2 className="mb-4 text-4xl font-bold text-black">
-              See It In <span className="text-blue-900">Action</span>
-            </h2>
-            <p className="text-xl text-gray-700">Watch how our AI chatbot handles real conversations</p>
-          </motion.div>
-          
-          <div className="grid gap-12 lg:grid-cols-2">
-            {/* Demo Chat Interface */}
-            <motion.div 
-              className="overflow-hidden bg-white border border-gray-200 shadow-xl rounded-2xl"
-              initial={{ opacity: 0, x: -60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <motion.div 
-                className="p-6 text-white bg-blue-900"
-                initial={{ opacity: 0, y: -20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-xl">
-                      <Bot className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <div className="text-lg font-bold">TeenyBot Assistant</div>
-                      <div className="text-sm text-blue-100">AI Helper • Online</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 bg-blue-300 rounded-full animate-pulse"></div>
-                    <span className="text-sm">Live Demo</span>
-                  </div>
-                </div>
-              </motion.div>
-              
-              <div className="p-6 overflow-y-auto min-h-96 max-h-96 bg-gray-50">
-                <div className="space-y-4">
-                  {demoMessages.slice(0, currentMessageIndex + 1).map((message, index) => (
-                    <motion.div 
-                      key={index} 
-                      className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.1 }}
-                    >
-                      <div className={`max-w-md ${message.type === 'user' ? 'ml-12' : 'mr-12'}`}>
-                        <div className={`p-4 rounded-2xl ${
-                          message.type === 'user' 
-                            ? 'bg-gray-200 text-black rounded-tr-md' 
-                            : 'bg-blue-900 text-white rounded-tl-md'
-                        }`}>
-                          <p className="text-sm leading-relaxed whitespace-pre-line">{message.text}</p>
-                          {message.citations && (
-                            <div className="px-2 py-1 mt-2 text-xs rounded bg-blue-400/20">
-                              📄 Source cited
-                            </div>
-                          )}
-                          {message.action && (
-                            <div className="mt-2">
-                              <button className="px-3 py-1 text-xs rounded-full bg-blue-400/20">
-                                🎫 Creating ticket...
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                        <div className="px-2 mt-1 text-xs text-gray-500">
-                          {message.type === 'bot' ? 'TeenyBot' : 'Customer'} • Just now
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                  
-                  {isTyping && (
-                    <motion.div 
-                      className="flex justify-start mr-12"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <div className="p-4 text-white bg-blue-900 rounded-2xl rounded-tl-md">
-                        <div className="flex items-center gap-1">
-                          <div className="w-2 h-2 rounded-full bg-white/60 animate-bounce"></div>
-                          <div className="w-2 h-2 rounded-full bg-white/60 animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                          <div className="w-2 h-2 rounded-full bg-white/60 animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </div>
+     {/* Live Demo Section */}
+<section className="py-20 bg-gray-50">
+  <div className="px-6 mx-auto max-w-7xl">
+    <motion.div 
+      className="mb-16 text-center"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <h2 className="mb-4 text-4xl font-bold text-black">
+        See It In <span className="text-blue-900">Action</span>
+      </h2>
+      <p className="text-xl text-gray-700">Watch how our AI chatbot handles real conversations</p>
+    </motion.div>
+    
+    <div className="grid gap-12 lg:grid-cols-2">
+      {/* Demo Chat Interface */}
+      <motion.div 
+        className="overflow-hidden bg-white border border-gray-200 shadow-xl rounded-2xl"
+        initial={{ opacity: 0, x: -60 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <motion.div 
+          className="p-6 text-white bg-blue-900"
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-xl">
+                <Bot className="w-6 h-6" />
               </div>
-            </motion.div>
-            
-            {/* Demo Prompts */}
-            <motion.div 
-              className="space-y-6"
-              initial={{ opacity: 0, x: 60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <motion.h3 
-                className="text-2xl font-bold text-blue-900"
+              <div>
+                <div className="text-lg font-bold">TeenyBot Assistant</div>
+                <div className="text-sm text-blue-100">AI Helper • Online</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-blue-300 rounded-full animate-pulse"></div>
+              <span className="text-sm">Live Demo</span>
+            </div>
+          </div>
+        </motion.div>
+        
+        <div className="p-6 overflow-y-auto min-h-96 max-h-96 bg-gray-50">
+          <div className="space-y-4">
+            {demoMessages.slice(0, currentMessageIndex + 1).map((message, index) => (
+              <motion.div 
+                key={index} 
+                className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
                 initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.1 }}
               >
-                Try these prompts:
-              </motion.h3>
-              <motion.div 
-                className="space-y-4"
-                variants={staggerContainer}
-                initial="initial"
-                whileInView="animate"
-                viewport={{ once: true, amount: 0.3 }}
-              >
-                {demoPrompts.map((prompt, index) => (
-                  <motion.button 
-                    key={index}
-                    className="w-full p-4 text-left transition-colors bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50"
-                    variants={fadeInUp}
-                    whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <div className="flex items-start gap-3">
-                      <MessageCircle className="w-5 h-5 text-blue-900 mt-0.5" />
-                      <span className="text-black">"{prompt}"</span>
-                    </div>
-                  </motion.button>
-                ))}
-              </motion.div>
-              
-              {/* UI Mock Image */}
-              <motion.div 
-                className="p-4 bg-white border border-gray-200 rounded-lg"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
-              >
-                <img 
-                  src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                  alt="Chat shows answer with source and escalation"
-                  className="object-cover w-full h-48 rounded-lg"
-                />
-                <div className="mt-2 text-sm text-center text-gray-600">
-                  Chat interface showing cited answer with handoff button
+                <div className={`max-w-md ${message.type === 'user' ? 'ml-12' : 'mr-12'}`}>
+                  <div className={`p-4 rounded-2xl ${
+                    message.type === 'user' 
+                      ? 'bg-gray-200 text-black rounded-tr-md' 
+                      : 'bg-blue-900 text-white rounded-tl-md'
+                  }`}>
+                    <p className="text-sm leading-relaxed whitespace-pre-line">{message.text}</p>
+                    {message.citations && (
+                      <div className="px-2 py-1 mt-2 text-xs rounded bg-blue-400/20">
+                        📄 Source cited
+                      </div>
+                    )}
+                    {message.action && (
+                      <div className="mt-2">
+                        <button className="px-3 py-1 text-xs rounded-full bg-blue-400/20">
+                          🎫 Creating ticket...
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  <div className="px-2 mt-1 text-xs text-gray-500">
+                    {message.type === 'bot' ? 'TeenyBot' : 'Customer'} • Just now
+                  </div>
                 </div>
               </motion.div>
-            </motion.div>
+            ))}
+            
+            {isTyping && (
+              <motion.div 
+                className="flex justify-start mr-12"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="p-4 text-white bg-blue-900 rounded-2xl rounded-tl-md">
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-full bg-white/60 animate-bounce"></div>
+                    <div className="w-2 h-2 rounded-full bg-white/60 animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                    <div className="w-2 h-2 rounded-full bg-white/60 animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
           </div>
         </div>
-      </section>
+      </motion.div>
+      
+      {/* Demo Prompts & Features */}
+      <motion.div 
+        className="space-y-6"
+        initial={{ opacity: 0, x: 60 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <motion.h3 
+          className="text-2xl font-bold text-blue-900"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+        >
+          Try these prompts:
+        </motion.h3>
+        <motion.div 
+          className="space-y-4"
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, amount: 0.3 }}
+        >
+          {demoPrompts.map((prompt, index) => (
+            <motion.button 
+              key={index}
+              className="w-full p-4 text-left transition-colors bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50"
+              variants={fadeInUp}
+              whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <div className="flex items-start gap-3">
+                <MessageCircle className="w-5 h-5 text-blue-900 mt-0.5" />
+                <span className="text-black">"{prompt}"</span>
+              </div>
+            </motion.button>
+          ))}
+        </motion.div>
+        
+        {/* Real-time Analytics Dashboard */}
+       <motion.div 
+  className="p-6 bg-white border border-gray-200 shadow-lg rounded-xl"
+  initial={{ opacity: 0, y: 30 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, amount: 0.3 }}
+  transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+>
+  <div className="flex items-center gap-3 mb-4">
+    <Star className="w-6 h-6 text-yellow-500" />
+    <h4 className="text-lg font-semibold text-gray-900">What Users Say</h4>
+  </div>
+  
+  <motion.div 
+    className="space-y-4"
+    animate={{ y: [-10, 0, -10] }}
+    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+  >
+    <div className="p-4 rounded-lg bg-gray-50">
+      <div className="flex items-center gap-1 mb-2">
+        {[...Array(5)].map((_, i) => (
+          <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+        ))}
+      </div>
+      <p className="text-sm italic text-gray-700">
+        "TeenyBot resolved my issue in seconds. It's like having a super-smart assistant available 24/7!"
+      </p>
+      <div className="flex items-center gap-3 mt-3">
+        <div className="flex items-center justify-center w-8 h-8 text-sm font-bold text-white bg-blue-500 rounded-full">
+          S
+        </div>
+        <div>
+          <div className="text-sm font-medium text-gray-900">Sarah Chen</div>
+          <div className="text-xs text-gray-600">Product Manager</div>
+        </div>
+      </div>
+    </div>
+  </motion.div>
+</motion.div>
+      </motion.div>
+    </div>
+  </div>
+</section>
 
       {/* Outcomes Section */}
-      <section className="py-20 bg-white">
+      <section className="py-10 bg-white">
         <div className="px-6 mx-auto max-w-7xl">
           <motion.div 
             className="mb-16 text-center"
@@ -429,25 +453,13 @@ const ChatbotsPage = () => {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
           >
-            <motion.div 
-              className="max-w-2xl p-6 mx-auto border border-blue-200 rounded-lg bg-blue-50"
-              whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
-            >
-              <img 
-                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-                alt="First response time reduced; deflection increased"
-                className="object-cover w-full h-32 rounded-lg"
-              />
-              <div className="mt-2 text-sm text-gray-600">
-                Before/after metrics: FRT and deflection improvements
-              </div>
-            </motion.div>
+            
           </motion.div>
         </div>
       </section>
 
       {/* What We Deliver */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-10 bg-gray-50">
         <div className="px-6 mx-auto max-w-7xl">
           <motion.div 
             className="mb-16 text-center"
