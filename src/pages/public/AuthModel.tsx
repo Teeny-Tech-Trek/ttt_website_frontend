@@ -5,7 +5,7 @@ import { Eye, EyeOff, Lock, Mail, User, X } from "lucide-react";
 import { useAuth } from "../../context/AuthContext.tsx";
 import { GoogleLogin } from "@react-oauth/google";
 import { CredentialResponse } from "@react-oauth/google";
-import { loginUser, registerUser, forgotPassword, googleLogin } from "../../services/authService.ts";
+import { loginUser, registerUser, googleLogin } from "../../services/authService.ts";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -71,12 +71,15 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMode = 'l
 
     try {
       if (isForgot) {
-        const res = await forgotPassword(form.username);
-        toast.success(res.data.message || "Reset link sent!");
-        setIsForgot(false);
-      } else if (isLogin) {
+        // TODO: Implement forgot password logic
+        // const res = await forgotPassword(form.username);
+        toast.error("Forgot password not implemented yet");
+        return;
+      }
+
+      if (isLogin) {
         const res = await loginUser(form.username, form.password);
-        login(res.data.accessToken);
+        login(res.data.user, res.data.token);
         toast.success("Login successful");
         onClose(); // Close modal on successful login
       } else {
@@ -85,7 +88,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMode = 'l
           return;
         }
 
-        await registerUser(form.username, form.email, form.password);
+        const res = await registerUser(form.username, form.email, form.password);
         toast.success("Account created. Please log in.");
         setIsLogin(true);
       }
@@ -100,8 +103,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, defaultMode = 'l
     if (credentialResponse.credential) {
       try {
         const res = await googleLogin(credentialResponse.credential);
-        const token = res.data.accessToken;
-        login(token);
+        login(res.data.user, res.data.token);
         toast.success("Google login successful");
         onClose(); // Close modal on successful login
       } catch (err: any) {

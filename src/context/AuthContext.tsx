@@ -10,11 +10,18 @@ import {
 import { jwtDecode } from 'jwt-decode';
 import api from '../api/axios';
 
+interface User {
+  id: string;
+  username: string;
+  email: string;
+  provider: string;
+}
+
 interface AuthContextType {
-  user: { sub: string; role: string } | null;
+  user: User | null;
   accessToken: string | null;
   loading: boolean;
-  login: (token: string) => void;
+  login: (user: User, token: string) => void; // ✅ simplified
   logout: () => void;
   isAuthModalOpen: boolean;
   openAuthModal: (mode?: 'login' | 'signup') => void;
@@ -22,24 +29,28 @@ interface AuthContextType {
   authModalMode: 'login' | 'signup';
 }
 
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 let tokenFetched = false;
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [user, setUser] = useState<{ sub: string; role: string } | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   
   // Modal state
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
 
-  const login = (token: string) => {
-    setAccessToken(token);
-    const decoded: any = jwtDecode(token);
-    setUser({ sub: decoded.sub, role: decoded.role });
-  };
+  // AuthContext.tsx
+const login = (user: User, token: string) => {
+  setAccessToken(token);
+  setUser(user);
+  localStorage.setItem('accessToken', token);
+  localStorage.setItem('user', JSON.stringify(user));
+};
+
 
   const logout = async () => {
     try {
@@ -56,6 +67,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (e) {
       console.warn('[Auth] Logout failed:', e);
     }
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('user');
     setAccessToken(null);
     setUser(null);
   };
@@ -66,11 +79,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const res = await api.post('/auth/refresh', {}, { withCredentials: true });
       const newToken = res.data.accessToken;
-      login(newToken);
+      setAccessToken(newToken);
+      localStorage.setItem('accessToken', newToken);
       console.log('[Auth] Token refreshed');
     } catch (err) {
-      console.warn('[Auth] Refresh failed. Logging out.');
-      logout();
+      console.warn('[Auth] Refresh failed. Checking stored token.');
+      const storedToken = localStorage.getItem('accessToken');
+      const userStr = localStorage.getItem('user');
+      if (storedToken && userStr) {
+        try {
+          const decoded: any = jwtDecode(storedToken);
+          if (decoded.exp * 1000 > Date.now()) {
+            setAccessToken(storedToken);
+            setUser(JSON.parse(userStr));
+            console.log('[Auth] Using stored valid token');
+            return;
+          }
+        } catch (decodeErr) {
+          console.warn('[Auth] Stored token invalid:', decodeErr);
+        }
+      }
+      console.warn('[Auth] No valid token. Logging out.');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('user');
+      setAccessToken(null);
+      setUser(null);
     } finally {
       setLoading(false);
     }
@@ -86,7 +119,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    refreshToken().finally(() => setLoading(false));
+    // Load from localStorage first
+    const storedToken = localStorage.getItem('accessToken');
+    const userStr = localStorage.getItem('user');
+    if (storedToken && userStr) {
+      try {
+        const decoded: any = jwtDecode(storedToken);
+        if (decoded.exp * 1000 > Date.now()) {
+          setAccessToken(storedToken);
+          setUser(JSON.parse(userStr));
+          setLoading(false);
+          return; // Skip refresh if stored token is valid
+        }
+      } catch {}
+    }
+    // Otherwise, attempt refresh
+    refreshToken();
   }, [refreshToken]);
 
   useEffect(() => {
