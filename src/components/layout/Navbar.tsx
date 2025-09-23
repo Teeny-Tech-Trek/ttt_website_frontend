@@ -36,7 +36,7 @@ const Navbar = () => {
     const path = location.pathname;
     if (path.startsWith('/services')) return '#services';
     if (path === '/solutions') return '#solutions';
-    if (path === '/blogs' || path === '/community' || path === '/audit-form') return '#resources';
+    if (path === '/blogs' || path === '/community' || path === '/auditform') return '#resources';
     return '#home';
   });
 
@@ -143,7 +143,7 @@ const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.addEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
@@ -154,7 +154,7 @@ const Navbar = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Updated topNavLinks to match Footer's services structure
+  // Updated topNavLinks to match Footer's services structure and add techtrekkers.ai and use cases under Solutions
   const services = [
     { title: 'AI-Powered Chatbots', slug: 'ai-chatbots', key: 'ai-chatbots' },
     { title: 'Agentic AI Workflows', slug: 'agentic-ai-workflows', key: 'agentic-ai-workflows' },
@@ -166,7 +166,6 @@ const Navbar = () => {
     { name: 'Home', href: isHomePage ? '#home' : '/', key: 'home', hash: '#home', path: '/' },
     {
       name: 'Services',
-      href: isHomePage ? '#services' : '/services',
       key: 'services',
       hash: '#services',
       path: '/',
@@ -177,15 +176,24 @@ const Navbar = () => {
       })),
     },
     { name: 'Book Consultation', href: isHomePage ? '#pricing' : '/#pricing', key: 'pricing', hash: '#pricing', path: '/' },
-    { name: 'Solutions', href: isHomePage ? '#solutions' : '/solutions', key: 'solutions', hash: '#solutions', path: '/' },
+    {
+      name: 'Solutions',
+      href: isHomePage ? '#solutions' : '/solutions',
+      key: 'solutions',
+      hash: '#solutions',
+      path: '/',
+      subLinks: [
+        { name: 'TechTrekkers.ai', href: 'https://techtrekkers.ai', key: 'techtrekkers' },
+        { name: 'Use Cases', href: '/use-cases', key: 'use-cases' },
+      ],
+    },
     {
       name: 'Resources',
-      href: '/resources',
       key: 'resources',
       subLinks: [
         { name: 'Blog', href: '/blogs', key: 'blogs' },
         { name: 'Community', href: '/community', key: 'community' },
-        { name: 'Audit Form', href: '/audit-form', key: 'audit-form' },
+        { name: 'Audit Form', href: '/auditform', key: 'auditform' },
       ],
     },
     { name: 'Contact', href: isHomePage ? '#contact' : '/#contact', key: 'contact', hash: '#contact', path: '/' },
@@ -202,7 +210,7 @@ const Navbar = () => {
         case 'services':
           return path.startsWith('/services');
         case 'solutions':
-          return path === '/solutions';
+          return path === '/solutions' || path === '/use-cases';
         case 'resources':
           return path === '/blogs' || path === '/community' || path === '/audit-form';
         case 'pricing':
@@ -253,7 +261,7 @@ const Navbar = () => {
     } else {
       const path = location.pathname;
       if (path.startsWith('/services')) newActive = '#services';
-      else if (path === '/solutions') newActive = '#solutions';
+      else if (path === '/solutions' || path === '/use-cases') newActive = '#solutions';
       else if (path === '/blogs' || path === '/community' || path === '/audit-form') newActive = '#resources';
       else if (path === '/') newActive = '#home';
     }
@@ -308,23 +316,38 @@ const Navbar = () => {
                     onMouseEnter={() => link.subLinks && setOpenDropdown(link.key)}
                     onMouseLeave={() => link.subLinks && setOpenDropdown(null)}
                   >
-                    <MotionLink
-                      smooth
-                      to={link.href}
-                      className={`relative text-sm font-medium text-blue-900/70 transition-colors hover:text-blue-600 flex items-center ${
-                        isLinkActive(link) ? 'text-blue-600' : ''
-                      }`}
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ type: 'spring', stiffness: 300 }}
-                      onClick={() => setActiveSection(link.hash || `#${link.key}`)}
-                    >
-                      {link.name}
-                      {link.subLinks && (
-                        <ChevronDown
-                          className="w-4 h-4 ml-1 transition-transform group-hover:rotate-180"
-                        />
-                      )}
-                    </MotionLink>
+                    {link.key === 'services' || link.key === 'resources' ? (
+                      <span
+                        className={`relative text-sm font-medium text-blue-900/70 transition-colors hover:text-blue-600 flex items-center cursor-pointer ${
+                          isLinkActive(link) ? 'text-blue-600' : ''
+                        }`}
+                      >
+                        {link.name}
+                        {link.subLinks && (
+                          <ChevronDown
+                            className="w-4 h-4 ml-1 transition-transform group-hover:rotate-180"
+                          />
+                        )}
+                      </span>
+                    ) : (
+                      <MotionLink
+                        smooth
+                        to={link.href}
+                        className={`relative text-sm font-medium text-blue-900/70 transition-colors hover:text-blue-600 flex items-center ${
+                          isLinkActive(link) ? 'text-blue-600' : ''
+                        }`}
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ type: 'spring', stiffness: 300 }}
+                        onClick={() => setActiveSection(link.hash || `#${link.key}`)}
+                      >
+                        {link.name}
+                        {link.subLinks && (
+                          <ChevronDown
+                            className="w-4 h-4 ml-1 transition-transform group-hover:rotate-180"
+                          />
+                        )}
+                      </MotionLink>
+                    )}
                     {isLinkActive(link) && (
                       <motion.div
                         className="absolute -bottom-1 left-0 right-0 h-0.5 bg-blue-600"

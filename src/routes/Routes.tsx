@@ -26,6 +26,7 @@ import HospitalityIndex from '../view-cases/hospitality/hero';
 import EducationIndex from '../view-cases/education/main';
 import AboutUs from '../components/layout/AboutUs';
 import AEOIndex from '../view-cases/AGO/main';
+import AuditForm from '../components/home/AuditForm';
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -53,6 +54,7 @@ const AppRoutes = () => (
       <Route path="/terms" element={<Terms />} />
       <Route path="/aboutUs" element={<AboutUs />} />
       <Route path="/community" element={<Community />} />
+       <Route path="/auditform" element={<AuditForm />} />
       <Route path="/case" element={<CaseStudies />} />
       <Route path="/healthcare" element={<Healthcare />} />
       <Route path="/ecommerce" element={<MainD2C />} />

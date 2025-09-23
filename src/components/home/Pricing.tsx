@@ -179,7 +179,8 @@ const SubscriptionPricing: React.FC = () => {
     if (pkg.price === 0) {
       setLoadingAction(pkg.id);
       window.dataLayer?.push({ event: "consult_file_download", file: "audit_kit" });
-      toast.success("Audit kit download link sent to your email!");
+      toast.success("Get ready for the AI Readiness Audit!");
+           navigate("/auditform");
       setLoadingAction(null);
       return;
     }
