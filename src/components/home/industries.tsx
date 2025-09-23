@@ -100,7 +100,7 @@ const Industries = () => {
     <div className="w-full py-12 bg-gray-50">
       {/* Header Section */}
       <div className="mb-12 text-center">
-        <h2 className="mb-4 text-4xl font-bold text-[#1f528c]">Industries</h2>
+        <h2 className="mb-4 text-4xl font-bold text-blue-900">Industries</h2>
         <p className="max-w-2xl mx-auto text-lg text-gray-600">
           Discover how our AI solutions transform businesses across various industries
         </p>

@@ -87,7 +87,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative bg-[#1e40af] text-white pt-16 pb-10 overflow-hidden">
+    <footer className="relative pt-16 pb-10 overflow-hidden text-white bg-blue-900">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.1)_1px,transparent_0)] bg-[size:40px_40px] opacity-30" />
 
       <Container className="relative z-10">

@@ -300,7 +300,7 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
 };
 
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (loading) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -312,7 +312,7 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
   };
 
   return (
-    <section className="py-20 bg-gray-50 relative overflow-hidden">
+    <section className="relative py-20 overflow-hidden bg-gray-50">
       <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-white/50" />
       <Container className="relative z-10">
         <SectionHeading
@@ -325,7 +325,7 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center text-red-500 mb-6 font-medium bg-red-50 py-3 px-4 rounded-lg max-w-2xl mx-auto"
+            className="max-w-2xl px-4 py-3 mx-auto mb-6 font-medium text-center text-red-500 rounded-lg bg-red-50"
           >
             {error}
           </motion.div>
@@ -336,7 +336,7 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
           variants={containerVariants}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+          className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4"
         >
           {packages.map((pkg) => {
             const priceText = pkg.price === 0 ? "Free" : `₹${pkg.price.toLocaleString()}`;
@@ -354,7 +354,7 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
                   <motion.span
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-medium shadow-md"
+                    className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-900 text-white px-4 py-1.5 rounded-full text-xs font-medium shadow-md"
                   >
                     Most Booked
                   </motion.span>
@@ -366,20 +366,20 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
                 {pkg.duration !== 0 && <meta itemProp="duration" content={`PT${pkg.duration}M`} />}
                 
                 <div className="mb-6">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{pkg.name}</h3>
-                  <p className="text-gray-600 text-sm mb-4">{pkg.description}</p>
+                  <h3 className="mb-2 text-2xl font-bold text-gray-900">{pkg.name}</h3>
+                  <p className="mb-4 text-sm text-gray-600">{pkg.description}</p>
                   <div className="space-y-1.5">
-                    <p className="text-sm text-gray-500 flex items-center">
+                    <p className="flex items-center text-sm text-gray-500">
                       <span className="font-medium mr-1.5">For:</span> {pkg.for}
                     </p>
-                    <p className="text-sm text-gray-500 flex items-center">
+                    <p className="flex items-center text-sm text-gray-500">
                       <span className="font-medium mr-1.5">Led by:</span> {pkg.ledBy}
                     </p>
                   </div>
                 </div>
                 
                 <div className="mb-6">
-                  <div className="text-3xl font-bold text-gray-900 mb-1">
+                  <div className="mb-1 text-3xl font-bold text-gray-900">
                     {priceText}
                     {pkg.duration > 0 && (
                       <span className="text-base text-gray-500 font-medium ml-1.5">
@@ -407,10 +407,10 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="mb-6 space-y-5 p-4 bg-gray-50 rounded-lg border border-gray-200"
+                    className="p-4 mb-6 space-y-5 border border-gray-200 rounded-lg bg-gray-50"
                   >
                     <div>
-                      <label className="block text-gray-700 text-sm font-medium mb-2">
+                      <label className="block mb-2 text-sm font-medium text-gray-700">
                         Your Goals
                       </label>
                       <input
@@ -418,11 +418,11 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
                         value={formData.goals}
                         onChange={(e) => setFormData({ ...formData, goals: e.target.value })}
                         placeholder="What do you want to achieve?"
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        className="w-full p-3 transition-colors border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-700 text-sm font-medium mb-2">
+                      <label className="block mb-2 text-sm font-medium text-gray-700">
                         Current Tools
                       </label>
                       <input
@@ -430,11 +430,11 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
                         value={formData.tools}
                         onChange={(e) => setFormData({ ...formData, tools: e.target.value })}
                         placeholder="List tools you currently use"
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        className="w-full p-3 transition-colors border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-700 text-sm font-medium mb-2">
+                      <label className="block mb-2 text-sm font-medium text-gray-700">
                         Data Sources
                       </label>
                       <input
@@ -442,11 +442,11 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
                         value={formData.dataSources}
                         onChange={(e) => setFormData({ ...formData, dataSources: e.target.value })}
                         placeholder="What data sources do you have?"
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        className="w-full p-3 transition-colors border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-700 text-sm font-medium mb-2">
+                      <label className="block mb-2 text-sm font-medium text-gray-700">
                         Must-Have Outcome
                       </label>
                       <input
@@ -454,12 +454,12 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
                         value={formData.mustHaveOutcome}
                         onChange={(e) => setFormData({ ...formData, mustHaveOutcome: e.target.value })}
                         placeholder="What's your key outcome?"
-                        className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        className="w-full p-3 transition-colors border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       />
                     </div>
                     
                     <div className="pt-2 border-t border-gray-200">
-                      <label className="block text-gray-700 text-sm font-medium mb-3">
+                      <label className="block mb-3 text-sm font-medium text-gray-700">
                         Optional Add-Ons
                       </label>
                       <div className="space-y-2">
@@ -470,7 +470,7 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
                               id={`${pkg.id}-${addOn.id}`}
                               checked={selectedAddOns.includes(addOn.id)}
                               onChange={() => handleAddOnChange(addOn.id)}
-                              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                              className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                             />
                             <label htmlFor={`${pkg.id}-${addOn.id}`} className="text-sm text-gray-700">
                               {addOn.name} (₹{addOn.price})
@@ -480,28 +480,28 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
                       </div>
                     </div>
                     
-                    <div className="text-lg font-semibold text-gray-900 pt-3 border-t border-gray-200">
+                    <div className="pt-3 text-lg font-semibold text-gray-900 border-t border-gray-200">
                       Total: ₹{calculateTotal(pkg).toLocaleString()}
                     </div>
                     
                     <button
                       onClick={() => handleFormSubmit(pkg)}
                       disabled={loadingAction === pkg.id}
-                      className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed shadow-sm"
+                      className="w-full px-6 py-3 font-medium text-white transition-colors bg-blue-900 rounded-lg shadow-sm hover:bg-blue-700 disabled:opacity-70 disabled:cursor-not-allowed"
                     >
                       {loadingAction === pkg.id ? "Processing..." : "Confirm Booking"}
                     </button>
                   </motion.div>
                 )}
                 
-                <div className="mt-auto pt-4">
+                <div className="pt-4 mt-auto">
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                     <button
                       onClick={() => handleBookClick(pkg)}
                       disabled={loadingAction === pkg.id}
                       className={`w-full py-3.5 px-6 rounded-lg text-base font-medium transition-colors shadow-sm ${
                         pkg.mostBooked
-                          ? "bg-blue-600 text-white hover:bg-blue-700 shadow-md"
+                          ? "bg-blue-900 text-white hover:bg-blue-900 shadow-md"
                           : "bg-gray-100 text-gray-800 hover:bg-gray-200"
                       } disabled:opacity-70 disabled:cursor-not-allowed`}
                     >
@@ -509,7 +509,7 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
                     </button>
                   </motion.div>
                   
-                  <div className="flex flex-wrap gap-2 mt-4 justify-center">
+                  <div className="flex flex-wrap justify-center gap-2 mt-4">
                     <span className="text-xs bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">Founder-led</span>
                     <span className="text-xs bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">PDF deliverable</span>
                     {pkg.price > 0 && (
@@ -527,16 +527,16 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
           animate={inView ? { opacity: 1 } : { opacity: 0 }}
           className="mt-20 text-center"
         >
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">
+          <h2 className="mb-6 text-3xl font-bold text-gray-900">
             Book a time that works for you
           </h2>
-          <p className="text-gray-600 text-lg max-w-3xl mx-auto mb-6 leading-relaxed">
+          <p className="max-w-3xl mx-auto mb-6 text-lg leading-relaxed text-gray-600">
             All times shown in your local time. Bookings include a calendar invite with Google Meet link. 
             Reschedule up to 24h before your slot.
           </p>
-          <p className="text-gray-600 text-lg mt-6">
+          <p className="mt-6 text-lg text-gray-600">
             Can't use the widget? Email us at{" "}
-            <a href="mailto:anisha.singla@teenytechtrek.com" className="text-blue-600 hover:underline font-medium">
+            <a href="mailto:anisha.singla@teenytechtrek.com" className="font-medium text-blue-900 hover:underline">
               anisha.singla@teenytechtrek.com
             </a>
           </p>
@@ -547,30 +547,30 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
           animate={inView ? { opacity: 1 } : { opacity: 0 }}
           className="mt-20"
         >
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">FAQs</h2>
-          <div className="space-y-8 max-w-3xl mx-auto">
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">
+          <h2 className="mb-12 text-3xl font-bold text-center text-gray-900">FAQs</h2>
+          <div className="max-w-3xl mx-auto space-y-8">
+            <div className="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+              <h3 className="mb-3 text-xl font-semibold text-gray-900">
                 Can we apply the consultation fee to a pilot?
               </h3>
               <p className="text-gray-600">
                 Yes—credit 100% of your consultation toward a 4-week Pilot if you start within 30 days.
               </p>
             </div>
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">What if we need to reschedule?</h3>
+            <div className="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+              <h3 className="mb-3 text-xl font-semibold text-gray-900">What if we need to reschedule?</h3>
               <p className="text-gray-600">
                 You can reschedule up to 24 hours before the slot—link in your invite.
               </p>
             </div>
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Do you sign NDAs?</h3>
+            <div className="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+              <h3 className="mb-3 text-xl font-semibold text-gray-900">Do you sign NDAs?</h3>
               <p className="text-gray-600">
                 Yes. We can sign a mutual NDA before the session if required.
               </p>
             </div>
-            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">Will you sell us a generic chatbot?</h3>
+            <div className="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
+              <h3 className="mb-3 text-xl font-semibold text-gray-900">Will you sell us a generic chatbot?</h3>
               <p className="text-gray-600">
                 No. The goal is a clear, specific plan that fits your stack and constraints.
               </p>

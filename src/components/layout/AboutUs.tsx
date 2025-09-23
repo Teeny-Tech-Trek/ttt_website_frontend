@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight, Users, Zap, Shield, Code, Star, ArrowRight, Phone, MessageCircle } from 'lucide-react';
+import heroImage from "../../Images/Extra Resources - Hero Page/FounderPage-removebg-preview.png"
+import characterImage from "../../Images/Extra Resources - Hero Page/Oisha_Character-removebg-preview.png"
 
 const AboutUs = () => {
   // Animation variants
@@ -139,9 +141,9 @@ const AboutUs = () => {
               className="relative hidden lg:block"
               variants={fadeInUp}
             >
-              <div className="p-8 bg-blue-50 rounded-2xl">
+              <div className="p-2 rounded-2xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=500&h=500&fit=crop&crop=center" 
+                  src={heroImage}
                   alt="Team collaboration and AI technology"
                   className="object-cover w-full aspect-square rounded-xl"
                 />
@@ -203,19 +205,19 @@ const AboutUs = () => {
               className="relative"
               variants={fadeInUp}
             >
-              <div className="p-8 text-center shadow-md bg-blue-50 rounded-2xl">
+              <div className="p-8 text-center rounded-2xl">
                 <div className="w-full max-w-md mx-auto">
                   <img 
-                    src="https://randomuser.me/api/portraits/men/75.jpg" 
+                    src={characterImage}
                     alt="Founder profile"
-                    className="object-cover w-40 h-40 mx-auto mb-6 rounded-xl"
+                    className="object-cover h-full mx-auto mb-6 rounded-xl"
                   />
                 </div>
 
                 <h3 className="flex items-center justify-center gap-2 text-xl font-semibold text-blue-900">
                   Anisha Singla
                   <a 
-                    href="https://www.linkedin.com/" 
+                    href="https://www.linkedin.com/in/singlaanisha/" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center transition bg-gray-200 rounded-full w-7 h-7 hover:bg-gray-300"

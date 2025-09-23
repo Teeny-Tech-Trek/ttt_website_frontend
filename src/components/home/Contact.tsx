@@ -181,15 +181,15 @@ const Contact = () => {
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
           variants={containerVariants}
-          className="grid grid-cols-1 lg:grid-cols-5 gap-8 mt-16"
+          className="grid grid-cols-1 gap-8 mt-16 lg:grid-cols-5"
         >
           {/* Contact Info Section */}
-          <motion.div variants={itemVariants} className="lg:col-span-2 order-2 lg:order-1">
+          <motion.div variants={itemVariants} className="order-2 lg:col-span-2 lg:order-1">
             <div className="bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-lg h-full border border-[#93c5fd]/50">
               <h3 className="text-2xl font-semibold mb-8 text-[#1e40af] tracking-tight">
                 Contact Information
               </h3>
-              <div className="space-y-6 mb-10">
+              <div className="mb-10 space-y-6">
                 {contactInfo.map((item, index) => (
                   <motion.div
                     key={index}
@@ -236,7 +236,7 @@ const Contact = () => {
           </motion.div>
 
           {/* Contact Form Section */}
-          <motion.div variants={itemVariants} className="lg:col-span-3 order-1 lg:order-2">
+          <motion.div variants={itemVariants} className="order-1 lg:col-span-3 lg:order-2">
             <div className="bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-lg border border-[#93c5fd]/50">
               <h3 className="text-2xl font-semibold mb-8 text-[#1e40af] tracking-tight">
                 Send Us a Message
@@ -270,7 +270,7 @@ const Contact = () => {
                   </motion.div>
                 ) : (
                   <form onSubmit={handleSubmit}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div className="grid grid-cols-1 gap-6 mb-6 md:grid-cols-2">
                       <motion.div variants={inputFocusVariants} whileFocus="focus">
                         <label
                           htmlFor="name"
@@ -333,7 +333,7 @@ const Contact = () => {
                             </option>
                           ))}
                         </select>
-                        <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                        <div className="absolute inset-y-0 flex items-center pointer-events-none right-3">
                           <svg className="w-4 h-4 text-[#1e40af]/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                           </svg>
@@ -360,7 +360,7 @@ const Contact = () => {
                     <motion.button
                       type="submit"
                       disabled={isSubmitting}
-                      className={`w-full flex items-center justify-center gap-2 px-6 py-3 bg-[#3b82f6] text-white hover:text-black font-semibold rounded-lg hover:bg-[#1e40af] transition-all duration-300 ${
+                      className={`w-full flex items-center justify-center gap-2 px-6 py-3 bg-blue-900 text-white hover:text-black font-semibold rounded-lg hover:bg-[#1e40af] transition-all duration-300 ${
                         isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
                       }`}
                       whileHover={{ scale: 1.05 }}
@@ -369,7 +369,7 @@ const Contact = () => {
                       {isSubmitting ? (
                         <>
                           <svg
-                            className="animate-spin -ml-1 mr-2 h-4 w-4 text-black"
+                            className="w-4 h-4 mr-2 -ml-1 text-black animate-spin"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"

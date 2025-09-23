@@ -345,7 +345,7 @@ const Navbar = () => {
                             <MotionLink
                               key={sub.key}
                               to={sub.href}
-                              className="block px-4 py-3 text-sm text-gray-700 transition-colors hover:bg-gray-100 hover:text-blue-600 cursor-pointer group/item"
+                              className="block px-4 py-3 text-sm text-gray-700 transition-colors cursor-pointer hover:bg-gray-100 hover:text-blue-600 group/item"
                               whileHover={{ x: 4 }}
                               onClick={() => {
                                 setOpenDropdown(null);
@@ -447,7 +447,7 @@ const Navbar = () => {
                 <MotionLink
                   smooth
                   to="/#contact"
-                  className="px-8 py-2.5 bg-blue-600 mr-[-2rem] text-white text-sm font-medium rounded-full hover:bg-blue-700 transition-all shadow-sm hover:shadow-md"
+                  className="px-8 py-2.5 bg-blue-900 mr-[-2rem] text-white text-sm font-medium rounded-full hover:bg-blue-700 transition-all shadow-sm hover:shadow-md"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setActiveSection('#contact')}
@@ -516,7 +516,7 @@ const Navbar = () => {
                       {link.subLinks ? (
                         <>
                           <div
-                            className="flex items-center justify-between w-full cursor-pointer px-4 py-2"
+                            className="flex items-center justify-between w-full px-4 py-2 cursor-pointer"
                             onClick={() =>
                               setMobileOpenSub((prev) => ({ ...prev, [link.key]: !prev[link.key] }))
                             }
@@ -541,9 +541,9 @@ const Navbar = () => {
                                 animate={{ opacity: 1, height: 'auto' }}
                                 exit={{ opacity: 0, height: 0 }}
                                 transition={{ duration: 0.2 }}
-                                className="overflow-hidden w-full"
+                                className="w-full overflow-hidden"
                               >
-                                <div className="pl-8 space-y-2 px-4">
+                                <div className="px-4 pl-8 space-y-2">
                                   {link.subLinks.map((sub) => (
                                     <MotionLink
                                       key={sub.key}
@@ -559,7 +559,7 @@ const Navbar = () => {
                                         setActiveSection(link.hash || `#${link.key}`);
                                       }}
                                     >
-                                      <span className="w-2 h-2 bg-blue-600 rounded-full mr-2 inline-block opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                                      <span className="inline-block w-2 h-2 mr-2 transition-opacity duration-300 bg-blue-600 rounded-full opacity-0 group-hover:opacity-100" />
                                       {sub.name}
                                     </MotionLink>
                                   ))}

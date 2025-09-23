@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database } from 'lucide-react';
+import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap,Star, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database } from 'lucide-react';
+
+import heroImage from "../../../Images/Case Studies/Chatbots/ChatGPT Image Aug 12, 2025, 04_06_26 PM.png"
 
 // Animation variants
 const fadeInUp = {
@@ -97,7 +99,7 @@ const ChatbotsPage = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden bg-white">
+      <section className="relative overflow-hidden bg-white">
         <div className="absolute inset-0">
           <motion.div 
             className="absolute top-0 right-0 bg-gray-100 rounded-full w-96 h-96 blur-3xl opacity-30"
@@ -183,13 +185,13 @@ const ChatbotsPage = () => {
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
             >
               <motion.div 
-                className="p-8 bg-white border border-gray-200 shadow-xl rounded-2xl"
+                className="p-8 rounded-2xl"
                 whileHover={{ y: -10, transition: { duration: 0.3 } }}
               >
                 <img 
-                  src="https://images.unsplash.com/photo-1531746790731-6c087fecd65a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                  src={heroImage}
                   alt="AI Assistant retrieves policy and creates a helpdesk ticket"
-                  className="object-cover w-full h-64 rounded-lg"
+                  className="object-cover w-full rounded-lg h-fit"
                 />
                 <div className="mt-4 text-center">
                   <div className="text-sm text-gray-600">Hero diagram: Docs → Agent → Actions</div>
@@ -200,359 +202,588 @@ const ChatbotsPage = () => {
         </div>
       </section>
 
-      {/* Live Demo Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="px-6 mx-auto max-w-7xl">
-          <motion.div 
-            className="mb-16 text-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            <h2 className="mb-4 text-4xl font-bold text-black">
-              See It In <span className="text-blue-900">Action</span>
-            </h2>
-            <p className="text-xl text-gray-700">Watch how our AI chatbot handles real conversations</p>
-          </motion.div>
-          
-          <div className="grid gap-12 lg:grid-cols-2">
-            {/* Demo Chat Interface */}
-            <motion.div 
-              className="overflow-hidden bg-white border border-gray-200 shadow-xl rounded-2xl"
-              initial={{ opacity: 0, x: -60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
+     {/* Live Demo Section */}
+<section className="py-20 bg-gray-50">
+  <div className="px-6 mx-auto max-w-7xl">
+    <motion.div 
+      className="mb-16 text-center"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <h2 className="mb-4 text-4xl font-bold text-black">
+        See It In <span className="text-blue-900">Action</span>
+      </h2>
+      <p className="text-xl text-gray-700">Watch how our AI chatbot handles real conversations</p>
+    </motion.div>
+    
+    <div className="grid gap-12 lg:grid-cols-2">
+      {/* Demo Chat Interface */}
+      <motion.div 
+        className="overflow-hidden bg-white border border-gray-200 shadow-xl rounded-2xl"
+        initial={{ opacity: 0, x: -60 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <motion.div 
+          className="p-6 text-white bg-blue-900"
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-xl">
+                <Bot className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="text-lg font-bold">TeenyBot Assistant</div>
+                <div className="text-sm text-blue-100">AI Helper • Online</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-blue-300 rounded-full animate-pulse"></div>
+              <span className="text-sm">Live Demo</span>
+            </div>
+          </div>
+        </motion.div>
+        
+        <div className="p-6 overflow-y-auto min-h-96 max-h-96 bg-gray-50">
+          <div className="space-y-4">
+            {demoMessages.slice(0, currentMessageIndex + 1).map((message, index) => (
               <motion.div 
-                className="p-6 text-white bg-blue-900"
-                initial={{ opacity: 0, y: -20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+                key={index} 
+                className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.1 }}
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-xl">
-                      <Bot className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <div className="text-lg font-bold">TeenyBot Assistant</div>
-                      <div className="text-sm text-blue-100">AI Helper • Online</div>
-                    </div>
+                <div className={`max-w-md ${message.type === 'user' ? 'ml-12' : 'mr-12'}`}>
+                  <div className={`p-4 rounded-2xl ${
+                    message.type === 'user' 
+                      ? 'bg-gray-200 text-black rounded-tr-md' 
+                      : 'bg-blue-900 text-white rounded-tl-md'
+                  }`}>
+                    <p className="text-sm leading-relaxed whitespace-pre-line">{message.text}</p>
+                    {message.citations && (
+                      <div className="px-2 py-1 mt-2 text-xs rounded bg-blue-400/20">
+                        📄 Source cited
+                      </div>
+                    )}
+                    {message.action && (
+                      <div className="mt-2">
+                        <button className="px-3 py-1 text-xs rounded-full bg-blue-400/20">
+                          🎫 Creating ticket...
+                        </button>
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 bg-blue-300 rounded-full animate-pulse"></div>
-                    <span className="text-sm">Live Demo</span>
+                  <div className="px-2 mt-1 text-xs text-gray-500">
+                    {message.type === 'bot' ? 'TeenyBot' : 'Customer'} • Just now
                   </div>
                 </div>
               </motion.div>
-              
-              <div className="p-6 overflow-y-auto min-h-96 max-h-96 bg-gray-50">
-                <div className="space-y-4">
-                  {demoMessages.slice(0, currentMessageIndex + 1).map((message, index) => (
-                    <motion.div 
-                      key={index} 
-                      className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.1 }}
-                    >
-                      <div className={`max-w-md ${message.type === 'user' ? 'ml-12' : 'mr-12'}`}>
-                        <div className={`p-4 rounded-2xl ${
-                          message.type === 'user' 
-                            ? 'bg-gray-200 text-black rounded-tr-md' 
-                            : 'bg-blue-900 text-white rounded-tl-md'
-                        }`}>
-                          <p className="text-sm leading-relaxed whitespace-pre-line">{message.text}</p>
-                          {message.citations && (
-                            <div className="px-2 py-1 mt-2 text-xs rounded bg-blue-400/20">
-                              📄 Source cited
-                            </div>
-                          )}
-                          {message.action && (
-                            <div className="mt-2">
-                              <button className="px-3 py-1 text-xs rounded-full bg-blue-400/20">
-                                🎫 Creating ticket...
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                        <div className="px-2 mt-1 text-xs text-gray-500">
-                          {message.type === 'bot' ? 'TeenyBot' : 'Customer'} • Just now
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                  
-                  {isTyping && (
-                    <motion.div 
-                      className="flex justify-start mr-12"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <div className="p-4 text-white bg-blue-900 rounded-2xl rounded-tl-md">
-                        <div className="flex items-center gap-1">
-                          <div className="w-2 h-2 rounded-full bg-white/60 animate-bounce"></div>
-                          <div className="w-2 h-2 rounded-full bg-white/60 animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                          <div className="w-2 h-2 rounded-full bg-white/60 animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
+            ))}
+            
+            {isTyping && (
+              <motion.div 
+                className="flex justify-start mr-12"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="p-4 text-white bg-blue-900 rounded-2xl rounded-tl-md">
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-full bg-white/60 animate-bounce"></div>
+                    <div className="w-2 h-2 rounded-full bg-white/60 animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                    <div className="w-2 h-2 rounded-full bg-white/60 animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                  </div>
                 </div>
+              </motion.div>
+            )}
+          </div>
+        </div>
+      </motion.div>
+      
+      {/* Demo Prompts & Features */}
+      <motion.div 
+        className="space-y-6"
+        initial={{ opacity: 0, x: 60 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <motion.h3 
+          className="text-2xl font-bold text-blue-900"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+        >
+          Try these prompts:
+        </motion.h3>
+        <motion.div 
+          className="space-y-4"
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, amount: 0.3 }}
+        >
+          {demoPrompts.map((prompt, index) => (
+            <motion.button 
+              key={index}
+              className="w-full p-4 text-left transition-colors bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50"
+              variants={fadeInUp}
+              whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <div className="flex items-start gap-3">
+                <MessageCircle className="w-5 h-5 text-blue-900 mt-0.5" />
+                <span className="text-black">"{prompt}"</span>
               </div>
+            </motion.button>
+          ))}
+        </motion.div>
+        
+        {/* Real-time Analytics Dashboard */}
+       <motion.div 
+  className="p-6 bg-white border border-gray-200 shadow-lg rounded-xl"
+  initial={{ opacity: 0, y: 30 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, amount: 0.3 }}
+  transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+>
+  <div className="flex items-center gap-3 mb-4">
+    <Star className="w-6 h-6 text-yellow-500" />
+    <h4 className="text-lg font-semibold text-gray-900">What Users Say</h4>
+  </div>
+  
+  <motion.div 
+    className="space-y-4"
+    animate={{ y: [-10, 0, -10] }}
+    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+  >
+    <div className="p-4 rounded-lg bg-gray-50">
+      <div className="flex items-center gap-1 mb-2">
+        {[...Array(5)].map((_, i) => (
+          <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+        ))}
+      </div>
+      <p className="text-sm italic text-gray-700">
+        "TeenyBot resolved my issue in seconds. It's like having a super-smart assistant available 24/7!"
+      </p>
+      <div className="flex items-center gap-3 mt-3">
+        <div className="flex items-center justify-center w-8 h-8 text-sm font-bold text-white bg-blue-500 rounded-full">
+          S
+        </div>
+        <div>
+          <div className="text-sm font-medium text-gray-900">Sarah Chen</div>
+          <div className="text-xs text-gray-600">Product Manager</div>
+        </div>
+      </div>
+    </div>
+  </motion.div>
+</motion.div>
+      </motion.div>
+    </div>
+  </div>
+</section>
+
+      {/* Outcomes Section */}
+                
+        <section className="py-20 bg-white">
+          <div className="px-6 mx-auto max-w-7xl">
+            <motion.div 
+              className="mb-16 text-center"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+              <h2 className="mb-4 text-4xl font-bold text-black">
+                What <span className="text-blue-900">Changes</span>
+              </h2>
+              <p className="text-xl text-gray-700">Measurable improvements for your support operations</p>
             </motion.div>
             
-            {/* Demo Prompts */}
             <motion.div 
-              className="space-y-6"
-              initial={{ opacity: 0, x: 60 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
+              variants={staggerContainer}
+              initial="initial"
+              whileInView="animate"
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              <motion.h3 
-                className="text-2xl font-bold text-blue-900"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-              >
-                Try these prompts:
-              </motion.h3>
+              {/* Speed Card */}
               <motion.div 
-                className="space-y-4"
-                variants={staggerContainer}
-                initial="initial"
-                whileInView="animate"
-                viewport={{ once: true, amount: 0.3 }}
+                className="relative p-8 transition-shadow duration-300 bg-white rounded-2xl hover:shadow-lg"
+                variants={scaleIn}
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
               >
-                {demoPrompts.map((prompt, index) => (
-                  <motion.button 
-                    key={index}
-                    className="w-full p-4 text-left transition-colors bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50"
-                    variants={fadeInUp}
-                    whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-                    whileTap={{ scale: 0.98 }}
+                <div className="flex flex-col items-center text-center">
+                  <motion.div 
+                    className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+                    initial={{ scale: 0, rotate: -180 }}
+                    whileInView={{ scale: 1, rotate: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
                   >
-                    <div className="flex items-start gap-3">
-                      <MessageCircle className="w-5 h-5 text-blue-900 mt-0.5" />
-                      <span className="text-black">"{prompt}"</span>
-                    </div>
-                  </motion.button>
-                ))}
+                    <TrendingUp className="w-8 h-8 text-blue-900" />
+                  </motion.div>
+                  <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+                    Results
+                  </div>
+                  <h3 className="mb-3 text-xl font-bold text-black">40-55% FAQ Deflection</h3>
+                  <p className="leading-relaxed text-gray-600">
+                    Instant answers to repetitive questions with source citations, reducing agent workload significantly.
+                  </p>
+                </div>
               </motion.div>
-              
-              {/* UI Mock Image */}
+
+              {/* Intelligence Card */}
               <motion.div 
-                className="p-4 bg-white border border-gray-200 rounded-lg"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+                className="relative p-8 transition-shadow duration-300 bg-white rounded-2xl hover:shadow-lg"
+                variants={scaleIn}
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
               >
-                <img 
-                  src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                  alt="Chat shows answer with source and escalation"
-                  className="object-cover w-full h-48 rounded-lg"
-                />
-                <div className="mt-2 text-sm text-center text-gray-600">
-                  Chat interface showing cited answer with handoff button
+                <div className="flex flex-col items-center text-center">
+                  <motion.div 
+                    className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+                    initial={{ scale: 0, rotate: -180 }}
+                    whileInView={{ scale: 1, rotate: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+                  >
+                    <Clock className="w-8 h-8 text-blue-900" />
+                  </motion.div>
+                  <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+                    Speed
+                  </div>
+                  <h3 className="mb-3 text-xl font-bold text-black">Seconds Response Time</h3>
+                  <p className="leading-relaxed text-gray-600">
+                    Lightning-fast first responses for common queries, eliminating wait times for customers.
+                  </p>
+                </div>
+              </motion.div> 
+
+              {/* Clarity Card */}
+              <motion.div 
+                className="relative p-8 transition-shadow duration-300 bg-white rounded-2xl hover:shadow-lg"
+                variants={scaleIn}
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
+              >
+                <div className="flex flex-col items-center text-center">
+                  <motion.div 
+                    className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+                    initial={{ scale: 0, rotate: -180 }}
+                    whileInView={{ scale: 1, rotate: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+                  >
+                    <Headphones className="w-8 h-8 text-blue-900" />
+                  </motion.div>
+                  <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+                    Quality
+                  </div>
+                  <h3 className="mb-3 text-xl font-bold text-black">Smart Handoffs</h3>
+                  <p className="leading-relaxed text-gray-600">
+                    Complete context transfer to human agents with conversation history and relevant documentation.
+                  </p>
                 </div>
               </motion.div>
             </motion.div>
           </div>
-        </div>
-      </section>
-
-      {/* Outcomes Section */}
-      <section className="py-20 bg-white">
-        <div className="px-6 mx-auto max-w-7xl">
-          <motion.div 
-            className="mb-16 text-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            <h2 className="mb-4 text-4xl font-bold text-black">
-              What <span className="text-blue-900">Changes</span>
-            </h2>
-            <p className="text-xl text-gray-700">Measurable improvements for your support operations</p>
-          </motion.div>
-          
-          <motion.div 
-            className="grid gap-8 md:grid-cols-3"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.3 }}
-          >
-            {outcomes.map((outcome, index) => (
-              <motion.div 
-                key={index} 
-                className="p-8 text-center border border-blue-200 bg-blue-50 rounded-2xl"
-                variants={scaleIn}
-                whileHover={{ y: -10, transition: { duration: 0.3 } }}
-              >
-                <motion.div 
-                  className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-blue-900 rounded-2xl"
-                  initial={{ scale: 0, rotate: -180 }}
-                  whileInView={{ scale: 1, rotate: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, ease: "easeOut", delay: index * 0.1 }}
-                >
-                  <outcome.icon className="w-8 h-8 text-white" />
-                </motion.div>
-                <motion.div 
-                  className="mb-2 text-3xl font-bold text-blue-900"
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 + index * 0.1 }}
-                >
-                  {outcome.value}
-                </motion.div>
-                <p className="text-black">{outcome.label}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-          
-          {/* Metrics Image */}
-          <motion.div 
-            className="mt-16 text-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
-          >
-            <motion.div 
-              className="max-w-2xl p-6 mx-auto border border-blue-200 rounded-lg bg-blue-50"
-              whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
-            >
-              <img 
-                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
-                alt="First response time reduced; deflection increased"
-                className="object-cover w-full h-32 rounded-lg"
-              />
-              <div className="mt-2 text-sm text-gray-600">
-                Before/after metrics: FRT and deflection improvements
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
+        </section>
 
       {/* What We Deliver */}
-      <section className="py-20 bg-gray-50">
-        <div className="px-6 mx-auto max-w-7xl">
+     <section className="py-20 bg-gray-50">
+  <div className="px-6 mx-auto max-w-7xl">
+    <motion.div 
+      className="mb-16 text-center"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <h2 className="mb-4 text-4xl font-bold text-black">
+        What We <span className="text-blue-900">Deliver</span>
+      </h2>
+      <p className="text-xl text-gray-700">Complete AI chatbot solution with powerful integrations</p>
+    </motion.div>
+    
+    <motion.div 
+      className="grid gap-8 md:grid-cols-2 lg:grid-cols-4"
+      variants={staggerContainer}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true, amount: 0.3 }}
+    >
+      {/* Chat Interface */}
+      <motion.div 
+        className="relative p-8 hover:bg-white rounded-2xl"
+        variants={fadeInUp}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      >
+        <div className="flex flex-col items-center text-center">
           <motion.div 
-            className="mb-16 text-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+            initial={{ scale: 0, rotate: 180 }}
+            whileInView={{ scale: 1, rotate: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <h2 className="mb-4 text-4xl font-bold text-black">
-              What We <span className="text-blue-900">Deliver</span>
-            </h2>
+            <MessageSquare className="w-8 h-8 text-blue-900" />
           </motion.div>
-          
-          <motion.div 
-            className="grid gap-8 md:grid-cols-2 lg:grid-cols-4"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.3 }}
-          >
-            {deliverables.map((item, index) => (
-              <motion.div 
-                key={index} 
-                className="p-6 bg-white border border-gray-200 rounded-xl"
-                variants={fadeInUp}
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
-              >
-                <motion.div 
-                  className="flex items-center justify-center w-12 h-12 mb-4 bg-blue-100 rounded-lg"
-                  initial={{ scale: 0, rotate: 180 }}
-                  whileInView={{ scale: 1, rotate: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
-                >
-                  <item.icon className="w-6 h-6 text-blue-900" />
-                </motion.div>
-                <h3 className="mb-2 font-bold text-blue-900">{item.title}</h3>
-                <p className="text-sm text-black">{item.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+            Interface
+          </div>
+          <h3 className="mb-3 text-xl font-bold text-black">Multi-Channel Bot</h3>
+          <p className="leading-relaxed text-gray-600">
+            Deploy on website, WhatsApp, and social platforms with unified training and responses.
+          </p>
         </div>
-      </section>
+      </motion.div>
+
+      {/* Integrations */}
+      <motion.div 
+        className="relative p-8 hover:bg-white rounded-2xl"
+        variants={fadeInUp}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      >
+        <div className="flex flex-col items-center text-center">
+          <motion.div 
+            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+            initial={{ scale: 0, rotate: 180 }}
+            whileInView={{ scale: 1, rotate: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+          >
+            <Headphones className="w-8 h-8 text-blue-900" />
+          </motion.div>
+          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+            Integration
+          </div>
+          <h3 className="mb-3 text-xl font-bold text-black">Helpdesk Connection</h3>
+          <p className="leading-relaxed text-gray-600">
+            Seamless handoffs to Zendesk, Intercom, or HubSpot with full conversation context.
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Actions */}
+      <motion.div 
+        className="relative p-8 hover:bg-white rounded-2xl"
+        variants={fadeInUp}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      >
+        <div className="flex flex-col items-center text-center">
+          <motion.div 
+            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+            initial={{ scale: 0, rotate: 180 }}
+            whileInView={{ scale: 1, rotate: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+          >
+            <Settings className="w-8 h-8 text-blue-900" />
+          </motion.div>
+          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+            Automation
+          </div>
+          <h3 className="mb-3 text-xl font-bold text-black">Smart Actions</h3>
+          <p className="leading-relaxed text-gray-600">
+            Order lookups, ticket creation, appointment booking, and system updates automatically.
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Analytics */}
+      <motion.div 
+        className="relative p-8 hover:bg-white rounded-2xl"
+        variants={fadeInUp}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      >
+        <div className="flex flex-col items-center text-center">
+          <motion.div 
+            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+            initial={{ scale: 0, rotate: 180 }}
+            whileInView={{ scale: 1, rotate: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+          >
+            <BarChart3 className="w-8 h-8 text-blue-900" />
+          </motion.div>
+          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+            Analytics
+          </div>
+          <h3 className="mb-3 text-xl font-bold text-black">Performance Tracking</h3>
+          <p className="leading-relaxed text-gray-600">
+            Real-time dashboards showing deflection rates, response times, and customer satisfaction.
+          </p>
+        </div>
+      </motion.div>
+    </motion.div>
+  </div>
+</section>
 
       {/* How It Works */}
-      <section className="py-20 bg-white">
-        <div className="px-6 mx-auto max-w-7xl">
+     <section className="py-20 bg-white">
+  <div className="px-6 mx-auto max-w-7xl">
+    <motion.div 
+      className="mb-16 text-center"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <h2 className="mb-4 text-4xl font-bold text-black">
+        How It <span className="text-blue-900">Works</span>
+      </h2>
+      <p className="text-xl text-gray-700">Simple 4-step process to deploy your AI assistant</p>
+    </motion.div>
+    
+    <motion.div 
+      className="grid gap-8 md:grid-cols-2 lg:grid-cols-4"
+      variants={staggerContainer}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true, amount: 0.3 }}
+    >
+      {/* Step 1 */}
+      <motion.div 
+        className="relative p-8 hover:bg-white hover:border hover:border-gray-200 rounded-2xl"
+        variants={fadeInUp}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      >
+        <div className="flex flex-col items-center text-center">
           <motion.div 
-            className="mb-16 text-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <h2 className="mb-4 text-4xl font-bold text-black">
-              How It <span className="text-blue-900">Works</span>
-            </h2>
-            <p className="text-xl text-gray-700">4 simple steps to get your AI assistant running</p>
+            <Database className="w-8 h-8 text-blue-900" />
           </motion.div>
-          
-          <motion.div 
-            className="grid gap-8 md:grid-cols-2 lg:grid-cols-4"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.3 }}
-          >
-            {steps.map((step, index) => (
-              <motion.div 
-                key={index} 
-                className="relative h-full"
-                variants={fadeInUp}
-              >
-                <motion.div 
-                  className="flex flex-col h-full p-6 border border-blue-200 bg-blue-50 rounded-xl"
-                  whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                >
-                  <motion.div 
-                    className="flex items-center justify-center w-8 h-8 mb-4 font-bold text-white bg-blue-900 rounded-full"
-                    initial={{ scale: 0, opacity: 0 }}
-                    whileInView={{ scale: 1, opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.1 }}
-                  >
-                    {index + 1}
-                  </motion.div>
-                  <h3 className="mb-2 font-bold text-blue-900">{step.title}</h3>
-                  <p className="flex-grow text-sm text-black">{step.desc}</p>
-                </motion.div>
-                {index < steps.length - 1 && (
-                  <motion.div 
-                    className="absolute hidden transform -translate-y-1/2 lg:block top-1/2 -right-4"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 + index * 0.1 }}
-                  >
-                    <ArrowRight className="w-6 h-6 text-gray-300" />
-                  </motion.div>
-                )}
-              </motion.div>
-            ))}
-          </motion.div>
+          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+            Setup
+          </div>
+          <h3 className="mb-3 text-xl font-bold text-black">Connect & Train</h3>
+          <p className="leading-relaxed text-gray-600">
+            We ingest your policies, FAQs, and documentation to build intelligent retrieval with citations.
+          </p>
         </div>
-      </section>
+        {/* Arrow for desktop */}
+        <motion.div 
+          className="absolute hidden transform -translate-y-1/2 lg:block top-1/2 -right-4"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+        >
+          <ArrowRight className="w-6 h-6 text-gray-300" />
+        </motion.div>
+      </motion.div>
+
+      {/* Step 2 */}
+      <motion.div 
+        className="relative p-8 hover:bg-white hover:border hover:border-gray-200 rounded-2xl"
+        variants={fadeInUp}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      >
+        <div className="flex flex-col items-center text-center">
+          <motion.div 
+            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+          >
+            <Zap className="w-8 h-8 text-blue-900" />
+          </motion.div>
+          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+            Integration
+          </div>
+          <h3 className="mb-3 text-xl font-bold text-black">Wire Actions</h3>
+          <p className="leading-relaxed text-gray-600">
+            Configure safe tool-calling for order lookups, ticket updates, and system integrations.
+          </p>
+        </div>
+        <motion.div 
+          className="absolute hidden transform -translate-y-1/2 lg:block top-1/2 -right-4"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+        >
+          <ArrowRight className="w-6 h-6 text-gray-300" />
+        </motion.div>
+      </motion.div>
+
+      {/* Step 3 */}
+      <motion.div 
+        className="relative p-8 hover:bg-white hover:border hover:border-gray-200 rounded-2xl"
+        variants={fadeInUp}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      >
+        <div className="flex flex-col items-center text-center">
+          <motion.div 
+            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+          >
+            <Shield className="w-8 h-8 text-blue-900" />
+          </motion.div>
+          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+            Security
+          </div>
+          <h3 className="mb-3 text-xl font-bold text-black">Set Guardrails</h3>
+          <p className="leading-relaxed text-gray-600">
+            Implement safety measures, privacy protection, and smart human handoff triggers.
+          </p>
+        </div>
+        <motion.div 
+          className="absolute hidden transform -translate-y-1/2 lg:block top-1/2 -right-4"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
+        >
+          <ArrowRight className="w-6 h-6 text-gray-300" />
+        </motion.div>
+      </motion.div>
+
+      {/* Step 4 */}
+      <motion.div 
+        className="relative p-8 hover:bg-white hover:border hover:border-gray-200 rounded-2xl"
+        variants={fadeInUp}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      >
+        <div className="flex flex-col items-center text-center">
+          <motion.div 
+            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
+          >
+            <Target className="w-8 h-8 text-blue-900" />
+          </motion.div>
+          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+            Launch
+          </div>
+          <h3 className="mb-3 text-xl font-bold text-black">Launch & Optimize</h3>
+          <p className="leading-relaxed text-gray-600">
+            Go live with comprehensive dashboards and weekly performance tuning sessions.
+          </p>
+        </div>
+      </motion.div>
+    </motion.div>
+  </div>
+</section>
 
       {/* Integrations */}
       <section className="py-20 bg-gray-50">

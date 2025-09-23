@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database, GitBranch, Workflow, Search, CheckSquare, AlertTriangle, Activity, Layers, Mail, Upload, Bell, Slack, Filter, AlertCircle, RefreshCw, Lock, RotateCcw, Monitor, Code, Star, CreditCard } from 'lucide-react';
+import LightweightAIAppsVideo from "../../../videos/LightweightAIApps.mp4"
 
 // Animation variants
 const fadeInUp = {
@@ -207,40 +208,27 @@ const AiAppsPage = () => {
             </motion.div>
             
             {/* App Dashboard Mock */}
+          {/* Video Demo Section */}
             <motion.div 
               className="relative"
               initial={{ opacity: 0, x: 60 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
             >
-              <div className="p-8 bg-white border border-gray-200 shadow-2xl rounded-3xl">
-                <div className="mb-6">
-                  <h3 className="text-xl font-bold text-blue-900">App Dashboard</h3>
-                  <p className="text-black">Streamlined workflow interface</p>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  {[
-                    { title: "Upload", icon: Upload, color: "bg-blue-100 text-blue-900" },
-                    { title: "Process", icon: Settings, color: "bg-green-100 text-green-600" },
-                    { title: "Approvals", icon: CheckSquare, color: "bg-amber-100 text-amber-600" },
-                    { title: "Exports", icon: FileText, color: "bg-purple-100 text-purple-600" }
-                  ].map((card, index) => (
-                    <motion.div 
-                      key={index}
-                      className={`p-6 rounded-2xl ${card.color} transition-all cursor-pointer hover:scale-105`}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: index * 0.1 }}
-                      whileHover={{ y: -4 }}
-                    >
-                      <card.icon className="w-8 h-8 mb-3" />
-                      <h4 className="font-semibold">{card.title}</h4>
-                    </motion.div>
-                  ))}
-                </div>
+              <div className="relative overflow-hidden bg-black shadow-2xl rounded-3xl aspect-video">
+                <video
+                  className="object-cover w-full h-full"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                >
+                  <source src={LightweightAIAppsVideo} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
               </div>
             </motion.div>
+
           </div>
         </div>
       </section>
