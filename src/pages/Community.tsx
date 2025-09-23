@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { 
   Users, MessageCircle,  
@@ -312,7 +312,13 @@ const Select = ({ children, className = "", error = false, ...props }: any) => (
 );
 
 // Modal Component
-const Modal = ({ isOpen, onClose, title, children, size = "md" }: any) => {
+const Modal = React.memo(({ isOpen, onClose, title, children, size = "md" }: any) => {
+  const handleBackdropClick = useCallback((e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  }, [onClose]);
+
   if (!isOpen) return null;
 
   const sizeClasses = {
@@ -328,7 +334,7 @@ const Modal = ({ isOpen, onClose, title, children, size = "md" }: any) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      onClick={onClose}
+      onClick={handleBackdropClick}
     >
       <motion.div
         className={`w-full ${sizeClasses[size]} max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl`}
@@ -352,7 +358,7 @@ const Modal = ({ isOpen, onClose, title, children, size = "md" }: any) => {
       </motion.div>
     </motion.div>
   );
-};
+});
 
 // Notification Component
 const Notification = ({ type, message, onClose }: any) => {
@@ -428,7 +434,7 @@ const Community = () => {
 
   console.log(user,"uuuuuuu")
   
-  // Form states
+  // Form states - moved to separate state objects to prevent re-renders
   const [discussionForm, setDiscussionForm] = useState<CreateDiscussionForm>({
     title: '', content: '', category: 'general', tags: ''
   });
@@ -488,22 +494,22 @@ const Community = () => {
   };
 
   // Utility functions
-  const showNotification = (type: string, message: string) => {
+  const showNotification = useCallback((type: string, message: string) => {
     setNotification({ type, message });
     setTimeout(() => setNotification(null), 5000);
-  };
+  }, []);
 
-  const resetForms = () => {
+  const resetForms = useCallback(() => {
     setDiscussionForm({ title: '', content: '', category: 'general', tags: '' });
     setEventForm({ title: '', description: '', date: '', time: '', type: 'virtual', location: '', maxAttendees: '' });
     setResourceForm({ title: '', description: '', type: 'guide', url: '', tags: '' });
     setStoryForm({ title: '', description: '', company: '', authorTitle: '', metrics: [{ label: '', value: '' }] });
     setBlogForm({ title: '', content: '', excerpt: '', category: 'general', tags: '', featured: false });
     setJoinForm({ name: '', username: '', email: '', bio: '', expertise: '' });
-  };
+  }, []);
 
   // API Functions with Auth Token
-  const apiCall = async (endpoint: string, options: RequestInit = {}) => {
+  const apiCall = useCallback(async (endpoint: string, options: RequestInit = {}) => {
     try {
       const headers: Record<string, string> = {
         'Content-Type': 'application/json',
@@ -529,10 +535,10 @@ const Community = () => {
       console.error(`API call failed for ${endpoint}:`, error);
       throw error;
     }
-  };
+  }, [accessToken]);
 
-  // CRUD Operations
-  const createDiscussion = async (data: CreateDiscussionForm) => {
+  // CRUD Operations with useCallback to prevent re-renders
+  const createDiscussion = useCallback(async (data: CreateDiscussionForm) => {
     try {
       setSubmitting(true);
       const newDiscussion = await apiCall('/discussions', {
@@ -554,9 +560,9 @@ const Community = () => {
     } finally {
       setSubmitting(false);
     }
-  };
+  }, [apiCall, user?.id, user?.username, resetForms, showNotification]);
 
-  const createEvent = async (data: CreateEventForm) => {
+  const createEvent = useCallback(async (data: CreateEventForm) => {
     try {
       setSubmitting(true);
       const newEvent = await apiCall('/events', {
@@ -577,9 +583,9 @@ const Community = () => {
     } finally {
       setSubmitting(false);
     }
-  };
+  }, [apiCall, resetForms, showNotification]);
 
-  const createResource = async (data: CreateResourceForm) => {
+  const createResource = useCallback(async (data: CreateResourceForm) => {
     try {
       setSubmitting(true);
       const newResource = await apiCall('/resources', {
@@ -602,9 +608,9 @@ const Community = () => {
     } finally {
       setSubmitting(false);
     }
-  };
+  }, [apiCall, user?.id, user?.username, resetForms, showNotification]);
 
-  const createStory = async (data: CreateStoryForm) => {
+  const createStory = useCallback(async (data: CreateStoryForm) => {
     try {
       setSubmitting(true);
       const newStory = await apiCall('/success-stories', {
@@ -626,9 +632,9 @@ const Community = () => {
     } finally {
       setSubmitting(false);
     }
-  };
+  }, [apiCall, user?.id, user?.username, resetForms, showNotification]);
 
-  const createBlog = async (data: CreateBlogForm) => {
+  const createBlog = useCallback(async (data: CreateBlogForm) => {
     try {
       setSubmitting(true);
       const newBlog = await apiCall('/blogs', {
@@ -656,9 +662,9 @@ const Community = () => {
     } finally {
       setSubmitting(false);
     }
-  };
+  }, [apiCall, user?.id, user?.username, resetForms, showNotification]);
 
-  const joinCommunity = async (data: JoinCommunityForm) => {
+  const joinCommunity = useCallback(async (data: JoinCommunityForm) => {
     try {
       setSubmitting(true);
       const newMember = await apiCall('/members', {
@@ -678,9 +684,9 @@ const Community = () => {
     } finally {
       setSubmitting(false);
     }
-  };
+  }, [apiCall, resetForms, showNotification]);
 
-  const subscribeNewsletter = async (e: React.FormEvent) => {
+  const subscribeNewsletter = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       setSubmitting(true);
@@ -696,9 +702,9 @@ const Community = () => {
     } finally {
       setSubmitting(false);
     }
-  };
+  }, [email, apiCall, showNotification]);
 
-  const rsvpEvent = async (eventId: string) => {
+  const rsvpEvent = useCallback(async (eventId: string) => {
     try {
       const updatedEvent = await apiCall(`/events/${eventId}/rsvp`, {
         method: 'POST',
@@ -711,9 +717,9 @@ const Community = () => {
     } catch (error) {
       showNotification('error', 'Failed to RSVP. Please try again.');
     }
-  };
+  }, [apiCall, showNotification]);
 
-  const downloadResource = async (resourceId: string) => {
+  const downloadResource = useCallback(async (resourceId: string) => {
     try {
       const updatedResource = await apiCall(`/resources/${resourceId}/download`, {
         method: 'POST',
@@ -726,7 +732,7 @@ const Community = () => {
     } catch (error) {
       showNotification('error', 'Failed to download resource.');
     }
-  };
+  }, [apiCall, showNotification]);
 
   // Existing fetch functions (keeping the same)
   useEffect(() => {
@@ -743,7 +749,7 @@ const Community = () => {
       }
     };
     fetchDiscussions();
-  }, []);
+  }, [apiCall]);
 
   useEffect(() => {
     const fetchFeaturedStory = async () => {
@@ -756,7 +762,7 @@ const Community = () => {
       }
     };
     fetchFeaturedStory();
-  }, []);
+  }, [apiCall]);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -772,7 +778,7 @@ const Community = () => {
       }
     };
     fetchEvents();
-  }, []);
+  }, [apiCall]);
 
   useEffect(() => {
     const fetchResources = async () => {
@@ -788,7 +794,7 @@ const Community = () => {
       }
     };
     fetchResources();
-  }, []);
+  }, [apiCall]);
 
   useEffect(() => {
     const fetchStories = async () => {
@@ -804,7 +810,7 @@ const Community = () => {
       }
     };
     fetchStories();
-  }, []);
+  }, [apiCall]);
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -820,7 +826,7 @@ const Community = () => {
       }
     };
     fetchMembers();
-  }, []);
+  }, [apiCall]);
 
   useEffect(() => {
     const fetchSearchResults = async () => {
@@ -839,7 +845,7 @@ const Community = () => {
     
     const delayedSearch = setTimeout(fetchSearchResults, 300);
     return () => clearTimeout(delayedSearch);
-  }, [searchQuery]);
+  }, [searchQuery, apiCall]);
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -855,9 +861,9 @@ const Community = () => {
       }
     };
     fetchBlogs();
-  }, []);
+  }, [apiCall]);
 
-  const likeDiscussion = async (discussionId: string) => {
+  const likeDiscussion = useCallback(async (discussionId: string) => {
     try {
       const data = await apiCall(`/discussions/${discussionId}/like`, {
         method: 'POST',
@@ -869,9 +875,9 @@ const Community = () => {
     } catch (error) {
       console.error('Failed to like discussion:', error);
     }
-  };
+  }, [apiCall]);
 
-  const likeBlog = async (blogId: string) => {
+  const likeBlog = useCallback(async (blogId: string) => {
     try {
       const data = await apiCall(`/blogs/${blogId}/like`, {
         method: 'POST',
@@ -883,7 +889,7 @@ const Community = () => {
     } catch (error) {
       console.error('Failed to like blog:', error);
     }
-  };
+  }, [apiCall]);
 
   // Handle mouse and touch animations (keeping the same)
   useEffect(() => {
@@ -945,8 +951,8 @@ const Community = () => {
     };
   }, [isMobile]);
 
-  // Form Components
-  const CreateDiscussionModal = () => (
+  // Memoized Form Components to prevent re-renders
+  const CreateDiscussionModal = useMemo(() => (
     <Modal
       isOpen={showCreateDiscussion}
       onClose={() => setShowCreateDiscussion(false)}
@@ -1016,9 +1022,9 @@ const Community = () => {
         </div>
       </form>
     </Modal>
-  );
+  ), [showCreateDiscussion, discussionForm, submitting, createDiscussion]);
 
-  const CreateEventModal = () => (
+  const CreateEventModal = useMemo(() => (
     <Modal
       isOpen={showCreateEvent}
       onClose={() => setShowCreateEvent(false)}
@@ -1121,9 +1127,9 @@ const Community = () => {
         </div>
       </form>
     </Modal>
-  );
+  ), [showCreateEvent, eventForm, submitting, createEvent]);
 
-  const CreateResourceModal = () => (
+  const CreateResourceModal = useMemo(() => (
     <Modal
       isOpen={showCreateResource}
       onClose={() => setShowCreateResource(false)}
@@ -1204,9 +1210,9 @@ const Community = () => {
         </div>
       </form>
     </Modal>
-  );
+  ), [showCreateResource, resourceForm, submitting, createResource]);
 
-  const CreateStoryModal = () => (
+  const CreateStoryModal = useMemo(() => (
     <Modal
       isOpen={showCreateStory}
       onClose={() => setShowCreateStory(false)}
@@ -1330,9 +1336,9 @@ const Community = () => {
         </div>
       </form>
     </Modal>
-  );
+  ), [showCreateStory, storyForm, submitting, createStory]);
 
-  const CreateBlogModal = () => (
+  const CreateBlogModal = useMemo(() => (
     <Modal
       isOpen={showCreateBlog}
       onClose={() => setShowCreateBlog(false)}
@@ -1428,9 +1434,9 @@ const Community = () => {
         </div>
       </form>
     </Modal>
-  );
+  ), [showCreateBlog, blogForm, submitting, createBlog]);
 
-  const JoinCommunityModal = () => (
+  const JoinCommunityModal = useMemo(() => (
     <Modal
       isOpen={showJoinCommunity}
       onClose={() => setShowJoinCommunity(false)}
@@ -1515,7 +1521,7 @@ const Community = () => {
         </div>
       </form>
     </Modal>
-  );
+  ), [showJoinCommunity, joinForm, submitting, joinCommunity]);
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -2899,12 +2905,12 @@ const Community = () => {
       </motion.div>
 
       {/* All Modals */}
-      <CreateDiscussionModal />
-      <CreateEventModal />
-      <CreateResourceModal />
-      <CreateStoryModal />
-      <CreateBlogModal />
-      <JoinCommunityModal />
+      {CreateDiscussionModal}
+      {CreateEventModal}
+      {CreateResourceModal}
+      {CreateStoryModal}
+      {CreateBlogModal}
+      {JoinCommunityModal}
 
       {/* Notification */}
       {notification && (
