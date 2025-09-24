@@ -1,7 +1,7 @@
 // services/authService.ts - Updated to integrate with your backend endpoints
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:5000/api'; // Adjust base URL as needed (e.g., for production)
+const API_BASE = 'https://api.teenytechtrek.com/api'; // Adjust base URL as needed (e.g., for production)
 
 export const registerUser = async (username: string, email: string, password: string) => {
   const response = await axios.post(`${API_BASE}/auth/signup`, {
