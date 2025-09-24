@@ -84,6 +84,7 @@ const sectionTop = (section as HTMLElement).offsetTop;
          <section id="pricing">
         <Pricing />
       </section>
+      
         {/* <section id="blogs">
         <Blogs />
       </section>

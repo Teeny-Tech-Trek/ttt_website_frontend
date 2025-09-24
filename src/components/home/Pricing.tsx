@@ -7,6 +7,8 @@ import toast from "react-hot-toast";
 import { useAuth } from "../../context/AuthContext";
 import Container from "../ui/Container";
 import SectionHeading from "../ui/SectionHeading";
+import AgenticWorkflowsImg from "../../Images/Extra Resources - Hero Page/WhatsApp Image 2025-09-22 at 10.31.55 PM.jpeg";
+
 
 const loadCalendly = (): Promise<boolean> => {
   return new Promise((resolve) => {
@@ -575,6 +577,9 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
               <p className="text-gray-600">
                 No. The goal is a clear, specific plan that fits your stack and constraints.
               </p>
+            </div>
+            <div >
+              <img src={AgenticWorkflowsImg} alt="AgenticWorkflowsImg" className="rounded-xl" />
             </div>
           </div>
         </motion.div>

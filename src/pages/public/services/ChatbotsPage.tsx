@@ -115,7 +115,7 @@ const ChatbotsPage = () => {
           />
         </div>
         
-        <div className="relative px-6 mx-auto max-w-7xl">
+        <div className="relative px-6 pt-8 mx-auto max-w-7xl sm:pt-12 lg:pt-10">
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <motion.div 
               className="space-y-8"
@@ -124,12 +124,12 @@ const ChatbotsPage = () => {
               variants={staggerContainer}
             >
               <motion.div 
-                className="inline-flex items-center gap-2 px-4 py-2 text-blue-900 bg-gray-100 rounded-full"
-                variants={scaleIn}
-              >
-                <Bot className="w-4 h-4" />
-                <span className="text-sm font-medium">AI Chatbots & Virtual Assistants</span>
-              </motion.div>
+              className="items-center hidden gap-2 px-4 py-2 text-blue-900 bg-gray-100 rounded-full lg:inline-flex"
+              variants={scaleIn}
+            >
+              <Bot className="w-4 h-4" />
+              <span className="text-sm font-medium">AI Chatbots & Virtual Assistants</span>
+            </motion.div>
               
               <motion.h1 
                 className="text-5xl font-bold leading-tight text-black lg:text-6xl"
@@ -178,26 +178,26 @@ const ChatbotsPage = () => {
             </motion.div>
             
             {/* Hero Image Placeholder */}
+          <motion.div 
+            className="relative"
+            initial={{ opacity: 0, x: 60 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+          >
             <motion.div 
-              className="relative"
-              initial={{ opacity: 0, x: 60 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+              className="p-8 rounded-2xl"
+              whileHover={{ y: -10, transition: { duration: 0.3 } }}
             >
-              <motion.div 
-                className="p-8 rounded-2xl"
-                whileHover={{ y: -10, transition: { duration: 0.3 } }}
-              >
-                <img 
-                  src={heroImage}
-                  alt="AI Assistant retrieves policy and creates a helpdesk ticket"
-                  className="object-cover w-full rounded-lg h-fit"
-                />
-                <div className="mt-4 text-center">
-                  <div className="text-sm text-gray-600">Hero diagram: Docs → Agent → Actions</div>
-                </div>
-              </motion.div>
+              <img 
+                src={heroImage}
+                alt="AI Assistant retrieves policy and creates a helpdesk ticket"
+                className="object-cover w-3/4 mx-auto rounded-lg h-fit"
+              />
+              <div className="mt-4 text-center">
+                <div className="text-sm text-gray-600">Hero diagram: Docs → Agent → Actions</div>
+              </div>
             </motion.div>
+          </motion.div>
           </div>
         </div>
       </section>

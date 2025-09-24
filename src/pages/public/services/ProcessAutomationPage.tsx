@@ -156,22 +156,35 @@ const ProcessAutomationPage = () => {
                 className="flex flex-col gap-4 sm:flex-row"
                 variants={fadeInUp}
               >
-                <motion.button 
-                  className="flex items-center justify-center gap-3 px-10 py-5 text-xl font-semibold text-white transition-colors bg-blue-900 rounded-2xl hover:bg-blue-800"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Activity className="w-6 h-6" />
-                  See automation patterns
-                </motion.button>
-                <motion.button 
-                  className="flex items-center justify-center gap-3 px-10 py-5 text-xl font-semibold text-blue-900 transition-colors bg-white border-2 border-blue-900 rounded-2xl hover:bg-blue-50"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Play className="w-6 h-6" />
-                  Try the ops demo
-                </motion.button>
+                <motion.div 
+                className="flex flex-col gap-3 sm:flex-row"
+                variants={fadeInUp}
+              >
+                <motion.div 
+          className="flex flex-col gap-4 sm:flex-row"
+          variants={fadeInUp}
+        >
+          <motion.button 
+            className="flex items-center justify-center gap-2 px-10 py-6 text-base font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <Activity className="w-5 h-5" />
+            See automation patterns
+          </motion.button>
+
+          <motion.button 
+            className="flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-blue-900 transition-colors bg-white border border-blue-900 rounded-xl hover:bg-blue-50"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <Play className="w-5 h-5" />
+            Try the ops demo
+          </motion.button>
+        </motion.div>
+
+              </motion.div>
+
               </motion.div>
             </motion.div>
             
@@ -203,92 +216,238 @@ const ProcessAutomationPage = () => {
       </section>
 
       {/* Problems We Solve */}
-      <section className="py-24 bg-gray-50">
-        <div className="px-6 mx-auto max-w-7xl">
+      <section className="py-20 bg-gray-50">
+  <div className="px-6 mx-auto max-w-7xl">
+    <motion.div 
+      className="mb-16 text-center"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <h2 className="mb-4 text-4xl font-bold text-black">
+        Problems We <span className="text-blue-900">Solve</span>
+      </h2>
+      <p className="text-xl text-gray-700">Common pain points that eat up your team's time</p>
+    </motion.div>
+    
+    <motion.div 
+      className="grid gap-8 lg:grid-cols-3"
+      variants={staggerContainer}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true, amount: 0.3 }}
+    >
+      {/* Status buried in emails */}
+      <motion.div 
+        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+        variants={scaleIn}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      >
+        <div className="flex flex-col items-center text-center">
           <motion.div 
-            className="mb-20 text-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="flex items-center justify-center w-20 h-20 mb-4 bg-red-100 rounded-2xl"
+            initial={{ scale: 0, rotate: -180 }}
+            whileInView={{ scale: 1, rotate: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <h2 className="mb-6 text-5xl font-bold text-black">
-              Problems We <span className="text-blue-900">Solve</span>
-            </h2>
-            <p className="text-2xl text-gray-700">Common pain points that eat up your team's time</p>
+            <Mail className="w-8 h-8 text-red-500" />
           </motion.div>
-          
-          <div className="grid gap-12 lg:grid-cols-3">
-            {problems.map((problem, index) => (
-              <motion.div 
-                key={index}
-                className="relative p-8 transition-all duration-300 bg-white rounded-3xl hover:bg-blue-50 hover:shadow-lg"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
-                whileHover={{ y: -8 }}
-              >
-                <div className="flex items-center justify-center w-16 h-16 mb-6 bg-red-100 rounded-3xl">
-                  <AlertCircle className="w-8 h-8 text-red-500" />
-                </div>
-                <h3 className="mb-4 text-2xl font-bold text-blue-900">{problem.title}</h3>
-                <p className="text-lg leading-relaxed text-black">{problem.desc}</p>
-              </motion.div>
-            ))}
+          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-red-700 bg-red-100 rounded-full">
+            Communication
           </div>
+          <h3 className="mb-3 text-xl font-bold text-black">Status Buried in Emails</h3>
+          <p className="leading-relaxed text-gray-600">
+            Important updates lost in inbox clutter, making tracking impossible.
+          </p>
         </div>
-      </section>
+      </motion.div>
+
+      {/* Manual copy-paste */}
+      <motion.div 
+        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+        variants={scaleIn}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      >
+        <div className="flex flex-col items-center text-center">
+          <motion.div 
+            className="flex items-center justify-center w-20 h-20 mb-4 bg-red-100 rounded-2xl"
+            initial={{ scale: 0, rotate: -180 }}
+            whileInView={{ scale: 1, rotate: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+          >
+            <RotateCcw className="w-8 h-8 text-red-500" />
+          </motion.div>
+          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-red-700 bg-red-100 rounded-full">
+            Manual Work
+          </div>
+          <h3 className="mb-3 text-xl font-bold text-black">Manual Copy-Paste</h3>
+          <p className="leading-relaxed text-gray-600">
+            Hours wasted on repetitive data entry into tracking systems.
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Late exception alerts */}
+      <motion.div 
+        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+        variants={scaleIn}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      >
+        <div className="flex flex-col items-center text-center">
+          <motion.div 
+            className="flex items-center justify-center w-20 h-20 mb-4 bg-red-100 rounded-2xl"
+            initial={{ scale: 0, rotate: -180 }}
+            whileInView={{ scale: 1, rotate: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+          >
+            <AlertTriangle className="w-8 h-8 text-red-500" />
+          </motion.div>
+          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-red-700 bg-red-100 rounded-full">
+            Penalties
+          </div>
+          <h3 className="mb-3 text-xl font-bold text-black">Late Exception Alerts</h3>
+          <p className="leading-relaxed text-gray-600">
+            Missing deadlines due to delayed notifications and SLA penalties.
+          </p>
+        </div>
+      </motion.div>
+    </motion.div>
+  </div>
+</section>
 
       {/* What We Deliver */}
-      <section className="py-24 bg-white">
-        <div className="px-6 mx-auto max-w-7xl">
+      <section className="py-20 bg-white">
+  <div className="px-6 mx-auto max-w-7xl">
+    <motion.div 
+      className="mb-16 text-center"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <h2 className="mb-4 text-4xl font-bold text-black">
+        What We <span className="text-blue-900">Deliver</span>
+      </h2>
+      <p className="text-xl text-gray-700">Complete automation solution with all components</p>
+    </motion.div>
+    
+    <motion.div 
+      className="grid gap-8 md:grid-cols-2 lg:grid-cols-4"
+      variants={staggerContainer}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true, amount: 0.3 }}
+    >
+      {/* Ingestors */}
+      <motion.div 
+        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+        variants={fadeInUp}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      >
+        <div className="flex flex-col items-center text-center">
           <motion.div 
-            className="mb-20 text-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
+            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+            initial={{ scale: 0, rotate: 180 }}
+            whileInView={{ scale: 1, rotate: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            <h2 className="mb-6 text-5xl font-bold text-black">
-              What We <span className="text-blue-900">Deliver</span>
-            </h2>
-            <p className="text-2xl text-gray-700">Complete automation solution with all components</p>
+            <Upload className="w-8 h-8 text-blue-900" />
           </motion.div>
-          
-          <div className="grid gap-12 lg:grid-cols-2">
-            {deliverables.map((item, index) => (
-              <motion.div 
-                key={index}
-                className="p-10 transition-all duration-300 bg-white border border-gray-200 rounded-3xl hover:shadow-xl"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
-                whileHover={{ y: -8 }}
-              >
-                <div className="flex items-start gap-6">
-                  <div className="flex items-center justify-center w-16 h-16 bg-blue-900 rounded-3xl">
-                    <item.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="mb-4 text-3xl font-bold text-blue-900">{item.title}</h3>
-                    <p className="mb-6 text-lg leading-relaxed text-black">{item.desc}</p>
-                    <ul className="space-y-2">
-                      {item.features.map((feature, fIndex) => (
-                        <li key={fIndex} className="flex items-center gap-3">
-                          <CheckCircle2 className="w-5 h-5 text-blue-900" />
-                          <span className="text-black">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+            Input
           </div>
+          <h3 className="mb-3 text-xl font-bold text-black">Smart Ingestors</h3>
+          <p className="leading-relaxed text-gray-600">
+            Email/CSV parser with normalization to consistent data schema.
+          </p>
         </div>
-      </section>
+      </motion.div>
+
+      {/* Rules Engine */}
+      <motion.div 
+        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+        variants={fadeInUp}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      >
+        <div className="flex flex-col items-center text-center">
+          <motion.div 
+            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+            initial={{ scale: 0, rotate: 180 }}
+            whileInView={{ scale: 1, rotate: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+          >
+            <Settings className="w-8 h-8 text-blue-900" />
+          </motion.div>
+          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+            Logic
+          </div>
+          <h3 className="mb-3 text-xl font-bold text-black">Rules Engine</h3>
+          <p className="leading-relaxed text-gray-600">
+            Delay/damage/lost detection with your custom business rules.
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Notifications */}
+      <motion.div 
+        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+        variants={fadeInUp}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      >
+        <div className="flex flex-col items-center text-center">
+          <motion.div 
+            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+            initial={{ scale: 0, rotate: 180 }}
+            whileInView={{ scale: 1, rotate: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+          >
+            <Bell className="w-8 h-8 text-blue-900" />
+          </motion.div>
+          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+            Alerts
+          </div>
+          <h3 className="mb-3 text-xl font-bold text-black">Smart Notifications</h3>
+          <p className="leading-relaxed text-gray-600">
+            Slack/Email alerts with next-best actions and daily digest summaries.
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Customer Updates */}
+      <motion.div 
+        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+        variants={fadeInUp}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      >
+        <div className="flex flex-col items-center text-center">
+          <motion.div 
+            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+            initial={{ scale: 0, rotate: 180 }}
+            whileInView={{ scale: 1, rotate: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+          >
+            <MessageSquare className="w-8 h-8 text-blue-900" />
+          </motion.div>
+          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+            Communication
+          </div>
+          <h3 className="mb-3 text-xl font-bold text-black">Customer Updates</h3>
+          <p className="leading-relaxed text-gray-600">
+            Friendly, templated status emails with branded customer pages.
+          </p>
+        </div>
+      </motion.div>
+    </motion.div>
+  </div>
+</section>
 
       {/* Interactive Demo */}
       <section className="py-24 bg-gray-50">

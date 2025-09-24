@@ -182,22 +182,23 @@ const AgenticWorkflowsPage = () => {
                 className="flex flex-col gap-4 sm:flex-row"
                 variants={fadeInUp}
               >
-                <motion.button 
-                  className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Play className="w-5 h-5" />
-                  See workflow examples
-                </motion.button>
-                <motion.button 
-                  className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold text-blue-900 transition-colors bg-white border-2 border-blue-900 rounded-lg hover:bg-blue-50"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Bot className="w-5 h-5" />
-                  Try a workflow demo
-                </motion.button>
+              <motion.button 
+                className="flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Play className="w-5 h-5" />
+                See workflow examples
+              </motion.button>
+
+              <motion.button 
+                className="flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-blue-900 transition-colors bg-white border-2 border-blue-900 rounded-lg hover:bg-blue-50"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Bot className="w-5 h-5" />
+                Try a workflow demo
+              </motion.button>
               </motion.div>
             </motion.div>
             
@@ -396,49 +397,108 @@ const AgenticWorkflowsPage = () => {
       </section>
 
       {/* Use Cases */}
-      <section className="py-20 bg-white">
-        <div className="px-6 mx-auto max-w-7xl">
+     <section className="py-20 bg-white">
+      <div className="px-6 mx-auto max-w-7xl">
+        <motion.div 
+          className="mb-16 text-center"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <h2 className="mb-4 text-4xl font-bold text-black">
+            Ideal <span className="text-blue-900">Use Cases</span>
+          </h2>
+          <p className="text-xl text-gray-700">Multi-step workflows that transform how teams work</p>
+        </motion.div>
+        
+        <motion.div 
+          className="grid gap-8 lg:grid-cols-3"
+          variants={staggerContainer}
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, amount: 0.3 }}
+        >
+          {/* Sales Ops */}
           <motion.div 
-            className="mb-16 text-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+            variants={scaleIn}
+            whileHover={{ y: -8, transition: { duration: 0.3 } }}
           >
-            <h2 className="mb-4 text-4xl font-bold text-black">
-              Ideal <span className="text-blue-900">Use Cases</span>
-            </h2>
-            <p className="text-xl text-gray-700">Multi-step workflows that transform how teams work</p>
-          </motion.div>
-          
-          <motion.div 
-            className="grid gap-8 lg:grid-cols-3"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.3 }}
-          >
-            {useCases.map((useCase, index) => (
+            <div className="flex flex-col items-center text-center">
               <motion.div 
-                key={index} 
-                className="overflow-hidden bg-white border border-gray-200 rounded-2xl"
-                variants={scaleIn}
-                whileHover={{ y: -10, transition: { duration: 0.3 } }}
+                className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+                initial={{ scale: 0, rotate: -180 }}
+                whileInView={{ scale: 1, rotate: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
               >
-                <div className={`p-6 text-white bg-gradient-to-r ${useCase.color}`}>
-                  <div className="flex items-center gap-3 mb-4">
-                    <useCase.icon className="w-8 h-8" />
-                    <h3 className="text-xl font-bold">{useCase.title}</h3>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <p className="leading-relaxed text-black">{useCase.flow}</p>
-                </div>
+                <TrendingUp className="w-8 h-8 text-blue-900" />
               </motion.div>
-            ))}
+              <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+                Sales
+              </div>
+              <h3 className="mb-3 text-xl font-bold text-black">Sales Operations</h3>
+              <p className="leading-relaxed text-gray-600">
+                enrich lead → draft email → log to CRM → set follow-up
+              </p>
+            </div>
           </motion.div>
-        </div>
-      </section>
+
+          {/* Support Ops */}
+          <motion.div 
+            className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+            variants={scaleIn}
+            whileHover={{ y: -8, transition: { duration: 0.3 } }}
+          >
+            <div className="flex flex-col items-center text-center">
+              <motion.div 
+                className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+                initial={{ scale: 0, rotate: -180 }}
+                whileInView={{ scale: 1, rotate: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+              >
+                <Headphones className="w-8 h-8 text-blue-900" />
+              </motion.div>
+              <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+                Support
+              </div>
+              <h3 className="mb-3 text-xl font-bold text-black">Support Operations</h3>
+              <p className="leading-relaxed text-gray-600">
+                diagnose issue → run playbook → create ticket with artifacts
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Internal Ops */}
+          <motion.div 
+            className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+            variants={scaleIn}
+            whileHover={{ y: -8, transition: { duration: 0.3 } }}
+          >
+            <div className="flex flex-col items-center text-center">
+              <motion.div 
+                className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+                initial={{ scale: 0, rotate: -180 }}
+                whileInView={{ scale: 1, rotate: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+              >
+                <Database className="w-8 h-8 text-blue-900" />
+              </motion.div>
+              <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+                Operations
+              </div>
+              <h3 className="mb-3 text-xl font-bold text-black">Internal Operations</h3>
+              <p className="leading-relaxed text-gray-600">
+                parse email/CSV → normalize → update sheet → notify Slack
+              </p>
+            </div>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
 
       {/* What We Deliver */}
       <section className="py-20 bg-gray-50">
@@ -453,6 +513,7 @@ const AgenticWorkflowsPage = () => {
             <h2 className="mb-4 text-4xl font-bold text-black">
               What We <span className="text-blue-900">Deliver</span>
             </h2>
+            <p className="text-xl text-gray-700">Complete agentic workflow solution with human oversight</p>
           </motion.div>
           
           <motion.div 
@@ -462,32 +523,115 @@ const AgenticWorkflowsPage = () => {
             whileInView="animate"
             viewport={{ once: true, amount: 0.3 }}
           >
-            {deliverables.map((item, index) => (
-              <motion.div 
-                key={index} 
-                className="p-6 bg-white border border-gray-200 rounded-xl"
-                variants={fadeInUp}
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
-              >
+            {/* Agent Blueprint */}
+            <motion.div 
+              className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+              variants={fadeInUp}
+              whileHover={{ y: -8, transition: { duration: 0.3 } }}
+            >
+              <div className="flex flex-col items-center text-center">
                 <motion.div 
-                  className="flex items-center justify-center w-12 h-12 mb-4 bg-blue-100 rounded-lg"
+                  className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
                   initial={{ scale: 0, rotate: 180 }}
                   whileInView={{ scale: 1, rotate: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
                 >
-                  <item.icon className="w-6 h-6 text-blue-900" />
+                  <GitBranch className="w-8 h-8 text-blue-900" />
                 </motion.div>
-                <h3 className="mb-2 font-bold text-blue-900">{item.title}</h3>
-                <p className="text-sm text-black">{item.desc}</p>
-              </motion.div>
-            ))}
+                <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+                  Blueprint
+                </div>
+                <h3 className="mb-3 text-xl font-bold text-black">Agent Blueprint</h3>
+                <p className="leading-relaxed text-gray-600">
+                  Roles, tools, refusal rules, approval gates for safe automation.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Tooling */}
+            <motion.div 
+              className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+              variants={fadeInUp}
+              whileHover={{ y: -8, transition: { duration: 0.3 } }}
+            >
+              <div className="flex flex-col items-center text-center">
+                <motion.div 
+                  className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+                  initial={{ scale: 0, rotate: 180 }}
+                  whileInView={{ scale: 1, rotate: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+                >
+                  <Settings className="w-8 h-8 text-blue-900" />
+                </motion.div>
+                <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+                  Integration
+                </div>
+                <h3 className="mb-3 text-xl font-bold text-black">Smart Tooling</h3>
+                <p className="leading-relaxed text-gray-600">
+                  HTTP, CRM/Helpdesk/Sheets/Slack actions; calendar & doc tools.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Observability */}
+            <motion.div 
+              className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+              variants={fadeInUp}
+              whileHover={{ y: -8, transition: { duration: 0.3 } }}
+            >
+              <div className="flex flex-col items-center text-center">
+                <motion.div 
+                  className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+                  initial={{ scale: 0, rotate: 180 }}
+                  whileInView={{ scale: 1, rotate: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+                >
+                  <Activity className="w-8 h-8 text-blue-900" />
+                </motion.div>
+                <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+                  Monitoring
+                </div>
+                <h3 className="mb-3 text-xl font-bold text-black">Full Observability</h3>
+                <p className="leading-relaxed text-gray-600">
+                  Step-by-step logs, retries, alerts, test suite for reliability.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Human Approval */}
+            <motion.div 
+              className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+              variants={fadeInUp}
+              whileHover={{ y: -8, transition: { duration: 0.3 } }}
+            >
+              <div className="flex flex-col items-center text-center">
+                <motion.div 
+                  className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+                  initial={{ scale: 0, rotate: 180 }}
+                  whileInView={{ scale: 1, rotate: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+                >
+                  <CheckSquare className="w-8 h-8 text-blue-900" />
+                </motion.div>
+                <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+                  Approval
+                </div>
+                <h3 className="mb-3 text-xl font-bold text-black">Human Oversight</h3>
+                <p className="leading-relaxed text-gray-600">
+                  For sensitive steps with preview and approval workflow gates.
+                </p>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
       {/* Patterns We Ship */}
-      <section className="py-20 bg-white">
+     <section className="py-20 bg-white">
         <div className="px-6 mx-auto max-w-7xl">
           <motion.div 
             className="mb-16 text-center"
@@ -509,91 +653,270 @@ const AgenticWorkflowsPage = () => {
             whileInView="animate"
             viewport={{ once: true, amount: 0.3 }}
           >
-            {patterns.map((pattern, index) => (
-              <motion.div 
-                key={index} 
-                className="p-6 border border-blue-200 bg-blue-50 rounded-xl"
-                variants={fadeInUp}
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
-              >
+            {/* Retrieve → Answer */}
+            <motion.div 
+              className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+              variants={fadeInUp}
+              whileHover={{ y: -8, transition: { duration: 0.3 } }}
+            >
+              <div className="flex flex-col items-center text-center">
                 <motion.div 
-                  className="flex items-center justify-center w-12 h-12 mb-4 bg-blue-900 rounded-xl"
+                  className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
                   initial={{ scale: 0, rotate: -180 }}
                   whileInView={{ scale: 1, rotate: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
                 >
-                  <pattern.icon className="w-6 h-6 text-white" />
+                  <Search className="w-8 h-8 text-blue-900" />
                 </motion.div>
-                <h3 className="mb-2 font-bold text-blue-900">{pattern.title}</h3>
-                <p className="text-sm text-black">{pattern.desc}</p>
-              </motion.div>
-            ))}
+                <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+                  Basic
+                </div>
+                <h3 className="mb-3 text-xl font-bold text-black">Retrieve → Answer</h3>
+                <p className="leading-relaxed text-gray-600">
+                  Safe Q&A with receipts and source citations for accuracy.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Retrieve → Act */}
+            <motion.div 
+              className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+              variants={fadeInUp}
+              whileHover={{ y: -8, transition: { duration: 0.3 } }}
+            >
+              <div className="flex flex-col items-center text-center">
+                <motion.div 
+                  className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+                  initial={{ scale: 0, rotate: -180 }}
+                  whileInView={{ scale: 1, rotate: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+                >
+                  <Zap className="w-8 h-8 text-blue-900" />
+                </motion.div>
+                <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+                  Action
+                </div>
+                <h3 className="mb-3 text-xl font-bold text-black">Retrieve → Act</h3>
+                <p className="leading-relaxed text-gray-600">
+                  Answer + action with preview for safe execution workflows.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Multi-tool Routing */}
+            <motion.div 
+              className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+              variants={fadeInUp}
+              whileHover={{ y: -8, transition: { duration: 0.3 } }}
+            >
+              <div className="flex flex-col items-center text-center">
+                <motion.div 
+                  className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+                  initial={{ scale: 0, rotate: -180 }}
+                  whileInView={{ scale: 1, rotate: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+                >
+                  <GitBranch className="w-8 h-8 text-blue-900" />
+                </motion.div>
+                <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+                  Smart
+                </div>
+                <h3 className="mb-3 text-xl font-bold text-black">Multi-tool Routing</h3>
+                <p className="leading-relaxed text-gray-600">
+                  Choose best tool per step with intelligent decision making.
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Human Approval */}
+            <motion.div 
+              className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+              variants={fadeInUp}
+              whileHover={{ y: -8, transition: { duration: 0.3 } }}
+            >
+              <div className="flex flex-col items-center text-center">
+                <motion.div 
+                  className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+                  initial={{ scale: 0, rotate: -180 }}
+                  whileInView={{ scale: 1, rotate: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+                >
+                  <CheckSquare className="w-8 h-8 text-blue-900" />
+                </motion.div>
+                <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+                  Oversight
+                </div>
+                <h3 className="mb-3 text-xl font-bold text-black">Human Approval</h3>
+                <p className="leading-relaxed text-gray-600">
+                  Preview → Approve/Decline for sensitive operations control.
+                </p>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
       {/* 4-Week Pilot Plan */}
       <section className="py-20 bg-gray-50">
-        <div className="px-6 mx-auto max-w-7xl">
+  <div className="px-6 mx-auto max-w-7xl">
+    <motion.div 
+      className="mb-16 text-center"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <h2 className="mb-4 text-4xl font-bold text-black">
+        4-Week <span className="text-blue-900">Pilot</span>
+      </h2>
+      <p className="text-xl text-gray-700">From discovery to launch with proven methodology</p>
+    </motion.div>
+    
+    <motion.div 
+      className="grid gap-8 md:grid-cols-2 lg:grid-cols-4"
+      variants={staggerContainer}
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true, amount: 0.3 }}
+    >
+      {/* Week 1 */}
+      <motion.div 
+        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+        variants={fadeInUp}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      >
+        <div className="flex flex-col items-center text-center">
           <motion.div 
-            className="mb-16 text-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <h2 className="mb-4 text-4xl font-bold text-black">
-              4-Week <span className="text-blue-900">Pilot</span>
-            </h2>
-            <p className="text-xl text-gray-700">From discovery to launch with proven methodology</p>
+            <Search className="w-8 h-8 text-blue-900" />
           </motion.div>
-          
-          <motion.div 
-            className="grid gap-8 md:grid-cols-2 lg:grid-cols-4"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.3 }}
-          >
-            {pilotPlan.map((week, index) => (
-              <motion.div 
-                key={index} 
-                className="relative h-full"
-                variants={fadeInUp}
-              >
-                <motion.div 
-                  className="flex flex-col h-full p-6 bg-white border border-gray-200 rounded-xl"
-                  whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                >
-                  <motion.div 
-                    className="px-3 py-1 mb-4 text-sm font-bold text-white bg-blue-900 rounded-full w-fit"
-                    initial={{ scale: 0, opacity: 0 }}
-                    whileInView={{ scale: 1, opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, ease: "easeOut", delay: index * 0.1 }}
-                  >
-                    {week.week}
-                  </motion.div>
-                  <h3 className="mb-2 font-bold text-blue-900">{week.title}</h3>
-                  <p className="flex-grow text-sm text-black">{week.desc}</p>
-                </motion.div>
-                {index < pilotPlan.length - 1 && (
-                  <motion.div 
-                    className="absolute hidden transform -translate-y-1/2 lg:block top-1/2 -right-4"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 + index * 0.1 }}
-                  >
-                    <ArrowRight className="w-6 h-6 text-gray-300" />
-                  </motion.div>
-                )}
-              </motion.div>
-            ))}
-          </motion.div>
+          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+            Week 1
+          </div>
+          <h3 className="mb-3 text-xl font-bold text-black">Discovery</h3>
+          <p className="leading-relaxed text-gray-600">
+            Map workflows, identify tools, set success criteria.
+          </p>
         </div>
-      </section>
+        {/* Arrow for desktop */}
+        <motion.div 
+          className="absolute hidden transform -translate-y-1/2 lg:block top-1/2 -right-4"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+        >
+          <ArrowRight className="w-6 h-6 text-gray-300" />
+        </motion.div>
+      </motion.div>
+
+      {/* Week 2 */}
+      <motion.div 
+        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+        variants={fadeInUp}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      >
+        <div className="flex flex-col items-center text-center">
+          <motion.div 
+            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
+          >
+            <Settings className="w-8 h-8 text-blue-900" />
+          </motion.div>
+          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+            Week 2
+          </div>
+          <h3 className="mb-3 text-xl font-bold text-black">Tools + Tests</h3>
+          <p className="leading-relaxed text-gray-600">
+            Build connectors, create test scenarios, validate logic.
+          </p>
+        </div>
+        <motion.div 
+          className="absolute hidden transform -translate-y-1/2 lg:block top-1/2 -right-4"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+        >
+          <ArrowRight className="w-6 h-6 text-gray-300" />
+        </motion.div>
+      </motion.div>
+
+      {/* Week 3 */}
+      <motion.div 
+        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+        variants={fadeInUp}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      >
+        <div className="flex flex-col items-center text-center">
+          <motion.div 
+            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
+          >
+            <CheckSquare className="w-8 h-8 text-blue-900" />
+          </motion.div>
+          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+            Week 3
+          </div>
+          <h3 className="mb-3 text-xl font-bold text-black">Approvals + UAT</h3>
+          <p className="leading-relaxed text-gray-600">
+            Add human gates, user acceptance testing.
+          </p>
+        </div>
+        <motion.div 
+          className="absolute hidden transform -translate-y-1/2 lg:block top-1/2 -right-4"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
+        >
+          <ArrowRight className="w-6 h-6 text-gray-300" />
+        </motion.div>
+      </motion.div>
+
+      {/* Week 4 */}
+      <motion.div 
+        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
+        variants={fadeInUp}
+        whileHover={{ y: -8, transition: { duration: 0.3 } }}
+      >
+        <div className="flex flex-col items-center text-center">
+          <motion.div 
+            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
+            initial={{ scale: 0, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
+          >
+            <Zap className="w-8 h-8 text-blue-900" />
+          </motion.div>
+          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
+            Week 4
+          </div>
+          <h3 className="mb-3 text-xl font-bold text-black">Launch + Hypercare</h3>
+          <p className="leading-relaxed text-gray-600">
+            Go live with monitoring and support.
+          </p>
+        </div>
+      </motion.div>
+    </motion.div>
+  </div>
+</section>
 
       {/* Guardrails & KPIs */}
       <section className="py-20 bg-white">
