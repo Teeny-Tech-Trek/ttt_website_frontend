@@ -81,7 +81,7 @@ const Footer = () => {
   const companyLinks = [
     { name: 'About', href: '/aboutUs' },
     { name: 'Services', href: '/#services' },
-    { name: 'Tech Stack', href: '/#tech-stack' },
+    { name: 'Use Cases', href: '/use-cases' },
     { name: 'Why Us', href: '/#why-us' },
     { name: 'Contact', href: '/#contact' },
   ];

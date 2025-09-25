@@ -1,4 +1,4 @@
-// src/pages/HomePage.tsx
+// src/pages/public/HomePage.tsx
 import { useEffect } from 'react';
 import Particles from '../../components/ui/Particles';
 import Hero from '../../components/home/Hero';
@@ -14,7 +14,7 @@ import Industries from '../../components/home/industries';
 import AboutPage from '../../components/layout/AboutUs';
 import AIServicesCards from '../../components/home/featuredCase';
 
-const HomePage = () => {
+const HomePage = ({ onOpenChatbot }) => {
   useEffect(() => {
     const handleScroll = () => {
       const sections = document.querySelectorAll('section[id]');
@@ -22,7 +22,7 @@ const HomePage = () => {
       let current = '';
 
       sections.forEach((section) => {
-const sectionTop = (section as HTMLElement).offsetTop;
+        const sectionTop = (section as HTMLElement).offsetTop;
         const sectionHeight = section.clientHeight;
         if (
           window.scrollY >= sectionTop - 200 &&
@@ -63,7 +63,8 @@ const sectionTop = (section as HTMLElement).offsetTop;
       </Helmet>
       <section id="home" className="relative">
         <Particles />
-        <Hero />
+        {/* Pass the onOpenChatbot prop to Hero */}
+        <Hero onOpenChatbot={onOpenChatbot} />
       </section>
       <section id="services">
         <Services />

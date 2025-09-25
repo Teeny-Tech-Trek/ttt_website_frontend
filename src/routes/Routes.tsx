@@ -27,6 +27,7 @@ import EducationIndex from '../view-cases/education/main';
 import AboutUs from '../components/layout/AboutUs';
 import AEOIndex from '../view-cases/AGO/main';
 import AuditForm from '../components/home/AuditForm';
+import TechTrekkerAi from '../pages/public/TechTrekkerAi';
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -38,13 +39,14 @@ const ScrollToTop = () => {
   return null;
 };
 
-const AppRoutes = () => (
+// Accept onOpenChatbot prop and pass it to HomePage
+const AppRoutes = ({ onOpenChatbot }) => (
   <>
     <ScrollToTop />
 
     <Routes>
       {/* Public routes */}
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<HomePage onOpenChatbot={onOpenChatbot} />} />
       
       {/* Remove the login route since we're using modal */}
       {/* <Route path="/login" element={<AuthPage />} /> */}
@@ -64,6 +66,7 @@ const AppRoutes = () => (
       <Route path="/education" element={<EducationIndex />} />
       <Route path="/hospitality" element={<HospitalityIndex />} />
       <Route path="/aeo-geo" element={<AEOIndex />} />
+      <Route path="/techtrekkers.ai" element={<TechTrekkerAi />} />
 
       {/* Blog and event routes */}
       <Route path="/blog/:slug" element={<BlogSingleView />} />

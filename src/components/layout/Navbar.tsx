@@ -169,6 +169,7 @@ const Navbar = () => {
       key: 'services',
       hash: '#services',
       path: '/',
+      href: isHomePage ? '#services' : '/#services',
       subLinks: services.map((service) => ({
         name: service.title,
         href: `/services/${service.slug}`,
@@ -321,7 +322,28 @@ const Navbar = () => {
                     onMouseEnter={() => link.subLinks && setOpenDropdown(link.key)}
                     onMouseLeave={() => link.subLinks && setOpenDropdown(null)}
                   >
-                    {link.key === 'services' || link.key === 'resources' ? (
+                    {link.key === 'services' ? (
+                      <MotionLink
+                        smooth
+                        to={link.href}
+                        className={`relative text-xs xl:text-sm font-medium text-blue-900/70 transition-colors hover:text-blue-600 flex items-center cursor-pointer whitespace-nowrap ${
+                          isLinkActive(link) ? 'text-blue-600' : ''
+                        }`}
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ type: 'spring', stiffness: 300 }}
+                        onClick={() => setActiveSection(link.hash || `#${link.key}`)}
+                      >
+                        <span className="hidden xl:inline">{link.name}</span>
+                        <span className="xl:hidden">
+                          {link.name === 'Book Consultation' ? 'Book' : link.name}
+                        </span>
+                        {link.subLinks && (
+                          <ChevronDown
+                            className="w-3 h-3 ml-1 transition-transform xl:w-4 xl:h-4 group-hover:rotate-180"
+                          />
+                        )}
+                      </MotionLink>
+                    ) : link.key === 'resources' ? (
                       <span
                         className={`relative text-xs xl:text-sm font-medium text-blue-900/70 transition-colors hover:text-blue-600 flex items-center cursor-pointer whitespace-nowrap ${
                           isLinkActive(link) ? 'text-blue-600' : ''
@@ -557,7 +579,7 @@ const Navbar = () => {
               transition={{ duration: 0.3, ease: 'easeInOut' }}
               className="fixed inset-0 top-[60px] sm:top-[80px] z-40 bg-white/95 backdrop-blur-md lg:hidden overflow-y-auto"
             >
-              <div className="flex flex-col items-center justify-start min-h-screen px-4 py-8 space-y-4 sm:space-y-6 sm:px-8">
+           <div className="flex flex-col items-end justify-start min-h-screen px-8 py-8 space-y-4 sm:space-y-6 sm:px-12">
                 {topNavLinks.map((link, index) => {
                   const delay = 0.1 * index;
                   return (
@@ -568,26 +590,35 @@ const Navbar = () => {
                       transition={{ delay, duration: 0.3 }}
                       className="w-full max-w-sm"
                     >
-                      {link.subLinks ? (
+                      {link.key === 'services' ? (
                         <>
+                          <MotionLink
+                            smooth
+                            to={link.href}
+                            className={`block py-3 pr-4 text-base sm:text-lg font-semibold transition-colors text-right ${
+                              isLinkActive(link) ? 'text-blue-600' : 'text-blue-900/80 hover:text-blue-600'
+                            }`}
+                            onClick={() => {
+                              setIsMenuOpen(false);
+                              setActiveSection(link.hash || `#${link.key}`);
+                            }}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            {link.name}
+                          </MotionLink>
                           <div
-                            className="flex items-center justify-between w-full px-4 py-3 cursor-pointer"
+                            className="flex items-center justify-end w-full py-2 pr-4 cursor-pointer"
                             onClick={() =>
                               setMobileOpenSub((prev) => ({ ...prev, [link.key]: !prev[link.key] }))
                             }
                           >
-                            <span
-                              className={`text-base sm:text-lg font-semibold transition-colors ${
-                                isLinkActive(link) ? 'text-blue-600' : 'text-blue-900/80 hover:text-blue-600'
-                              }`}
-                            >
-                              {link.name}
-                            </span>
                             <ChevronDown
-                              className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-200 ${
+                              className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-200 mr-2 ${
                                 mobileOpenSub[link.key] ? 'rotate-180' : ''
                               }`}
                             />
+                            <span className="text-sm text-blue-900/60">View All Services</span>
                           </div>
                           <AnimatePresence>
                             {mobileOpenSub[link.key] && (
@@ -598,12 +629,66 @@ const Navbar = () => {
                                 transition={{ duration: 0.2 }}
                                 className="w-full overflow-hidden"
                               >
-                                <div className="px-4 pl-8 space-y-2">
+                                <div className="px-4 pr-8 space-y-2 text-right">
+                                  {link.subLinks?.map((sub) => (
+                                    <MotionLink
+                                      key={sub.key}
+                                      to={sub.href}
+                                      className={`block py-2 sm:py-3 text-sm sm:text-base transition-colors border-r-2 border-transparent hover:border-blue-600 hover:text-blue-600 cursor-pointer text-right ${
+                                        location.pathname === sub.href ? 'border-blue-600 text-blue-600 bg-blue-50' : 'text-blue-900/70'
+                                      }`}
+                                      whileHover={{ x: 2 }}
+                                      onClick={() => {
+                                        setIsMenuOpen(false);
+                                        setMobileOpenSub({});
+                                        navigate(sub.href);
+                                      }}
+                                    >
+                                      {sub.name}
+                                      <span className="inline-block w-2 h-2 ml-2 transition-opacity duration-300 bg-blue-600 rounded-full opacity-0 group-hover:opacity-100" />
+                                    </MotionLink>
+                                  ))}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </>
+                      ) : link.subLinks ? (
+                        <>
+                          <div
+                            className="flex items-center justify-end w-full py-3 pr-4 cursor-pointer"
+                            onClick={() =>
+                              setMobileOpenSub((prev) => ({ ...prev, [link.key]: !prev[link.key] }))
+                            }
+                          >
+                            <ChevronDown
+                              className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-200 mr-2 ${
+                                mobileOpenSub[link.key] ? 'rotate-180' : ''
+                              }`}
+                            />
+                            <span
+                              className={`text-base sm:text-lg font-semibold transition-colors ${
+                                isLinkActive(link) ? 'text-blue-600' : 'text-blue-900/80 hover:text-blue-600'
+                              }`}
+                            >
+                              {link.name}
+                            </span>
+                          </div>
+                          <AnimatePresence>
+                            {mobileOpenSub[link.key] && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.2 }}
+                                className="w-full overflow-hidden"
+                              >
+                                <div className="px-4 pr-8 space-y-2 text-right">
                                   {link.subLinks.map((sub) => (
                                     <MotionLink
                                       key={sub.key}
                                       to={sub.href}
-                                      className={`block py-2 sm:py-3 text-sm sm:text-base transition-colors border-l-2 border-transparent hover:border-blue-600 hover:text-blue-600 cursor-pointer ${
+                                      className={`block py-2 sm:py-3 text-sm sm:text-base transition-colors border-r-2 border-transparent hover:border-blue-600 hover:text-blue-600 cursor-pointer text-right ${
                                         location.pathname === sub.href ? 'border-blue-600 text-blue-600 bg-blue-50' : 'text-blue-900/70'
                                       }`}
                                       whileHover={{ x: 2 }}
@@ -614,8 +699,8 @@ const Navbar = () => {
                                         setActiveSection(link.hash || `#${link.key}`);
                                       }}
                                     >
-                                      <span className="inline-block w-2 h-2 mr-2 transition-opacity duration-300 bg-blue-600 rounded-full opacity-0 group-hover:opacity-100" />
                                       {sub.name}
+                                      <span className="inline-block w-2 h-2 ml-2 transition-opacity duration-300 bg-blue-600 rounded-full opacity-0 group-hover:opacity-100" />
                                     </MotionLink>
                                   ))}
                                 </div>
@@ -627,7 +712,7 @@ const Navbar = () => {
                         <MotionLink
                           smooth
                           to={link.href}
-                          className={`block py-3 text-base sm:text-lg font-semibold transition-colors text-center ${
+                          className={`block py-3 pr-4 text-base sm:text-lg font-semibold transition-colors text-right ${
                             isLinkActive(link) ? 'text-blue-600' : 'text-blue-900/80 hover:text-blue-600'
                           }`}
                           onClick={() => {
@@ -656,7 +741,7 @@ const Navbar = () => {
                       <MotionLink
                         to="/admin"
                         smooth
-                        className="flex items-center justify-center gap-2 text-base font-medium sm:text-lg text-blue-900/70 hover:text-blue-600"
+                        className="flex items-center justify-end gap-2 text-base font-medium sm:text-lg text-blue-900/70 hover:text-blue-600"
                         onClick={() => {
                           setIsMenuOpen(false);
                           setActiveSection('');
@@ -689,7 +774,7 @@ const Navbar = () => {
                     >
                       <motion.button
                         onClick={handleLogout}
-                        className="w-full py-3 text-base font-medium text-red-500 sm:text-lg hover:text-red-600"
+                        className="w-full py-3 text-base font-medium text-right text-red-500 sm:text-lg hover:text-red-600"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
@@ -706,7 +791,7 @@ const Navbar = () => {
                   >
                     <motion.button
                       onClick={handleLoginClick}
-                      className="w-full py-3 text-base font-medium sm:text-lg text-blue-900/70 hover:text-blue-600"
+                      className="w-full py-3 text-base font-medium text-right sm:text-lg text-blue-900/70 hover:text-blue-600"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
