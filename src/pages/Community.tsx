@@ -146,7 +146,7 @@ interface JoinCommunityForm {
   expertise: string;
 }
 
-const API_BASE_URL = 'http://localhost:5000/api/community';
+const API_BASE_URL = 'https://api.teenytechtrek.com/api/community';
 
 const formatTimeAgo = (dateString: string) => {
   const date = new Date(dateString);
