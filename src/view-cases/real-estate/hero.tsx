@@ -16,6 +16,7 @@ import {
 import { motion } from "framer-motion";
 
 import realStateImg from "../../Images/Case Studies/RealEstate.png"
+import { HashLink } from 'react-router-hash-link';
 
 // Animation variants with responsive considerations
 const slideFromLeft = {
@@ -75,7 +76,14 @@ const staggerContainer = {
 };
 
 // Hero Section - Ultra Responsive with Fixed Spacing
-const Hero: React.FC = () => {
+const Hero: React.FC = ({onOpenChatbot}) => {
+  const handleTryDemo = (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (onOpenChatbot) {
+    onOpenChatbot();
+  }
+};
   return (
     <section className="relative min-h-screen overflow-hidden bg-white">
       <div className="px-6 py-20 mx-auto max-w-7xl">
@@ -109,12 +117,24 @@ const Hero: React.FC = () => {
               className="flex flex-col gap-4 sm:flex-row"
               variants={slideFromLeft}
             >
-              <button className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-950 group">
-                Get Started
-                <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-              </button>
+             
+                            <motion.div
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              <HashLink 
+                                smooth 
+                                to="/#contact"
+                                className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-950 group"
+                              >
+                                Get Started
+                                <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
+                              </HashLink>
+                            </motion.div>
               
-              <button className="flex items-center justify-center px-8 py-4 font-semibold text-black transition-colors border-2 border-black rounded-lg hover:border-blue-900 hover:text-blue-900">
+              <button
+               onClick={handleTryDemo}
+              className="flex items-center justify-center px-8 py-4 font-semibold text-black transition-colors border-2 border-black rounded-lg hover:border-blue-900 hover:text-blue-900">
                 <MessageCircle className="w-5 h-5 mr-2" />
                 Talk with an AI Agent
               </button>
@@ -399,21 +419,29 @@ const LightCTA = () => {
           Join the companies already using AI agents to engage clients and scale their practice with Teeny Tech Trek.
         </p>
 
-        <button className="flex items-center justify-center w-full px-10 py-5 mx-auto text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg sm:w-auto sm:px-12 sm:py-6 sm:text-xl hover:bg-blue-950 group">
+     
+      <div className="flex justify-center">
+        <HashLink
+          smooth
+          to="/#contact"
+          className="flex items-center justify-center px-10 py-5 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg sm:px-12 sm:py-6 sm:text-xl hover:bg-blue-950 group w-96 sm:w-auto"
+        >
           <span className="hidden sm:inline">Hire Your First AI Agent</span>
           <span className="sm:hidden">Get Started</span>
-          <ArrowRight className="w-5 h-5 ml-3 transition-transform sm:w-6 sm:h-6 group-hover:translate-x-1" />
-        </button>
+          <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1 sm:w-6 sm:h-6" />
+        </HashLink>
+      </div>
+
       </div>
     </section>
   );
 };
 
 // Main Index - Ultra Responsive
-const RealEstateIndex = () => {
+const RealEstateIndex = ({onOpenChatbot}) => {
   return (
     <div className="min-h-screen bg-white">
-      <Hero />
+      <Hero onOpenChatbot={onOpenChatbot}/>
       <CleanSolutions />
       <CleanMetrics />
       <LightCTA />

@@ -724,7 +724,7 @@ import {
 } from 'lucide-react';
 
 import healthcareImage from "../../Images/Case Studies/Healthcare.png"
-
+import { HashLink } from 'react-router-hash-link';
 
 // Animation variants
 const slideFromLeft = {
@@ -784,7 +784,17 @@ const staggerContainer = {
 };
 
 // Hero Section
-const HeroSection = () => {
+// Hero Section - Fixed version
+const HeroSection = ({onOpenChatbot}) => {
+  
+  const handleTryDemo = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onOpenChatbot) {
+      onOpenChatbot();
+    }
+  }; // Added missing closing brace
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-white">
       {/* Background decorative elements */}
@@ -822,12 +832,21 @@ const HeroSection = () => {
               className="flex flex-wrap gap-4"
               variants={slideFromLeft}
             >
-              <button className="flex items-center gap-2 px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800">
-                Get Started
-                <ArrowRight className="w-5 h-5" />
-              </button>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <HashLink 
+                  smooth 
+                  to="/#contact"
+                  className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-950 group"
+                >
+                  Get Started
+                  <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
+                </HashLink>
+              </motion.div>
               
-              <button className="flex items-center gap-2 px-8 py-4 font-semibold text-blue-900 transition-colors border-2 border-blue-900 rounded-lg hover:bg-blue-50">
+              <button onClick={handleTryDemo} className="flex items-center gap-2 px-8 py-4 font-semibold text-blue-900 transition-colors border-2 border-blue-900 rounded-lg hover:bg-blue-50">
                 Talk with an AI Agent
                 <MessageCircle className="w-5 h-5" />
               </button>
@@ -849,11 +868,6 @@ const HeroSection = () => {
               
               {/* Dashboard mockup */}
               <div className="mt-2 space-y-6">
-                {/* <div className="flex items-center justify-between">
-                  <div className="w-32 h-4 bg-gray-200 rounded"></div>
-                  <div className="w-20 h-4 bg-gray-200 rounded"></div>
-                </div> */}
-                
                 {/* Chart area with image */}
                 <div className="relative overflow-hidden rounded-lg h-72 bg-gradient-to-br from-blue-100 to-gray-100">
                   <img 
@@ -900,6 +914,14 @@ const HeroSection = () => {
 
 // Core Services Section (Voice Receptionist & Data Management)
 const CoreServicesSection = () => {
+
+    const [message, setMessage] = useState("");
+
+      const handleClick = () => {
+          setMessage("Thank you for your interest! Please proceed by clicking on 'Call with AI' to explore the live demo.");
+          setTimeout(() => setMessage(""), 5000); // Auto-hide after 5s
+        };
+
   return (
     <section className="py-20 bg-gray-50">
       <div className="px-6 mx-auto max-w-7xl">
@@ -977,10 +999,35 @@ const CoreServicesSection = () => {
               </div>
             </div>
 
-            <button className="flex items-center justify-center w-full px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800 group">
-              Talk with Voice AI
-              <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-            </button>
+            
+
+             <div className="flex flex-col items-center w-full">
+                  {/* Wrap in relative container */}
+                  <div className="relative flex flex-col items-center w-full">
+                    <motion.button 
+                    className="flex items-center justify-center w-full px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800 group"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={handleClick}
+                    >
+                     Talk with Voice AI
+                      <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
+                    </motion.button>
+
+                    {/* Absolutely positioned message */}
+                    {message && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.3 }}
+                        className="absolute max-w-md px-4 py-2 mt-20 text-sm text-center text-gray-700 bg-gray-200 rounded-lg shadow-md w-max"
+                      >
+                        {message}
+                      </motion.div>
+                    )}
+                  </div>
+                </div>
           </motion.div>
 
           {/* Data Management */}
@@ -999,7 +1046,7 @@ const CoreServicesSection = () => {
                 Data Management
               </h3>
               <p className="text-lg leading-relaxed text-black">
-                Intelligent data organization and insights that help you understand patients better and optimize care delivery.
+                Intelligent data organization and insights that help you understand patients better and optimize care <br></br> delivery.
               </p>
             </div>
 
@@ -1041,10 +1088,20 @@ const CoreServicesSection = () => {
               </div>
             </div>
 
-            <button className="flex items-center justify-center w-full px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800 group">
-              View Data Solutions
-              <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-            </button>
+             <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <HashLink 
+                  smooth 
+                  to="/#contact"
+                 className="flex items-center justify-center w-full px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800 group"
+
+                >
+                  Get Started
+                  <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
+                </HashLink>
+              </motion.div>
           </motion.div>
         </div>
       </div>
@@ -1378,13 +1435,19 @@ const FinalCTASection = () => {
             practice with Teeny Tech Trek.
           </motion.p>
                  
-          <motion.button 
-            className="inline-flex items-center gap-3 px-10 py-4 text-lg font-bold text-white transition-colors bg-blue-900 rounded-lg shadow-lg hover:bg-blue-800"
-            variants={slideFromBottom}
-          >
-            Hire Your First AI Agent
-            <ArrowRight className="w-6 h-6" />
-          </motion.button>
+         
+            <div className="flex justify-center">
+              <HashLink
+                smooth
+                to="/#contact"
+                className="flex items-center justify-center px-10 py-5 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg sm:px-12 sm:py-6 sm:text-xl hover:bg-blue-950 group w-96 sm:w-auto"
+              >
+                <span className="hidden sm:inline">Hire Your First AI Agent</span>
+                <span className="sm:hidden">Get Started</span>
+                <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1 sm:w-6 sm:h-6" />
+              </HashLink>
+            </div>
+         
         </motion.div>
       </div>
     </div>
@@ -1392,10 +1455,10 @@ const FinalCTASection = () => {
 };
 
 // Main Healthcare Component
-const Healthcare = () => {
+const Healthcare = ({onOpenChatbot}) => {
   return (
     <div className="min-h-screen">
-      <HeroSection />
+      <HeroSection  onOpenChatbot={onOpenChatbot} />
       <CoreServicesSection />
       <PracticeTypesSection />
       <BenefitsSection />

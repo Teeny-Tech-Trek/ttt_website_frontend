@@ -210,6 +210,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Bot, ArrowRight, PlayCircle, Shield, Star, Brain, CheckCircle } from 'lucide-react';
+import { HashLink } from 'react-router-hash-link';
 
 const FinancialHeroSection = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -279,10 +280,19 @@ const FinancialHeroSection = () => {
 
             {/* Action buttons */}
             <div className="flex flex-col gap-4 sm:flex-row">
-              <button className="flex items-center justify-center gap-3 px-8 py-4 text-lg font-bold text-white transition-all duration-300 bg-blue-900 rounded-xl hover:bg-blue-800">
+              {/* <button className="flex items-center justify-center gap-3 px-8 py-4 text-lg font-bold text-white transition-all duration-300 bg-blue-900 rounded-xl hover:bg-blue-800">
                 <span>Get Free Assessment</span>
                 <ArrowRight className="w-5 h-5" />
-              </button>
+              </button> */}
+              <HashLink 
+                smooth 
+                to="/#pricing"
+                className="flex items-center justify-center px-12 py-4 mx-auto text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group"
+              >
+            Get Free Assessment
+                    <ArrowRight className="w-5 h-5" />
+              </HashLink>
+
 
               <button className="flex items-center gap-3 px-8 py-4 font-semibold text-blue-900 transition-all duration-300 border border-blue-900 rounded-xl hover:bg-blue-900/10">
                 <div className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-900/10">

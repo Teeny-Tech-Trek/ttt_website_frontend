@@ -1,12 +1,9 @@
-// src/routes/AppRoutes.tsx
+// src/routes/AppRoutes.tsx - Fixed version
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import { withAuthGuard } from './RouteGuards';
 
 import HomePage from '../pages/public/HomePage';
-// Remove AuthPage import since we're using modal now
-// import AuthPage from '../pages/public/AuthPage';
-import ServicesRoutes from './ServicesRoutes';
 import AdminDashboard from '../pages/admin/AdminDashboard';
 import AdminRoutes from './Admin/AdminRoutes';
 import BlogSingleView from '../pages/public/BlogDetail';
@@ -29,6 +26,12 @@ import AEOIndex from '../view-cases/AGO/main';
 import AuditForm from '../components/home/AuditForm';
 import TechTrekkerAi from '../pages/public/TechTrekkerAi';
 
+// Import service pages directly
+import ChatbotsPage from '../pages/public/services/ChatbotsPage';
+import AgenticWorkflowsPage from '../pages/public/services/AgenticWorkflowsPage';
+import ProcessAutomationPage from '../pages/public/services/ProcessAutomationPage';
+import AiAppsPage from '../pages/public/services/AiAppsPage';
+
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
 
@@ -39,7 +42,7 @@ const ScrollToTop = () => {
   return null;
 };
 
-// Accept onOpenChatbot prop and pass it to HomePage
+// Accept onOpenChatbot prop and pass it to components that need it
 const AppRoutes = ({ onOpenChatbot }) => (
   <>
     <ScrollToTop />
@@ -48,24 +51,21 @@ const AppRoutes = ({ onOpenChatbot }) => (
       {/* Public routes */}
       <Route path="/" element={<HomePage onOpenChatbot={onOpenChatbot} />} />
       
-      {/* Remove the login route since we're using modal */}
-      {/* <Route path="/login" element={<AuthPage />} /> */}
-      
       <Route path="/refund" element={<Refund />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/terms" element={<Terms />} />
       <Route path="/aboutUs" element={<AboutUs />} />
       <Route path="/community" element={<Community />} />
-       <Route path="/auditform" element={<AuditForm />} />
+      <Route path="/auditform" element={<AuditForm />} />
       <Route path="/use-cases" element={<CaseStudies />} />
-      <Route path="/healthcare" element={<Healthcare />} />
-      <Route path="/ecommerce" element={<MainD2C />} />
+      <Route path="/healthcare" element={<Healthcare onOpenChatbot={onOpenChatbot} />} />
+      <Route path="/ecommerce" element={<MainD2C onOpenChatbot={onOpenChatbot} />} />
       <Route path="/financial-services" element={<FinancialServices />} />
-      <Route path="/real-estate" element={<RealEstateIndex />} />
+      <Route path="/real-estate" element={<RealEstateIndex onOpenChatbot={onOpenChatbot}/>} />
       <Route path="/logistics" element={<ManufacturingLogisticsIndex />} />
       <Route path="/education" element={<EducationIndex />} />
       <Route path="/hospitality" element={<HospitalityIndex />} />
-      <Route path="/aeo-geo" element={<AEOIndex />} />
+      <Route path="/aeo-geo" element={<AEOIndex onOpenChatbot={onOpenChatbot} />} />
       <Route path="/techtrekkers.ai" element={<TechTrekkerAi />} />
 
       {/* Blog and event routes */}
@@ -75,9 +75,11 @@ const AppRoutes = ({ onOpenChatbot }) => (
       {/* Package details */}
       <Route path="/packages/:slug" element={<PackageDetailPage />} />
 
-      {/* All /services/* routes → rendered by the <ServicesRoutes /> component */}
-      <Route path="services/*">
-      {ServicesRoutes()}</Route>
+      {/* Service routes - defined directly here */}
+      <Route path="/services/ai-chatbots" element={<ChatbotsPage onOpenChatbot={onOpenChatbot} />} />
+      <Route path="/services/agentic-ai-workflows" element={<AgenticWorkflowsPage  onOpenChatbot={onOpenChatbot}/>} />
+      <Route path="/services/smart-process-automation" element={<ProcessAutomationPage onOpenChatbot={onOpenChatbot}/>} />
+      <Route path="/services/ai-apps-micro-saas" element={<AiAppsPage onOpenChatbot={onOpenChatbot}/>} />
 
       {/* Admin (protected) */}
       <Route

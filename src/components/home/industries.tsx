@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Home, Stethoscope, MessageCircle, Truck, Hotel, BookOpen, Zap } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Industries = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+    const navigate = useNavigate(); 
 
-  // Check if mobile
+   // Check if mobile
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const caseStudyOptions = [
+   const caseStudyOptions = [
     {
       id: 'realestate',
       route: '/real-estate',
@@ -74,20 +75,19 @@ const Industries = () => {
       highlight: '20-25 hours/week saved'
     },
   ];
-
   // Auto-slide for mobile every 1 second
-  useEffect(() => {
+ useEffect(() => {
     if (isMobile) {
       const interval = setInterval(() => {
         setCurrentIndex((prev) => (prev + 1) % caseStudyOptions.length);
-      }, 1000); // 1 second interval
-
+      }, 1000);
       return () => clearInterval(interval);
     }
   }, [isMobile, caseStudyOptions.length]);
 
   const handleCardClick = (route) => {
-    console.log('Navigate to:', route);
+    // console.log('Navigate to:', route);
+     navigate(route);
   };
 
   const getIconColor = (id) => {

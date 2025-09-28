@@ -416,11 +416,18 @@ import {
   CheckCircle,
   Home
 } from 'lucide-react';
-
+import { HashLink } from 'react-router-hash-link';
+import { motion } from 'framer-motion';
 import hospitalityImage from "../../Images/Case Studies/Hospitality.png"
 
 // Clean Split-Screen Hero for Hospitality
 const Hero: React.FC = () => {
+  const [message, setMessage] = useState("");
+  
+        const handleClick = () => {
+            setMessage("Thank you for your interest! Please proceed by clicking on 'Call with AI' to explore the live demo.");
+            setTimeout(() => setMessage(""), 5000); // Auto-hide after 5s
+          };
   return (
     <section className="relative min-h-screen overflow-hidden bg-white">
       <div className="px-6 py-20 mx-auto max-w-7xl">
@@ -440,15 +447,50 @@ const Hero: React.FC = () => {
             </p>
 
             <div className="flex flex-col gap-4 sm:flex-row">
-              <button className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group">
+              {/* <button className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group">
                 Start Free Trial
                 <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-              </button>
+              </button> */}
+              <HashLink 
+                smooth 
+                to="/#pricing"
+                className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group"
+              >
+                Start Free Trial
+                 <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
+              </HashLink>
               
-              <button className="flex items-center justify-center px-8 py-4 font-semibold text-gray-700 transition-colors border-2 border-gray-300 rounded-lg hover:border-blue-900 hover:text-blue-900">
+              {/* <button className="flex items-center justify-center px-8 py-4 font-semibold text-gray-700 transition-colors border-2 border-gray-300 rounded-lg hover:border-blue-900 hover:text-blue-900">
                 <Phone className="w-5 h-5 mr-2" />
                 Try Voice Demo
-              </button>
+              </button> */}
+               <div className="flex flex-col items-center ">
+                  {/* Wrap in relative container */}
+                  <div className="relative flex flex-col items-center w-full">
+                    <motion.button 
+                    className="flex items-center justify-center px-8 py-4 text-gray-700 transition-colors border-2 border-gray-300 rounded-lg border-blue-900font-semibold hover:border-blue-900 hover:text-blue-900"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={handleClick}
+                    >
+                      <Phone className="w-5 h-5 mr-2" />
+                Try Voice Demo
+                    </motion.button>
+
+                    {/* Absolutely positioned message */}
+                    {message && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.3 }}
+                        className="absolute max-w-md px-4 py-2 mt-20 text-sm text-center text-gray-700 bg-gray-200 rounded-lg shadow-md w-max"
+                      >
+                        {message}
+                      </motion.div>
+                    )}
+                  </div>
+                </div>
             </div>
           </div>
 
@@ -467,6 +509,12 @@ const Hero: React.FC = () => {
 
 // Vertical Service Showcase
 const CoreServices: React.FC = () => {
+    const [message, setMessage] = useState("");
+  
+        const handleClick = () => {
+            setMessage("Thank you for your interest! Please proceed by clicking on 'Call with AI' to explore the live demo.");
+            setTimeout(() => setMessage(""), 5000); // Auto-hide after 5s
+          };
   return (
     <section className="py-20 bg-gray-50">
       <div className="px-6 mx-auto max-w-7xl">
@@ -509,10 +557,36 @@ const CoreServices: React.FC = () => {
                 </div>
               </div>
 
-              <button className="flex items-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group">
+              {/* <button className="flex items-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group">
                 Try Voice Demo
                 <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-              </button>
+              </button> */}
+              <div className="flex flex-col items-center ">
+                  {/* Wrap in relative container */}
+                  <div className="relative flex flex-col items-center w-full">
+                    <motion.button 
+                    className="flex items-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group"
+                      whileTap={{ scale: 0.98 }}
+                      onClick={handleClick}
+                    >
+                      <Phone className="w-5 h-5 mr-2" />
+                Try Voice Demo
+                    </motion.button>
+
+                    {/* Absolutely positioned message */}
+                    {message && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.3 }}
+                        className="absolute max-w-md px-4 py-2 mt-20 text-sm text-center text-gray-700 bg-gray-200 rounded-lg shadow-md w-max"
+                      >
+                        {message}
+                      </motion.div>
+                    )}
+                  </div>
+                </div>
             </div>
 
             <div className="lg:w-1/2">
@@ -570,10 +644,10 @@ const CoreServices: React.FC = () => {
                 </div>
               </div>
 
-              <button className="flex items-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group">
+              {/* <button className="flex items-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group">
                 View Dashboard
                 <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-              </button>
+              </button> */}
             </div>
 
             <div className="lg:w-1/2">
@@ -731,11 +805,20 @@ const LightCTA: React.FC = () => {
             Join hospitality businesses already using AI voice receptionist and data management to enhance guest satisfaction with Teeny Tech Trek.
           </p>
 
-          <button className="flex items-center justify-center px-12 py-4 mx-auto text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group">
+          {/* <button className="flex items-center justify-center px-12 py-4 mx-auto text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group">
             <Hotel className="w-5 h-5 mr-2" />
             Transform Your Hospitality Business
             <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-          </button>
+          </button> */}
+          <HashLink 
+            smooth 
+            to="/#pricing"
+            className="flex items-center justify-center px-12 py-4 mx-auto text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group"
+          >
+           <Hotel className="w-5 h-5 mr-2" />
+            Transform Your Hospitality Business
+            <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
+          </HashLink>
 
           {/* Feature Pills */}
           <div className="flex flex-wrap justify-center gap-4 mt-8">

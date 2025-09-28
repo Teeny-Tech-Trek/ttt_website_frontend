@@ -11,7 +11,15 @@ import {
   BarChart3
 } from 'lucide-react';
 
-const ChatbotSolutionsSection = () => {
+const ChatbotSolutionsSection = ({onOpenChatbot}) => {
+  
+    const handleTryDemo = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (onOpenChatbot) {
+          onOpenChatbot();
+        }
+      };
   return (
     <section className="py-20 bg-white">
       <div className="px-6 mx-auto max-w-7xl">
@@ -77,7 +85,7 @@ const ChatbotSolutionsSection = () => {
               </div>
             </div>
 
-            <button className="flex items-center justify-center w-full px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800 group">
+            <button onClick={handleTryDemo} className="flex items-center justify-center w-full px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800 group">
               Try Support Chatbot
               <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
             </button>
@@ -135,7 +143,7 @@ const ChatbotSolutionsSection = () => {
               </div>
             </div>
 
-            <button className="flex items-center justify-center w-full px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800 group">
+            <button onClick={handleTryDemo} className="flex items-center justify-center w-full px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800 group">
               Boost Sales Now
               <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
             </button>

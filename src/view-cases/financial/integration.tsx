@@ -81,9 +81,9 @@ const IntegrationsSection = () => {
               </div>
             </div>
             
-            <button className="flex items-center gap-2 px-8 py-4 font-semibold text-blue-900 transition-all duration-300 border border-blue-900 rounded-lg hover:bg-blue-900 hover:text-white">
+            {/* <button className="flex items-center gap-2 px-8 py-4 font-semibold text-blue-900 transition-all duration-300 border border-blue-900 rounded-lg hover:bg-blue-900 hover:text-white">
               View Integration Guide <ArrowRight className="w-5 h-5" />
-            </button>
+            </button> */}
           </div>
           
           {/* Right Side */}

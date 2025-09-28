@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Star, Users, TrendingUp, Clock, Shield, Award, CheckCircle } from 'lucide-react';
-
+import { HashLink } from 'react-router-hash-link';
 const CTASection = () => {
   const testimonials = [
     {
@@ -112,19 +112,27 @@ const CTASection = () => {
             </p>
             
             <div className="flex flex-col justify-center gap-4 mb-8 sm:flex-row">
-              <button 
+              {/* <button 
                 aria-label="Schedule Free Assessment"
                 className="flex items-center justify-center gap-3 px-10 py-5 text-lg font-bold text-white transition-all duration-300 bg-blue-900 shadow-lg hover:bg-blue-800 rounded-xl hover:shadow-xl"
               >
                 Schedule Free Assessment
                 <ArrowRight className="w-6 h-6" />
-              </button>
-              <button 
+              </button> */}
+              <HashLink 
+              smooth 
+              to="/#pricing"
+              className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-blue-900 transition-all duration-300 bg-white border-2 border-blue-900 shadow-lg rounded-xl hover:bg-blue-50 hover:border-blue-800 hover:bg-blue-900 hover:text-white"
+            >
+             Schedule Free Assessment
+                <ArrowRight className="w-6 h-6" />
+            </HashLink>
+              {/* <button 
                 aria-label="Download White Paper"
                 className="px-10 py-5 text-lg font-bold text-black transition-all duration-300 border-2 border-blue-900 bg-blue-50 hover:border-blue-800 hover:bg-blue-100 rounded-xl"
               >
                 Download White Paper
-              </button>
+              </button> */}
             </div>
 
             {/* Trust indicators */}

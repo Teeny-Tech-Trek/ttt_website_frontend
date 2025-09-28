@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database, GitBranch, Workflow, Search, CheckSquare, AlertTriangle, Activity, Layers, Mail, Upload, Bell, Slack, Filter, AlertCircle, RefreshCw, Lock, RotateCcw } from 'lucide-react';
 import AutomationVideo from "../../../videos/SmartAutomations.mp4"
+import { HashLink } from 'react-router-hash-link';
 
 // Animation variants
 const fadeInUp = {
@@ -36,10 +37,24 @@ const scaleIn = {
   transition: { duration: 0.5, ease: "easeOut" }
 };
 
-const ProcessAutomationPage = () => {
+const ProcessAutomationPage = ({ onOpenChatbot }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
-  
+  const [message, setMessage] = useState("");
+
+    const handleClick = () => {
+    setMessage("Thank you for your interest! Please proceed by clicking on 'Call with AI' to explore the live demo.");
+    setTimeout(() => setMessage(""), 5000); // Auto-hide after 5s
+  };
+
+  const handleTryDemo = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (onOpenChatbot) {
+        onOpenChatbot();
+      }
+    };
+
   const automationFlow = [
     { step: "Email/CSV", icon: Mail, desc: "Incoming data", status: "completed" },
     { step: "Parse & Normalize", icon: Filter, desc: "Clean & structure", status: "completed" },
@@ -139,10 +154,10 @@ const ProcessAutomationPage = () => {
               </motion.div>
               
               <motion.h1 
-                className="text-6xl font-bold leading-tight text-black lg:text-7xl"
+                className="text-5xl font-bold leading-tight text-black lg:text-6xl"
                 variants={fadeInUp}
               >
-                Kill the busywork. <span className="text-blue-900">Keep control.</span>
+                Kill the busywork. <span className="text-blue-900 ">Keep control.</span>
               </motion.h1>
               
               <motion.p 
@@ -157,31 +172,50 @@ const ProcessAutomationPage = () => {
                 variants={fadeInUp}
               >
                 <motion.div 
-                className="flex flex-col gap-3 sm:flex-row"
-                variants={fadeInUp}
-              >
-                <motion.div 
-          className="flex flex-col gap-4 sm:flex-row"
-          variants={fadeInUp}
-        >
-          <motion.button 
-            className="flex items-center justify-center gap-2 px-10 py-6 text-base font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <Activity className="w-5 h-5" />
-            See automation patterns
-          </motion.button>
+                  className="flex flex-col gap-3 sm:flex-row"
+                  variants={fadeInUp}
+                >
+                  <motion.div 
+                    className="flex flex-col gap-4 sm:flex-row"
+                    variants={fadeInUp}
+                  >
+                <div className="flex flex-col items-center">
+                  {/* Wrap in relative container */}
+                  <div className="relative flex flex-col items-center">
+                    <motion.button 
+                      className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={handleClick}
+                    >
+                      <Play className="w-5 h-5" />
+                      Try the ops demo
+                    </motion.button>
 
-          <motion.button 
-            className="flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-blue-900 transition-colors bg-white border border-blue-900 rounded-xl hover:bg-blue-50"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <Play className="w-5 h-5" />
-            Try the ops demo
-          </motion.button>
-        </motion.div>
+                    {/* Absolutely positioned message */}
+                    {message && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.3 }}
+                        className="absolute max-w-md px-4 py-2 mt-20 text-sm text-center text-gray-700 bg-gray-100 rounded-lg shadow-md ml-52 w-max"
+                      >
+                        {message}
+                      </motion.div>
+                    )}
+                  </div>
+                </div>
+
+                    {/* <motion.button 
+                      className="flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-blue-900 transition-colors bg-white border border-blue-900 rounded-xl hover:bg-blue-50"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                     <Activity className="w-5 h-5" />
+                            See automation patterns
+                    </motion.button> */}
+                  </motion.div>
 
               </motion.div>
 
@@ -642,7 +676,7 @@ const ProcessAutomationPage = () => {
             </motion.div>
             
             <motion.h2 
-              className="mb-8 text-6xl font-bold text-black lg:text-7xl"
+              className="mb-8 text-4xl font-bold text-black lg:text-6xl"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
@@ -652,7 +686,7 @@ const ProcessAutomationPage = () => {
             </motion.h2>
             
             <motion.p 
-              className="max-w-3xl mx-auto mb-12 text-2xl leading-relaxed text-gray-700"
+              className="max-w-3xl mx-auto mb-12 text-xl leading-relaxed text-gray-700"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
@@ -669,22 +703,41 @@ const ProcessAutomationPage = () => {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
           >
-            <motion.button 
-              className="flex items-center justify-center gap-3 px-12 py-6 text-2xl font-bold text-white transition-all duration-300 bg-blue-900 shadow-xl rounded-2xl hover:bg-blue-800 hover:shadow-2xl"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Zap className="w-6 h-6" />
-              Automate the top 3 processes
-            </motion.button>
-            <motion.button 
-              className="flex items-center justify-center gap-3 px-12 py-6 text-2xl font-bold text-blue-900 transition-all duration-300 bg-white border-2 border-blue-900 shadow-xl rounded-2xl hover:bg-blue-50 hover:border-blue-800"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Calendar className="w-6 h-6" />
-              Book a working session
-            </motion.button>
+            
+              <motion.div 
+                    className="flex flex-col gap-4 sm:flex-row"
+                    variants={fadeInUp}
+                  >
+                    
+
+                    <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <HashLink 
+                      smooth 
+                      to="/#pricing"
+                      className="flex items-center justify-center gap-2 px-10 py-6 text-base font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800"
+                    >
+                      <Zap className="w-5 h-5" />
+                         Automate the top 3 processes
+                    </HashLink>
+                  </motion.div>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <HashLink 
+                      smooth 
+                      to="/#pricing"
+                      className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-blue-900 transition-all duration-300 bg-white border-2 border-blue-900 shadow-lg rounded-xl hover:bg-blue-50 hover:border-blue-800"
+                    >
+                        <Calendar className="w-5 h-5" />
+                          Book a working session
+                    </HashLink>
+                  </motion.div>
+                  </motion.div>
+
           </motion.div>
           
           <motion.div 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database, GitBranch, Workflow, Search, CheckSquare, AlertTriangle, Activity, Layers } from 'lucide-react';
 import AutomationVideo from "../../../videos/AgentHandover.mov"
+import { HashLink } from 'react-router-hash-link';
 
 // Animation variants
 const fadeInUp = {
@@ -36,10 +37,19 @@ const scaleIn = {
   transition: { duration: 0.5, ease: "easeOut" }
 };
 
-const AgenticWorkflowsPage = () => {
+const AgenticWorkflowsPage = ({onOpenChatbot}) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [activeDemo, setActiveDemo] = useState(0);
+
+   // Add click handler for the demo button
+  const handleTryDemo = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onOpenChatbot) {
+      onOpenChatbot();
+    }
+  };
   
   const workflowSteps = [
     { step: "Retrieve", desc: "Lead data from CRM", icon: Search, status: "completed" },
@@ -182,19 +192,21 @@ const AgenticWorkflowsPage = () => {
                 className="flex flex-col gap-4 sm:flex-row"
                 variants={fadeInUp}
               >
-              <motion.button 
+              {/* <motion.button 
                 className="flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
+                    
               >
                 <Play className="w-5 h-5" />
                 See workflow examples
-              </motion.button>
+              </motion.button> */}
 
               <motion.button 
                 className="flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-blue-900 transition-colors bg-white border-2 border-blue-900 rounded-lg hover:bg-blue-50"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
+                 onClick={handleTryDemo} 
               >
                 <Bot className="w-5 h-5" />
                 Try a workflow demo
@@ -1174,14 +1186,16 @@ const AgenticWorkflowsPage = () => {
               <Zap className="w-5 h-5" />
               Start a 4-week pilot
             </motion.button>
-            <motion.button 
-              className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-blue-900 transition-all duration-300 bg-white border-2 border-blue-900 shadow-lg rounded-xl hover:bg-blue-50 hover:border-blue-800"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Users className="w-5 h-5" />
-              Talk to an architect
-            </motion.button>
+            
+            <HashLink 
+            smooth 
+            to="/#contact"
+            className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-blue-900 transition-all duration-300 bg-white border-2 border-blue-900 shadow-lg rounded-xl hover:bg-blue-50 hover:border-blue-800"
+          >
+            <Phone className="w-5 h-5" />
+             Talk to an architect
+          </HashLink>
+             
           </motion.div>
           
           <motion.div 

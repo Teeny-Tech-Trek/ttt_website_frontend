@@ -594,7 +594,7 @@ import {
   Video,
   Laptop
 } from 'lucide-react';
-
+import { HashLink } from 'react-router-hash-link';
 import educationImage from "../../Images/Case Studies/Education.png"
 
 // Animation variants
@@ -689,11 +689,19 @@ const Hero: React.FC = () => {
               className="flex flex-col gap-4 sm:flex-row"
               variants={slideFromLeft}
             >
-              <button className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group">
+              {/* <button className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group">
                 Start Collaboration
                 <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-              </button>
-              
+              </button> */}
+              <HashLink 
+              smooth 
+              to="/#pricing"
+              className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group"
+            >
+              Start Collaboration
+                <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
+            </HashLink>
+                          
               <button className="flex items-center justify-center px-8 py-4 font-semibold text-gray-700 transition-colors border-2 border-gray-300 rounded-lg hover:border-blue-900 hover:text-blue-900">
                 <Video className="w-5 h-5 mr-2" />
                 View Workshop Demo
@@ -799,10 +807,10 @@ const EducationServices: React.FC = () => {
               </div>
             </div>
 
-            <button className="flex items-center justify-center w-full px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800 group">
+            {/* <button className="flex items-center justify-center w-full px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800 group">
               Explore Collaboration
               <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-            </button>
+            </button> */}
           </motion.div>
 
           {/* AI Workshops */}
@@ -863,10 +871,10 @@ const EducationServices: React.FC = () => {
               </div>
             </div>
 
-            <button className="flex items-center justify-center w-full px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800 group">
+            {/* <button className="flex items-center justify-center w-full px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800 group">
               Book Workshop
               <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-            </button>
+            </button> */}
           </motion.div>
         </div>
       </div>
@@ -1066,11 +1074,20 @@ const LightCTA: React.FC = () => {
             className="flex flex-col justify-center gap-4 mb-8 sm:flex-row"
             variants={slideFromBottom}
           >
-            <button className="flex items-center justify-center px-10 py-4 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group">
+            {/* <button className="flex items-center justify-center px-10 py-4 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group">
               <School className="w-5 h-5 mr-2" />
               Start Institutional Partnership
               <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-            </button>
+            </button> */}
+             <HashLink 
+              smooth 
+              to="/#pricing"
+              className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group"
+            >
+             <School className="w-5 h-5 mr-2" />
+              Start Institutional Partnership
+              <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
+            </HashLink>
             
             <button className="flex items-center justify-center px-10 py-4 text-lg font-semibold text-blue-900 transition-colors border-2 border-blue-900 rounded-lg hover:bg-blue-900 hover:text-white">
               <Presentation className="w-5 h-5 mr-2" />

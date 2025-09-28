@@ -7,11 +7,11 @@ import GettingStartedSection from './GettingStarted';
 import StatsSection from './stats';
 import FinalCTASection from './CTA';
 
-const MainD2C = () => {
+const MainD2C = ({onOpenChatbot}) => {
   return (
     <div className="min-h-screen">
-      <HeroSection />
-      <ChatbotSolutionsSection />
+      <HeroSection onOpenChatbot={onOpenChatbot} />
+      <ChatbotSolutionsSection onOpenChatbot={onOpenChatbot}/>
       <ChatbotDemoSection />
       <BenefitsSection />
       <GettingStartedSection />

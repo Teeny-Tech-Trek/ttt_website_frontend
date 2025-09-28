@@ -160,14 +160,14 @@ const ComplianceRiskSection = () => {
                   ))}
                 </div>
 
-                <div className="flex gap-4">
+                {/* <div className="flex gap-4">
                   <button className="flex-1 px-6 py-4 font-bold text-white transition-all duration-300 bg-blue-900 hover:bg-blue-800 rounded-2xl">
                     Generate Compliance Report
                   </button>
                   <button className="flex-1 px-6 py-4 font-bold text-blue-900 transition-all duration-300 border-2 border-blue-900 rounded-2xl hover:bg-blue-50">
                     Schedule Audit Review
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

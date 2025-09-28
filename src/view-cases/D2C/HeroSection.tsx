@@ -6,8 +6,16 @@ import {
   TrendingUp, 
   Sparkles
 } from 'lucide-react';
+import { HashLink } from 'react-router-hash-link';
 
-const HeroSection = () => {
+const HeroSection = ({onOpenChatbot}) => {
+    const handleTryDemo = (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (onOpenChatbot) {
+    onOpenChatbot();
+  }
+};
   return (
     <div className="relative flex items-center min-h-screen pt-20 overflow-hidden bg-white">
       <div className="grid items-center gap-12 px-6 mx-auto max-w-7xl lg:grid-cols-2">
@@ -24,10 +32,20 @@ const HeroSection = () => {
           </div>
           
           <div className="flex flex-col gap-4 sm:flex-row">
-            <button className="flex items-center justify-center gap-2 px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg shadow-lg hover:bg-blue-800">
+            {/* <button className="flex items-center justify-center gap-2 px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg shadow-lg hover:bg-blue-800">
               Start Free Trial <ArrowRight className="w-5 h-5" />
-            </button>
-            <button className="flex items-center justify-center gap-2 px-8 py-4 font-semibold text-black transition-colors bg-white border border-black rounded-lg hover:bg-gray-100">
+            </button> */}
+          
+                <HashLink 
+                  smooth 
+                  to="/#contact"
+className="flex items-center justify-center gap-2 px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg shadow-lg hover:bg-blue-800"
+                >
+                  Get Started
+                  <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
+                </HashLink>
+       
+            <button onClick={handleTryDemo} className="flex items-center justify-center gap-2 px-8 py-4 font-semibold text-black transition-colors bg-white border border-black rounded-lg hover:bg-gray-100">
               <PlayCircle className="w-5 h-5" />
               See Demo
             </button>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight, CheckCircle, Clock, Users, Settings, Rocket, Shield, FileText } from 'lucide-react';
-
+import { HashLink } from 'react-router-hash-link';
 const ImplementationSection = () => {
   const steps = [
     {
@@ -116,12 +116,20 @@ const ImplementationSection = () => {
               </div>
 
               <div className="flex flex-col gap-4 sm:flex-row">
-                <button className="flex items-center justify-center gap-2 px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800">
+                {/* <button className="flex items-center justify-center gap-2 px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800">
                   Schedule Implementation Call <ArrowRight className="w-5 h-5" />
-                </button>
-                <button className="flex items-center justify-center gap-2 px-8 py-4 font-semibold text-black transition-colors bg-white border border-gray-400 rounded-lg hover:border-gray-500">
+                </button> */}
+
+                <HashLink 
+                  smooth 
+                  to="/#pricing"
+                  className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-blue-900 transition-all duration-300 bg-white border-2 border-blue-900 shadow-lg rounded-xl hover:bg-blue-50 hover:border-blue-800"
+                >
+                  Schedule Implementation Call <ArrowRight className="w-5 h-5" />
+                </HashLink>
+                {/* <button className="flex items-center justify-center gap-2 px-8 py-4 font-semibold text-black transition-colors bg-white border border-gray-400 rounded-lg hover:border-gray-500">
                   Download Implementation Guide
-                </button>
+                </button> */}
               </div>
             </div>
 

@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 
 import imageOfAgo from "../../Images/Case Studies/AEO_GEO.png"
+import { HashLink } from 'react-router-hash-link';
 
 // Animation variants
 const slideFromLeft = {
@@ -45,7 +46,16 @@ const staggerContainer = {
 };
 
 // Hero Section
-const Hero: React.FC = () => {
+const Hero: React.FC = ({ onOpenChatbot }) => {
+
+  const handleTryDemo = (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (onOpenChatbot) {
+    onOpenChatbot();
+  }
+};
+
   return (
     <section className="relative min-h-screen overflow-hidden bg-white">
       <div className="px-6 py-20 mx-auto max-w-7xl">
@@ -79,12 +89,23 @@ const Hero: React.FC = () => {
               className="flex flex-col gap-4 sm:flex-row"
               variants={slideFromLeft}
             >
-              <button className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-950 group">
-                Get Certified Faster
-                <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-              </button>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <HashLink 
+                  smooth 
+                  to="/#contact"
+                  className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-950 group"
+                >
+                  Get Certified Faster
+                  <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
+                </HashLink>
+              </motion.div>
               
-              <button className="flex items-center justify-center px-8 py-4 font-semibold text-black transition-colors border-2 border-black rounded-lg hover:border-blue-900 hover:text-blue-900">
+              <button
+              onClick={handleTryDemo}
+               className="flex items-center justify-center px-8 py-4 font-semibold text-black transition-colors border-2 border-black rounded-lg hover:border-blue-900 hover:text-blue-900">
                 <MessageCircle className="w-5 h-5 mr-2" />
                 Talk to Compliance AI
               </button>
@@ -317,14 +338,30 @@ const CTA: React.FC = () => {
           <motion.p className="mb-12 text-xl leading-relaxed text-black" variants={slideFromBottom}>
             Let AI streamline your certification process and strengthen global trust in your supply chain.
           </motion.p>
-
+{/* 
           <motion.button 
             className="flex items-center justify-center px-12 py-4 mx-auto text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-950 group"
             variants={slideFromBottom}
           >
             Start Your Journey
             <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-          </motion.button>
+          </motion.button> */}
+            <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+
+              >
+                <HashLink 
+                  smooth 
+                  to="/#contact"
+                  className="flex items-center justify-center px-12 py-4 mx-auto text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg w-80 hover:bg-blue-950 group"
+
+                >
+                  Start Your Journey
+                  <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
+                </HashLink>
+              </motion.div>
+
         </motion.div>
       </div>
     </section>
@@ -332,10 +369,10 @@ const CTA: React.FC = () => {
 };
 
 // Main Index
-const AEOIndex: React.FC = () => {
+const AEOIndex: React.FC = ({ onOpenChatbot }) => {
   return (
     <div className="min-h-screen bg-white">
-      <Hero />
+      <Hero  onOpenChatbot={ onOpenChatbot } />
       <Solutions />
       <Metrics />
       <CTA />

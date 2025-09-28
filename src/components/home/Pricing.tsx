@@ -61,7 +61,7 @@ const packages = [
       "3 sample prompts to test your data",
     ],
     followUp: "Optional email tips (48–72h)",
-    cta: "Download the audit kit",
+    cta: "Get your free audit",
     schemaType: "Product",
   },
   {
@@ -497,29 +497,39 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
                   </motion.div>
                 )}
                 
-                <div className="pt-4 mt-auto">
-                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                    <button
-                      onClick={() => handleBookClick(pkg)}
-                      disabled={loadingAction === pkg.id}
-                      className={`w-full py-3.5 px-6 rounded-lg text-base font-medium transition-colors shadow-sm ${
-                        pkg.mostBooked
-                          ? "bg-blue-900 text-white hover:bg-blue-900 shadow-md"
-                          : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                      } disabled:opacity-70 disabled:cursor-not-allowed`}
-                    >
-                      {loadingAction === pkg.id ? "Processing..." : pkg.cta}
-                    </button>
-                  </motion.div>
-                  
-                  <div className="flex flex-wrap justify-center gap-2 mt-4">
-                    <span className="text-xs bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">Founder-led</span>
-                    <span className="text-xs bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">PDF deliverable</span>
-                    {pkg.price > 0 && (
-                      <span className="text-xs bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">Fee credited to pilot</span>
-                    )}
-                  </div>
-                </div>
+              // Find this section in your code (around line 340-365) and replace it with this:
+
+<div className="pt-4 mt-auto">
+  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+    <button
+      onClick={() => handleBookClick(pkg)}
+      disabled={loadingAction === pkg.id}
+      className={`w-full h-12 px-3 rounded-lg text-sm font-medium transition-colors shadow-sm flex items-center justify-center ${
+        pkg.mostBooked
+          ? "bg-blue-900 text-white hover:bg-blue-700 shadow-md"
+          : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+      } disabled:opacity-70 disabled:cursor-not-allowed`}
+    >
+      <span className="leading-tight text-center">
+        {loadingAction === pkg.id ? "Processing..." : pkg.cta}
+      </span>
+    </button>
+  </motion.div>
+  
+  <div className="flex flex-wrap justify-center gap-2 mt-4">
+  <span className={`bg-blue-100 text-blue-800 rounded-full ${pkg.price > 0 ? 'text-xs px-2 py-0.5' : 'text-xs px-2.5 py-1'}`}>
+    Founder-led
+  </span>
+  <span className={`bg-blue-100 text-blue-800 rounded-full ${pkg.price > 0 ? 'text-xs px-2 py-0.5' : 'text-xs px-2.5 py-1'}`}>
+    PDF deliverable
+  </span>
+
+    <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
+      Fee credited to pilot
+    </span>
+
+</div>
+</div>
               </motion.div>
             );
           })}

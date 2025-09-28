@@ -1,6 +1,6 @@
 import React from 'react';
 import { CheckCircle, ArrowRight, DollarSign, Clock, Users, TrendingUp, Database, Shield, FileText, Zap } from 'lucide-react';
-
+import { HashLink } from 'react-router-hash-link';
 const BenefitsSection = () => {
   const benefits = [
     {
@@ -80,9 +80,16 @@ const BenefitsSection = () => {
               ))}
             </div>
 
-            <button className="flex items-center gap-2 px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800">
+            {/* <button className="flex items-center gap-2 px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800">
               Calculate Your ROI <ArrowRight className="w-5 h-5" />
-            </button>
+            </button> */}
+              <HashLink 
+                            smooth 
+                            to="/#pricing"
+                           className="flex items-center gap-2 px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg w-60 hover:bg-blue-800">
+                        Calculate Your ROI 
+                        <ArrowRight className="w-5 h-5" />
+                          </HashLink>
           </div>
 
           {/* Implementation Benefits */}

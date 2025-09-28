@@ -218,6 +218,7 @@ import {
   ArrowRight, Target, Clock, DollarSign, Rocket, TrendingUp, 
   Settings, FileText 
 } from 'lucide-react';
+import { HashLink } from 'react-router-hash-link';
 
 import heroImage from "../../Images/Case Studies/Logistics_Manufacturing.png"
 
@@ -247,15 +248,16 @@ const Hero: React.FC = () => (
           </motion.p>
 
           <motion.div className="flex flex-col gap-4 sm:flex-row" variants={slideFromLeft}>
-            <button className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group">
-              Start Generating Leads
-              <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-            </button>
+              <HashLink 
+                smooth 
+                to="/#pricing"
+                className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group"
+              >
+                Start Generating Leads
+                <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
+              </HashLink>
             
-            <button className="flex items-center justify-center px-8 py-4 font-semibold text-black transition-colors border-2 border-black rounded-lg hover:border-blue-900 hover:text-blue-900">
-              <Phone className="w-5 h-5 mr-2" />
-              Demo AI Call Agent
-            </button>
+          
           </motion.div>
         </motion.div>
 
@@ -286,9 +288,16 @@ const AICallFeatures: React.FC = () => {
   };
 
   const featureList = Object.entries(features);
+  const [message, setMessage] = useState("");
+  
+  const handleClick = () => {
+    setMessage("Thank you for your interest! Please proceed by clicking on 'Call with AI' to explore the live demo.");
+    setTimeout(() => setMessage(""), 5000); // Auto-hide after 5s
+  };
+
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-10 bg-white">
       <div className="px-6 mx-auto max-w-7xl">
         <motion.div className="mb-16 text-center" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={slideFromTop}>
           <h2 className="mb-6 text-4xl font-bold text-blue-900 md:text-5xl">Supercharge Your Business Calls</h2>
@@ -318,13 +327,13 @@ const AICallFeatures: React.FC = () => {
         </motion.div>
 
         {/* CTA */}
-        <motion.div className="text-center" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={slideFromBottom}>
+        {/* <motion.div className="text-center" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={slideFromBottom}>
           <button className="flex items-center justify-center px-12 py-4 mx-auto text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group">
             <Rocket className="w-6 h-6 mr-3" />
             Start Your AI Call Campaign
             <ArrowRight className="w-6 h-6 ml-3 transition-transform group-hover:translate-x-1" />
           </button>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );
@@ -349,7 +358,7 @@ const LeadGeneration: React.FC = () => {
   }, []);
 
   return (
-    <section className="py-20 bg-white">
+    <section className="bg-white ">
       <div className="px-6 mx-auto max-w-7xl">
         <motion.div className="mb-16 text-center" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={slideFromTop}>
           <h2 className="mb-6 text-4xl font-bold text-blue-900 md:text-5xl">
@@ -393,7 +402,14 @@ const LeadGeneration: React.FC = () => {
 };
 
 // CTA
-const LightCTA: React.FC = () => (
+const LightCTA: React.FC = () => {
+  const [message, setMessage] = useState("");
+  
+        const handleClick = () => {
+            setMessage("Thank you for your interest! Please proceed by clicking on 'Call with AI' to explore the live demo.");
+            setTimeout(() => setMessage(""), 5000); // Auto-hide after 5s
+       };
+ return (
   <section className="py-20 bg-white">
     <div className="max-w-4xl px-6 mx-auto text-center">
       <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={staggerContainer}>
@@ -403,15 +419,44 @@ const LightCTA: React.FC = () => (
         <motion.p className="mb-12 text-xl leading-relaxed text-black" variants={slideFromBottom}>
           Join manufacturing and logistics companies already using AI call agents to generate leads and scale their business with Teeny Tech Trek.
         </motion.p>
-        <motion.button className="flex items-center justify-center px-12 py-4 mx-auto text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group" variants={slideFromBottom}>
+        {/* <motion.button className="flex items-center justify-center px-12 py-4 mx-auto text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group" variants={slideFromBottom}>
           <Phone className="w-5 h-5 mr-2" />
           Start Your AI Call Campaign
           <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-        </motion.button>
+        </motion.button> */}
+                   <div className="flex flex-col items-center w-full">
+                          {/* Wrap in relative container */}
+                          <div className="relative flex flex-col items-center ">
+                            <motion.button 
+                            className="flex items-center justify-center w-full px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800 group"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.98 }}
+                              onClick={handleClick}
+                            >
+                             <Phone className="w-5 h-5 mr-2" />
+                              Start Your AI Call Campaign
+                              <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
+                            </motion.button>
+        
+                            {/* Absolutely positioned message */}
+                            {message && (
+                              <motion.div
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.3 }}
+                                className="absolute max-w-md px-4 py-2 mt-16 text-sm text-center text-gray-700 bg-gray-200 rounded-lg shadow-md w-max"
+                              >
+                                {message}
+                              </motion.div>
+                            )}
+                          </div>
+                        </div>
       </motion.div>
     </div>
   </section>
-);
+)
+}
 
 // Main Index
 const ManufacturingLogisticsIndex: React.FC = () => (

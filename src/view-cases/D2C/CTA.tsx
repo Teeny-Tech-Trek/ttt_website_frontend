@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight, CheckCircle, Star } from 'lucide-react';
+import { HashLink } from 'react-router-hash-link';
 
 const FinalCTASection = () => {
   const testimonials = [
@@ -37,14 +38,14 @@ const FinalCTASection = () => {
             Join thousands of D2C brands already using Teeny Tech Trek chatbots to automate customer service, boost sales, and scale their operations.
           </p>
           
-          <div className="flex flex-col justify-center gap-4 mb-12 sm:flex-row">
+          {/* <div className="flex flex-col justify-center gap-4 mb-12 sm:flex-row">
             <button className="flex items-center justify-center gap-2 px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg shadow-lg hover:bg-blue-800">
               Start Free 14-Day Trial <ArrowRight className="w-5 h-5" />
             </button>
             <button className="flex items-center justify-center gap-2 px-8 py-4 font-semibold text-black transition-colors bg-white border-2 border-gray-300 rounded-lg shadow-sm hover:border-gray-400">
               Watch Demo Video
             </button>
-          </div>
+          </div> */}
         </div>
 
         {/* Testimonials */}
@@ -95,12 +96,24 @@ const FinalCTASection = () => {
             </div>
 
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
-              <button className="flex items-center justify-center gap-2 px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg shadow-lg hover:bg-blue-800">
+              {/* <button className="flex items-center justify-center gap-2 px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg shadow-lg hover:bg-blue-800">
                 Get Started Free <ArrowRight className="w-5 h-5" />
-              </button>
-              <button className="flex items-center justify-center gap-2 px-8 py-4 font-semibold text-black transition-colors bg-gray-100 rounded-lg hover:bg-gray-200">
+              </button> */}
+              <HashLink 
+                smooth 
+                to="/#pricing"
+                className="flex items-center justify-center gap-2 px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg shadow-lg hover:bg-blue-800">
+                   Get Started Free <ArrowRight className="w-5 h-5" />
+              </HashLink>
+              {/* <button className="flex items-center justify-center gap-2 px-8 py-4 font-semibold text-black transition-colors bg-gray-100 rounded-lg hover:bg-gray-200">
                 Schedule Demo
-              </button>
+              </button> */}
+              <HashLink 
+                smooth 
+                to="/#pricing"
+                className="flex items-center justify-center gap-2 px-8 py-4 font-semibold text-black transition-colors bg-gray-100 rounded-lg hover:bg-gray-200">
+                Schedule Demo
+              </HashLink>
             </div>
           </div>
         </div>
