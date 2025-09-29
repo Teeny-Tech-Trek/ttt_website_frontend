@@ -31,6 +31,7 @@ import ChatbotsPage from '../pages/public/services/ChatbotsPage';
 import AgenticWorkflowsPage from '../pages/public/services/AgenticWorkflowsPage';
 import ProcessAutomationPage from '../pages/public/services/ProcessAutomationPage';
 import AiAppsPage from '../pages/public/services/AiAppsPage';
+import Pilot from '../pages/Pilot';
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -56,6 +57,8 @@ const AppRoutes = ({ onOpenChatbot }) => (
       <Route path="/terms" element={<Terms />} />
       <Route path="/aboutUs" element={<AboutUs />} />
       <Route path="/community" element={<Community />} />
+            <Route path="/pilot" element={<Pilot />} />
+
       <Route path="/auditform" element={<AuditForm />} />
       <Route path="/use-cases" element={<CaseStudies />} />
       <Route path="/healthcare" element={<Healthcare onOpenChatbot={onOpenChatbot} />} />
