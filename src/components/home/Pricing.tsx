@@ -497,7 +497,7 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
                   </motion.div>
                 )}
                 
-              // Find this section in your code (around line 340-365) and replace it with this:
+            
 
 <div className="pt-4 mt-auto">
   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
