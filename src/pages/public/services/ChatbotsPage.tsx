@@ -53,6 +53,9 @@ const ChatbotsPage = ({ onOpenChatbot }) => {
     }
   };
 
+   const handle4WeekPilotBtn = () => {
+    navigate("/pilot")
+  } 
 
   const demoMessages = [
     { type: 'bot', text: "Hi! I can help you with our return policy. What specific question do you have?" },
@@ -174,6 +177,7 @@ const ChatbotsPage = ({ onOpenChatbot }) => {
                   className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold text-blue-900 transition-colors bg-white border-2 border-blue-900 rounded-lg hover:bg-blue-50"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
+                  onClick={handle4WeekPilotBtn}
                 >
                   <Calendar className="w-5 h-5" />
                   See a 4-week pilot plan
@@ -1054,6 +1058,7 @@ const ChatbotsPage = ({ onOpenChatbot }) => {
               className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-white transition-all duration-300 bg-blue-900 shadow-lg rounded-xl hover:bg-blue-800 hover:shadow-xl"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
+              onClick={handle4WeekPilotBtn}
             >
               <Zap className="w-5 h-5" />
               Start a 4-week pilot

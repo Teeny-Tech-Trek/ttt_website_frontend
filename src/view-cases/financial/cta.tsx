@@ -1,7 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { ArrowRight, Star, Users, TrendingUp, Clock, Shield, Award, CheckCircle } from 'lucide-react';
-import { HashLink } from 'react-router-hash-link';
+
 const CTASection = () => {
   const testimonials = [
     {
@@ -38,130 +37,111 @@ const CTASection = () => {
   ];
 
   return (
-    <div className="relative py-20 overflow-hidden bg-white">
-      <div className="relative px-6 mx-auto max-w-7xl">
+    <div className="relative py-12 overflow-hidden bg-white sm:py-16 lg:py-20">
+      <div className="relative px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
         {/* Header */}
-        <div className="mb-16 text-center">
-          <h2 className="mb-6 text-5xl font-bold text-black">
+        <div className="mb-12 text-center sm:mb-16">
+          <h2 className="px-4 mb-4 text-3xl font-bold leading-tight text-black sm:mb-6 sm:text-4xl lg:text-5xl">
             Ready to Transform Your <span className="text-blue-900">Financial Operations</span>?
           </h2>
-          <p className="max-w-4xl mx-auto text-xl leading-relaxed text-black">
+          <p className="max-w-4xl px-4 mx-auto text-base leading-relaxed text-black sm:text-lg lg:text-xl">
             Join leading financial institutions already using Teeny Tech Trek AI to automate operations, ensure compliance, and drive unprecedented growth.
           </p>
         </div>
 
-        {/* Stats Section */}
-        <div className="grid gap-8 mb-16 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Stats Section - Responsive Grid */}
+        <div className="grid grid-cols-2 gap-4 mb-12 sm:gap-6 lg:gap-8 sm:mb-16 lg:grid-cols-4">
           {stats.map((stat, index) => {
             const IconComponent = stat.icon;
             return (
-              <motion.div 
+              <div 
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
-                className="p-6 text-center bg-white border shadow-lg border-blue-900/20 rounded-2xl"
+                className="p-4 text-center transition-transform bg-white border shadow-lg sm:p-6 border-blue-900/20 rounded-xl sm:rounded-2xl hover:scale-105"
               >
-                <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-blue-50 rounded-2xl">
-                  <IconComponent className="w-8 h-8 text-blue-900" />
+                <div className="flex items-center justify-center w-12 h-12 mx-auto mb-3 sm:w-16 sm:h-16 sm:mb-4 bg-blue-50 rounded-xl sm:rounded-2xl">
+                  <IconComponent className="w-6 h-6 text-blue-900 sm:w-8 sm:h-8" />
                 </div>
-                <div className="mb-2 text-3xl font-bold text-black">{stat.value}</div>
-                <div className="text-black">{stat.label}</div>
-              </motion.div>
+                <div className="mb-1 text-2xl font-bold text-black sm:mb-2 sm:text-3xl">{stat.value}</div>
+                <div className="text-xs text-black sm:text-sm lg:text-base">{stat.label}</div>
+              </div>
             );
           })}
         </div>
 
-        {/* Testimonials */}
-        <div className="grid gap-8 mb-16 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Testimonials - Responsive Grid */}
+        <div className="grid grid-cols-1 gap-6 mb-12 sm:gap-8 sm:mb-16 md:grid-cols-2 lg:grid-cols-3">
           {testimonials.map((testimonial, index) => (
-            <motion.div 
+            <div 
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.2 }}
-              className="p-6 bg-white border shadow-lg border-blue-900/20 rounded-2xl"
+              className="p-5 transition-transform bg-white border shadow-lg sm:p-6 border-blue-900/20 rounded-xl sm:rounded-2xl hover:scale-105"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="text-2xl">{testimonial.avatar}</div>
-                <div>
-                  <div className="font-semibold text-black">{testimonial.name}</div>
-                  <div className="text-sm text-black">{testimonial.title}</div>
-                  <div className="text-xs text-black">{testimonial.company}</div>
+                <div className="flex-shrink-0 text-xl sm:text-2xl">{testimonial.avatar}</div>
+                <div className="min-w-0">
+                  <div className="text-sm font-semibold text-black truncate sm:text-base">{testimonial.name}</div>
+                  <div className="text-xs text-black truncate sm:text-sm">{testimonial.title}</div>
+                  <div className="text-xs text-black truncate">{testimonial.company}</div>
                 </div>
               </div>
               <div className="flex gap-1 mb-3">
                 {[...Array(testimonial.rating)].map((_, i) => (
                   <Star 
                     key={i} 
-                    className="w-4 h-4 text-blue-900 fill-blue-900 stroke-blue-900" 
+                    className="w-3 h-3 text-blue-900 sm:w-4 sm:h-4 fill-blue-900 stroke-blue-900" 
                   />
                 ))}
               </div>
-              <p className="text-sm leading-relaxed text-black">"{testimonial.text}"</p>
-            </motion.div>
+              <p className="text-xs leading-relaxed text-black sm:text-sm">"{testimonial.text}"</p>
+            </div>
           ))}
         </div>
 
-        {/* Call to Action */}
-        <div className="p-12 text-center bg-white border shadow-xl border-blue-900/20 rounded-3xl">
+        {/* Call to Action - Responsive Card */}
+        <div className="p-6 text-center bg-white border shadow-xl sm:p-8 lg:p-12 border-blue-900/20 rounded-2xl sm:rounded-3xl">
           <div className="max-w-3xl mx-auto">
-            <h3 className="mb-6 text-3xl font-bold text-black">Start Your AI Transformation Today</h3>
-            <p className="mb-8 text-xl leading-relaxed text-black">
+            <h3 className="mb-4 text-2xl font-bold text-black sm:mb-6 sm:text-3xl">Start Your AI Transformation Today</h3>
+            <p className="mb-6 text-base leading-relaxed text-black sm:mb-8 sm:text-lg lg:text-xl">
               Schedule a personalized assessment and discover how our AI can revolutionize your financial operations in just 6 weeks.
             </p>
             
-            <div className="flex flex-col justify-center gap-4 mb-8 sm:flex-row">
-              {/* <button 
-                aria-label="Schedule Free Assessment"
-                className="flex items-center justify-center gap-3 px-10 py-5 text-lg font-bold text-white transition-all duration-300 bg-blue-900 shadow-lg hover:bg-blue-800 rounded-xl hover:shadow-xl"
+            {/* CTA Button - Responsive */}
+            <div className="flex flex-col justify-center gap-4 mb-6 sm:mb-8">
+              <a 
+                href="#pricing"
+                className="flex items-center justify-center w-full gap-2 px-6 py-4 text-base font-bold text-blue-900 transition-all duration-300 bg-white border-2 border-blue-900 shadow-lg sm:gap-3 sm:px-8 lg:px-10 sm:py-5 sm:text-lg rounded-xl hover:bg-blue-50 hover:border-blue-800 hover:bg-blue-900 hover:text-white sm:w-auto sm:mx-auto"
               >
                 Schedule Free Assessment
-                <ArrowRight className="w-6 h-6" />
-              </button> */}
-              <HashLink 
-              smooth 
-              to="/#pricing"
-              className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-blue-900 transition-all duration-300 bg-white border-2 border-blue-900 shadow-lg rounded-xl hover:bg-blue-50 hover:border-blue-800 hover:bg-blue-900 hover:text-white"
-            >
-             Schedule Free Assessment
-                <ArrowRight className="w-6 h-6" />
-            </HashLink>
-              {/* <button 
-                aria-label="Download White Paper"
-                className="px-10 py-5 text-lg font-bold text-black transition-all duration-300 border-2 border-blue-900 bg-blue-50 hover:border-blue-800 hover:bg-blue-100 rounded-xl"
-              >
-                Download White Paper
-              </button> */}
+                <ArrowRight className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6" />
+              </a>
             </div>
 
-            {/* Trust indicators */}
-            <div className="flex flex-wrap justify-center gap-8 text-sm text-black">
-              <div className="flex items-center gap-2">
-                <Shield className="w-5 h-5 text-blue-900" />
+            {/* Trust indicators - Responsive Layout */}
+            <div className="flex flex-col flex-wrap justify-center gap-4 text-xs text-black sm:flex-row sm:gap-6 lg:gap-8 sm:text-sm">
+              <div className="flex items-center justify-center gap-2">
+                <Shield className="flex-shrink-0 w-4 h-4 text-blue-900 sm:w-5 sm:h-5" />
                 <span>SOC 2 Certified</span>
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5 text-blue-900" />
+              <div className="flex items-center justify-center gap-2">
+                <CheckCircle className="flex-shrink-0 w-4 h-4 text-blue-900 sm:w-5 sm:h-5" />
                 <span>99.9% Uptime SLA</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Award className="w-5 h-5 text-blue-900" />
+              <div className="flex items-center justify-center gap-2">
+                <Award className="flex-shrink-0 w-4 h-4 text-blue-900 sm:w-5 sm:h-5" />
                 <span>Success Guarantee</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-5 h-5 text-blue-900" />
+              <div className="flex items-center justify-center gap-2">
+                <Clock className="flex-shrink-0 w-4 h-4 text-blue-900 sm:w-5 sm:h-5" />
                 <span>6-Week Deployment</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Optional: Trusted by logos */}
-        <div className="flex flex-wrap justify-center gap-8 mt-12 opacity-70">
-          <img src="/logos/bank1.png" alt="Bank 1" className="h-8" />
-          <img src="/logos/bank2.png" alt="Bank 2" className="h-8" />
-          <img src="/logos/bank3.png" alt="Bank 3" className="h-8" />
+        {/* Optional: Trusted by logos - Hidden on very small screens */}
+        <div className="flex-wrap justify-center hidden gap-6 mt-8 sm:flex sm:gap-8 sm:mt-12 opacity-70">
+          <div className="w-20 h-8 bg-gray-200 rounded"></div>
+          <div className="w-20 h-8 bg-gray-200 rounded"></div>
+          <div className="w-20 h-8 bg-gray-200 rounded"></div>
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database, GitBranch, Workflow, Search, CheckSquare, AlertTriangle, Activity, Layers } from 'lucide-react';
 import AutomationVideo from "../../../videos/AgentHandover.mov"
 import { HashLink } from 'react-router-hash-link';
+import { useNavigate } from 'react-router-dom';
 
 // Animation variants
 const fadeInUp = {
@@ -41,6 +42,7 @@ const AgenticWorkflowsPage = ({onOpenChatbot}) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [activeDemo, setActiveDemo] = useState(0);
+  const navigate = useNavigate();
 
    // Add click handler for the demo button
   const handleTryDemo = (e) => {
@@ -138,6 +140,10 @@ const AgenticWorkflowsPage = ({onOpenChatbot}) => {
     { week: "Week 3", title: "Approvals + UAT", desc: "Add human gates, user acceptance testing" },
     { week: "Week 4", title: "Launch + Hypercare", desc: "Go live with monitoring and support" }
   ];
+ 
+  const handle4WeekPilotBtn = () => {
+    navigate("/pilot")
+  } 
 
   return (
     <div className="min-h-screen bg-white">
@@ -1182,6 +1188,7 @@ const AgenticWorkflowsPage = ({onOpenChatbot}) => {
               className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-white transition-all duration-300 bg-blue-900 shadow-lg rounded-xl hover:bg-blue-800 hover:shadow-xl"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.98 }}
+              onClick={handle4WeekPilotBtn}
             >
               <Zap className="w-5 h-5" />
               Start a 4-week pilot

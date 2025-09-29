@@ -22,7 +22,7 @@ const SectionHeading: React.FC<SectionHeadingProps> = ({ title, subtitle, subtit
       transition={{ duration: 0.5 }}
       className="mb-12 text-center"
     >
-      <h2 className="inline-block section-title gradient-text">{title}</h2>
+      <h2 className="inline-block text-4xl text-blue-900 section-title">{title}</h2>
      {subtitle && (
   <p
     className={`section-subtitle ${subtitleClassName} leading-relaxed text-base text-gray-600 mt-4 whitespace-normal`}

@@ -46,39 +46,39 @@ const cardVariants = {
 // Expanded icon mapping with more specific and varied icons
 const featureIcons = {
   // AI/ML icons
-  automation: <FaRobot className="text-blue-500 w-5 h-5" />,
-  intelligent: <FaBrain className="text-purple-500 w-5 h-5" />,
-  analytics: <FaChartBar className="text-green-500 w-5 h-5" />,
-  chatbot: <FaComments className="text-pink-500 w-5 h-5" />,
-  language: <FaLanguage className="text-red-500 w-5 h-5" />,
-  search: <FaSearch className="text-yellow-500 w-5 h-5" />,
-  custom: <FaCogs className="text-indigo-500 w-5 h-5" />,
-  insights: <FaLightbulb className="text-orange-500 w-5 h-5" />,
-  code: <FaCode className="text-teal-500 w-5 h-5" />,
-  cloud: <FaCloud className="text-cyan-500 w-5 h-5" />,
+  automation: <FaRobot className="w-5 h-5 text-blue-500" />,
+  intelligent: <FaBrain className="w-5 h-5 text-purple-500" />,
+  analytics: <FaChartBar className="w-5 h-5 text-green-500" />,
+  chatbot: <FaComments className="w-5 h-5 text-pink-500" />,
+  language: <FaLanguage className="w-5 h-5 text-red-500" />,
+  search: <FaSearch className="w-5 h-5 text-yellow-500" />,
+  custom: <FaCogs className="w-5 h-5 text-indigo-500" />,
+  insights: <FaLightbulb className="w-5 h-5 text-orange-500" />,
+  code: <FaCode className="w-5 h-5 text-teal-500" />,
+  cloud: <FaCloud className="w-5 h-5 text-cyan-500" />,
   
   // New specific icons
-  email: <FaEnvelope className="text-blue-400 w-5 h-5" />,
-  mobile: <FaMobile className="text-green-400 w-5 h-5" />,
-  security: <FaShieldAlt className="text-red-400 w-5 h-5" />,
-  database: <FaDatabase className="text-purple-400 w-5 h-5" />,
-  professional: <FaUserTie className="text-indigo-400 w-5 h-5" />,
-  ecommerce: <FaShoppingCart className="text-amber-500 w-5 h-5" />,
-  image: <FaCamera className="text-pink-400 w-5 h-5" />,
-  video: <FaVideo className="text-rose-500 w-5 h-5" />,
-  support: <FaHeadset className="text-emerald-500 w-5 h-5" />,
-  design: <FaPalette className="text-fuchsia-500 w-5 h-5" />,
-  document: <FaFileAlt className="text-slate-500 w-5 h-5" />,
-  network: <FaNetworkWired className="text-lime-500 w-5 h-5" />,
-  privacy: <FaLock className="text-violet-500 w-5 h-5" />,
-  fast: <FaRocket className="text-orange-400 w-5 h-5" />,
-  global: <FaGlobe className="text-sky-500 w-5 h-5" />,
-  trends: <FaChartLine className="text-emerald-400 w-5 h-5" />,
-  integration: <FaSync className="text-cyan-400 w-5 h-5" />,
-  notification: <FaBell className="text-yellow-400 w-5 h-5" />,
-  authentication: <FaKey className="text-amber-600 w-5 h-5" />,
+  email: <FaEnvelope className="w-5 h-5 text-blue-400" />,
+  mobile: <FaMobile className="w-5 h-5 text-green-400" />,
+  security: <FaShieldAlt className="w-5 h-5 text-red-400" />,
+  database: <FaDatabase className="w-5 h-5 text-purple-400" />,
+  professional: <FaUserTie className="w-5 h-5 text-indigo-400" />,
+  ecommerce: <FaShoppingCart className="w-5 h-5 text-amber-500" />,
+  image: <FaCamera className="w-5 h-5 text-pink-400" />,
+  video: <FaVideo className="w-5 h-5 text-rose-500" />,
+  support: <FaHeadset className="w-5 h-5 text-emerald-500" />,
+  design: <FaPalette className="w-5 h-5 text-fuchsia-500" />,
+  document: <FaFileAlt className="w-5 h-5 text-slate-500" />,
+  network: <FaNetworkWired className="w-5 h-5 text-lime-500" />,
+  privacy: <FaLock className="w-5 h-5 text-violet-500" />,
+  fast: <FaRocket className="w-5 h-5 text-orange-400" />,
+  global: <FaGlobe className="w-5 h-5 text-sky-500" />,
+  trends: <FaChartLine className="w-5 h-5 text-emerald-400" />,
+  integration: <FaSync className="w-5 h-5 text-cyan-400" />,
+  notification: <FaBell className="w-5 h-5 text-yellow-400" />,
+  authentication: <FaKey className="w-5 h-5 text-amber-600" />,
   
-  default: <FaCogs className="text-gray-400 w-5 h-5" />,
+  default: <FaCogs className="w-5 h-5 text-gray-400" />,
 };
 
 // Helper to pick icon based on feature
@@ -219,31 +219,31 @@ const Services = () => {
                   tabIndex={-1}
                   aria-hidden="true"
                 />
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 transition-opacity duration-500 opacity-0 bg-gradient-to-br from-blue-50/50 to-transparent group-hover:opacity-100" />
                 
                 <div className="flex items-center gap-3 mb-4">
                   {React.cloneElement(service.icon, {
-                    className: 'w-8 h-8 text-blue-600',
+                    className: 'w-8 h-8 text-blue-900',
                   })}
-                  <h3 className="text-lg font-bold leading-tight text-blue-900 group-hover:text-blue-700 transition-colors duration-300">
+                  <h3 className="text-lg font-bold leading-tight text-blue-900 transition-colors duration-300 group-hover:text-blue-700">
                     {service.title}
                   </h3>
                 </div>
 
-                <p className="mb-4 text-sm text-blue-700/80 leading-relaxed">{service.description}</p>
+                <p className="mb-4 text-sm leading-relaxed text-black">{service.description}</p>
 
                 {/* Features with updated icons */}
-                <div className="mb-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 gap-3 mb-4 sm:grid-cols-2">
                   {service.features.map((feature, i) => (
-                    <div key={i} className="flex items-center gap-3 bg-blue-50/30 p-2 rounded-lg">
+                    <div key={i} className="flex items-center gap-3 p-2 rounded-lg bg-blue-50/30">
                       {getIconForFeature(feature)}
-                      <span className="text-sm text-blue-800 font-medium">{truncateFeature(feature)}</span>
+                      <span className="text-sm font-medium text-blue-900">{truncateFeature(feature)}</span>
                     </div>
                   ))}
                 </div>
 
                 <div className="mt-auto">
-                  <span className="inline-flex items-center gap-2 font-medium text-blue-600 transition-all cursor-pointer hover:text-blue-800 group-hover:translate-x-1">
+                  <span className="inline-flex items-center gap-2 font-medium text-blue-900 transition-all cursor-pointer hover:text-blue-500 group-hover:translate-x-1">
                     Discover More
                     <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </span>

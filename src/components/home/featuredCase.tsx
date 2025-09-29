@@ -48,7 +48,7 @@ const AIServicesCards = () => {
                       2xl:max-w-[1600px]">
         {/* Header */}
         <div className="mb-8 text-center sm:mb-12 lg:mb-16 xl:mb-20 2xl:mb-24">
-          <h1 className="mb-3 text-2xl font-bold text-blue-900 sm:text-3xl sm:mb-4 md:text-4xl lg:text-5xl lg:mb-6 xl:text-6xl xl:mb-8 2xl:text-7xl 2xl:mb-10">
+          <h1 className="mb-3 text-2xl font-bold text-blue-900 sm:text-3xl sm:mb-4 md:text-3xl lg:text-4xl lg:mb-6 xl:text-5xl xl:mb-8 2xl:text-6xl 2xl:mb-10">
             Use Cases
           </h1>
           <p className="max-w-2xl mx-auto text-base text-black sm:text-lg sm:max-w-3xl md:text-xl lg:text-2xl lg:max-w-4xl xl:text-2xl xl:max-w-5xl 2xl:text-3xl 2xl:max-w-6xl">

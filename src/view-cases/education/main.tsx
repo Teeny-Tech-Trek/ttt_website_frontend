@@ -1089,10 +1089,18 @@ const LightCTA: React.FC = () => {
               <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
             </HashLink>
             
-            <button className="flex items-center justify-center px-10 py-4 text-lg font-semibold text-blue-900 transition-colors border-2 border-blue-900 rounded-lg hover:bg-blue-900 hover:text-white">
+            {/* <button className="flex items-center justify-center px-10 py-4 text-lg font-semibold text-blue-900 transition-colors border-2 border-blue-900 rounded-lg hover:bg-blue-900 hover:text-white">
               <Presentation className="w-5 h-5 mr-2" />
               Schedule Workshop
-            </button>
+            </button> */}
+            <HashLink 
+              smooth 
+              to="/#pricing"
+              className="flex items-center justify-center px-8 py-4 font-semibold text-blue-900 transition-colors bg-white border border-blue-900 rounded-lg hover:border-2 group"
+            >
+              <Presentation className="w-5 h-5 mr-2" />
+              Schedule Workshop
+            </HashLink>
           </motion.div>
 
           {/* Feature Pills */}
