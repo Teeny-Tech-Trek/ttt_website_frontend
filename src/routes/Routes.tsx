@@ -32,6 +32,8 @@ import AgenticWorkflowsPage from '../pages/public/services/AgenticWorkflowsPage'
 import ProcessAutomationPage from '../pages/public/services/ProcessAutomationPage';
 import AiAppsPage from '../pages/public/services/AiAppsPage';
 import Pilot from '../pages/Pilot';
+import { BlogSection } from '../components/home/BlogSection';
+import { blogPosts } from "../data/BlogData"
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -67,6 +69,7 @@ const AppRoutes = ({ onOpenChatbot }) => (
       <Route path="/real-estate" element={<RealEstateIndex onOpenChatbot={onOpenChatbot}/>} />
       <Route path="/logistics" element={<ManufacturingLogisticsIndex />} />
       <Route path="/education" element={<EducationIndex />} />
+      <Route path="/blogs" element={<BlogSection blogPosts={blogPosts} />} />
       <Route path="/hospitality" element={<HospitalityIndex />} />
       <Route path="/aeo-geo" element={<AEOIndex onOpenChatbot={onOpenChatbot} />} />
       <Route path="/techtrekkers.ai" element={<TechTrekkerAi />} />

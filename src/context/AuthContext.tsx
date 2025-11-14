@@ -299,7 +299,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setAuthModalMode(mode);
     setIsAuthModalOpen(true);
   };
-  const closeAuthModal = () => setIsAuthModalOpen(false);
+  const closeAuthModal = () => setIsAuthModalOpen(false); 
 
   // ✅ On app start: restore session or refresh
   useEffect(() => {
@@ -312,7 +312,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setAccessToken(storedToken);
           setUser(JSON.parse(userStr));
           setLoading(false);
-          return;
+          return; 
         }
       } catch {}
     }
