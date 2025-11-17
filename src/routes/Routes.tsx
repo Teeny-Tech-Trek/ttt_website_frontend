@@ -33,7 +33,7 @@ import ProcessAutomationPage from '../pages/public/services/ProcessAutomationPag
 import AiAppsPage from '../pages/public/services/AiAppsPage';
 import Pilot from '../pages/Pilot';
 import { BlogSection } from '../components/home/BlogSection';
-import { blogPosts } from "../data/BlogData"
+import { blogPosts } from "../data/blogData"
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
