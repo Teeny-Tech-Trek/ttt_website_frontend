@@ -39,7 +39,7 @@ const Hero = ({ onOpenChatbot }) => {
   ];
 
   const stats = [
-    { value: '500+', label: 'Enterprises Served' },
+    { value: '5+', label: 'Enterprises Served' },
     { value: '99.9%', label: 'Uptime Guarantee' },
     { value: '85%', label: 'Avg. Efficiency Gain' },
     { value: '24/7', label: 'Expert Support' }

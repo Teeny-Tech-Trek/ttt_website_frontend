@@ -197,6 +197,10 @@ const AiAppsPage = () => {
               >
               <div className="flex flex-row items-center justify-center gap-4">
               <motion.button 
+              onClick={() => {document.getElementById('examples-modules')?.scrollIntoView({
+                behavior : 'smooth',
+                block : 'start'
+              })}}
                 className="flex items-center justify-center w-auto gap-3 px-10 py-5 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-2xl hover:bg-blue-800"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
@@ -491,12 +495,14 @@ const AiAppsPage = () => {
             Stripe for paid tiers with feature flags and usage limits.
           </p>
         </div>
-      </motion.div>
-    </motion.div>
-  </div>
-</section>
+       </motion.div>
+     </motion.div>
+   </div>
+  </section>
       {/* Example Modules */}
-     <section className="py-20 bg-gray-50">
+     <section
+     id='examples-modules'
+      className="py-20 bg-gray-50">
   <div className="px-6 mx-auto max-w-7xl">
     <motion.div 
       className="mb-16 text-center"

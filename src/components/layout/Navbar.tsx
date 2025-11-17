@@ -397,14 +397,20 @@ const Navbar = () => {
                           exit={{ opacity: 0, y: -10 }}
                           transition={{ duration: 0.15 }}
                         >
-                          {link.subLinks.map((sub) => (
-                            <MotionLink
+                         {link.subLinks.map((sub) => (
+                            <div
                               key={sub.key}
-                              to={sub.href}
                               className="block px-3 py-2 text-xs text-gray-700 transition-colors cursor-pointer xl:px-4 xl:py-3 xl:text-sm hover:bg-gray-100 hover:text-blue-600 group/item"
-                              whileHover={{ x: 4 }}
                               onClick={() => {
                                 setOpenDropdown(null);
+
+                                if (sub.key === "techtrekkers") {
+                                  // OPEN IN NEW TAB ⭐⭐
+                                  window.open("https://techtrekkers.ai", "_blank");
+                                  return;
+                                }
+
+                                // DEFAULT BEHAVIOR FOR OTHER LINKS
                                 navigate(sub.href);
                                 setActiveSection(link.hash || `#${link.key}`);
                               }}
@@ -413,8 +419,9 @@ const Navbar = () => {
                                 <span className="w-1 xl:w-1.5 h-1 xl:h-1.5 bg-blue-600 rounded-full mr-2 xl:mr-3 opacity-0 group-hover/item:opacity-100 transition-opacity duration-300" />
                                 {sub.name}
                               </div>
-                            </MotionLink>
+                            </div>
                           ))}
+
                         </motion.div>
                       )}
                     </AnimatePresence>
