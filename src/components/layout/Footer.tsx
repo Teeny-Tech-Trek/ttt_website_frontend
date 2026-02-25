@@ -193,7 +193,7 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-[#3b82f6] mt-1 flex-shrink-0" />
                 <span className="text-[#93c5fd] text-sm">
-                  C-201, 2nd Floor, Sebiz Square Building, Plot No. C-6, Sector-67, Mohali, SAS Nagar - 160062, Punjab, India
+                 2nd Floor, Kalkat Bhawan, Sector 66B, Block C, Gmada Aerocity, Sahibzada Ajit Singh Nagar, Chachu Majra, Punjab 140306
                 </span>
               </li>
             </ul>
