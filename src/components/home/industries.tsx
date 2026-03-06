@@ -230,7 +230,7 @@ const Industries = () => {
       )}
 
       {/* Custom styles for desktop animations */}
-      <style jsx>{`
+      <style>{`
         @keyframes scroll-dynamic {
           0% {
             transform: translateX(0);

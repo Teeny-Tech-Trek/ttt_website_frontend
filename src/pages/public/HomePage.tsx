@@ -1,4 +1,4 @@
-// src/pages/public/HomePage.tsx
+﻿// src/pages/public/HomePage.tsx
 import { useEffect } from 'react';
 import Particles from '../../components/ui/Particles';
 import Hero from '../../components/home/Hero';
@@ -14,7 +14,11 @@ import Industries from '../../components/home/industries';
 import AboutPage from '../../components/layout/AboutUs';
 import AIServicesCards from '../../components/home/featuredCase';
 
-const HomePage = ({ onOpenChatbot }) => {
+interface HomePageProps {
+  onOpenChatbot?: () => void;
+}
+
+const HomePage = ({ onOpenChatbot }: HomePageProps) => {
   useEffect(() => {
     const handleScroll = () => {
       const sections = document.querySelectorAll('section[id]');
@@ -53,9 +57,9 @@ const HomePage = ({ onOpenChatbot }) => {
   return (
     <main>
        <Helmet>
-        <title>Teeny Tech Trek – AI Automation for Lean Teams</title>
+        <title>Teeny Tech Trek - AI Automation for Lean Teams</title>
         <meta name="description" content="Build small, launch fast. Custom AI chatbots and automation tools for startups and solopreneurs." />
-        <meta property="og:title" content="Teeny Tech Trek – AI Automation for Lean Teams" />
+        <meta property="og:title" content="Teeny Tech Trek - AI Automation for Lean Teams" />
         <meta property="og:description" content="Scale smart with custom AI agents and automation tools tailored for lean product teams." />
         <meta property="og:image" content="https://www.teenytechtrek.com/og-image.jpg" />
         <meta property="og:url" content="https://www.teenytechtrek.com/" />
@@ -66,6 +70,7 @@ const HomePage = ({ onOpenChatbot }) => {
         {/* Pass the onOpenChatbot prop to Hero */}
         <Hero onOpenChatbot={onOpenChatbot} />
       </section>
+      <section id="login" className="h-0" aria-hidden="true" />
       <section id="services">
         <Services />
       </section>
@@ -85,6 +90,8 @@ const HomePage = ({ onOpenChatbot }) => {
          <section id="pricing">
         <Pricing />
       </section>
+      <section id="book-consultation" className="h-0" aria-hidden="true" />
+      <section id="blogs" className="h-0" aria-hidden="true" />
       
         {/* <section id="blogs">
         <Blogs />
@@ -92,7 +99,7 @@ const HomePage = ({ onOpenChatbot }) => {
       <section id="events">
         <Events />
       </section> */}
-      <section id="why-us">
+      <section id="faq">
         <WhyUs />
       </section>
    
@@ -104,3 +111,4 @@ const HomePage = ({ onOpenChatbot }) => {
 };
 
 export default HomePage;
+

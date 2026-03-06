@@ -43,12 +43,22 @@ cd teeny-tech-trek
 npm install
 ```
 
-3. Start the development server:
+3. Configure API base:
+```bash
+copy .env.example .env.local
+```
+
+Set:
+```env
+VITE_API_BASE_URL=http://localhost:5000
+```
+
+4. Start the development server:
 ```bash
 npm run dev
 ```
 
-4. Open [http://localhost:5173](http://localhost:5173) in your browser
+5. Open [http://localhost:5173](http://localhost:5173) in your browser
 
 ### Building for Production
 

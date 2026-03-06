@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Send, Mail, Phone, MapPin } from 'lucide-react';
@@ -93,7 +93,7 @@ const Contact = () => {
       icon: <MapPin size={20} className="text-[#3b82f6]" />,
       title: 'Location',
       value:
-        'C-201, 2nd Floor, Sebiz Square Building, Plot No. C-6, Sector-67, Mohali, SAS Nagar - 160062, Punjab, India',
+        '2nd Floor, Kalkat Bhawan, Sector 66B, Block C, Gmada Aerocity, Sahibzada Ajit Singh Nagar, Chachu Majra, Punjab 140306',
     },
   ];
 
@@ -408,3 +408,4 @@ const Contact = () => {
 };
 
 export default Contact;
+

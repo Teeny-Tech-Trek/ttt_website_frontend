@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { X, Send, Bot, User } from 'lucide-react';
 
 interface ChatbotModalProps {
@@ -6,12 +6,32 @@ interface ChatbotModalProps {
   onClose: () => void;
 }
 
+interface ButtonOption {
+  id: string;
+  label: string;
+  value: string;
+}
+
 interface Message {
+  id?: string;
   text: string;
+  fullText?: string;
   isUser: boolean;
   timestamp: Date;
-  type?: "text" | "service";
+  type?: 'text' | 'service';
   services?: { title: string; description: string; price?: string }[];
+  options?: ButtonOption[];
+  scrollTo?: string | null;
+  suggestedActions?: string[];
+}
+
+interface ChatApiResult {
+  reply: string;
+  short_message?: string | null;
+  full_message?: string | null;
+  scroll_to?: string | null;
+  suggested_actions?: string[] | null;
+  options?: ButtonOption[] | null;
 }
 
 const ServiceCard: React.FC<{ title: string; description: string; price?: string }> = ({ title, description, price }) => (
@@ -26,100 +46,248 @@ const ServiceCard: React.FC<{ title: string; description: string; price?: string
 );
 
 const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
+  const DEFAULT_API_BASE_URL = import.meta.env.DEV
+    ? 'http://localhost:5000'
+    : 'https://api.teenytechtrek.com';
+  const API_BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL || DEFAULT_API_BASE_URL;
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const chatContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const sessionIdRef = useRef<string>('');
+
+  const createId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
+  const getSessionId = () => {
+    if (sessionIdRef.current) return sessionIdRef.current;
+    const storageKey = 'ttt_chat_session_id';
+    const existing = localStorage.getItem(storageKey);
+    if (existing) {
+      sessionIdRef.current = existing;
+      return existing;
+    }
+    const newId = `web-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    localStorage.setItem(storageKey, newId);
+    sessionIdRef.current = newId;
+    return newId;
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // 🟢 Parse services out of backend reply text
   const parseServices = (reply: string) => {
-    const regex = /\d+\.\s\*\*(.*?)\*\*:\s(.*?)(?:starts at\s\*\*(.*?)\*\*)/gs;
-    const matches = [...reply.matchAll(regex)];
-    return matches.map(m => ({
+    const regex = /\d+\.\s\*\*(.*?)\*\*:\s([\s\S]*?)(?:starts at\s\*\*(.*?)\*\*)/g;
+    const matches = Array.from(reply.matchAll(regex));
+    return matches.map((m) => ({
       title: m[1].trim(),
       description: m[2].trim(),
-      price: m[3]?.trim()
+      price: m[3]?.trim(),
     }));
   };
 
-  // Fetch intro message from backend
+  const scrollToSection = (sectionId?: string | null) => {
+    if (!sectionId) return;
+    const normalized = sectionId.trim().toLowerCase().replace(/^#/, '');
+    const target = document.getElementById(normalized);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   const fetchIntroMessage = async () => {
     try {
-      const res = await fetch("https://api.teenytechtrek.com/api/chatbot/intro");
+      const res = await fetch(`${API_BASE_URL}/api/chatbot/intro`);
       const data = await res.json();
-      setMessages([{
-        text: data.message || "Hello! I'm your AI assistant.",
-        isUser: false,
-        timestamp: new Date(),
-        type: "text"
-      }]);
+      setMessages([
+        {
+          id: createId(),
+          text: data.message || "Hello! I'm your AI assistant.",
+          isUser: false,
+          timestamp: new Date(),
+          type: 'text',
+        },
+      ]);
     } catch (error) {
-      console.error("Intro API Error:", error);
-      setMessages([{
-        text: "Hello! I'm your AI assistant. How can I help you today?",
-        isUser: false,
-        timestamp: new Date(),
-        type: "text"
-      }]);
+      console.error('Intro API Error:', error);
+      setMessages([
+        {
+          id: createId(),
+          text: "Hello! I'm your AI assistant. How can I help you today?",
+          isUser: false,
+          timestamp: new Date(),
+          type: 'text',
+        },
+      ]);
     }
   };
 
-  // Send message to chat API
-  const sendMessageToAPI = async (userMessage: string) => {
+  const sendMessageToAPI = async (
+    payload: { message: string; type: 'text' | 'button' },
+    onPartial: (text: string, done: boolean) => void
+  ): Promise<ChatApiResult> => {
     try {
-      setIsTyping(true);
-
-      const response = await fetch("https://api.teenytechtrek.com/api/chatbot/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage }),
+      const response = await fetch(`${API_BASE_URL}/api/chatbot/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: payload.message,
+          type: payload.type,
+          session_id: getSessionId(),
+          stream: true,
+        }),
       });
 
-      if (!response.ok) throw new Error("API request failed");
+      if (!response.ok) throw new Error('API request failed');
+      const contentType = response.headers.get('content-type') || '';
+
+      if (contentType.includes('text/event-stream') && response.body) {
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        let combined = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+          const events = buffer.split('\n\n');
+          buffer = events.pop() || '';
+
+          for (const evt of events) {
+            const line = evt.split('\n').find((l) => l.startsWith('data:'));
+            if (!line) continue;
+            const rawPayload = line.slice(5).trim();
+            if (!rawPayload) continue;
+
+            try {
+              const parsed = JSON.parse(rawPayload);
+              if (parsed.token) {
+                combined += parsed.token;
+                onPartial(combined, false);
+              }
+              if (parsed.done && parsed.final) {
+                const finalText = parsed.final.short_message || parsed.final.message || parsed.final.reply || combined;
+                onPartial(finalText, true);
+                return {
+                  reply: finalText,
+                  short_message: parsed.final.short_message || null,
+                  full_message: parsed.final.full_message || null,
+                  scroll_to: parsed.final.scroll_to || null,
+                  suggested_actions: parsed.final.suggested_actions || null,
+                  options: parsed.final.options || null,
+                };
+              }
+            } catch (_error) {
+              // Ignore malformed partial events.
+            }
+          }
+        }
+
+        const finalFallback = combined || "Sorry, I'm having trouble connecting right now.";
+        onPartial(finalFallback, true);
+        return { reply: finalFallback, options: null };
+      }
 
       const data = await response.json();
-      return data; // Keep full object (with reply string)
+      const text = data.short_message || data.reply || data.message || "Sorry, I'm having trouble connecting right now.";
+      onPartial(text, true);
+      return {
+        reply: text,
+        short_message: data.short_message || null,
+        full_message: data.full_message || null,
+        scroll_to: data.scroll_to || null,
+        suggested_actions: data.suggested_actions || null,
+        options: data.options || null,
+      };
     } catch (error) {
-      console.error("Chat API Error:", error);
-      return { reply: "Sorry, I'm having trouble connecting right now." };
-    } finally {
-      setIsTyping(false);
+      console.error('Chat API Error:', error);
+      const fallback = "Sorry, I'm having trouble connecting right now.";
+      onPartial(fallback, true);
+      return { reply: fallback, options: null };
     }
   };
 
-  // Handle sending user message
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!message.trim()) return;
-
-    const newMessage: Message = { text: message, isUser: true, timestamp: new Date(), type: "text" };
-    setMessages(prev => [...prev, newMessage]);
-    setMessage('');
-
-    const aiResponse = await sendMessageToAPI(message);
-
-    // Try parsing services
-    const services = parseServices(aiResponse.reply || "");
-    const isService = services.length > 0;
-
-    setMessages(prev => [...prev, { 
-      text: aiResponse.reply, 
+  const runConversationTurn = async (
+    outboundText: string,
+    requestType: 'text' | 'button' = 'text',
+    visibleLabel?: string
+  ) => {
+    const assistantId = createId();
+    const userBubble: Message = {
+      id: createId(),
+      text: visibleLabel || outboundText,
+      isUser: true,
+      timestamp: new Date(),
+      type: 'text',
+    };
+    const assistantBubble: Message = {
+      id: assistantId,
+      text: '',
       isUser: false,
       timestamp: new Date(),
-      type: isService ? "service" : "text",
-      services
-    }]);
+      type: 'text',
+    };
+
+    setMessages((prev) => [...prev, userBubble, assistantBubble]);
+
+    setIsTyping(true);
+    const aiResponse = await sendMessageToAPI(
+      { message: outboundText, type: requestType },
+      (partialText, _done) => {
+        setMessages((prev) =>
+          prev.map((m) => (m.id === assistantId ? { ...m, text: partialText, timestamp: new Date() } : m))
+        );
+      }
+    );
+    setIsTyping(false);
+    scrollToSection(aiResponse.scroll_to);
+
+    const shortText = aiResponse.short_message || aiResponse.reply || '';
+    const services = parseServices(shortText);
+    const isService = services.length > 0;
+
+    setMessages((prev) =>
+      prev.map((m) =>
+        m.id === assistantId
+          ? {
+              ...m,
+              text: shortText,
+              fullText: aiResponse.full_message || undefined,
+              scrollTo: aiResponse.scroll_to || undefined,
+              suggestedActions: aiResponse.suggested_actions || undefined,
+              type: isService ? 'service' : 'text',
+              services,
+              options: aiResponse.options || undefined,
+            }
+          : m
+      )
+    );
   };
 
-  // On open → fetch intro from backend
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!message.trim() || isTyping) return;
+    const text = message;
+    setMessage('');
+    await runConversationTurn(text, 'text');
+  };
+
+  const handleOptionClick = async (opt: ButtonOption) => {
+    if (isTyping) return;
+    await runConversationTurn(opt.value, 'button', opt.label);
+  };
+
+  const handleSuggestionClick = async (action: string) => {
+    if (isTyping || !action.trim()) return;
+    await runConversationTurn(action, 'text', action);
+  };
+
   useEffect(() => {
     if (isOpen) {
+      getSessionId();
       inputRef.current?.focus();
       fetchIntroMessage();
     } else {
@@ -127,12 +295,10 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
-  // Scroll when messages update
   useEffect(() => {
     scrollToBottom();
   }, [messages, isTyping]);
 
-  // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -145,22 +311,16 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <>
-      {/* Overlay for mobile */}
-      {isOpen && (
-        <div 
-          className="fixed inset-0 z-[9998] bg-black/30 backdrop-blur-sm md:hidden"
-          onClick={onClose}
-        />
-      )}
-      
-      {/* Sidebar */}
-      <div className={`
+      {isOpen && <div className="fixed inset-0 z-[9998] bg-black/30 backdrop-blur-sm md:hidden" onClick={onClose} />}
+
+      <div
+        className={`
         fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-2xl z-[9999]
         transform transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : 'translate-x-full'}
         flex flex-col border-l border-gray-200
-      `}>
-        {/* Header */}
+      `}
+      >
         <div className="flex items-center justify-between p-4 text-white border-b bg-gradient-to-r from-indigo-600 to-purple-600">
           <div className="flex items-center space-x-3">
             <div className="p-2 rounded-full bg-white/20">
@@ -178,32 +338,23 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
                       <span className="delay-200 animate-bounce">.</span>
                     </span>
                   </span>
-                ) : 'Online • Ready to help'}
+                ) : (
+                  'Online • Ready to help'
+                )}
               </p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="p-2 text-white transition-all duration-200 rounded-full hover:bg-white/20"
-          >
+          <button onClick={onClose} className="p-2 text-white transition-all duration-200 rounded-full hover:bg-white/20">
             <X size={20} />
           </button>
         </div>
 
-        {/* Messages */}
-        <div 
-          ref={chatContainerRef}
-          className="flex-1 p-4 space-y-4 overflow-y-auto bg-gradient-to-b from-gray-50 to-gray-100 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
-        >
+        <div className="flex-1 p-4 space-y-4 overflow-y-auto bg-gradient-to-b from-gray-50 to-gray-100 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
           {messages.map((msg, index) => (
             <div key={index} className={`flex ${msg.isUser ? 'justify-end' : 'justify-start'} animate-fade-in`}>
-              {msg.type === "service" ? (
+              {msg.type === 'service' ? (
                 <div className="flex flex-col gap-3 max-w-[85%]">
-                  {/* Intro text */}
-                  <div className="p-3 text-sm bg-white border border-gray-200 rounded-lg text-gray-700 shadow-sm">
-                    {msg.text.split("\n\n")[0]}
-                  </div>
-                  {/* Service cards */}
+                  <div className="p-3 text-sm bg-white border border-gray-200 rounded-lg text-gray-700 shadow-sm">{msg.text.split('\n\n')[0]}</div>
                   <div className="grid gap-3">
                     {msg.services?.map((srv, i) => (
                       <ServiceCard key={i} title={srv.title} description={srv.description} price={srv.price} />
@@ -217,12 +368,47 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
                       <Bot size={14} className="text-white" />
                     </div>
                   )}
-                  <div className={`p-3 rounded-2xl text-sm ${
-                    msg.isUser 
-                      ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-br-none' 
-                      : 'bg-white text-gray-700 border border-gray-200 rounded-bl-none shadow-sm'
-                  }`}>
+                  <div
+                    className={`p-3 rounded-2xl text-sm ${
+                      msg.isUser
+                        ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-br-none'
+                        : 'bg-white text-gray-700 border border-gray-200 rounded-bl-none shadow-sm'
+                    }`}
+                  >
                     <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+                    {!msg.isUser && msg.options && msg.options.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {msg.options.map((opt) => (
+                          <button
+                            key={opt.id}
+                            type="button"
+                            onClick={() => handleOptionClick(opt)}
+                            disabled={isTyping}
+                            className="px-3 py-1.5 text-xs font-medium text-indigo-700 bg-indigo-100 rounded-full hover:bg-indigo-200 disabled:opacity-60"
+                          >
+                            {opt.label}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    {!msg.isUser && msg.suggestedActions && msg.suggestedActions.length > 0 && (
+                      <div className="mt-3">
+                        <p className="mb-1 text-xs font-semibold tracking-wide text-gray-500 uppercase">Suggested</p>
+                        <div className="flex flex-wrap gap-2">
+                          {msg.suggestedActions.map((action) => (
+                            <button
+                              key={`suggest-${action}`}
+                              type="button"
+                              onClick={() => handleSuggestionClick(action)}
+                              disabled={isTyping}
+                              className="px-3 py-1.5 text-xs font-medium text-sky-700 bg-sky-100 rounded-full hover:bg-sky-200 disabled:opacity-60"
+                            >
+                              {action}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                     <div className={`mt-2 text-xs ${msg.isUser ? 'text-blue-100' : 'text-gray-500'} flex justify-end`}>
                       {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </div>
@@ -236,7 +422,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
               )}
             </div>
           ))}
-          
+
           {isTyping && (
             <div className="flex justify-start animate-fade-in">
               <div className="flex max-w-[85%] gap-2">
@@ -253,11 +439,10 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
               </div>
             </div>
           )}
-          
+
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input */}
         <div className="p-3 bg-white border-t border-gray-200">
           <form onSubmit={handleSendMessage} className="flex gap-2">
             <input
@@ -287,3 +472,4 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
 };
 
 export default ChatbotModal;
+

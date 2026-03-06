@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ArrowUp, Mail, Phone, MapPin } from 'lucide-react';
 import { FaInstagram, FaLinkedinIn } from 'react-icons/fa';
@@ -193,7 +193,7 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-[#3b82f6] mt-1 flex-shrink-0" />
                 <span className="text-[#93c5fd] text-sm">
-                  C-201, 2nd Floor, Sebiz Square Building, Plot No. C-6, Sector-67, Mohali, SAS Nagar - 160062, Punjab, India
+                  2nd Floor, Kalkat Bhawan, Sector 66B, Block C, Gmada Aerocity, Sahibzada Ajit Singh Nagar, Chachu Majra, Punjab 140306
                 </span>
               </li>
             </ul>
@@ -233,7 +233,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-[#93c5fd]/20 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-[#93c5fd] text-xs">
-            © {new Date().getFullYear()} Teeny Tech Trek. All rights reserved.
+            Â© {new Date().getFullYear()} Teeny Tech Trek. All rights reserved.
           </p>
           <div className="flex gap-6 text-xs text-[#93c5fd]">
             <a href="/privacy" className="transition-colors duration-300 hover:text-white">
@@ -260,3 +260,4 @@ const Footer = () => {
 };
 
 export default Footer;
+

@@ -8,8 +8,6 @@ const clientId = "697107931082-n2q7us35lgortorjsb2sr74dn2pv51mf.apps.googleuserc
 
 import App from "./App";
 import "./index.css";
-import React from "react";
-import ChatbotButton from "./pages/ChatbotButton";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -22,8 +20,3 @@ createRoot(document.getElementById("root")!).render(
   </StrictMode>
 );
 
-createRoot(document.getElementById('chatbot-button-root')!).render(
-  <React.StrictMode>
-    <ChatbotButton />
-  </React.StrictMode>
-);

@@ -9,6 +9,10 @@ import Container from "../ui/Container";
 import SectionHeading from "../ui/SectionHeading";
 import AgenticWorkflowsImg from "../../Images/Extra Resources - Hero Page/WhatsApp Image 2025-09-22 at 10.31.55 PM.jpeg";
 
+const DEFAULT_API_BASE_URL = import.meta.env.DEV
+  ? "http://localhost:5000"
+  : "https://api.teenytechtrek.com";
+const API_BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL || DEFAULT_API_BASE_URL;
 
 const loadCalendly = (): Promise<boolean> => {
   return new Promise((resolve) => {
@@ -212,7 +216,7 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
 
   try {
     // 1️⃣ Create Razorpay order
-    const orderResponse = await fetch("https://api.teenytechtrek.com/consultations/create-order", {
+    const orderResponse = await fetch(`${API_BASE_URL}/consultations/create-order`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -250,7 +254,7 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
       // 3️⃣ Payment success handler
       handler: async (response: any) => {
         try {
-          const bookingRes = await fetch("https://api.teenytechtrek.com/consultations/create", {
+          const bookingRes = await fetch(`${API_BASE_URL}/consultations/create`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

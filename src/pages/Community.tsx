@@ -146,7 +146,10 @@ interface JoinCommunityForm {
   expertise: string;
 }
 
-const API_BASE_URL = 'https://api.teenytechtrek.com/api/community';
+const DEFAULT_API_BASE_URL = import.meta.env.DEV
+  ? "http://localhost:5000"
+  : "https://api.teenytechtrek.com";
+const API_BASE_URL = `${(import.meta as any).env?.VITE_API_BASE_URL || DEFAULT_API_BASE_URL}/api/community`;
 
 const formatTimeAgo = (dateString: string) => {
   const date = new Date(dateString);
@@ -2921,7 +2924,7 @@ const Community = () => {
         />
       )}
 
-      <style jsx>{`
+      <style>{`
         @keyframes pulse {
           0% { opacity: 0.6; transform: scale(1); }
           100% { opacity: 1; transform: scale(1.05); }

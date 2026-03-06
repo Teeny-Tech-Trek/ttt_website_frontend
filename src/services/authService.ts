@@ -1,8 +1,10 @@
-// services/authService.ts
 import axios from 'axios';
 
-// ✅ Use your live backend API
-const API_BASE = 'https://api.teenytechtrek.com/api';
+const DEFAULT_API_BASE_URL = import.meta.env.DEV
+  ? "http://localhost:5000"
+  : "https://api.teenytechtrek.com";
+const API_BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL || DEFAULT_API_BASE_URL;
+const API_BASE = `${API_BASE_URL}/api`;
 
 export const registerUser = async (username: string, email: string, password: string) => {
   const response = await axios.post(`${API_BASE}/auth/signup`, {
@@ -36,8 +38,3 @@ export const googleLogin = async (idToken: string) => {
   }
   return response.data;
 };
-
-// Optional: Forgot password can be enabled when backend route is ready
-// export const forgotPassword = async (username: string) => {
-//   throw new Error('Forgot password not implemented in backend yet');
-// };

@@ -8,7 +8,7 @@ import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 
 // Create a motion-enabled Link component
-const MotionLink = motion(Link);
+const MotionLink = motion.create(Link);
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -851,7 +851,6 @@ export default Navbar;
 // import toast from 'react-hot-toast';
 
 // // Create a motion-enabled Link component
-// const MotionLink = motion(Link);
 
 // const Navbar = () => {
 //   const [isMenuOpen, setIsMenuOpen] = useState(false);
