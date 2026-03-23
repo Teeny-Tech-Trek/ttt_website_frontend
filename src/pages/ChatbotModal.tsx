@@ -1,5 +1,7 @@
 ﻿import React, { useState, useEffect, useRef } from 'react';
 import { X, Send, Bot, User } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { discoverRouteRegistry, navigateFromSources } from '../utils/chatbotRouter';
 
 interface ChatbotModalProps {
   isOpen: boolean;
@@ -30,6 +32,8 @@ interface ChatApiResult {
   short_message?: string | null;
   full_message?: string | null;
   scroll_to?: string | null;
+  open_login_modal?: boolean | null;
+  buttons?: string[] | null;
   suggested_actions?: string[] | null;
   options?: ButtonOption[] | null;
 }
@@ -46,6 +50,7 @@ const ServiceCard: React.FC<{ title: string; description: string; price?: string
 );
 
 const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
+  const { openAuthModal } = useAuth();
   const DEFAULT_API_BASE_URL = import.meta.env.DEV
     ? 'http://localhost:5000'
     : 'https://api.teenytechtrek.com';
@@ -87,13 +92,21 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
     }));
   };
 
-  const scrollToSection = (sectionId?: string | null) => {
-    if (!sectionId) return;
-    const normalized = sectionId.trim().toLowerCase().replace(/^#/, '');
-    const target = document.getElementById(normalized);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+  const normalizeOptions = (options?: ButtonOption[] | null, buttons?: string[] | null): ButtonOption[] | null => {
+    if (options && options.length > 0) return options;
+    if (!buttons || buttons.length === 0) return null;
+    return buttons.map((label) => {
+      const low = label.trim().toLowerCase();
+      let value = label;
+      if (low === 'back to main menu') value = 'menu';
+      if (low === 'learn more') value = 'learn_more';
+      if (low === 'contact information') value = 'contact';
+      return {
+        id: low.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'btn',
+        label,
+        value,
+      };
+    });
   };
 
   const fetchIntroMessage = async () => {
@@ -136,6 +149,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
           type: payload.type,
           session_id: getSessionId(),
           stream: true,
+          route_registry: discoverRouteRegistry(),
         }),
       });
 
@@ -176,8 +190,10 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
                   short_message: parsed.final.short_message || null,
                   full_message: parsed.final.full_message || null,
                   scroll_to: parsed.final.scroll_to || null,
+                  open_login_modal: parsed.final.open_login_modal || false,
+                  buttons: parsed.final.buttons || null,
                   suggested_actions: parsed.final.suggested_actions || null,
-                  options: parsed.final.options || null,
+                  options: normalizeOptions(parsed.final.options || null, parsed.final.buttons || null),
                 };
               }
             } catch (_error) {
@@ -199,8 +215,10 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
         short_message: data.short_message || null,
         full_message: data.full_message || null,
         scroll_to: data.scroll_to || null,
+        open_login_modal: data.open_login_modal || false,
+        buttons: data.buttons || null,
         suggested_actions: data.suggested_actions || null,
-        options: data.options || null,
+        options: normalizeOptions(data.options || null, data.buttons || null),
       };
     } catch (error) {
       console.error('Chat API Error:', error);
@@ -243,7 +261,17 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
       }
     );
     setIsTyping(false);
-    scrollToSection(aiResponse.scroll_to);
+    const routeRegistry = discoverRouteRegistry();
+    if (aiResponse.open_login_modal) {
+      openAuthModal('login');
+    } else {
+      navigateFromSources({
+        scrollTo: aiResponse.scroll_to || null,
+        buttonValue: requestType === 'button' ? outboundText : null,
+        keywordText: requestType === 'text' ? outboundText : null,
+        routeRegistry,
+      });
+    }
 
     const shortText = aiResponse.short_message || aiResponse.reply || '';
     const services = parseServices(shortText);
@@ -472,4 +500,10 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
 };
 
 export default ChatbotModal;
+
+
+
+
+
+
 

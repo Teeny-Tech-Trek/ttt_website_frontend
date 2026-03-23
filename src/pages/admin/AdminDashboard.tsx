@@ -72,7 +72,7 @@ const AdminDashboard: React.FC = () => {
                 </div>
                 <div className="hidden md:block">
                   <p className="text-sm font-medium text-gray-900">
-                    {user?.sub || "Admin"}
+                    {user?.username || "Admin"}
                   </p>
                   <p className="text-xs text-gray-500">
                     {user?.role || "admin"}

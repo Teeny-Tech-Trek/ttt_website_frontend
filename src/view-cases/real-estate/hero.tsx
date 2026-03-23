@@ -75,8 +75,12 @@ const staggerContainer = {
   }
 };
 
+type ChatbotOpenProps = {
+  onOpenChatbot?: () => void;
+};
+
 // Hero Section - Ultra Responsive with Fixed Spacing
-const Hero: React.FC = ({onOpenChatbot}) => {
+const Hero: React.FC<ChatbotOpenProps> = ({onOpenChatbot}) => {
   const handleTryDemo = (e) => {
   e.preventDefault();
   e.stopPropagation();
@@ -438,7 +442,7 @@ const LightCTA = () => {
 };
 
 // Main Index - Ultra Responsive
-const RealEstateIndex = ({onOpenChatbot}) => {
+const RealEstateIndex: React.FC<ChatbotOpenProps> = ({onOpenChatbot}) => {
   return (
     <div className="min-h-screen bg-white">
       <Hero onOpenChatbot={onOpenChatbot}/>

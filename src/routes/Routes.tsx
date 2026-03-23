@@ -46,7 +46,11 @@ const ScrollToTop = () => {
 };
 
 // Accept onOpenChatbot prop and pass it to components that need it
-const AppRoutes = ({ onOpenChatbot }) => (
+type AppRoutesProps = {
+  onOpenChatbot?: () => void;
+};
+
+const AppRoutes: React.FC<AppRoutesProps> = ({ onOpenChatbot }) => (
   <>
     <ScrollToTop />
 
@@ -85,7 +89,7 @@ const AppRoutes = ({ onOpenChatbot }) => (
       <Route path="/services/ai-chatbots" element={<ChatbotsPage onOpenChatbot={onOpenChatbot} />} />
       <Route path="/services/agentic-ai-workflows" element={<AgenticWorkflowsPage  onOpenChatbot={onOpenChatbot}/>} />
       <Route path="/services/smart-process-automation" element={<ProcessAutomationPage onOpenChatbot={onOpenChatbot}/>} />
-      <Route path="/services/ai-apps-micro-saas" element={<AiAppsPage onOpenChatbot={onOpenChatbot}/>} />
+      <Route path="/services/ai-apps-micro-saas" element={<AiAppsPage />} />
 
       {/* Admin (protected) */}
       <Route

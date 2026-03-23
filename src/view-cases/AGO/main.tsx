@@ -45,8 +45,12 @@ const staggerContainer = {
   visible: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.1 } }
 };
 
+type ChatbotOpenProps = {
+  onOpenChatbot?: () => void;
+};
+
 // Hero Section
-const Hero: React.FC = ({ onOpenChatbot }) => {
+const Hero: React.FC<ChatbotOpenProps> = ({ onOpenChatbot }) => {
 
   const handleTryDemo = (e) => {
   e.preventDefault();
@@ -369,7 +373,7 @@ const CTA: React.FC = () => {
 };
 
 // Main Index
-const AEOIndex: React.FC = ({ onOpenChatbot }) => {
+const AEOIndex: React.FC<ChatbotOpenProps> = ({ onOpenChatbot }) => {
   return (
     <div className="min-h-screen bg-white">
       <Hero  onOpenChatbot={ onOpenChatbot } />

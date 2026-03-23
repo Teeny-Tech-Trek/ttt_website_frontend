@@ -48,7 +48,7 @@ export default function CreateEventPage() {
     try {
       // 1) Create the event with default status = "draft"
       const payload: EventInput = {
-        created_by: user.sub,
+        created_by: user.id,
         title: title.trim(),
         slug: slug.trim(),
         description: description.trim(),

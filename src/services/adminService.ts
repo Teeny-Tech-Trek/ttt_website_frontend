@@ -12,6 +12,7 @@ export interface DashboardStats {
 
 export interface User {
   _id: string;
+  sub?: string;
   username: string;
   email: string;
   role: string;

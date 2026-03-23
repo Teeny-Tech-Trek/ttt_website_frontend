@@ -54,7 +54,7 @@ export default function BlogSingleView() {
     async function fetchBySlug() {
       try {
         setLoading(true);
-        const results = await searchBlogs({ field: "slug", value: slug });
+        const results = await searchBlogs({ field: "slug", value: slug ?? "" });
         if (isMounted && results.length > 0) {
           setBlog(results[0]);
         } else if (isMounted) {

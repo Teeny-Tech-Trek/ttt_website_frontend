@@ -38,3 +38,13 @@ export const googleLogin = async (idToken: string) => {
   }
   return response.data;
 };
+
+export const forgotPassword = async (identifier: string) => {
+  const response = await axios.post(`${API_BASE}/auth/forgot-password`, {
+    identifier,
+  });
+  if (!response.data.success) {
+    throw new Error(response.data.message || 'Forgot password request failed');
+  }
+  return response.data;
+};

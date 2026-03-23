@@ -55,7 +55,7 @@ export default function CreateBlogPage() {
 
       // ADD/CHANGE: Build payload, append media_cid if present
       const payload: BlogInput & { media_cid?: string } = {
-        author_id: user.sub,
+        author_id: user.id,
         title: title.trim(),
         slug: slug.trim(),
         content: content.trim(),

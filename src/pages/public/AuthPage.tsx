@@ -41,11 +41,19 @@
       try {
         if (isForgot) {
           const res = await forgotPassword(form.username);
-          toast.success(res.data.message || "Reset link sent!");
+          toast.success(res.message || "Reset link sent!");
           setIsForgot(false);
         } else if (isLogin) {
           const res = await loginUser(form.username, form.password);
-          login(res.data.accessToken);
+          const token = res.accessToken || "";
+          const userData = res.user || {
+            id: "",
+            username: form.username,
+            email: "",
+            provider: "local",
+            role: "user",
+          };
+          login(userData, token);
           toast.success("Login successful");
           navigate("/");
         } else {

@@ -64,7 +64,7 @@ const RazorpayCheckoutButton: React.FC<RazorpayCheckoutButtonProps> = ({
           }
         },
         prefill: {
-          user_id: user?.sub
+          user_id: user?.id
         },
         theme: { color: '#1976d2' }
         // You can add modal settings if you want, e.g., modal: { ondismiss: ... }
