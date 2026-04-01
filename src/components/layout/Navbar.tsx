@@ -6,6 +6,7 @@ import { HashLink as Link } from 'react-router-hash-link';
 import Container from '../ui/Container';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
+import logo from '../../assets/teeny-logo.svg';
 
 // Create a motion-enabled Link component
 const MotionLink = motion.create(Link);
@@ -292,7 +293,7 @@ const Navbar = () => {
             onClick={() => setActiveSection('#home')}
           >
             <motion.img 
-              src="/logo.svg" 
+              src={logo} 
               alt="Teeny Tech Trek Logo" 
               className="w-8 h-10 sm:w-10 sm:h-12 md:w-12 md:h-15 ml-[-8px] sm:ml-[-10px] md:ml-[-15px] flex-shrink-0" 
             />
@@ -1133,7 +1134,7 @@ export default Navbar;
 //             onClick={() => setActiveSection('#home')}
 //           >
 //             <motion.img 
-//               src="/logo.svg" 
+//               src={logo} 
 //               alt="Teeny Tech Trek Logo" 
 //               className="w-8 h-10 sm:w-10 sm:h-12 md:w-12 md:h-15 ml-[-8px] sm:ml-[-10px] md:ml-[-15px] flex-shrink-0" 
 //             />

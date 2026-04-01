@@ -560,6 +560,7 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
         </motion.div>
         
         <motion.div
+          id="faq"
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : { opacity: 0 }}
           className="mt-20"

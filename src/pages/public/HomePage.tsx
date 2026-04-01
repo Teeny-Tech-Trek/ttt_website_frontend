@@ -102,7 +102,7 @@ const HomePage = ({ onOpenChatbot }: HomePageProps) => {
       <section id="events">
         <Events />
       </section> */}
-      <section id="faq">
+      <section id="about-us">
         <WhyUs />
       </section>
    

@@ -69,7 +69,7 @@
 //           <div className="flex-shrink-0">
 //             <img
 //               className="h-8 w-8"
-//               src="/logo.svg"
+//               src={logo}
 //               alt="Teeny Tech Trek"
 //             />
 //           </div>
@@ -96,6 +96,7 @@ import {
   HomeIcon,
   X,
 } from 'lucide-react';
+import logo from '../../assets/teeny-logo.svg';
 
 interface AdminSidebarProps {
   onClose?: () => void;
@@ -148,7 +149,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ onClose }) => {
         <div className="flex items-center">
           <img
             className="h-8 w-8"
-            src="/logo.svg"
+            src={logo}
             alt="Teeny Tech Trek"
           />
           <div className="ml-3">

@@ -1,7 +1,13 @@
 ﻿import React, { useState, useEffect, useRef } from 'react';
 import { X, Send, Bot, User } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { discoverRouteRegistry, navigateFromSources } from '../utils/chatbotRouter';
+import {
+  discoverRouteRegistry,
+  getLearnMoreTarget,
+  inferLearnMoreIntent,
+  navigateToRoute,
+} from '../utils/chatbotRouter';
 
 interface ChatbotModalProps {
   isOpen: boolean;
@@ -32,6 +38,7 @@ interface ChatApiResult {
   short_message?: string | null;
   full_message?: string | null;
   scroll_to?: string | null;
+  source?: string | null;
   open_login_modal?: boolean | null;
   buttons?: string[] | null;
   suggested_actions?: string[] | null;
@@ -51,6 +58,8 @@ const ServiceCard: React.FC<{ title: string; description: string; price?: string
 
 const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
   const { openAuthModal } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
   const DEFAULT_API_BASE_URL = import.meta.env.DEV
     ? 'http://localhost:5000'
     : 'https://api.teenytechtrek.com';
@@ -109,10 +118,56 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
     });
   };
 
+  const isWelcomeResponse = (text?: string, options?: ButtonOption[] | null): boolean => {
+    const labels = new Set((options || []).map((opt) => opt.label.trim().toLowerCase()));
+    if (
+      labels.has('explore ai services') &&
+      labels.has('industries we work with') &&
+      labels.has('pricing & consultation')
+    ) {
+      return true;
+    }
+    const normalizedText = (text || '').trim().toLowerCase();
+    return normalizedText.includes("what would you like to explore?");
+  };
+
+  const shouldKeepFlowOptions = (response: ChatApiResult): boolean =>
+    isWelcomeResponse(response.short_message || response.reply || '', response.options);
+
+  const ensureUiButtons = (options?: ButtonOption[] | null, learnMoreTarget?: string | null): ButtonOption[] => {
+    const normalized = [...(options || [])].map((opt) => {
+      if (learnMoreTarget && opt.label.trim().toLowerCase() === 'learn more') {
+        return { ...opt, value: `learn_more:${learnMoreTarget}` };
+      }
+      return opt;
+    });
+    const seen = new Set(normalized.map((opt) => opt.label.trim().toLowerCase()));
+
+    if (learnMoreTarget && !seen.has('learn more')) {
+      normalized.unshift({
+        id: 'learn-more',
+        label: 'Learn More',
+        value: `learn_more:${learnMoreTarget}`,
+      });
+      seen.add('learn more');
+    }
+
+    if (!seen.has('back to main menu')) {
+      normalized.push({
+        id: 'back-to-main-menu',
+        label: 'Back to Main Menu',
+        value: 'menu',
+      });
+    }
+
+    return normalized;
+  };
+
   const fetchIntroMessage = async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/api/chatbot/intro`);
       const data = await res.json();
+      const introOptions = normalizeOptions(data.options || null, data.buttons || null);
       setMessages([
         {
           id: createId(),
@@ -120,6 +175,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
           isUser: false,
           timestamp: new Date(),
           type: 'text',
+          options: introOptions || undefined,
         },
       ]);
     } catch (error) {
@@ -148,7 +204,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
           message: payload.message,
           type: payload.type,
           session_id: getSessionId(),
-          stream: true,
+          stream: false,
           route_registry: discoverRouteRegistry(),
         }),
       });
@@ -190,6 +246,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
                   short_message: parsed.final.short_message || null,
                   full_message: parsed.final.full_message || null,
                   scroll_to: parsed.final.scroll_to || null,
+                  source: parsed.final.source || null,
                   open_login_modal: parsed.final.open_login_modal || false,
                   buttons: parsed.final.buttons || null,
                   suggested_actions: parsed.final.suggested_actions || null,
@@ -215,6 +272,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
         short_message: data.short_message || null,
         full_message: data.full_message || null,
         scroll_to: data.scroll_to || null,
+        source: data.source || null,
         open_login_modal: data.open_login_modal || false,
         buttons: data.buttons || null,
         suggested_actions: data.suggested_actions || null,
@@ -233,7 +291,6 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
     requestType: 'text' | 'button' = 'text',
     visibleLabel?: string
   ) => {
-    const assistantId = createId();
     const userBubble: Message = {
       id: createId(),
       text: visibleLabel || outboundText,
@@ -241,58 +298,40 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
       timestamp: new Date(),
       type: 'text',
     };
-    const assistantBubble: Message = {
-      id: assistantId,
-      text: '',
-      isUser: false,
-      timestamp: new Date(),
-      type: 'text',
-    };
 
-    setMessages((prev) => [...prev, userBubble, assistantBubble]);
+    setMessages((prev) => [...prev, userBubble]);
 
     setIsTyping(true);
-    const aiResponse = await sendMessageToAPI(
-      { message: outboundText, type: requestType },
-      (partialText, _done) => {
-        setMessages((prev) =>
-          prev.map((m) => (m.id === assistantId ? { ...m, text: partialText, timestamp: new Date() } : m))
-        );
-      }
-    );
+    const aiResponse = await sendMessageToAPI({ message: outboundText, type: requestType }, () => {});
     setIsTyping(false);
-    const routeRegistry = discoverRouteRegistry();
     if (aiResponse.open_login_modal) {
       openAuthModal('login');
-    } else {
-      navigateFromSources({
-        scrollTo: aiResponse.scroll_to || null,
-        buttonValue: requestType === 'button' ? outboundText : null,
-        keywordText: requestType === 'text' ? outboundText : null,
-        routeRegistry,
-      });
     }
 
     const shortText = aiResponse.short_message || aiResponse.reply || '';
     const services = parseServices(shortText);
     const isService = services.length > 0;
+    const learnMoreIntent = inferLearnMoreIntent(visibleLabel || outboundText);
+    const learnMoreTarget = getLearnMoreTarget(learnMoreIntent);
+    const finalOptions = shouldKeepFlowOptions(aiResponse)
+      ? (aiResponse.options || undefined)
+      : ensureUiButtons(aiResponse.options, learnMoreTarget);
 
-    setMessages((prev) =>
-      prev.map((m) =>
-        m.id === assistantId
-          ? {
-              ...m,
-              text: shortText,
-              fullText: aiResponse.full_message || undefined,
-              scrollTo: aiResponse.scroll_to || undefined,
-              suggestedActions: aiResponse.suggested_actions || undefined,
-              type: isService ? 'service' : 'text',
-              services,
-              options: aiResponse.options || undefined,
-            }
-          : m
-      )
-    );
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: createId(),
+        text: shortText,
+        fullText: aiResponse.full_message || undefined,
+        isUser: false,
+        timestamp: new Date(),
+        scrollTo: aiResponse.scroll_to || undefined,
+        suggestedActions: aiResponse.suggested_actions || undefined,
+        type: isService ? 'service' : 'text',
+        services,
+        options: finalOptions,
+      },
+    ]);
   };
 
   const handleSendMessage = async (e: React.FormEvent) => {
@@ -305,6 +344,13 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
 
   const handleOptionClick = async (opt: ButtonOption) => {
     if (isTyping) return;
+    if (opt.value.startsWith('learn_more')) {
+      const target = opt.value.includes(':') ? opt.value.slice(opt.value.indexOf(':') + 1) : null;
+      if (target) {
+        navigateToRoute(target, navigate, location.pathname);
+      }
+      return;
+    }
     await runConversationTurn(opt.value, 'button', opt.label);
   };
 

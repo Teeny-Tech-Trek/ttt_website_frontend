@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styles from './Hero.module.css';
 import { useStarfield } from '../../hooks/useStarfield';
 import { StatItem } from '../../types/hero.types';
-import heroImg from '/ChatGPT Image Feb 25, 2026, 03_24_45 PM.png';
+import heroImg from '../../assets/ai-brain.png';
 
 gsap.registerPlugin(ScrollTrigger);
 

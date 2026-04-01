@@ -186,7 +186,7 @@ const About = () => {
               <div className="relative group">
                 <div className="flex items-center justify-center overflow-hidden aspect-square bg-blue-100/50 rounded-xl">
                   <img
-                    src="/mission.svg"
+                    src={missionImg}
                     alt="AI Neural Network"
                     className="object-contain w-5/6 h-5/6"
                   />

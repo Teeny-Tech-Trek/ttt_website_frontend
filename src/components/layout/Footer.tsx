@@ -4,6 +4,7 @@ import { ArrowUp, Mail, Phone, MapPin } from 'lucide-react';
 import { FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import Container from '../ui/Container';
 import { subscribeNewsletter } from '../../services/newsletterService';
+import logo from '../../assets/teeny-logo.svg';
 
 interface Service {
   title: string;
@@ -100,7 +101,7 @@ const Footer = () => {
           <div className="space-y-6">
             <div className="flex items-center gap-3">
               <img
-                src="/logo.svg"
+                src={logo}
                 alt="Teeny Tech Trek Logo"
                 className="h-10 rounded-lg shadow-md w-15"
                 onError={(e) => {
