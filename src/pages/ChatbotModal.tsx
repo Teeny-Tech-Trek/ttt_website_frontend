@@ -33,6 +33,11 @@ interface Message {
   suggestedActions?: string[];
 }
 
+const DEFAULT_GREETING =
+  "Hey there! I'm Anisha, your AI assistant at Teeny Tech Trek. Ask me anything about our AI services, integrations, pricing, or solutions.";
+
+const DEFAULT_GREETING_ACTIONS = ['AI Services', 'Integrations', 'Pricing', 'Solutions'];
+
 interface ChatApiResult {
   reply: string;
   short_message?: string | null;
@@ -163,33 +168,17 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
     return normalized;
   };
 
-  const fetchIntroMessage = async () => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/api/chatbot/intro`);
-      const data = await res.json();
-      const introOptions = normalizeOptions(data.options || null, data.buttons || null);
-      setMessages([
-        {
-          id: createId(),
-          text: data.message || "Hello! I'm your AI assistant.",
-          isUser: false,
-          timestamp: new Date(),
-          type: 'text',
-          options: introOptions || undefined,
-        },
-      ]);
-    } catch (error) {
-      console.error('Intro API Error:', error);
-      setMessages([
-        {
-          id: createId(),
-          text: "Hello! I'm your AI assistant. How can I help you today?",
-          isUser: false,
-          timestamp: new Date(),
-          type: 'text',
-        },
-      ]);
-    }
+  const showGreetingMessage = () => {
+    setMessages([
+      {
+        id: createId(),
+        text: DEFAULT_GREETING,
+        isUser: false,
+        timestamp: new Date(),
+        type: 'text',
+        suggestedActions: DEFAULT_GREETING_ACTIONS,
+      },
+    ]);
   };
 
   const sendMessageToAPI = async (
@@ -363,7 +352,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
     if (isOpen) {
       getSessionId();
       inputRef.current?.focus();
-      fetchIntroMessage();
+      showGreetingMessage();
     } else {
       setMessages([]);
     }
@@ -449,7 +438,11 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
                         : 'bg-white text-gray-700 border border-gray-200 rounded-bl-none shadow-sm'
                     }`}
                   >
-                    <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+                    {msg.isUser ? (
+                      <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+                    ) : (
+                      <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+                    )}
                     {!msg.isUser && msg.options && msg.options.length > 0 && (
                       <div className="flex flex-wrap gap-2 mt-3">
                         {msg.options.map((opt) => (

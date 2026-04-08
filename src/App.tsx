@@ -15,7 +15,7 @@ const AppContent = () => {
   const { isAuthModalOpen, closeAuthModal, authModalMode } = useAuth();
   
   // Shared chatbot state
-  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(true);
 
   // Functions to control chatbot
   const openChatbot = () => setIsChatbotOpen(true);
