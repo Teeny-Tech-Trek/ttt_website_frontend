@@ -15,15 +15,15 @@ const AppContent = () => {
   const { isAuthModalOpen, closeAuthModal, authModalMode } = useAuth();
   
   // Shared chatbot state
-  const [isChatbotOpen, setIsChatbotOpen] = useState(true);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
   // Functions to control chatbot
   const openChatbot = () => setIsChatbotOpen(true);
   const closeChatbot = () => setIsChatbotOpen(false);
-  const toggleChatbot = () => setIsChatbotOpen(!isChatbotOpen);
+  const toggleChatbot = () => setIsChatbotOpen((prev) => !prev);
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative">
       <Navbar />
       <HelmetProvider>
         {/* Pass toggle function to ChatbotButton */}

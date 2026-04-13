@@ -54,6 +54,24 @@ const HomePage = ({ onOpenChatbot }: HomePageProps) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleBookConsultation = () => {
+    const pricingSection = document.getElementById('pricing');
+    if (!pricingSection) {
+      console.warn('Pricing section not found');
+      return;
+    }
+
+    const navbar = document.querySelector('header');
+    const navbarHeight = navbar instanceof HTMLElement ? navbar.offsetHeight : 0;
+    const spacing = 16;
+    const top = pricingSection.getBoundingClientRect().top + window.scrollY - navbarHeight - spacing;
+
+    window.scrollTo({
+      top: Math.max(top, 0),
+      behavior: 'smooth',
+    });
+  };
+
   return (
     <main>
        <Helmet>
@@ -68,7 +86,7 @@ const HomePage = ({ onOpenChatbot }: HomePageProps) => {
       <section id="home" className="relative">
         <Particles />
         {/* Pass the onOpenChatbot prop to Hero */}
-        <Hero onOpenChatbot={onOpenChatbot} />
+        <Hero onOpenChatbot={onOpenChatbot} onBookConsultation={handleBookConsultation} />
       </section>
       <section id="login" className="h-0" aria-hidden="true" />
       <section id="solutions" className="h-0" aria-hidden="true" />
@@ -89,7 +107,7 @@ const HomePage = ({ onOpenChatbot }: HomePageProps) => {
       {/* <section id="tech-stack">
         <TechStack />
       </section> */}
-      <section id="pricing">
+      <section id="pricing" className="scroll-mt-28">
         <div id="book-consultation">
           <Pricing />
         </div>

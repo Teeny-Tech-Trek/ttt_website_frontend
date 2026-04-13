@@ -17,9 +17,10 @@ const STATS: StatItem[] = [
 
 type HeroProps = {
   onOpenChatbot?: () => void;
+  onBookConsultation?: () => void;
 };
 
-const Hero: React.FC<HeroProps> = ({ onOpenChatbot }) => {
+const Hero: React.FC<HeroProps> = ({ onOpenChatbot, onBookConsultation }) => {
   const bgCanvasRef = useRef<HTMLCanvasElement>(null);
   const heroRef = useRef<HTMLElement>(null);
   const particlesRef = useRef<HTMLDivElement>(null);
@@ -155,6 +156,24 @@ const Hero: React.FC<HeroProps> = ({ onOpenChatbot }) => {
     return () => clearTimeout(timer);
   }, []);
 
+  const handleBookConsultation = () => {
+    if (onBookConsultation) {
+      onBookConsultation();
+      return;
+    }
+
+    const pricingSection = document.getElementById('pricing');
+    if (!pricingSection) {
+      console.warn('Pricing section not found');
+      return;
+    }
+
+    pricingSection.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  };
+
   return (
     <>
       <canvas ref={bgCanvasRef} className={styles.bgCanvas} />
@@ -180,10 +199,16 @@ const Hero: React.FC<HeroProps> = ({ onOpenChatbot }) => {
         </div>
 
         <div ref={ctaRef} className={styles.heroCta}>
-          <button className={`${styles.ctaBtn} ${styles.ctaChat}`} onClick={() => onOpenChatbot?.()}>
+          <button type="button" className={`${styles.ctaBtn} ${styles.ctaChat}`} onClick={() => onOpenChatbot?.()}>
             Chat with AI
           </button>
-          <button className={`${styles.ctaBtn} ${styles.ctaBook}`}>Book a Consultation</button>
+          <button
+            type="button"
+            className={`${styles.ctaBtn} ${styles.ctaBook}`}
+            onClick={handleBookConsultation}
+          >
+            Book a Consultation
+          </button>
         </div>
 
         <div ref={statsRef} className={styles.statsBar}>
