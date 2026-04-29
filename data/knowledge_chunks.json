@@ -1,0 +1,1616 @@
+[
+  {
+    "chunk_id": "rag_001",
+    "source": "seed:about",
+    "title": "Automation Services",
+    "text": "Teeny Tech Trek is an AI solutions studio that helps startups and small teams adopt practical artificial intelligence tools and automation systems.",
+    "source_page": "/about",
+    "section": "company",
+    "topic": "automation_services",
+    "content_type": "service_description",
+    "entities": [
+      "Teeny Tech Trek",
+      "Automation"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_002",
+    "source": "seed:about",
+    "title": "Company 002",
+    "text": "The mission of Teeny Tech Trek is to empower visionary teams with practical AI solutions that simplify complexity and improve operational efficiency.",
+    "source_page": "/about",
+    "section": "company",
+    "topic": "company_002",
+    "content_type": "service_description",
+    "entities": [
+      "Teeny Tech Trek"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_003",
+    "source": "seed:about",
+    "title": "Company 003",
+    "text": "Teeny Tech Trek focuses on building lean AI systems that can be deployed quickly and integrated with existing business workflows.",
+    "source_page": "/about",
+    "section": "company",
+    "topic": "company_003",
+    "content_type": "service_description",
+    "entities": [
+      "Teeny Tech Trek"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_004",
+    "source": "seed:about",
+    "title": "Company 004",
+    "text": "The company emphasizes clarity, speed, and measurable business outcomes when designing AI systems for clients.",
+    "source_page": "/about",
+    "section": "company",
+    "topic": "company_004",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_005",
+    "source": "seed:about",
+    "title": "Company 005",
+    "text": "Teeny Tech Trek works closely with startups, founders, and small teams that want to implement AI solutions without building large engineering departments.",
+    "source_page": "/about",
+    "section": "company",
+    "topic": "company_005",
+    "content_type": "service_description",
+    "entities": [
+      "Teeny Tech Trek"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_006",
+    "source": "seed:services/chatbots",
+    "title": "Knowledge Access",
+    "text": "AI-powered chatbots developed by Teeny Tech Trek help businesses automate customer support, onboarding workflows, and knowledge access.",
+    "source_page": "/services/chatbots",
+    "section": "chatbots",
+    "topic": "knowledge_access",
+    "content_type": "service_description",
+    "entities": [
+      "Teeny Tech Trek",
+      "Chatbots"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_007",
+    "source": "seed:services/chatbots",
+    "title": "Chatbot Services",
+    "text": "Chatbots built by Teeny Tech Trek can answer user questions, guide visitors through services, and retrieve information from company documentation.",
+    "source_page": "/services/chatbots",
+    "section": "chatbots",
+    "topic": "chatbot_services",
+    "content_type": "service_description",
+    "entities": [
+      "Teeny Tech Trek",
+      "Chatbots"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_008",
+    "source": "seed:services/chatbots",
+    "title": "Chatbot Services",
+    "text": "AI chatbots can be deployed on websites, messaging platforms, and internal dashboards to assist users and automate communication.",
+    "source_page": "/services/chatbots",
+    "section": "chatbots",
+    "topic": "chatbot_services",
+    "content_type": "service_description",
+    "entities": [
+      "AI chatbots",
+      "Chatbots"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_009",
+    "source": "seed:services/chatbots",
+    "title": "Services 009",
+    "text": "Conversational AI assistants allow businesses to provide instant responses to customer questions without requiring human intervention.",
+    "source_page": "/services/chatbots",
+    "section": "knowledge",
+    "topic": "services_009",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_010",
+    "source": "seed:services/chatbots",
+    "title": "Chatbot Integrations",
+    "text": "AI chatbots built by Teeny Tech Trek can integrate with tools such as Slack, Notion, HubSpot, Salesforce, Airtable, Google Workspace, and WhatsApp.",
+    "source_page": "/services/chatbots",
+    "section": "chatbots",
+    "topic": "chatbot_integrations",
+    "content_type": "service_description",
+    "entities": [
+      "Teeny Tech Trek",
+      "AI chatbots",
+      "Chatbots",
+      "Slack",
+      "Notion",
+      "HubSpot",
+      "Salesforce",
+      "Airtable",
+      "Google Workspace",
+      "WhatsApp"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_011",
+    "source": "seed:services/agentic-workflows",
+    "title": "Agentic Ai Workflows",
+    "text": "Agentic AI workflows are intelligent systems capable of retrieving data, analyzing information, and executing multi-step tasks automatically.",
+    "source_page": "/services/agentic-workflows",
+    "section": "agentic_workflows",
+    "topic": "agentic_ai_workflows",
+    "content_type": "service_description",
+    "entities": [
+      "Agentic AI"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_012",
+    "source": "seed:services/agentic-workflows",
+    "title": "Automation Services",
+    "text": "Agentic AI solutions combine language models with automation frameworks to coordinate actions across APIs, databases, and software platforms.",
+    "source_page": "/services/agentic-workflows",
+    "section": "agentic_workflows",
+    "topic": "automation_services",
+    "content_type": "service_description",
+    "entities": [
+      "Agentic AI",
+      "Automation",
+      "APIs"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_013",
+    "source": "seed:services/agentic-workflows",
+    "title": "Agentic Workflows",
+    "text": "Agentic workflows can automate complex business processes such as reporting, data retrieval, and decision support.",
+    "source_page": "/services/agentic-workflows",
+    "section": "agentic_workflows",
+    "topic": "agentic_workflows",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_014",
+    "source": "seed:services/automation",
+    "title": "Smart Process Automation",
+    "text": "Smart process automation connects software tools and automates repetitive operational tasks across business systems.",
+    "source_page": "/services/automation",
+    "section": "automation",
+    "topic": "smart_process_automation",
+    "content_type": "service_description",
+    "entities": [
+      "Automation"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_015",
+    "source": "seed:services/automation",
+    "title": "Automation Services",
+    "text": "Automation pipelines can update CRM records, process incoming data, trigger alerts, and synchronize information between platforms.",
+    "source_page": "/services/automation",
+    "section": "automation",
+    "topic": "automation_services",
+    "content_type": "service_description",
+    "entities": [
+      "Automation",
+      "CRM"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_016",
+    "source": "seed:services/automation",
+    "title": "Automation Services",
+    "text": "Automation solutions built with APIs and workflow platforms reduce manual work and improve operational efficiency.",
+    "source_page": "/services/automation",
+    "section": "automation",
+    "topic": "automation_services",
+    "content_type": "service_description",
+    "entities": [
+      "Automation",
+      "APIs"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_017",
+    "source": "seed:services/ai-apps",
+    "title": "Lightweight Ai Applications",
+    "text": "Teeny Tech Trek develops lightweight AI applications and micro-SaaS tools that help organizations launch AI-powered solutions quickly.",
+    "source_page": "/services/ai-apps",
+    "section": "ai_apps",
+    "topic": "lightweight_ai_applications",
+    "content_type": "service_description",
+    "entities": [
+      "Teeny Tech Trek",
+      "Micro-SaaS"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_018",
+    "source": "seed:services/automation",
+    "title": "Ai Apps",
+    "text": "Micro-SaaS AI tools allow companies to validate product ideas quickly by launching focused AI applications for specific workflows.",
+    "source_page": "/services/automation",
+    "section": "automation",
+    "topic": "ai_apps",
+    "content_type": "service_description",
+    "entities": [
+      "Micro-SaaS"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_019",
+    "source": "seed:services/ai-apps",
+    "title": "Ai Apps",
+    "text": "AI applications built with frameworks like Streamlit, Chainlit, or FastAPI can be used for internal tools, prototypes, or client-facing products.",
+    "source_page": "/services/ai-apps",
+    "section": "ai_apps",
+    "topic": "ai_apps",
+    "content_type": "service_description",
+    "entities": [
+      "Streamlit",
+      "Chainlit",
+      "FastAPI"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_020",
+    "source": "seed:services/chatbots",
+    "title": "Agentic Ai Workflows",
+    "text": "Teeny Tech Trek offers four core AI solutions: AI chatbots, agentic AI workflows, smart process automation, and lightweight AI applications.",
+    "source_page": "/services/chatbots",
+    "section": "chatbots",
+    "topic": "agentic_ai_workflows",
+    "content_type": "service_description",
+    "entities": [
+      "Teeny Tech Trek",
+      "AI chatbots",
+      "Chatbots",
+      "Agentic AI",
+      "Automation"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_021",
+    "source": "seed:services/chatbots",
+    "title": "Chatbot Services",
+    "text": "AI chatbots can dramatically improve response times by providing instant automated support to customers.",
+    "source_page": "/services/chatbots",
+    "section": "use_cases",
+    "topic": "chatbot_services",
+    "content_type": "service_description",
+    "entities": [
+      "AI chatbots",
+      "Chatbots"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_022",
+    "source": "seed:services/chatbots",
+    "title": "Chatbot Services",
+    "text": "Customer support chatbots reduce support workload by answering frequently asked questions automatically.",
+    "source_page": "/services/chatbots",
+    "section": "use_cases",
+    "topic": "chatbot_services",
+    "content_type": "service_description",
+    "entities": [
+      "Chatbots"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_023",
+    "source": "seed:services",
+    "title": "Use Cases 023",
+    "text": "AI assistants can guide users through onboarding steps and help them understand how to use digital products.",
+    "source_page": "/services",
+    "section": "use_cases",
+    "topic": "use_cases_023",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_024",
+    "source": "seed:services",
+    "title": "Use Cases 024",
+    "text": "AI assistants can retrieve information from internal documentation and provide instant answers to employees.",
+    "source_page": "/services",
+    "section": "use_cases",
+    "topic": "use_cases_024",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_025",
+    "source": "seed:services",
+    "title": "Order Tracking",
+    "text": "AI-powered systems can assist customers with product discovery, order tracking, and support conversations.",
+    "source_page": "/services",
+    "section": "use_cases",
+    "topic": "order_tracking",
+    "content_type": "service_description",
+    "entities": [
+      "Order Tracking"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_026",
+    "source": "seed:industries/real-estate",
+    "title": "Real Estate",
+    "text": "Real estate companies can use AI systems to prepare property listings faster and automate listing descriptions.",
+    "source_page": "/industries/real-estate",
+    "section": "industries",
+    "topic": "real_estate",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_027",
+    "source": "seed:industries/healthcare",
+    "title": "Healthcare",
+    "text": "Healthcare providers can automate appointment scheduling, patient intake workflows, and medical documentation processes using AI.",
+    "source_page": "/industries/healthcare",
+    "section": "industries",
+    "topic": "healthcare",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_028",
+    "source": "seed:industries/d2c",
+    "title": "Ecommerce",
+    "text": "D2C ecommerce brands use AI assistants to automate customer support and respond to inquiries across messaging channels.",
+    "source_page": "/industries/d2c",
+    "section": "industries",
+    "topic": "ecommerce",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_029",
+    "source": "seed:industries/logistics",
+    "title": "Logistics",
+    "text": "Manufacturing and logistics companies can use AI assistants to coordinate deliveries and provide ETA updates.",
+    "source_page": "/industries/logistics",
+    "section": "industries",
+    "topic": "logistics",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_030",
+    "source": "seed:industries/hospitality",
+    "title": "Hospitality",
+    "text": "Hospitality businesses can deploy AI concierge assistants that help guests with bookings and travel planning.",
+    "source_page": "/industries/hospitality",
+    "section": "industries",
+    "topic": "hospitality",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_031",
+    "source": "seed:pricing",
+    "title": "Automation Services",
+    "text": "Teeny Tech Trek offers consultation services to help businesses identify practical opportunities for AI automation.",
+    "source_page": "/pricing",
+    "section": "consulting",
+    "topic": "automation_services",
+    "content_type": "pricing",
+    "entities": [
+      "Teeny Tech Trek",
+      "Automation"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_032",
+    "source": "seed:pricing",
+    "title": "Strategy Call",
+    "text": "A strategy call helps founders understand where AI can improve their business operations and workflows.",
+    "source_page": "/pricing",
+    "section": "consulting",
+    "topic": "strategy_call",
+    "content_type": "pricing",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_033",
+    "source": "seed:pricing",
+    "title": "Ai Roadmap",
+    "text": "An AI roadmap outlines automation opportunities, integration architecture, and a step-by-step implementation plan.",
+    "source_page": "/pricing",
+    "section": "consulting",
+    "topic": "ai_roadmap",
+    "content_type": "pricing",
+    "entities": [
+      "Automation"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_034",
+    "source": "seed:pricing",
+    "title": "Automation Services",
+    "text": "Many organizations begin AI adoption with a small pilot project before scaling automation across the company.",
+    "source_page": "/pricing",
+    "section": "consulting",
+    "topic": "automation_services",
+    "content_type": "pricing",
+    "entities": [
+      "Automation"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_035",
+    "source": "seed:pricing",
+    "title": "Strategy Call",
+    "text": "The strategy call offered by Teeny Tech Trek costs â‚¹1,200 and typically lasts 45 minutes.",
+    "source_page": "/pricing",
+    "section": "pricing",
+    "topic": "strategy_call",
+    "content_type": "pricing",
+    "entities": [
+      "Teeny Tech Trek"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_036",
+    "source": "seed:pricing",
+    "title": "Strategy Call",
+    "text": "The strategy call includes a one-page AI implementation plan, a starter prompt pack, and a short Loom recap explaining next steps.",
+    "source_page": "/pricing",
+    "section": "pricing",
+    "topic": "strategy_call",
+    "content_type": "pricing",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_037",
+    "source": "seed:pricing",
+    "title": "Pricing 037",
+    "text": "Teeny Tech Trek also offers an AI audit and roadmap consultation designed for agencies and service teams.",
+    "source_page": "/pricing",
+    "section": "pricing",
+    "topic": "pricing_037",
+    "content_type": "pricing",
+    "entities": [
+      "Teeny Tech Trek"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_038",
+    "source": "seed:pricing",
+    "title": "Pricing 038",
+    "text": "The AI strategy workshop is a longer session designed for teams that require architecture planning and implementation guidance.",
+    "source_page": "/pricing",
+    "section": "pricing",
+    "topic": "pricing_038",
+    "content_type": "pricing",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_039",
+    "source": "seed:technology",
+    "title": "Vector Databases",
+    "text": "Vector databases store embeddings that allow AI systems to perform semantic search across large knowledge bases.",
+    "source_page": "/technology",
+    "section": "technology",
+    "topic": "vector_databases",
+    "content_type": "service_description",
+    "entities": [
+      "Vector Databases",
+      "Knowledge Bases"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_040",
+    "source": "seed:technology",
+    "title": "Retrieval Augmented Generation",
+    "text": "Retrieval-Augmented Generation combines document retrieval with language models to produce more accurate answers.",
+    "source_page": "/technology",
+    "section": "technology",
+    "topic": "retrieval_augmented_generation",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_041",
+    "source": "seed:technology",
+    "title": "Technology 041",
+    "text": "RAG systems ground AI responses in verified knowledge sources such as company documentation and FAQs.",
+    "source_page": "/technology",
+    "section": "technology",
+    "topic": "technology_041",
+    "content_type": "service_description",
+    "entities": [
+      "RAG"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_042",
+    "source": "seed:technology",
+    "title": "Automation Services",
+    "text": "Automation systems often integrate APIs, databases, and messaging tools to coordinate business workflows.",
+    "source_page": "/technology",
+    "section": "technology",
+    "topic": "automation_services",
+    "content_type": "service_description",
+    "entities": [
+      "Automation",
+      "APIs"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_043",
+    "source": "seed:services",
+    "title": "Use Cases 043",
+    "text": "AI assistants can help employees find company knowledge faster by retrieving answers from internal documentation.",
+    "source_page": "/services",
+    "section": "use_cases",
+    "topic": "use_cases_043",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_044",
+    "source": "seed:services/chatbots",
+    "title": "Chatbot Services",
+    "text": "AI chatbots can operate 24 hours a day and provide continuous support without increasing staffing costs.",
+    "source_page": "/services/chatbots",
+    "section": "use_cases",
+    "topic": "chatbot_services",
+    "content_type": "service_description",
+    "entities": [
+      "AI chatbots",
+      "Chatbots"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_045",
+    "source": "seed:services/automation",
+    "title": "Automation Services",
+    "text": "Automation systems reduce human error by executing tasks through predefined workflows.",
+    "source_page": "/services/automation",
+    "section": "use_cases",
+    "topic": "automation_services",
+    "content_type": "service_description",
+    "entities": [
+      "Automation"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_046",
+    "source": "seed:technology",
+    "title": "Technology 046",
+    "text": "AI analytics tools help organizations understand customer behavior and operational trends.",
+    "source_page": "/technology",
+    "section": "technology",
+    "topic": "technology_046",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_047",
+    "source": "seed:technology",
+    "title": "Automation Services",
+    "text": "Businesses adopt AI automation to reduce repetitive manual work and focus on strategic tasks.",
+    "source_page": "/technology",
+    "section": "technology",
+    "topic": "automation_services",
+    "content_type": "service_description",
+    "entities": [
+      "Automation"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_048",
+    "source": "seed:technology",
+    "title": "Technology 048",
+    "text": "Conversational interfaces allow users to interact with systems using natural language instead of complex dashboards.",
+    "source_page": "/technology",
+    "section": "technology",
+    "topic": "technology_048",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_049",
+    "source": "seed:about",
+    "title": "Company 049",
+    "text": "Teeny Tech Trek builds AI systems designed to integrate directly with existing business software.",
+    "source_page": "/about",
+    "section": "company",
+    "topic": "company_049",
+    "content_type": "service_description",
+    "entities": [
+      "Teeny Tech Trek"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_050",
+    "source": "seed:about",
+    "title": "Company 050",
+    "text": "The company focuses on practical AI implementations that deliver measurable improvements to business operations.",
+    "source_page": "/about",
+    "section": "company",
+    "topic": "company_050",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_051",
+    "source": "seed:contact",
+    "title": "Contact email",
+    "text": "Businesses can contact Teeny Tech Trek for AI consulting and automation services via email.",
+    "source_page": "/contact",
+    "section": "contact",
+    "topic": "automation_services",
+    "content_type": "faq",
+    "entities": [
+      "Teeny Tech Trek",
+      "Automation"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_052",
+    "source": "seed:contact",
+    "title": "Contact email",
+    "text": "The official contact email for Teeny Tech Trek is anisha.singla@teenytechtrek.com.",
+    "source_page": "/contact",
+    "section": "contact",
+    "topic": "contact_email",
+    "content_type": "faq",
+    "entities": [
+      "Teeny Tech Trek"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_053",
+    "source": "seed:contact",
+    "title": "Contact phone numbers",
+    "text": "Teeny Tech Trek can be reached by phone at +1 647 864 5465 or +91 98558 06696 for AI solution inquiries.",
+    "source_page": "/contact",
+    "section": "contact",
+    "topic": "phone",
+    "content_type": "faq",
+    "entities": [
+      "Teeny Tech Trek"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_054",
+    "source": "seed:contact",
+    "title": "Office address",
+    "text": "The office of Teeny Tech Trek is located at 2nd Floor, Kalkat Bhawan, Sector 66B, Block C, Gmada Aerocity, Sahibzada Ajit Singh Nagar, Chachu Majra, Punjab 140306.",
+    "source_page": "/contact",
+    "section": "contact",
+    "topic": "office",
+    "content_type": "faq",
+    "entities": [
+      "Teeny Tech Trek"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_055",
+    "source": "seed:services/chatbots",
+    "title": "Use Cases 055",
+    "text": "Organizations deploy conversational AI assistants on websites to help visitors understand products and services.",
+    "source_page": "/services/chatbots",
+    "section": "use_cases",
+    "topic": "use_cases_055",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_056",
+    "source": "seed:services",
+    "title": "Use Cases 056",
+    "text": "AI assistants can automatically escalate complex issues to human agents when necessary.",
+    "source_page": "/services",
+    "section": "use_cases",
+    "topic": "use_cases_056",
+    "content_type": "service_description",
+    "entities": [
+      "Human Agents"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_057",
+    "source": "seed:services/automation",
+    "title": "Automation Services",
+    "text": "Automation systems can trigger alerts or notifications when operational events occur.",
+    "source_page": "/services/automation",
+    "section": "use_cases",
+    "topic": "automation_services",
+    "content_type": "service_description",
+    "entities": [
+      "Automation"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_058",
+    "source": "seed:technology",
+    "title": "Technology 058",
+    "text": "AI-powered tools can summarize documents and extract insights from business data.",
+    "source_page": "/technology",
+    "section": "technology",
+    "topic": "technology_058",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_059",
+    "source": "seed:technology",
+    "title": "Automation Services",
+    "text": "AI integrations allow companies to connect automation workflows with existing CRM systems and databases.",
+    "source_page": "/technology",
+    "section": "technology",
+    "topic": "automation_services",
+    "content_type": "service_description",
+    "entities": [
+      "Automation",
+      "CRM"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_060",
+    "source": "seed:services/automation",
+    "title": "Automation tools and integrations",
+    "text": "Teeny Tech Trek uses tools such as Zapier, Make, n8n, Pipedream, Python, Pandas, REST APIs, and webhooks to build automation workflows. These automations also connect with platforms like Google Workspace, Slack, CRMs, and other internal systems when a workflow needs reliable handoffs between tools.",
+    "source_page": "/services/automation",
+    "section": "automation",
+    "topic": "automation_tooling",
+    "content_type": "faq",
+    "entities": [
+      "Zapier",
+      "Make",
+      "n8n",
+      "Pipedream",
+      "Python",
+      "Pandas",
+      "REST APIs",
+      "Webhooks",
+      "Google Workspace",
+      "Slack",
+      "CRM",
+      "Teeny Tech Trek",
+      "Automation",
+      "NDA",
+      "APIs"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_061",
+    "source": "seed:pricing",
+    "title": "Automation Services",
+    "text": "Teeny Tech Trek offers a free DIY AI readiness audit kit that helps organizations evaluate their current processes and identify potential automation opportunities.",
+    "source_page": "/pricing",
+    "section": "pricing",
+    "topic": "automation_services",
+    "content_type": "pricing",
+    "entities": [
+      "Teeny Tech Trek",
+      "Automation"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_062",
+    "source": "seed:pricing",
+    "title": "Pricing 062",
+    "text": "The DIY AI readiness audit includes a checklist, an operations inventory sheet, and sample prompts to test how AI could work with business data.",
+    "source_page": "/pricing",
+    "section": "pricing",
+    "topic": "pricing_062",
+    "content_type": "pricing",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_063",
+    "source": "seed:pricing",
+    "title": "Strategy Call",
+    "text": "The strategy call offered by Teeny Tech Trek is designed for founders who want a clear AI implementation plan quickly.",
+    "source_page": "/pricing",
+    "section": "pricing",
+    "topic": "strategy_call",
+    "content_type": "pricing",
+    "entities": [
+      "Teeny Tech Trek"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_064",
+    "source": "seed:pricing",
+    "title": "Strategy Call",
+    "text": "The strategy call includes a short roadmap outlining goals, recommended tools, and the first steps for implementing AI systems.",
+    "source_page": "/pricing",
+    "section": "pricing",
+    "topic": "strategy_call",
+    "content_type": "pricing",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_065",
+    "source": "seed:pricing",
+    "title": "Pricing 065",
+    "text": "The AI audit and roadmap consultation is designed for agencies and service companies that want to add AI capabilities to their workflows.",
+    "source_page": "/pricing",
+    "section": "pricing",
+    "topic": "pricing_065",
+    "content_type": "pricing",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_066",
+    "source": "seed:pricing",
+    "title": "Automation Services",
+    "text": "The audit and roadmap session provides a structured plan covering integrations, automation opportunities, and recommended architecture.",
+    "source_page": "/pricing",
+    "section": "pricing",
+    "topic": "automation_services",
+    "content_type": "pricing",
+    "entities": [
+      "Automation"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_067",
+    "source": "seed:pricing",
+    "title": "Pricing 067",
+    "text": "The strategy workshop offered by Teeny Tech Trek is designed for teams that need deeper planning for AI adoption and system architecture.",
+    "source_page": "/pricing",
+    "section": "pricing",
+    "topic": "pricing_067",
+    "content_type": "pricing",
+    "entities": [
+      "Teeny Tech Trek"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_068",
+    "source": "seed:pricing",
+    "title": "Pricing 068",
+    "text": "The strategy workshop includes architecture planning, risk assessment, and guidance on implementing AI systems securely and efficiently.",
+    "source_page": "/pricing",
+    "section": "pricing",
+    "topic": "pricing_068",
+    "content_type": "pricing",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_069",
+    "source": "seed:services/chatbots",
+    "title": "Chatbot Services",
+    "text": "AI-powered chatbots help businesses improve customer engagement by answering questions and guiding visitors through products or services.",
+    "source_page": "/services/chatbots",
+    "section": "use_cases",
+    "topic": "chatbot_services",
+    "content_type": "service_description",
+    "entities": [
+      "Chatbots"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_070",
+    "source": "seed:services/chatbots",
+    "title": "Chatbot Services",
+    "text": "Chatbots can help customers discover products, track orders, and receive support directly through conversational interfaces.",
+    "source_page": "/services/chatbots",
+    "section": "use_cases",
+    "topic": "chatbot_services",
+    "content_type": "service_description",
+    "entities": [
+      "Chatbots"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_071",
+    "source": "seed:services/chatbots",
+    "title": "Knowledge assistant security",
+    "text": "Internal knowledge assistants are deployed with SSO support and internal-only data access so company information stays private and access-controlled. The same delivery approach also uses audit trails and secure environments when assistants or agents work with sensitive business data.",
+    "source_page": "/services/chatbots",
+    "section": "security",
+    "topic": "knowledge_assistant_security",
+    "content_type": "faq",
+    "entities": [
+      "SSO",
+      "Internal Knowledge Assistants",
+      "Audit Trails",
+      "Private Data"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_072",
+    "source": "seed:services/chatbots",
+    "title": "Chatbot integrations",
+    "text": "Chatbots built by Teeny Tech Trek can integrate with Slack, Notion, HubSpot, Salesforce, Airtable, Google Workspace, Intercom, WhatsApp, Discord, Webflow, and Typeform. These integrations let the assistant answer questions, fetch context, and hand work off to the systems your team already uses.",
+    "source_page": "/services/chatbots",
+    "section": "chatbots",
+    "topic": "chatbot_integrations",
+    "content_type": "faq",
+    "entities": [
+      "Slack",
+      "Notion",
+      "HubSpot",
+      "Salesforce",
+      "Airtable",
+      "Google Workspace",
+      "Intercom",
+      "WhatsApp",
+      "Discord",
+      "Webflow",
+      "Typeform",
+      "Teeny Tech Trek",
+      "Chatbots"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_073",
+    "source": "seed:services/automation",
+    "title": "Automation reliability safeguards",
+    "text": "Automation reliability is supported through secure credential storage, custom logging, fail-safe alerts, and monitoring that helps teams spot problems early. This keeps workflow automations dependable even when they coordinate data across several tools and APIs.",
+    "source_page": "/services/automation",
+    "section": "automation",
+    "topic": "automation_reliability",
+    "content_type": "faq",
+    "entities": [
+      "Credential Storage",
+      "Logging",
+      "Fail-safe Alerts",
+      "Monitoring",
+      "APIs",
+      "Automation",
+      "Workflow Automation",
+      "NDA",
+      "RAG"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_074",
+    "source": "seed:case-studies/ecommerce-chatbot",
+    "title": "E-commerce support chatbot case study",
+    "text": "Teeny Tech Trek built an e-commerce support chatbot that handled FAQs, tracked orders, and escalated complex issues to human agents. The deployment reduced ticket volume by 40 percent and improved customer satisfaction by answering a large share of routine questions automatically.",
+    "source_page": "/case-studies/ecommerce-chatbot",
+    "section": "case_studies",
+    "topic": "ecommerce_support_chatbot",
+    "content_type": "case_study",
+    "entities": [
+      "E-commerce Platform",
+      "Chatbot",
+      "Order Tracking",
+      "Human Agents",
+      "Teeny Tech Trek"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_075",
+    "source": "seed:services/chatbots",
+    "title": "Chatbot Services",
+    "text": "AI chatbots can help organizations collect customer feedback and analyze user behavior.",
+    "source_page": "/services/chatbots",
+    "section": "use_cases",
+    "topic": "chatbot_services",
+    "content_type": "service_description",
+    "entities": [
+      "AI chatbots",
+      "Chatbots"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_076",
+    "source": "seed:case-studies/onboarding-bot",
+    "title": "Onboarding assistant case study",
+    "text": "An onboarding assistant built by Teeny Tech Trek guided new users through setup and helped them understand the product faster. The bot improved user activation by 25 percent by answering setup questions in context and keeping the onboarding flow moving.",
+    "source_page": "/case-studies/onboarding-bot",
+    "section": "case_studies",
+    "topic": "onboarding_assistant",
+    "content_type": "case_study",
+    "entities": [
+      "Onboarding Bot",
+      "User Activation",
+      "Setup Guidance",
+      "Teeny Tech Trek"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_077",
+    "source": "seed:case-studies/agentic-workflows",
+    "title": "Agentic workflow case studies",
+    "text": "One agentic workflow scraped competitor pricing each week, updated Airtable, and notified the team in Slack with the latest changes. Another workflow digested survey responses, flagged pain points, and posted summaries to Notion, saving hours of manual review time.",
+    "source_page": "/case-studies/agentic-workflows",
+    "section": "case_studies",
+    "topic": "agentic_workflow_examples",
+    "content_type": "case_study",
+    "entities": [
+      "Airtable",
+      "Slack",
+      "Notion",
+      "Competitor Pricing",
+      "Survey Responses"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_078",
+    "source": "seed:case-studies/ai-apps",
+    "title": "AI app MVP case studies",
+    "text": "A lightweight MVP uploaded PDFs, summarized important legal clauses, and surfaced contract details for faster review. Related AI app work also included a client portal that generated outreach scripts with Stripe billing and a Streamlit legal review app that cut contract review time by 70 percent.",
+    "source_page": "/case-studies/ai-apps",
+    "section": "case_studies",
+    "topic": "legal_ai_apps",
+    "content_type": "case_study",
+    "entities": [
+      "PDF Uploads",
+      "Legal Clauses",
+      "Stripe",
+      "Streamlit"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_079",
+    "source": "seed:industries/real-estate",
+    "title": "Real Estate",
+    "text": "Real estate teams can use AI tools to generate listing descriptions and analyze property data quickly.",
+    "source_page": "/industries/real-estate",
+    "section": "industries",
+    "topic": "real_estate",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_080",
+    "source": "seed:industries/healthcare",
+    "title": "Healthcare",
+    "text": "Healthcare organizations use AI systems to streamline patient intake workflows and appointment scheduling.",
+    "source_page": "/industries/healthcare",
+    "section": "industries",
+    "topic": "healthcare",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_081",
+    "source": "seed:industries/d2c",
+    "title": "Ecommerce",
+    "text": "Ecommerce brands use AI assistants to automate customer support and product discovery conversations.",
+    "source_page": "/industries/d2c",
+    "section": "industries",
+    "topic": "ecommerce",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_082",
+    "source": "seed:industries/logistics",
+    "title": "Logistics",
+    "text": "Logistics companies use AI automation to coordinate deliveries and provide real-time status updates.",
+    "source_page": "/industries/logistics",
+    "section": "industries",
+    "topic": "logistics",
+    "content_type": "service_description",
+    "entities": [
+      "Automation"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_083",
+    "source": "seed:industries/hospitality",
+    "title": "Hospitality",
+    "text": "Hospitality companies deploy AI concierge assistants to assist guests with bookings and recommendations.",
+    "source_page": "/industries/hospitality",
+    "section": "industries",
+    "topic": "hospitality",
+    "content_type": "service_description",
+    "entities": [
+      "NDA"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_084",
+    "source": "seed:about",
+    "title": "Automation Services",
+    "text": "Teeny Tech Trek believes that lean teams can achieve significant results when empowered with the right AI tools and automation systems.",
+    "source_page": "/about",
+    "section": "company",
+    "topic": "automation_services",
+    "content_type": "service_description",
+    "entities": [
+      "Teeny Tech Trek",
+      "Automation"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_085",
+    "source": "seed:about",
+    "title": "Company 085",
+    "text": "The company philosophy focuses on building small solutions quickly and scaling them based on real business outcomes.",
+    "source_page": "/about",
+    "section": "company",
+    "topic": "company_085",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_086",
+    "source": "seed:about",
+    "title": "Company 086",
+    "text": "Teeny Tech Trek works collaboratively with clients to design AI solutions tailored to their operational workflows.",
+    "source_page": "/about",
+    "section": "company",
+    "topic": "company_086",
+    "content_type": "service_description",
+    "entities": [
+      "Teeny Tech Trek"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_087",
+    "source": "seed:about",
+    "title": "Company 087",
+    "text": "AI systems designed by Teeny Tech Trek prioritize usability, integration, and measurable impact.",
+    "source_page": "/about",
+    "section": "company",
+    "topic": "company_087",
+    "content_type": "service_description",
+    "entities": [
+      "Teeny Tech Trek"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_088",
+    "source": "seed:pricing",
+    "title": "Consultation credit toward pilot",
+    "text": "A consultation can be credited 100 percent toward a four-week pilot when the project starts within 30 days of the session. This helps teams use the strategy conversation as the first paid step toward a focused production pilot instead of treating it as separate spend.",
+    "source_page": "/pricing",
+    "section": "pricing",
+    "topic": "consultation_credit_policy",
+    "content_type": "pricing",
+    "entities": [
+      "Consultation",
+      "4-week Pilot"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_089",
+    "source": "seed:pricing",
+    "title": "Booking, rescheduling, and NDA FAQ",
+    "text": "Bookings include a calendar invite with a Google Meet link, and sessions can be rescheduled up to 24 hours before the selected slot. If needed, Teeny Tech Trek can also sign a mutual NDA before the session so sensitive business context can be discussed more comfortably.",
+    "source_page": "/pricing",
+    "section": "consultation",
+    "topic": "booking_and_nda",
+    "content_type": "faq",
+    "entities": [
+      "Google Meet",
+      "NDA",
+      "Consultation Booking",
+      "Teeny Tech Trek"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_090",
+    "source": "seed:services",
+    "title": "Use Cases 090",
+    "text": "AI assistants help employees access knowledge faster and improve productivity across teams.",
+    "source_page": "/services",
+    "section": "use_cases",
+    "topic": "use_cases_090",
+    "content_type": "service_description",
+    "entities": [],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_091",
+    "source": "seed:services",
+    "title": "Services 091",
+    "text": "Teeny Tech Trek builds AI assistants that can retrieve information from knowledge bases and answer user questions instantly.",
+    "source_page": "/services",
+    "section": "knowledge",
+    "topic": "services_091",
+    "content_type": "service_description",
+    "entities": [
+      "Teeny Tech Trek",
+      "Knowledge Bases"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_092",
+    "source": "seed:services/automation",
+    "title": "Services 092",
+    "text": "AI-powered systems developed by Teeny Tech Trek can integrate directly into existing company workflows.",
+    "source_page": "/services/automation",
+    "section": "automation",
+    "topic": "services_092",
+    "content_type": "service_description",
+    "entities": [
+      "Teeny Tech Trek"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_093",
+    "source": "seed:services/automation",
+    "title": "Automation Services",
+    "text": "Automation systems can help businesses coordinate operations across different departments.",
+    "source_page": "/services/automation",
+    "section": "automation",
+    "topic": "automation_services",
+    "content_type": "service_description",
+    "entities": [
+      "Automation"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_094",
+    "source": "seed:contact",
+    "title": "Chatbot Services",
+    "text": "Businesses interested in AI automation or chatbot development can contact Teeny Tech Trek for consultation.",
+    "source_page": "/contact",
+    "section": "contact",
+    "topic": "chatbot_services",
+    "content_type": "faq",
+    "entities": [
+      "Teeny Tech Trek",
+      "Automation"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_095",
+    "source": "seed:pricing",
+    "title": "Consulting 095",
+    "text": "Teeny Tech Trek provides consultation sessions to help companies identify the best starting point for AI adoption.",
+    "source_page": "/pricing",
+    "section": "consulting",
+    "topic": "consulting_095",
+    "content_type": "pricing",
+    "entities": [
+      "Teeny Tech Trek"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_096",
+    "source": "seed:pricing",
+    "title": "Automation Services",
+    "text": "AI consultation sessions typically focus on identifying automation opportunities and designing an implementation roadmap.",
+    "source_page": "/pricing",
+    "section": "consulting",
+    "topic": "automation_services",
+    "content_type": "pricing",
+    "entities": [
+      "Automation"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_097",
+    "source": "seed:pricing",
+    "title": "Automation Services",
+    "text": "Organizations often begin their AI journey with a small pilot project before expanding automation across multiple workflows.",
+    "source_page": "/pricing",
+    "section": "consulting",
+    "topic": "automation_services",
+    "content_type": "pricing",
+    "entities": [
+      "Automation"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_098",
+    "source": "seed:privacy-policy",
+    "title": "Privacy policy data collection",
+    "text": "The privacy policy explains that Teeny Tech Trek may collect contact details such as name, email address, and phone number, along with business details submitted through consultations or proposals. It also covers browser, device, IP, and usage data, plus payment details processed through providers such as Razorpay or Stripe and newsletter data collected through tools like Mailchimp.",
+    "source_page": "/privacy-policy",
+    "section": "privacy",
+    "topic": "privacy_data_collection",
+    "content_type": "policy",
+    "entities": [
+      "Privacy Policy",
+      "Razorpay",
+      "Stripe",
+      "Mailchimp",
+      "Teeny Tech Trek"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_099",
+    "source": "seed:privacy-policy",
+    "title": "Privacy policy rights and protections",
+    "text": "The privacy policy states that cookies and similar technologies are used to understand website interactions, track conversions, and measure service interest. It also explains that users can request access or corrections, withdraw consent, unsubscribe, and expect reasonable technical and organizational safeguards around stored data.",
+    "source_page": "/privacy-policy",
+    "section": "privacy",
+    "topic": "privacy_rights_and_protection",
+    "content_type": "policy",
+    "entities": [
+      "Privacy Policy",
+      "Cookies",
+      "Consent",
+      "Access Requests"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_100",
+    "source": "seed:refund-policy",
+    "title": "Refund eligibility policy",
+    "text": "The refund policy says payments are generally final because the work is customized and consultative, but refunds may be issued in specific cases. Examples include a cancellation within 48 hours before work begins, duplicate payment for the same service, or a custom refund clause stated in a signed proposal or agreement.",
+    "source_page": "/refund-policy",
+    "section": "refunds",
+    "topic": "refund_eligibility",
+    "content_type": "policy",
+    "entities": [
+      "Refund Policy",
+      "Duplicate Payment",
+      "Service Agreement"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_101",
+    "source": "seed:terms-and-conditions",
+    "title": "Terms, scope, and payments",
+    "text": "The terms explain that project scope, pricing, deliverables, and timelines are defined in a separate proposal or agreement, and services are provided on a best-effort basis. The policy also notes that payments follow agreed milestones or packages and that delayed payment can pause or terminate service.",
+    "source_page": "/terms-and-conditions",
+    "section": "terms",
+    "topic": "terms_scope_and_payments",
+    "content_type": "policy",
+    "entities": [
+      "Terms and Conditions",
+      "Project Scope",
+      "Pricing",
+      "Deliverables",
+      "Payments"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_102",
+    "source": "seed:case-studies/sales-automation",
+    "title": "Sales workflow automation case study",
+    "text": "A sales automation workflow connected lead capture, proposal generation, CRM updates, and follow-up communication in one process. This saved the sales team 15 hours per week and reduced the manual effort required to keep prospects moving through the pipeline.",
+    "source_page": "/case-studies/sales-automation",
+    "section": "case_studies",
+    "topic": "sales_workflow_automation",
+    "content_type": "case_study",
+    "entities": [
+      "Sales Workflow",
+      "CRM",
+      "Proposal Generation",
+      "Follow-up",
+      "Automation"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_103",
+    "source": "seed:case-studies/research-assistant",
+    "title": "Investment research assistant case study",
+    "text": "A research assistant for an investment team gathered company information, analyzed financial reports, and produced investment summaries for analysts. This reduced manual research time and showed how agentic systems can combine retrieval, structured analysis, and repeatable reporting.",
+    "source_page": "/case-studies/research-assistant",
+    "section": "case_studies",
+    "topic": "investment_research_assistant",
+    "content_type": "case_study",
+    "entities": [
+      "Research Assistant",
+      "Financial Reports",
+      "Investment Summaries"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  },
+  {
+    "chunk_id": "rag_104",
+    "source": "seed:case-studies/hr-assistant",
+    "title": "HR assistant case study",
+    "text": "An HR assistant helped a growing tech startup answer employee questions from internal knowledge faster, reducing response time from days to minutes. Similar internal assistants are designed to surface policy answers clearly while keeping the knowledge experience grounded in company documentation.",
+    "source_page": "/case-studies/hr-assistant",
+    "section": "case_studies",
+    "topic": "hr_assistant_case_study",
+    "content_type": "case_study",
+    "entities": [
+      "HR Assistant",
+      "Internal Knowledge",
+      "Employee Questions"
+    ],
+    "embedding_status": "pending",
+    "active": true
+  }
+]

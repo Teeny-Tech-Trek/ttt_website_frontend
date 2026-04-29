@@ -1,0 +1,50 @@
+# Teeny Tech Trek
+
+> Teeny Tech Trek is an AI consultancy in Mohali, Punjab, India that builds nimble, production-grade AI solutions — chatbots, agentic workflows, smart process automation, and lightweight AI apps — for small and lean teams. Founded in 2024 by Anisha Singla. Tagline: "Small Teams. Big Impact. Powered by AI." Working philosophy: ship a small, reliable thing in 14 days, measure honestly, then iterate.
+
+## Core pages
+
+- [Homepage](https://www.teenytechtrek.com/): Top-level overview of services, the "build small, ship fast" thesis, pricing entry points, and the founder positioning.
+- [About / founder story](https://www.teenytechtrek.com/aboutUs): Origin story, founder Anisha Singla, working principles ("clarity beats complexity"), and milestones from 2024 onward.
+- [Use cases](https://www.teenytechtrek.com/use-cases): Cross-industry case studies with measured outcomes: AEO/GEO 40% faster customs clearance, real estate 50–60% faster prep, healthcare 28% fewer no-shows, D2C 68% faster response, logistics 17% lower dwell time, hospitality 19% more direct bookings, financial services 20–25 hrs/week saved.
+- [Blog](https://www.teenytechtrek.com/blogs): Insights on AI, automation, and industry-specific implementation for small teams.
+
+## Services
+
+- [AI-Powered Chatbots](https://www.teenytechtrek.com/services/ai-chatbots): Context-aware GPT bots for customer support, onboarding, and internal knowledge bases — integrated with Slack, Notion, CRMs, and helpdesks.
+- [Agentic AI Workflows](https://www.teenytechtrek.com/services/agentic-ai-workflows): Autonomous agents using LangChain, AutoGen, or CrewAI that retrieve data, summarise content, make decisions, and complete multi-step tasks.
+- [Smart Process Automation](https://www.teenytechtrek.com/services/smart-process-automation): Python-, API-, Zapier-, and Make-based automations that connect existing stacks end-to-end — CRM updates, email replies, data routing.
+- [Lightweight AI Apps & Micro-SaaS](https://www.teenytechtrek.com/services/ai-apps-micro-saas): MVPs built with Streamlit, Chainlit, or FastAPI for internal tools, client portals, and product prototypes.
+
+## Industry pages
+
+- [Healthcare](https://www.teenytechtrek.com/healthcare): HIPAA-aware voice receptionist, patient analytics, and care workflow automation for urgent care, surgery centres, hospitals, and primary care.
+- [E-commerce](https://www.teenytechtrek.com/ecommerce): D2C support and WhatsApp assistants with measured response-time gains.
+- [Financial Services](https://www.teenytechtrek.com/financial-services): Back-office smart automations targeting 20–25 hours/week savings.
+- [Real Estate](https://www.teenytechtrek.com/real-estate): Agentic AI for listing prep with measured 50–60% prep-time reduction.
+- [Logistics](https://www.teenytechtrek.com/logistics): Driver WhatsApp bot and ETA flows targeting lower dwell time.
+- [Hospitality](https://www.teenytechtrek.com/hospitality): AI concierge and itinerary builder targeting more direct bookings.
+- [Education](https://www.teenytechtrek.com/education): Institutional collaboration and workshop programs.
+- [AEO/GEO compliance](https://www.teenytechtrek.com/aeo-geo): Authorized-Economic-Operator / Global-Economic-Operator customs and supply-chain compliance AI (note: this is a customs term, not Answer Engine Optimization).
+
+## Programs and entry points
+
+- [Pilot program](https://www.teenytechtrek.com/pilot): 14-day pilot framing.
+- [Audit form](https://www.teenytechtrek.com/auditform): Lead capture for an AI readiness review.
+- [Community](https://www.teenytechtrek.com/community): Local Tricity events and meetups.
+- [Tech Trekkers (techtrekkers.ai)](https://www.teenytechtrek.com/techtrekkers.ai): Community / brand sub-property.
+
+## Contact
+
+- Email: anisha.singla@teenytechtrek.com
+- Phone (Canada): +1 647-864-5465
+- Phone (India): +91 98558 06696
+- Address: 2nd Floor, Kalkat Bhawan, Sector 66B, Block C, GMADA Aerocity, Sahibzada Ajit Singh Nagar, Punjab 140306, India
+- LinkedIn: https://www.linkedin.com/company/teenytechtrek/
+- Instagram: https://www.instagram.com/teenytechtrek
+
+## Optional
+
+- [Privacy Policy](https://www.teenytechtrek.com/privacy)
+- [Terms of Service](https://www.teenytechtrek.com/terms)
+- [Refund Policy](https://www.teenytechtrek.com/refund)

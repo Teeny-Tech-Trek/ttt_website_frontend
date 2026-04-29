@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-white text-gray-800;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-semibold;
+  }
+  
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl leading-tight;
+  }
+  
+  h2 {
+    @apply text-3xl md:text-4xl leading-tight;
+  }
+  
+  h3 {
+    @apply text-2xl md:text-3xl leading-snug;
+  }
+  
+  p {
+    @apply leading-relaxed;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-6 py-3 font-medium transition-all duration-300 rounded-lg;
+  }
+  
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-primary-dark;
+  }
+  
+  .btn-secondary {
+    @apply bg-secondary text-white hover:bg-secondary-dark;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-primary text-primary hover:bg-primary-100;
+  }
+  
+  .card {
+    @apply p-6 bg-white rounded-xl shadow-card hover:shadow-card-hover transition-all duration-300;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary to-primary-light text-transparent bg-clip-text;
+  }
+  
+  .nav-link {
+    @apply relative text-gray-700 hover:text-primary transition-colors duration-300;
+  }
+  
+  .nav-link.active {
+    @apply text-primary;
+  }
+  
+ .nav-link.active::after {
+  @apply absolute bottom-0 left-0 w-full h-0.5 bg-primary;
+  content: '';
+}
+  
+  .section-title {
+    @apply mb-4 text-center font-display;
+  }
+  
+  .section-subtitle {
+    @apply text-lg text-gray-600 mb-12 text-center max-w-2xl mx-auto;
+  }
+}
+
+.glass {
+  @apply bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg border border-white border-opacity-20;
+}

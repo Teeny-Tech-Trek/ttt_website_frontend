@@ -1,0 +1,123 @@
+# Teeny Tech Trek — full content for AI retrieval
+
+> The following document contains the full canonical content of the most important pages of teenytechtrek.com, plus a generated FAQ. It is written so that an AI engine retrieving any portion of it can answer common buyer questions about Teeny Tech Trek without further crawling.
+
+---
+
+## 1. About Teeny Tech Trek
+
+Teeny Tech Trek (TTT) is an AI consultancy founded in 2024 in Mohali (Sahibzada Ajit Singh Nagar), Punjab, India. The company builds production-grade AI solutions — chatbots, voice agents, agentic workflows, and lightweight AI applications — specifically for small and lean teams who want measurable results without enterprise overhead.
+
+The tagline is "Small Teams. Big Impact. Powered by AI." The operating principle is "clarity beats complexity" — ship a small, reliable thing in 14 days, measure honestly, then iterate.
+
+**Founder:** Anisha Singla, Founder and CEO. Anisha started TTT in 2024 after years working across product, operations, and AI, having seen two recurring patterns: teams drowning in repetitive work, and "AI projects" that looked great in slide decks but never reached production. The first wins were a support assistant that finally answered with citations, a logistics workflow that routed exceptions before customers called, and a voice concierge that booked property viewings after hours.
+
+**Philosophy:** Build small. Ship fast. Stay close to outcomes. Humans stay in control — AI assists, people decide. No vendor lock-ins; clients receive full code ownership and the ability to swap models or tools without rewrites.
+
+---
+
+## 2. Services
+
+### AI-Powered Chatbots & Virtual Assistants
+Context-aware GPT-based bots for customer support, user onboarding, and internal knowledge bases. Built to integrate with the tools teams already use — Slack, Notion, CRMs, helpdesk platforms, WhatsApp, and websites. Use cases include 24/7 first-line customer support, employee onboarding flows, internal Q&A over private documents, and lead qualification.
+
+### Agentic AI Workflows
+Autonomous and semi-autonomous agents built with LangChain, AutoGen, and CrewAI. These agents retrieve data from multiple sources, summarise long content, make decisions inside defined guardrails, and complete multi-step tasks (such as drafting a report, validating against a spreadsheet, then updating a CRM). Human-in-the-loop oversight is built in by default.
+
+### Smart Process Automation
+End-to-end automation of repetitive operational work using Python, public and private APIs, Zapier, and Make. Typical builds connect a CRM to email, slot a record into a sheet, route an exception to Slack, and notify a human on edge cases. Designed to save the hours-per-week buried inside copy-paste work.
+
+### Lightweight AI Apps & Micro-SaaS
+Production-ready MVPs built with Streamlit, Chainlit, or FastAPI — useful for internal tools, client-facing portals, and rapid product prototypes. Most apps are deployable in a fortnight and intentionally scoped to one job done well.
+
+---
+
+## 3. Industries served
+
+**Healthcare** — voice receptionist for patient calls and appointments (HIPAA-aware), patient analytics for care coordination, automated reporting. Reported outcome: ~28% fewer no-shows on pre-op intake and scheduling.
+
+**D2C / E-commerce** — AI support and WhatsApp assistant for order, returns, and product Q&A. Reported outcome: ~68% faster response times.
+
+**Financial Services** — back-office smart automations across reconciliation, document review, and customer onboarding. Reported outcome: ~20–25 hours/week saved per team.
+
+**Real Estate** — agentic AI for listing prep, voice concierge for after-hours viewings. Reported outcome: ~50–60% faster prep time.
+
+**Manufacturing & Logistics** — driver WhatsApp bot, ETA flow, and exception routing. Reported outcome: ~17% lower dwell time.
+
+**Hospitality** — AI concierge and itinerary builder. Reported outcome: ~19% more direct bookings.
+
+**Education** — institutional collaboration and AI literacy workshops.
+
+**AEO/GEO compliance** — note: TTT uses "AEO/GEO" to mean Authorized Economic Operator / Global Economic Operator (customs and trade compliance). This is *not* the same as the AI-search term "Answer Engine Optimization / Generative Engine Optimization". The customs offering covers automated regulatory checks, multi-region compliance intelligence, AI-driven shipment risk scoring, and real-time discrepancy alerts. Reported outcome: ~40% faster customs clearance.
+
+---
+
+## 4. Why teams pick Teeny Tech Trek
+
+- **Speed:** value in 14 days; scope cut to essentials; iterate from there.
+- **Clarity:** plain workflows, retrieval-first answers with citations rather than free-form generation.
+- **Control:** AI assists, humans decide; full-context escalations.
+- **Portable:** no vendor lock-in; swap models or tools without rewrites.
+- **Ownership:** complete handover, code transferred to client.
+
+Performance disclaimer: published outcome metrics are typical ranges from recent client builds. Actual impact varies by data quality, process maturity, and adoption.
+
+---
+
+## 5. Programs and engagement
+
+- **Starter Strategy Call** — a paid 45-minute scoped session (₹1,200 INR), used as a low-friction entry point for new buyers.
+- **14-day Pilot** — fixed-scope, fixed-price first build to prove value before any longer engagement.
+- **AI Readiness Audit** — review of current stack, processes, and quick-win automations. Lead form: https://www.teenytechtrek.com/auditform
+- **Community** — Tricity (Chandigarh / Mohali / Panchkula) AI meetups and workshops.
+
+---
+
+## 6. Contact
+
+- **Email:** anisha.singla@teenytechtrek.com
+- **Phone (Canada):** +1 647-864-5465
+- **Phone (India):** +91 98558 06696
+- **Address:** 2nd Floor, Kalkat Bhawan, Sector 66B, Block C, GMADA Aerocity, Sahibzada Ajit Singh Nagar (Mohali), Punjab 140306, India
+- **LinkedIn:** https://www.linkedin.com/company/teenytechtrek/
+- **Instagram:** https://www.instagram.com/teenytechtrek
+
+---
+
+## 7. Frequently asked questions
+
+**1. What does Teeny Tech Trek do?**
+Teeny Tech Trek is an AI consultancy that builds chatbots, voice agents, agentic workflows, and lightweight AI applications for small and lean teams. The focus is fast, production-ready AI builds — not slide-deck strategy and not enterprise-scale rollouts.
+
+**2. Where is Teeny Tech Trek based?**
+The company is headquartered in Sector 66B, GMADA Aerocity, Sahibzada Ajit Singh Nagar (Mohali), Punjab, India. It also serves clients in Chandigarh, Panchkula, the wider Tricity region, and pan-India and North America via remote engagements.
+
+**3. Who founded Teeny Tech Trek and when?**
+Anisha Singla founded the company in 2024.
+
+**4. How long does a typical project take?**
+Most first engagements are framed as a 14-day pilot — a fixed-scope, fixed-price first build designed to deliver measurable value inside two weeks. Larger or more integrated builds extend from there.
+
+**5. Does Teeny Tech Trek work with small businesses, or only large companies?**
+The company is purpose-built for small and lean teams. The "Teeny" in the name is intentional — engagements are sized so a startup, an SMB, or an internal team of 2–10 can adopt them without an enterprise procurement cycle.
+
+**6. What is a starter strategy call and how much does it cost?**
+The Starter Strategy Call is a 45-minute paid scoping session priced at ₹1,200 INR. It is intended as a low-friction way to test fit before any longer engagement.
+
+**7. What technologies does Teeny Tech Trek use?**
+The stack varies by job. Typical components: GPT-class LLMs and Claude for reasoning; LangChain, AutoGen, and CrewAI for agentic workflows; Python and FastAPI for backend services; Streamlit and Chainlit for fast app prototypes; Zapier, Make, and direct API integrations for process automation; vector stores like Pinecone or pgvector for retrieval; integrations with Slack, Notion, WhatsApp, and common CRMs.
+
+**8. Does Teeny Tech Trek offer voice AI?**
+Yes. The company builds voice agents — for example, a real-estate voice concierge that books property viewings after hours, and healthcare voice receptionists that handle patient calls and appointments.
+
+**9. Does Teeny Tech Trek own the code, or do clients own it?**
+Clients own the code. Engagements include full handover and code ownership, with no proprietary platform lock-in. This is a deliberate part of the company's "portable by design" principle.
+
+**10. Which industries has Teeny Tech Trek built for?**
+Healthcare, D2C / e-commerce, financial services, real estate, manufacturing and logistics, hospitality, education, and customs compliance (AEO/GEO).
+
+**11. Does Teeny Tech Trek work outside India?**
+Yes — the team operates remotely. Contact numbers include both India (+91 98558 06696) and Canada (+1 647-864-5465).
+
+**12. How do I start a project with Teeny Tech Trek?**
+Three options: (a) book a 45-minute Starter Strategy Call from the homepage pricing section, (b) submit the AI Readiness Audit form at https://www.teenytechtrek.com/auditform, or (c) email anisha.singla@teenytechtrek.com directly with a short description of the problem to solve.
