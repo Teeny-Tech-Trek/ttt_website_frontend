@@ -55,6 +55,10 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ onOpenChatbot }) => (
     <ScrollToTop />
 
     <Routes>
+      {/* Standalone chatbot page (used by QR code) — actual UI is the
+          ChatbotModal in fullPage mode rendered globally in App.tsx. */}
+      <Route path="/chat" element={<></>} />
+
       {/* Public routes */}
       <Route path="/" element={<HomePage onOpenChatbot={onOpenChatbot} />} />
       

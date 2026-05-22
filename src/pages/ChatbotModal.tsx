@@ -13,6 +13,7 @@ import tttLogo from '../assets/teeny-logo.svg';
 interface ChatbotModalProps {
   isOpen: boolean;
   onClose: () => void;
+  fullPage?: boolean;
 }
 
 interface ButtonOption {
@@ -62,7 +63,7 @@ const ServiceCard: React.FC<{ title: string; description: string; price?: string
   </div>
 );
 
-const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
+const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage = false }) => {
   const { openAuthModal } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -397,10 +398,23 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <>
-      {isOpen && <div className="fixed inset-0 z-[9998] bg-black/30 backdrop-blur-sm md:hidden" onClick={onClose} />}
+      {isOpen && !fullPage && <div className="fixed inset-0 z-[9998] bg-black/30 backdrop-blur-sm md:hidden" onClick={onClose} />}
+
+      {/* Full-page backdrop on tablet/desktop — keeps the centered card from floating on a blank screen.
+          Hidden on mobile because the chat fills the viewport edge-to-edge. */}
+      {fullPage && isOpen && (
+        <div className="fixed inset-0 z-[9998] hidden md:block bg-gradient-to-br from-blue-50 via-white to-blue-50" />
+      )}
 
       <div
-        className={`
+        className={
+          fullPage
+            ? `fixed z-[9999] inset-0 h-[100dvh] bg-white overflow-hidden flex flex-col
+               md:max-w-[760px] md:mx-auto md:border-x md:border-blue-100
+               lg:inset-y-4 lg:h-auto lg:rounded-[18px] lg:border lg:border-blue-100 lg:shadow-[0_25px_60px_rgba(0,0,0,0.15),0_8px_20px_rgba(0,0,0,0.08)]
+               transition-opacity duration-200
+               ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`
+            : `
         fixed z-[9999] border border-blue-100 bg-white shadow-[0_25px_60px_rgba(0,0,0,0.15),0_8px_20px_rgba(0,0,0,0.08)]
         right-3 left-3 bottom-24 md:left-auto md:right-6 md:bottom-24
         w-auto md:w-[400px] md:min-w-[390px]
@@ -434,13 +448,15 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
             >
               <MoreVertical size={19} />
             </button>
-            <button
-              onClick={onClose}
-              className="p-2 text-white/90 transition-all duration-200 rounded-full hover:bg-white/15 hover:scale-105"
-              aria-label="Close chat"
-            >
-              <X size={19} />
-            </button>
+            {!fullPage && (
+              <button
+                onClick={onClose}
+                className="p-2 text-white/90 transition-all duration-200 rounded-full hover:bg-white/15 hover:scale-105"
+                aria-label="Close chat"
+              >
+                <X size={19} />
+              </button>
+            )}
 
             {isMenuOpen && (
               <div className="absolute right-2 top-[52px] z-20 w-40 p-2 bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.15)] border border-gray-100 animate-fade-in-up">
@@ -550,7 +566,10 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose }) => {
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="p-3 border-t bg-white border-blue-100">
+        <div
+          className="p-3 border-t bg-white border-blue-100"
+          style={fullPage ? { paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))' } : undefined}
+        >
           <form onSubmit={handleSendMessage} className="flex gap-2">
             <input
               ref={inputRef}
