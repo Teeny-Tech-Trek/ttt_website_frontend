@@ -276,16 +276,16 @@ const ClaudeAutomationRichCard: React.FC = () => (
     </div>
 
     {/* flow diagram */}
-    <div className="mt-1.5 sm:mt-2 lg:mt-3 rounded-lg sm:rounded-xl border border-blue-900/15 bg-blue-50/60 p-1.5 sm:p-2 lg:p-3">
-      <div className="flex items-center justify-between gap-0.5">
-        <span className="rounded sm:rounded-md bg-blue-900 px-1 sm:px-1.5 lg:px-2 py-0.5 sm:py-1 text-[0.4rem] sm:text-[0.5rem] lg:text-[0.58rem] font-semibold text-white">Input</span>
-        <svg className="h-2 w-2.5 sm:h-2.5 sm:w-3 lg:h-3 lg:w-4 shrink-0 text-blue-900/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-        <span className="flex items-center gap-0.5 sm:gap-1 rounded sm:rounded-md bg-white px-1 sm:px-1.5 lg:px-2 py-0.5 sm:py-1 text-[0.4rem] sm:text-[0.5rem] lg:text-[0.58rem] font-semibold text-blue-900 ring-1 ring-blue-900/25">
+    <div className="mt-1.5 sm:mt-2 lg:mt-3 rounded-lg sm:rounded-xl border border-blue-900/15 bg-blue-50/60 p-1 sm:p-2 lg:p-3">
+      <div className="flex items-center justify-between gap-px sm:gap-0.5">
+        <span className="rounded sm:rounded-md bg-blue-900 px-0.5 sm:px-1.5 lg:px-2 py-0.5 sm:py-1 text-[0.4rem] sm:text-[0.5rem] lg:text-[0.58rem] font-semibold text-white">Input</span>
+        <svg className="h-2 w-1.5 sm:h-2.5 sm:w-3 lg:h-3 lg:w-4 shrink-0 text-blue-900/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        <span className="flex items-center gap-px sm:gap-1 rounded sm:rounded-md bg-white px-0.5 sm:px-1.5 lg:px-2 py-0.5 sm:py-1 text-[0.4rem] sm:text-[0.5rem] lg:text-[0.58rem] font-semibold text-blue-900 ring-1 ring-blue-900/25">
           <ClaudeBurst className="h-2 w-2 sm:h-2.5 sm:w-2.5 lg:h-3 lg:w-3" />
           Claude AI
         </span>
-        <svg className="h-2 w-2.5 sm:h-2.5 sm:w-3 lg:h-3 lg:w-4 shrink-0 text-blue-900/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-        <span className="rounded sm:rounded-md bg-emerald-600 px-1 sm:px-1.5 lg:px-2 py-0.5 sm:py-1 text-[0.4rem] sm:text-[0.5rem] lg:text-[0.58rem] font-semibold text-white">Action</span>
+        <svg className="h-2 w-1.5 sm:h-2.5 sm:w-3 lg:h-3 lg:w-4 shrink-0 text-blue-900/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+        <span className="rounded sm:rounded-md bg-emerald-600 px-0.5 sm:px-1.5 lg:px-2 py-0.5 sm:py-1 text-[0.4rem] sm:text-[0.5rem] lg:text-[0.58rem] font-semibold text-white">Action</span>
       </div>
 
       <div className="mt-1.5 sm:mt-2 hidden sm:grid grid-cols-3 gap-1">
@@ -569,7 +569,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenChatbot }) => {
 
             {/* Right column - rich stack (chatbot + claude automation) */}
             <div
-              className="flex-shrink-0 w-[30vw] max-w-[130px] sm:w-[180px] sm:max-w-none md:w-[220px] lg:w-[270px]"
+              className="flex-shrink-0 w-[32vw] max-w-[140px] sm:w-[180px] sm:max-w-none md:w-[220px] lg:w-[270px]"
               ref={(el) => {
                 cardRefs.current[3] = el;
               }}

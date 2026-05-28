@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap,Star, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database } from 'lucide-react';
 import { HashLink } from 'react-router-hash-link';
-import heroImage from "../../../Images/Case Studies/Chatbots/ChatGPT Image Aug 12, 2025, 04_06_26 PM.png"
 import { useNavigate } from 'react-router-dom';
+import ChatbotRichCard from '../../../components/home/ChatbotRichCard';
 
 // Animation variants
 const fadeInUp = {
@@ -112,7 +112,7 @@ const ChatbotsPage = ({ onOpenChatbot }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white mt-16">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-white">
         <div className="absolute inset-0">
@@ -201,17 +201,13 @@ const ChatbotsPage = ({ onOpenChatbot }) => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
           >
-            <motion.div 
+            <motion.div
               className="p-8 rounded-2xl"
               whileHover={{ y: -10, transition: { duration: 0.3 } }}
             >
-              <img 
-                src={heroImage}
-                alt="AI Assistant retrieves policy and creates a helpdesk ticket"
-                className="object-cover w-3/4 mx-auto rounded-lg h-fit"
-              />
+              <ChatbotRichCard className="w-full max-w-md mx-auto" />
               <div className="mt-4 text-center">
-                <div className="text-sm text-gray-600">Hero diagram: Docs → Agent → Actions</div>
+                <div className="text-sm text-gray-600">Live preview: chat-driven AI assistant</div>
               </div>
             </motion.div>
           </motion.div>

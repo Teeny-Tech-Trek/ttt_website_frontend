@@ -25,10 +25,7 @@ import {
 } from 'lucide-react';
 import { HashLink } from 'react-router-hash-link';
 import { useNavigate } from 'react-router-dom';
-
-// TODO: replace with your final hero illustration asset (Section 6).
-// Using a public-path placeholder so the build doesn't break before the asset exists.
-const heroImage = '/images/claude-automations-hero.png';
+import ClaudeAutomationRichCard from '../../../components/home/ClaudeAutomationRichCard';
 
 // Animation variants (matched to the AI Chatbots page)
 const fadeInUp = {
@@ -252,7 +249,6 @@ const TaskRunnerDemo = () => {
 
 const ClaudeAutomationsPage = () => {
   const navigate = useNavigate();
-  const [heroImgError, setHeroImgError] = useState(false);
 
   const handle4WeekPilotBtn = () => {
     navigate('/pilot');
@@ -442,32 +438,14 @@ const ClaudeAutomationsPage = () => {
               transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
             >
               <motion.div
-                className="p-8 rounded-2xl"
+                className="pt-2 px-8 pb-8 rounded-2xl"
                 whileHover={{ y: -10, transition: { duration: 0.3 } }}
               >
-                {heroImgError ? (
-                  <div
-                    role="img"
-                    aria-label="Illustration of a worker whose files, email, and apps flow into Claude, which returns finished work like a built spreadsheet and a drafted report."
-                    className="flex flex-col items-center justify-center w-3/4 mx-auto rounded-lg bg-gradient-to-br from-blue-50 to-blue-100 aspect-[10/9]"
-                  >
-                    <Sparkles className="w-12 h-12 mb-3 text-blue-900" aria-hidden="true" />
-                    <span className="px-6 text-sm font-medium text-center text-blue-900">
-                      Your tools → Claude + Cowork → Finished work
-                    </span>
-                  </div>
-                ) : (
-                  <img
-                    src={heroImage}
-                    alt="Illustration of a worker whose files, email, and apps flow into Claude, which returns finished work like a built spreadsheet and a drafted report."
-                    width={1000}
-                    height={900}
-                    onError={() => setHeroImgError(true)}
-                    className="object-cover w-3/4 mx-auto rounded-lg h-fit"
-                  />
-                )}
+                <ClaudeAutomationRichCard className="w-full max-w-xl mx-auto" />
                 <div className="mt-4 text-center">
-                  <div className="text-sm text-gray-600">Flow: Your tools → Claude + Cowork → Finished work</div>
+                  <div className="text-sm text-gray-600">
+                    Flow: Your tools → Claude + Cowork → Finished work
+                  </div>
                 </div>
               </motion.div>
             </motion.div>

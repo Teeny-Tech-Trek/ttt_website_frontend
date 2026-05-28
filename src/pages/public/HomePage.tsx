@@ -99,6 +99,11 @@ const HomePage = ({ onOpenChatbot }: HomePageProps) => {
           <Pricing />
         </div>
       </section>
+
+      <section id="about-us">
+        <WhyUs />
+      </section>
+      
       <section id="faq">
         <FAQ />
       </section>
@@ -110,9 +115,6 @@ const HomePage = ({ onOpenChatbot }: HomePageProps) => {
       <section id="events">
         <Events />
       </section> */}
-      <section id="about-us">
-        <WhyUs />
-      </section>
       <section id="why-us-quote">
         <WhyUsQuote />
       </section>

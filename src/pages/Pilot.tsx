@@ -100,7 +100,7 @@ function Pilot() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      <div className="container max-w-6xl px-6 py-16 mx-auto">
+      <div className="container max-w-6xl px-6 py-28 mx-auto">
         
         {/* Main Header */}
         <div className="mb-16 text-center">

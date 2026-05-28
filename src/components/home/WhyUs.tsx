@@ -142,7 +142,7 @@ export default function WhyUs() {
     <section
       className="relative overflow-hidden bg-gray-50"
       style={{
-        padding: isMobile ? "72px 16px 64px" : "104px 24px 96px",
+        padding: isMobile ? "72px 16px 64px" : "44px 24px 26px",
         fontFamily: "'Plus Jakarta Sans', sans-serif",
       }}
     >

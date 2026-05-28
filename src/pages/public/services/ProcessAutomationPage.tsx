@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database, GitBranch, Workflow, Search, CheckSquare, AlertTriangle, Activity, Layers, Mail, Upload, Bell, Slack, Filter, AlertCircle, RefreshCw, Lock, RotateCcw } from 'lucide-react';
-import AutomationVideo from "../../../videos/SmartAutomations.mp4"
+import ProcessAutomationRichCard from "../../../components/home/ProcessAutomationRichCard";
 import { HashLink } from 'react-router-hash-link';
 
 // Animation variants
@@ -222,26 +222,14 @@ const ProcessAutomationPage = ({ onOpenChatbot }) => {
               </motion.div>
             </motion.div>
             
-          {/* Video Demo Section */}
-      
-          <motion.div 
+          {/* Live process automation preview */}
+          <motion.div
             className="relative"
             initial={{ opacity: 0, x: 60 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
           >
-            <div className="relative overflow-hidden bg-black shadow-2xl rounded-3xl aspect-video">
-              <video
-                className="object-cover w-full h-full"
-                autoPlay
-                loop
-                muted
-                playsInline
-              >
-                <source src={AutomationVideo} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
+            <ProcessAutomationRichCard className="w-full max-w-xl mx-auto" />
           </motion.div>
 
 

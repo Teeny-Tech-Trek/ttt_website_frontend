@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database, GitBranch, Workflow, Search, CheckSquare, AlertTriangle, Activity, Layers, Mail, Upload, Bell, Slack, Filter, AlertCircle, RefreshCw, Lock, RotateCcw, Monitor, Code, Star, CreditCard } from 'lucide-react';
-import LightweightAIAppsVideo from "../../../videos/LightweightAIApps.mp4"
+import AiAppsRichCard from "../../../components/home/AiAppsRichCard";
 import { HashLink } from 'react-router-hash-link';
 
 // Animation variants
@@ -240,26 +240,14 @@ const AiAppsPage = () => {
               </motion.div>
             </motion.div>
             
-            {/* App Dashboard Mock */}
-          {/* Video Demo Section */}
-            <motion.div 
+            {/* Live AI app preview */}
+            <motion.div
               className="relative"
               initial={{ opacity: 0, x: 60 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
             >
-              <div className="relative overflow-hidden bg-black shadow-2xl rounded-3xl aspect-video">
-                <video
-                  className="object-cover w-full h-full"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                >
-                  <source src={LightweightAIAppsVideo} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              </div>
+              <AiAppsRichCard className="w-full max-w-xl mx-auto" />
             </motion.div>
 
           </div>
