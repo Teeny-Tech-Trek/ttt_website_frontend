@@ -4,23 +4,22 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPublicPackagesByField } from '../../services/packageService';
 import type { Package } from '../../types/package';
-import RazorpayCheckoutButton from '../../components/ui/RazorPayCheckoutButton';
 
 const EXCLUDED_FIELDS: (keyof Package)[] = ['id', 'is_active', 'created_at', 'updated_at'];
 const FIELD_LABELS: Record<keyof Package, string> = {
-    name: 'Name',
-    slug: 'Slug',
-    description: 'Description',
-    price: 'Price (₹)',
-    duration_days: 'Duration (days)',
-    package_type: 'Package Type',
-    event_id: 'Event ID',
-    capacity: 'Capacity',
-    package_registration_deadline: 'Registration Deadline',
-    id: '',
-    is_active: '',
-    created_at: '',
-    updated_at: ''
+  name: 'Name',
+  slug: 'Slug',
+  description: 'Description',
+  price: 'Price (₹)',
+  duration_days: 'Duration (days)',
+  package_type: 'Package Type',
+  event_id: 'Event ID',
+  capacity: 'Capacity',
+  package_registration_deadline: 'Registration Deadline',
+  id: '',
+  is_active: '',
+  created_at: '',
+  updated_at: '',
 };
 
 const formatField = (key: keyof Package, value: any) => {
@@ -75,12 +74,12 @@ const PackageDetailPage: React.FC = () => {
           ))}
       </dl>
       <div className="mt-8">
-        <RazorpayCheckoutButton
-          packageId={pkg.id}
-          packageName={pkg.name}
-          description={pkg.description ?? ''}
-          amount={pkg.price}
-        />
+        <a
+          href="/#contact"
+          className="inline-block bg-blue-700 text-white py-3 px-8 rounded-xl text-lg font-semibold shadow hover:bg-blue-800 transition"
+        >
+          Contact us about this package
+        </a>
       </div>
     </div>
   );
