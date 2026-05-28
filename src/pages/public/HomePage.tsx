@@ -9,10 +9,12 @@ import Contact from '../../components/home/Contact';
 
 import About from '../../components/home/About';
 import WhyUs from '../../components/home/WhyUs';
+import WhyUsQuote from '../../components/home/WhyUsQuote';
 import { Helmet } from 'react-helmet-async';
 import Industries from '../../components/home/industries';
 import AboutPage from '../../components/layout/AboutUs';
 import AIServicesCards from '../../components/home/featuredCase';
+import AutonomousAgentic from '../../components/home/AutonomousAgentic';
 
 interface HomePageProps {
   onOpenChatbot?: () => void;
@@ -85,6 +87,10 @@ const HomePage = ({ onOpenChatbot }: HomePageProps) => {
        <section id="featuredCase">
         <AIServicesCards />
       </section>
+       <section id="autonomous-agentic">
+       <AutonomousAgentic />
+      </section>
+
       {/* <section id="tech-stack">
         <TechStack />
       </section> */}
@@ -106,6 +112,9 @@ const HomePage = ({ onOpenChatbot }: HomePageProps) => {
       </section> */}
       <section id="about-us">
         <WhyUs />
+      </section>
+      <section id="why-us-quote">
+        <WhyUsQuote />
       </section>
    
       <section id="contact">

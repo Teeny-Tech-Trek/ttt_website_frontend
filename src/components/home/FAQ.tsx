@@ -2,7 +2,6 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import Container from "../ui/Container";
-import AgenticWorkflowsImg from "../../Images/Extra Resources - Hero Page/WhatsApp Image 2025-09-22 at 10.31.55 PM.jpeg";
 
 const faqs = [
   {
@@ -37,9 +36,7 @@ const FAQ: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : { opacity: 0 }}
         >
-          <div className="max-w-4xl px-6 py-10 mx-auto mb-12 border border-gray-100 rounded-2xl">
-            <img src={AgenticWorkflowsImg} alt="Agentic Workflows" className="rounded-xl" />
-          </div>
+          
 
           <h2 className="mb-12 text-3xl font-bold text-center text-gray-900">FAQs</h2>
           <div className="max-w-3xl mx-auto space-y-8">
