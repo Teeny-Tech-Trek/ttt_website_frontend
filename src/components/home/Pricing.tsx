@@ -1,10 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { Check } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
-import { useAuth } from "../../context/AuthContext";
+import {
+  CalendarDays,
+  Check,
+  CheckCircle2,
+  Clock,
+  Loader2,
+  Mail,
+  MessageSquare,
+  Sparkles,
+  User,
+  Video,
+  X,
+} from "lucide-react";
 import Container from "../ui/Container";
 import SectionHeading from "../ui/SectionHeading";
 
@@ -13,255 +22,394 @@ const DEFAULT_API_BASE_URL = import.meta.env.DEV
   : "https://api.teenytechtrek.com";
 const API_BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL || DEFAULT_API_BASE_URL;
 
-const loadCalendly = (): Promise<boolean> => {
-  return new Promise((resolve) => {
-    if (document.getElementById("calendly-sdk")) {
-      return resolve(true);
-    }
-    const script = document.createElement("script");
-    script.id = "calendly-sdk";
-    script.src = "https://assets.calendly.com/assets/external/widget.js";
-    script.async = true;
-    script.onload = () => resolve(true);
-    script.onerror = () => {
-      console.error("Failed to load Calendly SDK");
-      resolve(false);
-    };
-    document.body.appendChild(script);
+const meeting = {
+  id: "free-ai-strategy-call",
+  name: "AI Consultation Session",
+  description:
+    "Perfect for founders, startups, and teams exploring AI automation, workflows, integrations, chatbots, or custom AI solutions.",
+  priceLabel: "30 Min",
+  mode: "Google Meet",
+  ledBy: "TTT Team",
+  cta: "Book a Free Meet",
+  deliverables: [
+    "AI workflow discussion",
+    "Automation guidance",
+    "AI tool recommendations",
+    "Use-case brainstorming",
+    "Tech stack suggestions",
+    "Live Google Meet session",
+    "Follow-up resources via email",
+  ],
+};
+
+const timeSlots = [
+  { label: "10:00 AM", value: "10:00" },
+  { label: "10:30 AM", value: "10:30" },
+  { label: "11:00 AM", value: "11:00" },
+  { label: "11:30 AM", value: "11:30" },
+  { label: "2:00 PM", value: "14:00" },
+  { label: "2:30 PM", value: "14:30" },
+  { label: "3:00 PM", value: "15:00" },
+  { label: "3:30 PM", value: "15:30" },
+  { label: "4:00 PM", value: "16:00" },
+  { label: "4:30 PM", value: "16:30" },
+];
+
+type BookingForm = {
+  name: string;
+  email: string;
+  message: string;
+};
+
+const formatDateValue = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
+const formatCalendarLabel = (dateValue: string) => {
+  const date = new Date(`${dateValue}T12:00:00`);
+  return date.toLocaleDateString(undefined, {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
   });
 };
 
-const loadRazorpay = (): Promise<boolean> => {
-  return new Promise((resolve) => {
-    if (document.getElementById("razorpay-sdk")) {
-      return resolve(true);
-    }
-    const script = document.createElement("script");
-    script.id = "razorpay-sdk";
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.async = true;
-    script.onload = () => resolve(true);
-    script.onerror = () => {
-      console.error("Failed to load Razorpay SDK");
-      resolve(false);
-    };
-    document.body.appendChild(script);
-  });
+const getSlotDateRange = (dateValue: string, timeValue: string) => {
+  const [hour, minute] = timeValue.split(":").map(Number);
+  const start = new Date(`${dateValue}T00:00:00`);
+  start.setHours(hour, minute, 0, 0);
+
+  const end = new Date(start);
+  end.setMinutes(end.getMinutes() + 30);
+
+  return {
+    startTime: start.toISOString(),
+    endTime: end.toISOString(),
+  };
 };
 
-const packages = [
-  {
-    id: "d0f1c2a3-b456-4c78-9abc-def123456789",
-    name: "AI Consultation Session",
-    description:
-      "Perfect for founders, startups, and teams exploring AI automation, chatbots, workflows, integrations, or custom AI solutions.",
-    price: 0,
-    priceLabel: "30 Min",
-    duration: 0,
-    for: "Google Meet",
-    forLabel: "Mode",
-    ledBy: "TTT Team",
-    deliverables: [
-      "AI project discussion",
-      "Workflow & automation guidance",
-      "AI tool recommendations",
-      "Use-case brainstorming",
-      "Tech stack suggestions",
-      "Live Google Meet session",
-      "Follow-up resources via email",
-    ],
-    followUp: "",
-    cta: "Book a Free Meet",
-    schemaType: "Product",
-  },
-];
+const getInitialDate = () => {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  return formatDateValue(tomorrow);
+};
 
-const addOns = [
-  { id: "roi", name: "ROI calculator deep-dive", price: 500 },
-  { id: "pitch", name: "Proposal/pitch deck skeleton", price: 300 },
-  { id: "case", name: "Case study pack", price: 400 },
-  { id: "security", name: "Security mini-review", price: 600 },
-  { id: "backlog", name: "Pre-pilot backlog", price: 350 },
-];
-
-const SubscriptionPricing: React.FC = () => {
-  const { user, accessToken, loading } = useAuth();
-  const navigate = useNavigate();
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+const SchedulingModal = ({
+  isOpen,
+  onClose,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+}) => {
+  const [selectedDate, setSelectedDate] = useState(getInitialDate);
+  const [selectedSlot, setSelectedSlot] = useState(timeSlots[0].value);
+  const [form, setForm] = useState<BookingForm>({ name: "", email: "", message: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [loadingAction, setLoadingAction] = useState<string | null>(null);
-  const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
-  const [showFormFor, setShowFormFor] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
-    goals: "",
-    tools: "",
-    dataSources: "",
-    mustHaveOutcome: "",
-  });
+  const [success, setSuccess] = useState<{ meetLink?: string } | null>(null);
 
-  useEffect(() => {
-    loadCalendly();
-    loadRazorpay();
+  const days = useMemo(() => {
+    return Array.from({ length: 14 }, (_, index) => {
+      const date = new Date();
+      date.setDate(date.getDate() + index + 1);
+      return {
+        value: formatDateValue(date),
+        weekday: date.toLocaleDateString(undefined, { weekday: "short" }),
+        day: date.getDate(),
+        month: date.toLocaleDateString(undefined, { month: "short" }),
+      };
+    });
   }, []);
 
-  const validateForm = () => {
-    if (!formData.goals || !formData.tools || !formData.dataSources || !formData.mustHaveOutcome) {
-      setError("Please fill out all required fields.");
-      return false;
-    }
+  if (!isOpen) return null;
+
+  const selectedSlotLabel =
+    timeSlots.find((slot) => slot.value === selectedSlot)?.label || timeSlots[0].label;
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
     setError("");
-    return true;
-  };
 
-  const handleAddOnChange = (addOnId: string) => {
-    setSelectedAddOns((prev) =>
-      prev.includes(addOnId) ? prev.filter((id) => id !== addOnId) : [...prev, addOnId]
-    );
-    window.dataLayer?.push({ event: "consult_addon_select", addon: addOns.find((addOn) => addOn.id === addOnId)?.name });
-  };
-
-  const calculateTotal = (pkg: typeof packages[0]) => {
-    const basePrice = typeof pkg.price === "number" ? pkg.price : 0;
-    const addOnTotal = addOns
-      .filter((addOn) => selectedAddOns.includes(addOn.id))
-      .reduce((sum, addOn) => sum + addOn.price, 0);
-    return basePrice + addOnTotal;
-  };
-
-  const handleBookClick = (pkg: typeof packages[0]) => {
-    if (!user || !accessToken) {
-      navigate("/");
-      toast("Please sign in to continue booking!");
+    if (!form.name.trim() || !form.email.trim()) {
+      setError("Please enter your name and email to receive the invite.");
       return;
     }
-    if (pkg.price === 0) {
-      setLoadingAction(pkg.id);
-      window.dataLayer?.push({ event: "consult_file_download", file: "audit_kit" });
-      toast.success(
-        "Your Google Meet consultation has been booked successfully. A calendar invite and meeting link have been sent to your email"
-      );
-           navigate("/auditform");
-      setLoadingAction(null);
-      return;
-    }
-    if (showFormFor === pkg.id) {
-      setShowFormFor(null);
-      setSelectedAddOns([]);
-    } else {
-      setShowFormFor(pkg.id);
-      setError("");
-      setFormData({ goals: "", tools: "", dataSources: "", mustHaveOutcome: "" });
-      setSelectedAddOns([]);
-      window.dataLayer?.push({ event: "consult_tier_select", tier: pkg.name });
+
+    setIsSubmitting(true);
+
+    try {
+      const { startTime, endTime } = getSlotDateRange(selectedDate, selectedSlot);
+      const response = await fetch(`${API_BASE_URL}/api/consultations/book`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name.trim(),
+          email: form.email.trim(),
+          startTime,
+          endTime,
+          message: form.message.trim(),
+        }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || "Could not book your meeting. Please try again.");
+      }
+
+      setSuccess({ meetLink: data.meetLink });
+    } catch (err: any) {
+      setError(err.message || "Could not book your meeting. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-const handleFormSubmit = async (pkg: typeof packages[0]) => {
-  if (!user || !accessToken) {
-    navigate("/login");
-    toast("Please sign in to continue booking!");
-    return;
-  }
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96, y: 18 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        className="relative w-full max-w-5xl overflow-hidden bg-white border border-white shadow-2xl rounded-2xl"
+      >
+        <button
+          onClick={onClose}
+          className="absolute z-10 p-2 text-gray-500 transition-colors rounded-full right-4 top-4 hover:bg-gray-100 hover:text-gray-900"
+          aria-label="Close booking modal"
+        >
+          <X className="w-5 h-5" />
+        </button>
 
-  if (!validateForm()) return;
+        {success ? (
+          <div className="grid min-h-[560px] place-items-center px-6 py-14 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="max-w-lg"
+            >
+              <div className="flex items-center justify-center w-20 h-20 mx-auto mb-6 rounded-full bg-green-50">
+                <CheckCircle2 className="w-10 h-10 text-green-600" />
+              </div>
+              <p className="mb-3 text-xs font-bold tracking-[0.2em] text-blue-900 uppercase">
+                Meeting booked
+              </p>
+              <h3 className="mb-4 text-3xl font-bold text-gray-900">
+                Your Google Meet consultation has been booked successfully.
+              </h3>
+              <p className="mb-6 leading-relaxed text-gray-600">
+                A calendar invite and meeting link have been sent to your email.
+              </p>
+              {success.meetLink && (
+                <a
+                  href={success.meetLink}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 mb-4 text-sm font-semibold text-blue-900 transition-colors rounded-lg bg-blue-50 hover:bg-blue-100"
+                >
+                  <Video className="w-4 h-4" />
+                  Open Google Meet
+                </a>
+              )}
+              <div>
+                <button
+                  onClick={onClose}
+                  className="px-6 py-3 text-sm font-semibold text-white transition-colors bg-blue-900 rounded-lg shadow-sm hover:bg-blue-700"
+                >
+                  Done
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        ) : (
+          <div className="grid max-h-[90vh] overflow-y-auto lg:grid-cols-[0.9fr_1.25fr]">
+            <div className="relative p-8 overflow-hidden text-white bg-blue-950 sm:p-10">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-blue-950 to-slate-950" />
+              <div className="relative z-10">
+                <span className="inline-flex items-center gap-2 px-3 py-1 mb-6 text-xs font-bold tracking-wide uppercase rounded-full bg-white/10 text-blue-50 ring-1 ring-white/15">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Free Google Meet
+                </span>
+                <h3 className="mb-4 text-3xl font-bold leading-tight">
+                  Book your free AI Strategy Call
+                </h3>
+                <p className="mb-8 leading-relaxed text-blue-100">
+                  Discuss your AI goals, workflows, automation ideas, and implementation roadmap
+                  with our team in a live Google Meet consultation.
+                </p>
 
-  setLoadingAction(pkg.id);
-  window.dataLayer?.push({ event: "calendly_open", tier: pkg.name });
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10">
+                      <Clock className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-blue-100">Duration</p>
+                      <p className="font-semibold">30 minutes</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10">
+                      <Video className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-blue-100">Mode</p>
+                      <p className="font-semibold">Google Meet invite by email</p>
+                    </div>
+                  </div>
+                </div>
 
-  try {
-    // 1️⃣ Create Razorpay order
-    const orderResponse = await fetch(`${API_BASE_URL}/consultations/create-order`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
-        package_id: pkg.id,
-        add_ons: selectedAddOns,
-        form_data: formData,
-        total_amount: calculateTotal(pkg),
-      }),
-    });
+                <div className="pt-8 mt-8 border-t border-white/15">
+                  <p className="mb-4 text-sm font-semibold text-blue-50">What we can cover</p>
+                  <ul className="space-y-3 text-sm text-blue-100">
+                    {meeting.deliverables.slice(0, 5).map((item) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <Check className="w-4 h-4 mt-0.5 text-blue-200" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
 
-    if (!orderResponse.ok) {
-      const errorData = await orderResponse.json();
-      throw new Error(errorData.message || "Failed to create payment order.");
-    }
+            <form onSubmit={handleSubmit} className="p-6 bg-white sm:p-8">
+              <div className="flex items-center gap-3 mb-5">
+                <CalendarDays className="w-5 h-5 text-blue-900" />
+                <div>
+                  <h4 className="text-lg font-bold text-gray-900">Choose a date</h4>
+                  <p className="text-sm text-gray-500">{formatCalendarLabel(selectedDate)}</p>
+                </div>
+              </div>
 
-    const { orderId, key, amount, currency } = await orderResponse.json();
+              <div className="grid grid-cols-2 gap-3 mb-7 sm:grid-cols-4 lg:grid-cols-7">
+                {days.map((day) => {
+                  const isSelected = day.value === selectedDate;
+                  return (
+                    <button
+                      type="button"
+                      key={day.value}
+                      onClick={() => setSelectedDate(day.value)}
+                      className={`rounded-xl border p-3 text-center transition-all ${
+                        isSelected
+                          ? "border-blue-900 bg-blue-900 text-white shadow-lg shadow-blue-900/20"
+                          : "border-gray-200 bg-gray-50 text-gray-700 hover:border-blue-200 hover:bg-blue-50"
+                      }`}
+                    >
+                      <span className="block text-xs font-medium opacity-80">{day.weekday}</span>
+                      <span className="block text-xl font-bold">{day.day}</span>
+                      <span className="block text-xs opacity-80">{day.month}</span>
+                    </button>
+                  );
+                })}
+              </div>
 
-    // 2️⃣ Razorpay payment options
-    const options = {
-      key,
-      amount: amount * 100, // Razorpay expects paise
-      currency,
-      name: "TeenyTechTrek",
-      description: `${pkg.name} Consultation`,
-      order_id: orderId,
-      prefill: {
-        name: user?.username || "",
-        email: user?.email || "",
-      },
-      theme: { color: "#2563EB" },
+              <div className="mb-7">
+                <div className="flex items-center gap-3 mb-4">
+                  <Clock className="w-5 h-5 text-blue-900" />
+                  <div>
+                    <h4 className="text-lg font-bold text-gray-900">Pick a time slot</h4>
+                    <p className="text-sm text-gray-500">Selected: {selectedSlotLabel}</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {timeSlots.map((slot) => {
+                    const isSelected = slot.value === selectedSlot;
+                    return (
+                      <button
+                        type="button"
+                        key={slot.value}
+                        onClick={() => setSelectedSlot(slot.value)}
+                        className={`rounded-lg border px-4 py-3 text-sm font-semibold transition-all ${
+                          isSelected
+                            ? "border-blue-900 bg-blue-50 text-blue-900 ring-2 ring-blue-900/10"
+                            : "border-gray-200 text-gray-700 hover:border-blue-200 hover:bg-blue-50"
+                        }`}
+                      >
+                        {slot.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
 
-      // 3️⃣ Payment success handler
-      handler: async (response: any) => {
-        try {
-          const bookingRes = await fetch(`${API_BASE_URL}/consultations/create`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-            body: JSON.stringify({
-              package_id: pkg.id,
-              add_ons: selectedAddOns,
-              form_data: formData,
-              total_amount: calculateTotal(pkg),
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_signature: response.razorpay_signature,
-            }),
-          });
+              <div className="grid gap-4 mb-5 sm:grid-cols-2">
+                <label className="block">
+                  <span className="flex items-center gap-2 mb-2 text-sm font-semibold text-gray-700">
+                    <User className="w-4 h-4" />
+                    Name
+                  </span>
+                  <input
+                    value={form.name}
+                    onChange={(event) => setForm({ ...form, name: event.target.value })}
+                    className="w-full px-4 py-3 transition-colors border border-gray-200 rounded-lg outline-none focus:border-blue-900 focus:ring-2 focus:ring-blue-900/10"
+                    placeholder="Your name"
+                  />
+                </label>
+                <label className="block">
+                  <span className="flex items-center gap-2 mb-2 text-sm font-semibold text-gray-700">
+                    <Mail className="w-4 h-4" />
+                    Email
+                  </span>
+                  <input
+                    type="email"
+                    value={form.email}
+                    onChange={(event) => setForm({ ...form, email: event.target.value })}
+                    className="w-full px-4 py-3 transition-colors border border-gray-200 rounded-lg outline-none focus:border-blue-900 focus:ring-2 focus:ring-blue-900/10"
+                    placeholder="you@example.com"
+                  />
+                </label>
+              </div>
 
-          if (!bookingRes.ok) {
-            const errorData = await bookingRes.json();
-            throw new Error(errorData.message || "Booking failed. Please try again.");
-          }
+              <label className="block mb-5">
+                <span className="flex items-center gap-2 mb-2 text-sm font-semibold text-gray-700">
+                  <MessageSquare className="w-4 h-4" />
+                  Message
+                </span>
+                <textarea
+                  value={form.message}
+                  onChange={(event) => setForm({ ...form, message: event.target.value })}
+                  className="w-full min-h-[104px] resize-none px-4 py-3 transition-colors border border-gray-200 rounded-lg outline-none focus:border-blue-900 focus:ring-2 focus:ring-blue-900/10"
+                  placeholder="Tell us what you want to explore. AI workflows, automation, chatbots, integrations..."
+                />
+              </label>
 
-          window.dataLayer?.push({ event: "calendly_booked", tier: pkg.name });
-          toast.success("Booking confirmed! Check your email for confirmation.");
+              {error && (
+                <div className="px-4 py-3 mb-5 text-sm font-medium text-red-600 rounded-lg bg-red-50">
+                  {error}
+                </div>
+              )}
 
-          // Reset form & UI
-          setShowFormFor(null);
-          setFormData({ goals: "", tools: "", dataSources: "", mustHaveOutcome: "" });
-          setSelectedAddOns([]);
-        } catch (err: any) {
-          setError(err.message || "Booking failed. Please try again.");
-        }
-      },
-
-      // Optional: handle payment failures
-      modal: {
-        ondismiss: () => {
-          setError("Payment was cancelled.");
-        },
-      },
-    };
-
-    // 4️⃣ Open Razorpay checkout
-    const rzp = new (window as any).Razorpay(options);
-    rzp.open();
-  } catch (err: any) {
-    setError(err.message || "Failed to create payment order.");
-  } finally {
-    setLoadingAction(null);
-  }
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="flex items-center justify-center w-full gap-2 px-6 py-4 text-sm font-bold text-white transition-colors bg-blue-900 rounded-lg shadow-lg shadow-blue-900/20 hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Booking your meeting...
+                  </>
+                ) : (
+                  <>
+                    <Video className="w-4 h-4" />
+                    Book Meeting
+                  </>
+                )}
+              </button>
+            </form>
+          </div>
+        )}
+      </motion.div>
+    </div>
+  );
 };
 
-
-  if (loading) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+const SubscriptionPricing: React.FC = () => {
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -281,17 +429,6 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
           subtitle="Discuss your AI goals, workflows, automation ideas, and implementation roadmap with our team in a live Google Meet consultation."
         />
 
-        {error && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="max-w-2xl px-4 py-3 mx-auto mb-6 font-medium text-center text-red-500 rounded-lg bg-red-50"
-          >
-            {error}
-          </motion.div>
-        )}
-
-        {/* Single offering — DIY Audit Kit (logic unchanged; only one package is rendered) */}
         <motion.div
           ref={ref}
           initial="hidden"
@@ -299,189 +436,75 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
           variants={containerVariants}
           className="max-w-xl mx-auto"
         >
-          {packages.map((pkg) => {
-            const priceText =
-              (pkg as any).priceLabel ??
-              (pkg.price === 0 ? "Free" : `₹${pkg.price.toLocaleString()}`);
-            return (
-              <motion.div
-                key={pkg.id}
-                variants={itemVariants}
-                className="relative flex flex-col p-8 transition-all bg-white border border-gray-100 shadow-lg sm:p-10 rounded-2xl hover:shadow-xl"
-                itemScope
-                itemType="http://schema.org/Product"
-              >
-                <meta itemProp="name" content={pkg.name} />
-                <meta itemProp="description" content={pkg.description} />
-                {pkg.price !== 0 && <meta itemProp="price" content={pkg.price.toString()} />}
-                {pkg.duration !== 0 && <meta itemProp="duration" content={`PT${pkg.duration}M`} />}
+          <motion.div
+            variants={itemVariants}
+            className="relative flex flex-col p-8 transition-all bg-white border border-gray-100 shadow-lg sm:p-10 rounded-2xl hover:shadow-xl"
+            itemScope
+            itemType="http://schema.org/Product"
+          >
+            <meta itemProp="name" content={meeting.name} />
+            <meta itemProp="description" content={meeting.description} />
 
-                {/* Header */}
-                <div className="mb-6 text-center">
-                  <span className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wide text-blue-800 uppercase rounded-full bg-blue-100">
-                    Free Google Meet
-                  </span>
-                  <h3 className="mb-2 text-3xl font-bold text-gray-900">{pkg.name}</h3>
-                  <p className="text-gray-600">{pkg.description}</p>
-                </div>
+            <div className="mb-6 text-center">
+              <span className="inline-flex items-center gap-2 px-3 py-1 mb-4 text-xs font-semibold tracking-wide text-blue-800 uppercase rounded-full bg-blue-100">
+                <Video className="w-3.5 h-3.5" />
+                Free Google Meet
+              </span>
+              <h3 className="mb-2 text-3xl font-bold text-gray-900">{meeting.name}</h3>
+              <p className="text-gray-600">{meeting.description}</p>
+            </div>
 
-                {/* Price */}
-                <div className="mb-6 text-center">
-                  <span className="text-5xl font-bold text-gray-900">{priceText}</span>
-                  {pkg.duration > 0 && (
-                    <span className="text-base text-gray-500 font-medium ml-1.5">/ {pkg.duration} mins</span>
-                  )}
-                </div>
+            <div className="mb-6 text-center">
+              <span className="text-5xl font-bold text-gray-900">{meeting.priceLabel}</span>
+            </div>
 
-                {/* Meta */}
-                <div className="flex flex-wrap justify-center mb-6 text-sm text-gray-500 gap-x-6 gap-y-1">
-                  <span>
-                    <span className="font-medium text-gray-700 mr-1.5">{(pkg as any).forLabel ?? "For"}:</span>{pkg.for}
-                  </span>
-                  <span>
-                    <span className="font-medium text-gray-700 mr-1.5">Led by:</span>{pkg.ledBy}
-                  </span>
-                </div>
+            <div className="flex flex-wrap justify-center mb-6 text-sm text-gray-500 gap-x-6 gap-y-1">
+              <span>
+                <span className="font-medium text-gray-700 mr-1.5">Mode:</span>
+                {meeting.mode}
+              </span>
+              <span>
+                <span className="font-medium text-gray-700 mr-1.5">Led by:</span>
+                {meeting.ledBy}
+              </span>
+            </div>
 
-                {/* Deliverables */}
-                <div className="p-5 mb-6 border border-gray-100 sm:p-6 rounded-xl bg-gray-50">
-                  <p className="mb-4 text-sm font-semibold text-gray-900">What's included</p>
-                  <ul className="text-left text-gray-700 space-y-3.5">
-                    {pkg.deliverables.map((deliverable, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <Check className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm">{deliverable}</span>
-                      </li>
-                    ))}
-                    {pkg.followUp && (
-                      <li className="flex items-start gap-3 pt-3 border-t border-gray-200">
-                        <Check className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm"><span className="font-medium">Follow-up:</span> {pkg.followUp}</span>
-                      </li>
-                    )}
-                  </ul>
-                </div>
+            <div className="p-5 mb-6 border border-gray-100 sm:p-6 rounded-xl bg-gray-50">
+              <p className="mb-4 text-sm font-semibold text-gray-900">What's included</p>
+              <ul className="text-left text-gray-700 space-y-3.5">
+                {meeting.deliverables.map((deliverable) => (
+                  <li key={deliverable} className="flex items-start gap-3">
+                    <Check className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm">{deliverable}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-                {showFormFor === pkg.id && pkg.price > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="p-4 mb-6 space-y-5 border border-gray-200 rounded-lg bg-gray-50"
-                  >
-                    <div>
-                      <label className="block mb-2 text-sm font-medium text-gray-700">
-                        Your Goals
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.goals}
-                        onChange={(e) => setFormData({ ...formData, goals: e.target.value })}
-                        placeholder="What do you want to achieve?"
-                        className="w-full p-3 transition-colors border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block mb-2 text-sm font-medium text-gray-700">
-                        Current Tools
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.tools}
-                        onChange={(e) => setFormData({ ...formData, tools: e.target.value })}
-                        placeholder="List tools you currently use"
-                        className="w-full p-3 transition-colors border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block mb-2 text-sm font-medium text-gray-700">
-                        Data Sources
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.dataSources}
-                        onChange={(e) => setFormData({ ...formData, dataSources: e.target.value })}
-                        placeholder="What data sources do you have?"
-                        className="w-full p-3 transition-colors border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      />
-                    </div>
-                    <div>
-                      <label className="block mb-2 text-sm font-medium text-gray-700">
-                        Must-Have Outcome
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.mustHaveOutcome}
-                        onChange={(e) => setFormData({ ...formData, mustHaveOutcome: e.target.value })}
-                        placeholder="What's your key outcome?"
-                        className="w-full p-3 transition-colors border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      />
-                    </div>
-
-                    <div className="pt-2 border-t border-gray-200">
-                      <label className="block mb-3 text-sm font-medium text-gray-700">
-                        Optional Add-Ons
-                      </label>
-                      <div className="space-y-2">
-                        {addOns.map((addOn) => (
-                          <div key={addOn.id} className="flex items-center gap-3">
-                            <input
-                              type="checkbox"
-                              id={`${pkg.id}-${addOn.id}`}
-                              checked={selectedAddOns.includes(addOn.id)}
-                              onChange={() => handleAddOnChange(addOn.id)}
-                              className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-                            />
-                            <label htmlFor={`${pkg.id}-${addOn.id}`} className="text-sm text-gray-700">
-                              {addOn.name} (₹{addOn.price})
-                            </label>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="pt-3 text-lg font-semibold text-gray-900 border-t border-gray-200">
-                      Total: ₹{calculateTotal(pkg).toLocaleString()}
-                    </div>
-
-                    <button
-                      onClick={() => handleFormSubmit(pkg)}
-                      disabled={loadingAction === pkg.id}
-                      className="w-full px-6 py-3 font-medium text-white transition-colors bg-blue-900 rounded-lg shadow-sm hover:bg-blue-700 disabled:opacity-70 disabled:cursor-not-allowed"
-                    >
-                      {loadingAction === pkg.id ? "Processing..." : "Confirm Booking"}
-                    </button>
-                  </motion.div>
-                )}
-
-                <div className="pt-2 mt-auto">
-                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                    <button
-                      onClick={() => handleBookClick(pkg)}
-                      disabled={loadingAction === pkg.id}
-                      className="flex items-center justify-center w-full h-12 px-3 text-sm font-medium text-white transition-colors bg-blue-900 rounded-lg shadow-sm hover:bg-blue-700 disabled:opacity-70 disabled:cursor-not-allowed"
-                    >
-                      <span className="leading-tight text-center">
-                        {loadingAction === pkg.id ? "Processing..." : pkg.cta}
-                      </span>
-                    </button>
-                  </motion.div>
-
-                  <div className="flex flex-wrap justify-center gap-2 mt-4">
-                    <span className="text-xs bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">
-                      Free
-                    </span>
-                    <span className="text-xs bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">
-                      PDF deliverable
-                    </span>
-                    <span className="text-xs bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">
-                      Self-guided
-                    </span>
-                  </div>
-                </div>
+            <div className="pt-2 mt-auto">
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="flex items-center justify-center w-full h-12 gap-2 px-3 text-sm font-medium text-white transition-colors bg-blue-900 rounded-lg shadow-sm hover:bg-blue-700"
+                >
+                  <CalendarDays className="w-4 h-4" />
+                  <span className="leading-tight text-center">{meeting.cta}</span>
+                </button>
               </motion.div>
-            );
-          })}
+
+              <div className="flex flex-wrap justify-center gap-2 mt-4">
+                <span className="text-xs bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">
+                  Free
+                </span>
+                <span className="text-xs bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">
+                  Calendar invite
+                </span>
+                <span className="text-xs bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">
+                  Google Meet
+                </span>
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
 
         <motion.div
@@ -493,18 +516,22 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
             Book a time that works for you
           </h2>
           <p className="max-w-3xl mx-auto mb-6 text-lg leading-relaxed text-gray-600">
-            All times shown in your local time. Bookings include a calendar invite with Google Meet link. 
-            Reschedule up to 24h before your slot.
+            Choose a date and time in the popup. Your booking creates a Google Calendar invite
+            with a Google Meet link automatically.
           </p>
           <p className="mt-6 text-lg text-gray-600">
-            Can't use the widget? Email us at{" "}
-            <a href="mailto:anisha.singla@teenytechtrek.com" className="font-medium text-blue-900 hover:underline">
+            Can't use the scheduler? Email us at{" "}
+            <a
+              href="mailto:anisha.singla@teenytechtrek.com"
+              className="font-medium text-blue-900 hover:underline"
+            >
               anisha.singla@teenytechtrek.com
             </a>
           </p>
         </motion.div>
-
       </Container>
+
+      <SchedulingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </section>
   );
 };
