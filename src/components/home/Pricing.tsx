@@ -68,60 +68,6 @@ const packages = [
     cta: "Get your free audit",
     schemaType: "Product",
   },
-  {
-    id: "3b9320e7-8bc5-479d-9a42-b9ab2fc1afa9",
-    name: "Strategy Call",
-    description: "Best for founders/solo operators who want a crisp plan now.",
-    price: 1200,
-    duration: 45,
-    for: "Founder",
-    ledBy: "Anisha (Founder & Product/AI)",
-    deliverables: [
-      "1-page plan (PDF) goal, stack, 2–3 next actions",
-      "Mini prompt pack 3 starter prompts",
-      "Loom recap (5–7 min) next 2 weeks",
-    ],
-    followUp: "7 days email support",
-    cta: "Book the 45-min call",
-    schemaType: "Product",
-    mostBooked: true,
-  },
-  {
-    id: "c46c37e2-de78-4443-abb2-12589fad1a5b",
-    name: "Audit & Roadmap",
-    description: "Best for service studios/marketing agencies adding AI.",
-    price: 2100,
-    duration: 90,
-    for: "Agencies",
-    ledBy: "Anisha + Lead AI Architect",
-    deliverables: [
-      "Roadmap (PDF, 2–3 pages) 90-day plan, pilot scope",
-      "Integration notes HubSpot/Zapier/Make/Sheets",
-      "Guardrails sheet what not to ship",
-    ],
-    followUp: "14 days async Q&A (email/WhatsApp)",
-    cta: "Schedule the 90-min audit",
-    schemaType: "Product",
-    mostBooked: true,
-  },
-  {
-    id: "6a71c226-d189-4f92-89df-c3896c25fc6c",
-    name: "Strategy Workshop",
-    description: "Best for teams with multiple stakeholders and compliance needs.",
-    price: 9500,
-    duration: 120,
-    for: "Teams",
-    ledBy: "Anisha + Lead AI Architect",
-    deliverables: [
-      "Executive brief (PDF, 3–5 pages) objectives, KPIs",
-      "Reference architecture diagram, auth & logging",
-      "Budget & timeline bands pilot to run costs",
-      "Risk register & mitigation data, safety",
-    ],
-    followUp: "30 days async Q&A + 1 30-min call",
-    cta: "Book the 120-min workshop",
-    schemaType: "Product",
-  },
 ];
 
 const addOns = [
@@ -323,11 +269,10 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
       <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-white/50" />
       <Container className="relative z-10">
         <SectionHeading
-          title="Pick the consultation that fits you"
-          subtitle="From a free DIY audit to a deep-dive workshop—every tier ends with a clear, practical action plan."
-         
+          title="Get your free AI Readiness Audit"
+          subtitle="Browse, scope early, and share with your team—the DIY Audit Kit gives you a practical checklist and starter tools, at no cost and no commitment."
         />
-        
+
         {error && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -337,80 +282,76 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
             {error}
           </motion.div>
         )}
-        
+
+        {/* Single offering — DIY Audit Kit (logic unchanged; only one package is rendered) */}
         <motion.div
           ref={ref}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
           variants={containerVariants}
-          className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4"
+          className="max-w-xl mx-auto"
         >
           {packages.map((pkg) => {
             const priceText = pkg.price === 0 ? "Free" : `₹${pkg.price.toLocaleString()}`;
             return (
-              <motion.div 
+              <motion.div
                 key={pkg.id}
                 variants={itemVariants}
-                className={`relative bg-white rounded-2xl shadow-sm p-8 border border-gray-100 flex flex-col transition-all hover:shadow-lg hover:border-blue-100 ${
-                  pkg.mostBooked ? "ring-2 ring-blue-500 shadow-md" : ""
-                }`}
+                className="relative flex flex-col p-8 transition-all bg-white border border-gray-100 shadow-lg sm:p-10 rounded-2xl hover:shadow-xl"
                 itemScope
                 itemType="http://schema.org/Product"
               >
-                {pkg.mostBooked && (
-                  <motion.span
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-900 text-white px-4 py-1.5 rounded-full text-xs font-medium shadow-md"
-                  >
-                    Most Booked
-                  </motion.span>
-                )}
-                
                 <meta itemProp="name" content={pkg.name} />
                 <meta itemProp="description" content={pkg.description} />
                 {pkg.price !== 0 && <meta itemProp="price" content={pkg.price.toString()} />}
                 {pkg.duration !== 0 && <meta itemProp="duration" content={`PT${pkg.duration}M`} />}
-                
-                <div className="mb-6">
-                  <h3 className="mb-2 text-2xl font-bold text-gray-900">{pkg.name}</h3>
-                  <p className="mb-4 text-sm text-gray-600">{pkg.description}</p>
-                  <div className="space-y-1.5">
-                    <p className="flex items-center text-sm text-gray-500">
-                      <span className="font-medium mr-1.5">For:</span> {pkg.for}
-                    </p>
-                    <p className="flex items-center text-sm text-gray-500">
-                      <span className="font-medium mr-1.5">Led by:</span> {pkg.ledBy}
-                    </p>
-                  </div>
+
+                {/* Header */}
+                <div className="mb-6 text-center">
+                  <span className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wide text-blue-800 uppercase rounded-full bg-blue-100">
+                    Free Kit
+                  </span>
+                  <h3 className="mb-2 text-3xl font-bold text-gray-900">{pkg.name}</h3>
+                  <p className="text-gray-600">{pkg.description}</p>
                 </div>
-                
-                <div className="mb-6">
-                  <div className="mb-1 text-3xl font-bold text-gray-900">
-                    {priceText}
-                    {pkg.duration > 0 && (
-                      <span className="text-base text-gray-500 font-medium ml-1.5">
-                        / {pkg.duration} mins
-                      </span>
-                    )}
-                  </div>
+
+                {/* Price */}
+                <div className="mb-6 text-center">
+                  <span className="text-5xl font-bold text-gray-900">{priceText}</span>
+                  {pkg.duration > 0 && (
+                    <span className="text-base text-gray-500 font-medium ml-1.5">/ {pkg.duration} mins</span>
+                  )}
                 </div>
-                
-                <ul className="text-left text-gray-700 mb-8 space-y-3.5">
-                  {pkg.deliverables.map((deliverable, i) => (
-                    <li key={i} className="flex items-start gap-3">
+
+                {/* Meta */}
+                <div className="flex flex-wrap justify-center mb-6 text-sm text-gray-500 gap-x-6 gap-y-1">
+                  <span>
+                    <span className="font-medium text-gray-700 mr-1.5">For:</span>{pkg.for}
+                  </span>
+                  <span>
+                    <span className="font-medium text-gray-700 mr-1.5">Led by:</span>{pkg.ledBy}
+                  </span>
+                </div>
+
+                {/* Deliverables */}
+                <div className="p-5 mb-6 border border-gray-100 sm:p-6 rounded-xl bg-gray-50">
+                  <p className="mb-4 text-sm font-semibold text-gray-900">What's included</p>
+                  <ul className="text-left text-gray-700 space-y-3.5">
+                    {pkg.deliverables.map((deliverable, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <Check className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-sm">{deliverable}</span>
+                      </li>
+                    ))}
+                    <li className="flex items-start gap-3 pt-3 border-t border-gray-200">
                       <Check className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm">{deliverable}</span>
+                      <span className="text-sm"><span className="font-medium">Follow-up:</span> {pkg.followUp}</span>
                     </li>
-                  ))}
-                  <li className="flex items-start gap-3 pt-2 border-t border-gray-100">
-                    <Check className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm"><span className="font-medium">Follow-up:</span> {pkg.followUp}</span>
-                  </li>
-                </ul>
-                
+                  </ul>
+                </div>
+
                 {showFormFor === pkg.id && pkg.price > 0 && (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
@@ -464,7 +405,7 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
                         className="w-full p-3 transition-colors border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       />
                     </div>
-                    
+
                     <div className="pt-2 border-t border-gray-200">
                       <label className="block mb-3 text-sm font-medium text-gray-700">
                         Optional Add-Ons
@@ -486,11 +427,11 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
                         ))}
                       </div>
                     </div>
-                    
+
                     <div className="pt-3 text-lg font-semibold text-gray-900 border-t border-gray-200">
                       Total: ₹{calculateTotal(pkg).toLocaleString()}
                     </div>
-                    
+
                     <button
                       onClick={() => handleFormSubmit(pkg)}
                       disabled={loadingAction === pkg.id}
@@ -500,45 +441,37 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
                     </button>
                   </motion.div>
                 )}
-                
-            
 
-<div className="pt-4 mt-auto">
-  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-    <button
-      onClick={() => handleBookClick(pkg)}
-      disabled={loadingAction === pkg.id}
-      className={`w-full h-12 px-3 rounded-lg text-sm font-medium transition-colors shadow-sm flex items-center justify-center ${
-        pkg.mostBooked
-          ? "bg-blue-900 text-white hover:bg-blue-700 shadow-md"
-          : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-      } disabled:opacity-70 disabled:cursor-not-allowed`}
-    >
-      <span className="leading-tight text-center">
-        {loadingAction === pkg.id ? "Processing..." : pkg.cta}
-      </span>
-    </button>
-  </motion.div>
-  
-  <div className="flex flex-wrap justify-center gap-2 mt-4">
-  <span className={`bg-blue-100 text-blue-800 rounded-full ${pkg.price > 0 ? 'text-xs px-2 py-0.5' : 'text-xs px-2.5 py-1'}`}>
-    Founder-led
-  </span>
-  <span className={`bg-blue-100 text-blue-800 rounded-full ${pkg.price > 0 ? 'text-xs px-2 py-0.5' : 'text-xs px-2.5 py-1'}`}>
-    PDF deliverable
-  </span>
+                <div className="pt-2 mt-auto">
+                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                    <button
+                      onClick={() => handleBookClick(pkg)}
+                      disabled={loadingAction === pkg.id}
+                      className="flex items-center justify-center w-full h-12 px-3 text-sm font-medium text-white transition-colors bg-blue-900 rounded-lg shadow-sm hover:bg-blue-700 disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                      <span className="leading-tight text-center">
+                        {loadingAction === pkg.id ? "Processing..." : pkg.cta}
+                      </span>
+                    </button>
+                  </motion.div>
 
-    <span className="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
-      Fee credited to pilot
-    </span>
-
-</div>
-</div>
+                  <div className="flex flex-wrap justify-center gap-2 mt-4">
+                    <span className="text-xs bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">
+                      Free
+                    </span>
+                    <span className="text-xs bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">
+                      PDF deliverable
+                    </span>
+                    <span className="text-xs bg-blue-100 text-blue-800 px-2.5 py-1 rounded-full">
+                      Self-guided
+                    </span>
+                  </div>
+                </div>
               </motion.div>
             );
           })}
         </motion.div>
-        
+
         <motion.div
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : { opacity: 0 }}
@@ -558,7 +491,7 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
             </a>
           </p>
         </motion.div>
-        
+
         <motion.div
           id="faq"
           initial={{ opacity: 0 }}

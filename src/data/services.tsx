@@ -1,4 +1,4 @@
-import { Bot, Puzzle as PuzzlePiece, Cog, Lightbulb } from 'lucide-react';
+import { Bot, Puzzle as PuzzlePiece, Cog, Sparkles } from 'lucide-react';
 import React from 'react';
 
 export const services = [
@@ -159,64 +159,45 @@ export const services = [
     ]
   },
   {
-    icon: <Lightbulb size={32} className="text-primary" />,
-    title: "Lightweight AI Apps & Micro-SaaS Tools",
-    slug: "ai-apps-micro-saas",
-    description: "MVPs built with Streamlit, Chainlit, or FastAPI — perfect for internal use, client delivery, or launching your next product idea fast.",
-    features: ["Internal Tools", "Client Portals", "Product Prototypes", "Quick MVPs"],
+    icon: <Sparkles size={32} className="text-primary" />,
+    title: "Claude Automation",
+    slug: "claude-automation",
+    description: "Leverage Claude AI to automate complex tasks — tool connections, custom MCP integrations, scheduled runs, and human-in-the-loop workflows for smarter business operations.",
+    features: ["Tool Connections", "Custom MCP Tools", "Cowork Setups", "Recurring Runs"],
     featureDescriptions: [
-      "Create custom applications for your team that solve specific problems without the overhead of full-scale software development.",
-      "Build branded portals that your clients can use to access your services, view reports, and manage their relationship with you.",
-      "Rapidly develop prototypes to test new product ideas with real users before investing in full-scale development.",
-      "Launch minimum viable products quickly to start generating revenue and feedback while you refine your offering."
+      "Connect Claude to your existing tools — CRMs, docs, sheets, email, and APIs — so it can read, draft, and act across your stack.",
+      "Build bespoke MCP (Model Context Protocol) tools tailored to your workflows, giving Claude safe access to your data and systems.",
+      "Set up Cowork environments where Claude pairs with your team on real work — drafting, reviewing, and routing tasks with approvals.",
+      "Schedule recurring Claude runs for digests, reports, and routine ops — afternoon jobs finished in minutes, not hours."
     ],
     detailedContent: `
-      <h2>Rapid Development, Real Results</h2>
-      <p>Our lightweight AI apps and micro-SaaS tools give you the benefits of custom software without the typical time and budget requirements. We focus on creating solutions that:</p>
-      
+      <h2>Claude-Powered Automation, Done Right</h2>
+      <p>Claude Automation pairs Anthropic's Claude with your existing tools and data — so repetitive knowledge work runs on autopilot, with humans staying in control of the important moments.</p>
+
+      <h3>What You Get</h3>
       <ul>
-        <li>Solve a specific problem extremely well</li>
-        <li>Can be developed and deployed in weeks, not months</li>
-        <li>Are easy to use and require minimal training</li>
-        <li>Can evolve based on user feedback</li>
+        <li>Hours back every week on routine tasks</li>
+        <li>Approval gates before any significant or irreversible action</li>
+        <li>Full audit log of every tool call and file change</li>
+        <li>Your data stays yours — never used to train models</li>
       </ul>
-      
-      <h3>Development Platforms</h3>
-      <p>We select the right platform based on your specific needs:</p>
-      
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
-        <div class="border p-4 rounded-lg">
-          <h4 class="font-bold">Streamlit</h4>
-          <p>Perfect for data-focused applications with interactive visualizations and AI features.</p>
-        </div>
-        <div class="border p-4 rounded-lg">
-          <h4 class="font-bold">Chainlit</h4>
-          <p>Ideal for chat-based applications that leverage large language models.</p>
-        </div>
-        <div class="border p-4 rounded-lg">
-          <h4 class="font-bold">FastAPI</h4>
-          <p>Great for building robust APIs and web applications that need more customization.</p>
-        </div>
-      </div>
-      
-      <h3>From MVP to Growth</h3>
-      <p>Our micro-SaaS approach allows you to:</p>
+
+      <h3>Our 4-Week Rollout</h3>
       <ol>
-        <li>Launch quickly with core functionality</li>
-        <li>Gather real user feedback</li>
-        <li>Iterate based on actual usage data</li>
-        <li>Scale gradually as demand grows</li>
-        <li>Expand features based on validated needs</li>
+        <li><strong>Audit & Map:</strong> Review your repetitive workflows and pick the highest-ROI ones</li>
+        <li><strong>Connect & Build:</strong> Set up connectors and build custom MCP tools you need</li>
+        <li><strong>Automate:</strong> Configure Cowork runs and scheduled tasks; you test on real work</li>
+        <li><strong>Handover & Train:</strong> Your team learns to trigger, review, and tweak — no engineer required</li>
       </ol>
     `,
     caseStudies: [
       {
-        title: "AI Document Analyzer",
-        description: "We built a Streamlit app that helps a legal team extract key information from contracts, reducing review time by 70%."
+        title: "Weekly Ops Digest Automation",
+        description: "We set up a scheduled Claude run that compiles weekly ops reports from Slack, email, and sheets — saving the team 6+ hours of manual compilation every week."
       },
       {
-        title: "Customer Insight Portal",
-        description: "Our micro-SaaS solution allowed a consulting firm to deliver AI-powered market insights to their clients through a branded web application."
+        title: "Document Review with MCP Tools",
+        description: "Custom MCP tools let Claude review incoming contracts against the client's playbook, flag issues, and draft response emails for human approval."
       }
     ]
   },

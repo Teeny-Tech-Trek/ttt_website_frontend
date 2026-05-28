@@ -353,9 +353,103 @@ const ProcessAutomationPage = ({ onOpenChatbot }) => {
   </div>
 </section>
 
-      {/* What We Deliver */}
+     
+  
+
+      {/* Interactive Demo */}
+      <section className="py-24 bg-gray-50">
+        <div className="px-6 mx-auto max-w-7xl">
+          <div className="grid gap-16 lg:grid-cols-2">
+            {/* Demo Prompts */}
+            <motion.div
+              initial={{ opacity: 0, x: -60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              <h2 className="mb-10 text-4xl font-bold text-black">
+                Try These <span className="text-blue-900">Automations</span>
+              </h2>
+              <div className="space-y-6">
+                {demoPrompts.map((prompt, index) => (
+                  <motion.button 
+                    key={index}
+                    className="w-full p-8 text-left transition-all duration-300 border-2 border-gray-200 rounded-3xl hover:border-blue-300 hover:bg-blue-50 hover:shadow-lg"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <div className="flex items-start gap-6">
+                      <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-2xl">
+                        <Activity className="w-6 h-6 text-blue-900" />
+                      </div>
+                      <div>
+                        <p className="text-xl font-medium text-black">"{prompt}"</p>
+                        <p className="mt-2 text-gray-700">Click to see automation in action</p>
+                      </div>
+                    </div>
+                  </motion.button>
+                ))}
+              </div>
+            </motion.div>
+            
+            {/* Slack Alert Demo */}
+            <motion.div
+              initial={{ opacity: 0, x: 60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              <h2 className="mb-10 text-4xl font-bold text-black">
+                Smart <span className="text-blue-900">Notifications</span>
+              </h2>
+              <div className="p-8 bg-white border-2 border-gray-200 shadow-xl rounded-3xl">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="flex items-center justify-center w-12 h-12 bg-green-100 rounded-2xl">
+                    <Slack className="w-6 h-6 text-green-600" />
+                  </div>
+                  <div>
+                    <div className="text-xl font-bold text-blue-900">#operations</div>
+                    <div className="text-black">Today at 2:34 PM</div>
+                  </div>
+                </div>
+                
+                <div className="p-6 border-l-4 border-amber-400 bg-amber-50 rounded-2xl">
+                  <div className="flex items-start justify-between mb-6">
+                    <div>
+                      <div className="text-xl font-bold text-amber-800">⚠️ Delayed Shipment Alert</div>
+                      <div className="mt-2 text-amber-700">Order #ABC123 is 2 days behind schedule</div>
+                    </div>
+                  </div>
+                  
+                  <div className="p-4 mb-6 bg-white rounded-xl">
+                    <div className="space-y-2 text-sm">
+                      <div className="text-black"><strong>Customer:</strong> Acme Corp</div>
+                      <div className="text-black"><strong>Expected:</strong> Dec 15, 2024</div>
+                      <div className="text-black"><strong>Current ETA:</strong> Dec 17, 2024</div>
+                      <div className="text-black"><strong>Reason:</strong> Weather delay at hub</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex gap-4">
+                    <button className="px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800">
+                      Notify Customer
+                    </button>
+                    <button className="px-6 py-3 font-semibold text-gray-600 transition-colors bg-gray-100 rounded-xl hover:bg-gray-200">
+                      Snooze 1hr
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
       <section className="py-20 bg-white">
-  <div className="px-6 mx-auto max-w-7xl">
+   <div className="px-6 mx-auto max-w-7xl">
     <motion.div 
       className="mb-16 text-center"
       initial={{ opacity: 0, y: 40 }}
@@ -483,99 +577,6 @@ const ProcessAutomationPage = ({ onOpenChatbot }) => {
   </div>
 </section>
 
-      {/* Interactive Demo */}
-      <section className="py-24 bg-gray-50">
-        <div className="px-6 mx-auto max-w-7xl">
-          <div className="grid gap-16 lg:grid-cols-2">
-            {/* Demo Prompts */}
-            <motion.div
-              initial={{ opacity: 0, x: -60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <h2 className="mb-10 text-4xl font-bold text-black">
-                Try These <span className="text-blue-900">Automations</span>
-              </h2>
-              <div className="space-y-6">
-                {demoPrompts.map((prompt, index) => (
-                  <motion.button 
-                    key={index}
-                    className="w-full p-8 text-left transition-all duration-300 border-2 border-gray-200 rounded-3xl hover:border-blue-300 hover:bg-blue-50 hover:shadow-lg"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <div className="flex items-start gap-6">
-                      <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-2xl">
-                        <Activity className="w-6 h-6 text-blue-900" />
-                      </div>
-                      <div>
-                        <p className="text-xl font-medium text-black">"{prompt}"</p>
-                        <p className="mt-2 text-gray-700">Click to see automation in action</p>
-                      </div>
-                    </div>
-                  </motion.button>
-                ))}
-              </div>
-            </motion.div>
-            
-            {/* Slack Alert Demo */}
-            <motion.div
-              initial={{ opacity: 0, x: 60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <h2 className="mb-10 text-4xl font-bold text-black">
-                Smart <span className="text-blue-900">Notifications</span>
-              </h2>
-              <div className="p-8 bg-white border-2 border-gray-200 shadow-xl rounded-3xl">
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="flex items-center justify-center w-12 h-12 bg-green-100 rounded-2xl">
-                    <Slack className="w-6 h-6 text-green-600" />
-                  </div>
-                  <div>
-                    <div className="text-xl font-bold text-blue-900">#operations</div>
-                    <div className="text-black">Today at 2:34 PM</div>
-                  </div>
-                </div>
-                
-                <div className="p-6 border-l-4 border-amber-400 bg-amber-50 rounded-2xl">
-                  <div className="flex items-start justify-between mb-6">
-                    <div>
-                      <div className="text-xl font-bold text-amber-800">⚠️ Delayed Shipment Alert</div>
-                      <div className="mt-2 text-amber-700">Order #ABC123 is 2 days behind schedule</div>
-                    </div>
-                  </div>
-                  
-                  <div className="p-4 mb-6 bg-white rounded-xl">
-                    <div className="space-y-2 text-sm">
-                      <div className="text-black"><strong>Customer:</strong> Acme Corp</div>
-                      <div className="text-black"><strong>Expected:</strong> Dec 15, 2024</div>
-                      <div className="text-black"><strong>Current ETA:</strong> Dec 17, 2024</div>
-                      <div className="text-black"><strong>Reason:</strong> Weather delay at hub</div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex gap-4">
-                    <button className="px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800">
-                      Notify Customer
-                    </button>
-                    <button className="px-6 py-3 font-semibold text-gray-600 transition-colors bg-gray-100 rounded-xl hover:bg-gray-200">
-                      Snooze 1hr
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
       {/* Integrations & Features */}
       <section className="py-24 bg-white">
         <div className="px-6 mx-auto max-w-7xl">
@@ -676,7 +677,7 @@ const ProcessAutomationPage = ({ onOpenChatbot }) => {
             </motion.div>
             
             <motion.h2 
-              className="mb-8 text-4xl font-bold text-black lg:text-6xl"
+              className="mb-8 text-3xl font-bold text-black lg:text-4xl"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}

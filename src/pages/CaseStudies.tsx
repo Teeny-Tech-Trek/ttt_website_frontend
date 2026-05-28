@@ -19,14 +19,14 @@ interface CaseStudyProps {
 
 const caseStudyOptions = [
    
-  {
-    id: 'aeo-geo',
-    route: '/aeo-geo',
-    icon: Globe,
-    title: 'AEO/GEO',
-    description: 'AI-powered global trade compliance ',
-    highlight: '40% faster clearance ',
-  },
+  // {
+  //   id: 'aeo-geo',
+  //   route: '/aeo-geo',
+  //   icon: Globe,
+  //   title: 'AEO/GEO',
+  //   description: 'AI-powered global trade compliance ',
+  //   highlight: '40% faster clearance ',
+  // },
   {
     id: 'realestate',
     route: '/real-estate',

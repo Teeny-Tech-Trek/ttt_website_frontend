@@ -1,345 +1,526 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { Rocket, Brain, Zap, ShieldCheck, Quote, Target, Users } from 'lucide-react';
-import React from 'react';
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import {
+  Rocket,
+  Brain,
+  Target,
+  Zap,
+  Users,
+  ShieldCheck,
+  Quote,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
-// Mock Container and SectionHeading components
-const Container = ({ children, className = "" }) => (
-  <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${className}`}>
-    {children}
-  </div>
-);
+/**
+ * WhyUs — 3D coverflow redesign.
+ * Center card sits forward and bright; the cards on either side rotate away in 3D
+ * and fade out. Navigate with the arrows, the dots, arrow keys, or by clicking any
+ * side card to pull it to the center. Autoplays gently, pauses on hover.
+ *
+ * No framer-motion / intersection-observer needed — pure CSS 3D + lucide-react.
+ */
 
-const SectionHeading = ({ title, subtitle }) => (
-  <div className="mb-16 text-center">
-    <motion.h2 
-      className="mb-4 text-4xl font-bold text-black md:text-5xl"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
-      {title}
-    </motion.h2>
-    <motion.p 
-      className="max-w-3xl mx-auto text-xl leading-relaxed text-gray-700"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.2 }}
-    >
-      {subtitle}
-    </motion.p>
-  </div>
-);
+const FEATURES = [
+  {
+    icon: Rocket,
+    title: "Build Small. Launch Fast.",
+    category: "Speed",
+    description:
+      "We create lean AI solutions that get to market quickly without sacrificing quality.",
+    accent: ["#8b5cf6", "#6366f1"],
+  },
+  {
+    icon: Brain,
+    title: "Intelligent Integration.",
+    category: "Intelligence",
+    description:
+      "Our AI systems integrate seamlessly with your existing tools and workflows.",
+    accent: ["#3b82f6", "#06b6d4"],
+  },
+  {
+    icon: Target,
+    title: "Clarity over Complexity",
+    category: "Clarity",
+    description:
+      "No black boxes, just clean, understandable systems that make sense for your business.",
+    accent: ["#14b8a6", "#22d3ee"],
+  },
+  {
+    icon: Zap,
+    title: "Scale Smart.",
+    category: "Scale",
+    description:
+      "Solutions designed to grow efficiently alongside your business needs.",
+    accent: ["#6366f1", "#a855f7"],
+  },
+  {
+    icon: Users,
+    title: "True Collaboration",
+    category: "Partnership",
+    description:
+      "We integrate like a teammate, not a vendor, focusing on your goals and processes.",
+    accent: ["#0ea5e9", "#6366f1"],
+  },
+  {
+    icon: ShieldCheck,
+    title: "Trust by Design.",
+    category: "Security",
+    description:
+      "We prioritize security, privacy, and transparency in every AI solution we build.",
+    accent: ["#7c3aed", "#2563eb"],
+  },
+];
 
-const WhyUs = () => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.2,
-    rootMargin: '100px 0px',
-  });
+export default function WhyUs() {
+  const [active, setActive] = useState(2);
+  const [vw, setVw] = useState(typeof window !== "undefined" ? window.innerWidth : 1280);
+  const [paused, setPaused] = useState(false);
+  const count = FEATURES.length;
 
-  const { scrollYProgress } = useScroll();
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, 100]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, -100]);
-  const backgroundOpacity = useTransform(scrollYProgress, [0, 0.5], [0.05, 0.15]);
+  // responsive geometry
+  const isMobile = vw < 720;
+  const cardW = isMobile ? 248 : 330;
+  const cardH = isMobile ? 380 : 432;
+  const gap = isMobile ? 130 : 232;
 
-  const allFeatures = [
-    {
-      icon: <Rocket className="text-blue-900" size={32} />,
-      title: "Build Small. Launch Fast.",
-      description: "We create lean AI solutions that get to market quickly without sacrificing quality.",
-      category: "Speed"
-    },
-    {
-      icon: <Brain className="text-blue-900" size={32} />,
-      title: "Intelligent Integration.",
-      description: "Our AI systems integrate seamlessly with your existing tools and workflows.",
-      category: "Intelligence"
-    },
-    {
-      icon: <Target className="text-blue-900" size={32} />,
-      title: "Clarity over Complexity",
-      description: "No black boxes, just clean, understandable systems that make sense for your business.",
-      category: "Clarity"
-    },
-    {
-      icon: <Zap className="text-blue-900" size={32} />,
-      title: "Scale Smart.",
-      description: "Solutions designed to grow efficiently alongside your business needs.",
-      category: "Scale"
-    },
-    {
-      icon: <Users className="text-blue-900" size={32} />,
-      title: "True Collaboration",
-      description: "We integrate like a teammate, not a vendor, focusing on your goals and processes.",
-      category: "Partnership"
-    },
-    {
-      icon: <ShieldCheck className="text-blue-900" size={32} />,
-      title: "Trust by Design.",
-      description: "We prioritize security, privacy, and transparency in every AI solution we build.",
-      category: "Security"
-    },
-  ];
+  useEffect(() => {
+    const onResize = () => setVw(window.innerWidth);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3,
-      },
-    },
+  const go = useCallback(
+    (dir) => setActive((a) => (a + dir + count) % count),
+    [count]
+  );
+
+  // keyboard nav
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "ArrowLeft") go(-1);
+      if (e.key === "ArrowRight") go(1);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [go]);
+
+  // gentle autoplay
+  useEffect(() => {
+    if (paused) return;
+    const id = setInterval(() => go(1), 5000);
+    return () => clearInterval(id);
+  }, [paused, go]);
+
+  // shortest signed distance on the ring so wrap-around looks natural
+  const offsetOf = (i) => {
+    let off = i - active;
+    if (off > count / 2) off -= count;
+    if (off < -count / 2) off += count;
+    return off;
   };
 
-  const featureVariants = {
-    hidden: {
-      opacity: 0,
-      y: 30,
-      scale: 0.95,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: 0.6,
-        ease: [0.22, 1, 0.36, 1],
-      },
-    },
+  const cardStyle = (i) => {
+    const off = offsetOf(i);
+    const abs = Math.abs(off);
+    const visible = abs <= 2;
+    const translate = off * gap;
+    const rotate = Math.max(Math.min(-off * 40, 52), -52);
+    const scale = Math.max(1 - abs * 0.13, 0.62);
+    const opacity = abs === 0 ? 1 : abs === 1 ? 0.55 : abs === 2 ? 0.22 : 0;
+    return {
+      width: cardW,
+      height: cardH,
+      transform: `translateX(${translate}px) rotateY(${rotate}deg) scale(${scale})`,
+      opacity,
+      zIndex: 50 - abs,
+      pointerEvents: visible ? "auto" : "none",
+    };
   };
+
+  const touch = useRef({ x: 0 });
 
   return (
-    <section 
-      id="why-us" 
-      className="relative min-h-screen py-24 bg-white"
+    <section
+      className="relative overflow-hidden bg-gray-50"
+      style={{
+        padding: isMobile ? "72px 16px 64px" : "104px 24px 96px",
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+      }}
     >
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-white/50" />
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap');
+        @keyframes wu-twinkle { 0%,100%{opacity:.2;transform:scale(1)} 50%{opacity:1;transform:scale(1.4)} }
+        @keyframes wu-rise { from{opacity:0;transform:translateY(26px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes wu-glow { 0%,100%{opacity:.5} 50%{opacity:.9} }
+        .wu-rise{animation:wu-rise .8s cubic-bezier(.22,1,.36,1) both}
+        .wu-card{transition:transform .6s cubic-bezier(.22,1,.36,1),opacity .6s ease,filter .6s ease}
+        .wu-ctrl{transition:transform .25s ease,background .25s ease,border-color .25s ease}
+        .wu-ctrl:hover{transform:scale(1.08);background:rgba(139,92,246,.22);border-color:rgba(167,139,250,.7)}
+        .wu-dot{transition:width .35s ease,background .35s ease,opacity .35s ease}
+      `}</style>
 
-      <Container className="relative z-10">
-        <SectionHeading
-          title="Why Teeny Tech Trek?"
-          subtitle="Empowering visionary teams with AI solutions that simplify complexity and amplify impact through speed, clarity, and true collaboration."
-        />
-
-        {/* Main Content Area */}
-        <motion.div
-          ref={ref}
-          initial="hidden"
-          animate={inView ? 'visible' : 'hidden'}
-          variants={containerVariants}
-          className="relative"
+      {/* header */}
+      <div style={{ position: "relative", zIndex: 10, textAlign: "center", marginBottom: isMobile ? 44 : 64 }}>
+        <h2
+          className="wu-rise"
+          style={{
+            fontFamily: "'Sora', sans-serif",
+            fontWeight: 600,
+            letterSpacing: "-0.02em",
+            lineHeight: 1.05,
+            fontSize: isMobile ? 20 : 44,
+            margin: 0,
+            color: "#0f1535",
+          }}
         >
-          {/* Main Features Container */}
-          <motion.div 
-            className="relative overflow-hidden bg-white border border-gray-200 shadow-2xl rounded-3xl"
-            whileHover={{ 
-              boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15)" 
+          Why{" "}
+          <span className="text-blue-900"
+            style={{
+              // background: "linear-gradient(90deg,#a78bfa 0%,#818cf8 45%,#38bdf8 100%)",
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              // color: "transparent",
             }}
-            transition={{ duration: 0.4 }}
           >
-            {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-blue-50/30" />
-            
-            {/* Features Grid */}
-            <div className="relative z-10 p-8 md:p-12">
-              <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 md:gap-12">
-                {allFeatures.map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    variants={featureVariants}
-                    className="relative group"
-                  >
-                    {/* Feature Content */}
-                    <div className="flex flex-col items-center space-y-4 text-center">
-                      {/* Icon Container */}
-                      <motion.div
-                        className="relative flex items-center justify-center w-20 h-20 transition-all duration-300 bg-blue-100 border border-blue-200 rounded-2xl group-hover:bg-blue-200"
-                        whileHover={{ 
-                          scale: 1.1,
-                          rotate: [0, -5, 5, 0],
-                        }}
-                        transition={{ 
-                          duration: 0.3,
-                          rotate: { duration: 0.6 }
-                        }}
-                      >
-                        {React.cloneElement(feature.icon, {
-                          className: 'text-blue-900 group-hover:text-blue-800 transition-colors duration-300',
-                        })}
-                        
-                        {/* Icon Glow Effect */}
-                        <motion.div
-                          className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-blue-500/20 rounded-2xl blur-xl group-hover:opacity-100"
-                          animate={{
-                            scale: [1, 1.2, 1],
-                          }}
-                          transition={{
-                            duration: 2,
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                          }}
-                        />
-                      </motion.div>
+            Teeny Tech Trek?
+          </span>
+        </h2>
+        <div
+          className="wu-rise"
+          style={{
+            width: 160,
+            height: 3,
+            margin: "18px auto 22px",
+            borderRadius: 4,
+            background: "linear-gradient(90deg,transparent,#8b5cf6,#38bdf8,transparent)",
+            animation: "wu-glow 3s ease-in-out infinite",
+          }}
+        />
+        <p
+          className="wu-rise"
+          style={{
+            maxWidth: 680,
+            margin: "0 auto",
+            color: "#5a6184",
+            fontSize: isMobile ? 15 : 18,
+            lineHeight: 1.6,
+          }}
+        >
+          Empowering visionary teams with AI solutions that simplify complexity and
+          amplify impact through speed, clarity, and true collaboration.
+        </p>
+      </div>
 
-                      {/* Category Badge */}
-                      <motion.span
-                        className="px-3 py-1 text-xs font-semibold text-blue-900 bg-blue-100 border border-blue-200 rounded-full"
-                        initial={{ opacity: 0, y: 10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 + index * 0.05 }}
-                      >
-                        {feature.category}
-                      </motion.span>
-
-                      {/* Title */}
-                      <motion.h3
-                        className="text-xl font-bold text-blue-900 transition-colors duration-300 group-hover:text-blue-800"
-                        whileHover={{ y: -2 }}
-                      >
-                        {feature.title}
-                      </motion.h3>
-
-                      {/* Description */}
-                      <motion.p
-                        className="max-w-xs leading-relaxed text-black transition-colors duration-300 group-hover:text-gray-900"
-                        initial={{ opacity: 0.8 }}
-                        whileHover={{ opacity: 1 }}
-                      >
-                        {feature.description}
-                      </motion.p>
-                    </div>
-
-                    {/* Hover Effect Lines */}
-                    <motion.div
-                      className="absolute inset-0 pointer-events-none"
-                      initial={{ opacity: 0 }}
-                      whileHover={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <div className="absolute inset-0 border-2 border-blue-300 rounded-2xl" />
-                    </motion.div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* Decorative Elements */}
-            <motion.div
-              animate={{
-                rotate: 360,
-              }}
-              transition={{
-                duration: 30,
-                repeat: Infinity,
-                ease: 'linear',
-              }}
-              className="absolute w-32 h-32 bg-blue-100 rounded-full opacity-50 -top-10 -right-10 blur-2xl"
-            />
-            <motion.div
-              animate={{
-                rotate: -360,
-              }}
-              transition={{
-                duration: 25,
-                repeat: Infinity,
-                ease: 'linear',
-              }}
-              className="absolute w-40 h-40 rounded-full opacity-50 -bottom-10 -left-10 bg-blue-50 blur-2xl"
-            />
-          </motion.div>
-
-          {/* Separate Quote Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 60 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            viewport={{ once: true }}
-            className="relative mt-12"
-          >
-            {/* Quote Container */}
-            <motion.div 
-              className="relative overflow-hidden bg-blue-900 shadow-2xl rounded-3xl"
-              whileHover={{ 
-                scale: 1.02,
-                boxShadow: "0 30px 60px rgba(37, 99, 235, 0.25)" 
-              }}
-              transition={{ duration: 0.4 }}
-            >
-
-              <div className="relative z-10 p-8 md:p-12 lg:p-16">
-                <div className="max-w-4xl mx-auto text-center">
-                  {/* Quote Icon */}
-                  <motion.div
-                    className="flex justify-center mb-8"
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="relative flex items-center justify-center w-20 h-20 border rounded-full shadow-2xl bg-white/20 backdrop-blur-sm border-white/30">
-                      <Quote className="w-10 h-10 text-white" />
-                      <div className="absolute inset-0 scale-150 rounded-full bg-white/20 blur-xl" />
-                    </div>
-                  </motion.div>
-
-                  {/* Main Quote */}
-                  <motion.blockquote
-                    className="mb-10 text-2xl font-bold leading-tight tracking-tight text-white md:text-4xl lg:text-5xl"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 0.2 }}
-                    style={{
-                      textShadow: '0 2px 20px rgba(0, 0, 0, 0.3)'
-                    }}
-                  >
-                    "We believe that <span className="text-blue-200">lean teams</span> can move mountains when empowered by the <span className="text-blue-200">right tools</span>. 
-                    That's why we build nimble, intelligent AI solutions designed for <span className="text-blue-200">clarity, speed, and real-world results</span>."
-                  </motion.blockquote>
-
-                  {/* Attribution */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                    className="flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6"
-                  >
-                    {/* Logo/Avatar */}
-                    <motion.div 
-                      className="relative flex items-center justify-center w-16 h-16 border rounded-full shadow-xl bg-white/20 backdrop-blur-sm border-white/30"
-                      whileHover={{ scale: 1.1, rotate: 10 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <span className="text-xl font-bold text-white">T³</span>
-                      <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
-                        className="absolute inset-0 border-2 rounded-full border-white/20 border-t-white/60"
-                      />
-                    </motion.div>
-                    
-                    {/* Team Info */}
-                    <div className="text-center sm:text-left">
-                      <p className="mb-1 text-xl font-bold text-white">The Teeny Tech Trek Team</p>
-                      <div className="flex flex-wrap justify-center gap-2 text-blue-200 sm:justify-start">
-                        <span className="px-3 py-1 text-sm font-medium border rounded-full bg-white/10 backdrop-blur-sm border-white/20">
-                          Building small
-                        </span>
-                        <span className="px-3 py-1 text-sm font-medium border rounded-full bg-white/10 backdrop-blur-sm border-white/20">
-                          Launching fast
-                        </span>
-                        <span className="px-3 py-1 text-sm font-medium border rounded-full bg-white/10 backdrop-blur-sm border-white/20">
-                          Scaling smart
-                        </span>
-                      </div>
-                    </div>
-                  </motion.div>
+      {/* coverflow stage */}
+      <div
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+        onTouchStart={(e) => {
+          setPaused(true);
+          touch.current.x = e.touches[0].clientX;
+        }}
+        onTouchEnd={(e) => {
+          const dx = e.changedTouches[0].clientX - touch.current.x;
+          if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+        }}
+        style={{
+          position: "relative",
+          zIndex: 10,
+          height: cardH + 30,
+          perspective: 1700,
+          marginBottom: isMobile ? 30 : 42,
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            transformStyle: "preserve-3d",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {FEATURES.map((f, i) => {
+            const Icon = f.icon;
+            const isActive = offsetOf(i) === 0;
+            return (
+              <article
+                key={f.title}
+                className="wu-card"
+                onClick={() => setActive(i)}
+                style={{
+                  position: "absolute",
+                  cursor: isActive ? "default" : "pointer",
+                  borderRadius: 22,
+                  padding: isMobile ? "22px 20px" : "30px 28px",
+                  boxSizing: "border-box",
+                  textAlign: "center",
+                  background: "#1e3a8a",
+                  border: `1px solid ${isActive ? "rgba(167,139,250,.55)" : "rgba(120,120,180,.18)"}`,
+                  boxShadow: isActive
+                    ? `0 30px 70px -20px ${f.accent[0]}88, 0 0 0 1px ${f.accent[0]}33 inset`
+                    : "0 24px 50px -28px rgba(0,0,0,.8)",
+                  ...cardStyle(i),
+                }}
+              >
+                {/* icon tile */}
+                <div
+                  style={{
+                    width: isMobile ? 64 : 76,
+                    height: isMobile ? 64 : 76,
+                    borderRadius: 18,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background: `linear-gradient(135deg, ${f.accent[0]}, ${f.accent[1]})`,
+                    boxShadow: `0 16px 34px -8px ${f.accent[0]}bb`,
+                    margin: isMobile ? "0 auto 20px" : "0 auto 26px",
+                  }}
+                >
+                  <Icon size={isMobile ? 34 : 42} color="#fff" strokeWidth={2} />
                 </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        </motion.div>
-      </Container>
+
+                <span
+                  style={{
+                    display: "inline-block",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    color: f.accent[1],
+                    background: `${f.accent[0]}1f`,
+                    border: `1px solid ${f.accent[0]}40`,
+                    padding: "4px 10px",
+                    borderRadius: 999,
+                    marginBottom: 14,
+                  }}
+                >
+                  {f.category}
+                </span>
+
+                <h3
+                  style={{
+                    fontFamily: "'Sora', sans-serif",
+                    fontWeight: 700,
+                    fontSize: isMobile ? 20 : 24,
+                    lineHeight: 1.2,
+                    color: "#fff",
+                    margin: "0 0 12px",
+                  }}
+                >
+                  {f.title}
+                </h3>
+                <p
+                  style={{
+                    fontSize: isMobile ? 14 : 15.5,
+                    lineHeight: 1.6,
+                    color: "#aeb6db",
+                    margin: 0,
+                  }}
+                >
+                  {f.description}
+                </p>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* controls */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 10,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 22,
+        }}
+      >
+        <button
+          aria-label="Previous"
+          onClick={() => go(-1)}
+          className="wu-ctrl"
+          style={ctrlBtn}
+        >
+          <ChevronLeft size={20} color="#4f46e5" />
+        </button>
+
+        <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+          {FEATURES.map((_, i) => {
+            const on = i === active;
+            return (
+              <button
+                key={i}
+                aria-label={`Go to slide ${i + 1}`}
+                onClick={() => setActive(i)}
+                className="wu-dot"
+                style={{
+                  height: 8,
+                  width: on ? 28 : 8,
+                  borderRadius: 999,
+                  border: "none",
+                  cursor: "pointer",
+                  background: on
+                    ? "linear-gradient(90deg,#7c3aed,#0ea5e9)"
+                    : "rgba(99,102,141,.30)",
+                }}
+              />
+            );
+          })}
+        </div>
+
+        <button
+          aria-label="Next"
+          onClick={() => go(1)}
+          className="wu-ctrl"
+          style={ctrlBtn}
+        >
+          <ChevronRight size={20} color="#4f46e5" />
+        </button>
+      </div>
+
+      {/* quote */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 10,
+          maxWidth: 940,
+          margin: `${isMobile ? 64 : 96}px auto 0`,
+          borderRadius: 28,
+          overflow: "hidden",
+          padding: isMobile ? "40px 24px" : "56px 56px",
+          textAlign: "center",
+          background: "#1e3a8a",
+          border: "1px solid rgba(167,139,250,.28)",
+          boxShadow: "0 40px 90px -40px rgba(99,102,241,.5)",
+        }}
+      >
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            top: -60,
+            right: -40,
+            width: 180,
+            height: 180,
+            borderRadius: "50%",
+            background: "radial-gradient(circle, rgba(139,92,246,.35), transparent 70%)",
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          style={{
+            width: 68,
+            height: 68,
+            margin: "0 auto 24px",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "rgba(255,255,255,.08)",
+            border: "1px solid rgba(167,139,250,.4)",
+          }}
+        >
+          <Quote size={30} color="#c4b5fd" />
+        </div>
+        <blockquote
+          style={{
+            fontFamily: "'Sora', sans-serif",
+            fontWeight: 700,
+            fontSize: isMobile ? 22 : 34,
+            lineHeight: 1.3,
+            color: "#fff",
+            margin: "0 0 32px",
+          }}
+        >
+          “We believe that <span style={grad}>lean teams</span> can move mountains when
+          empowered by the <span style={grad}>right tools</span>. That’s why we build
+          nimble, intelligent AI solutions designed for{" "}
+          <span style={grad}>clarity, speed, and real-world results</span>.”
+        </blockquote>
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: isMobile ? "column" : "row",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 18,
+          }}
+        >
+          <div
+            style={{
+              width: 56,
+              height: 56,
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "linear-gradient(135deg,#8b5cf6,#38bdf8)",
+              color: "#fff",
+              fontFamily: "'Sora', sans-serif",
+              fontWeight: 800,
+              fontSize: 20,
+              flexShrink: 0,
+            }}
+          >
+            T³
+          </div>
+          <div style={{ textAlign: isMobile ? "center" : "left" }}>
+            <p style={{ color: "#fff", fontWeight: 700, fontSize: 18, margin: "0 0 8px" }}>
+              The Teeny Tech Trek Team
+            </p>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: 8,
+                justifyContent: isMobile ? "center" : "flex-start",
+              }}
+            >
+              {["Building small", "Launching fast", "Scaling smart"].map((t) => (
+                <span
+                  key={t}
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 500,
+                    color: "#c7cdf0",
+                    padding: "5px 12px",
+                    borderRadius: 999,
+                    background: "rgba(255,255,255,.06)",
+                    border: "1px solid rgba(167,139,250,.25)",
+                  }}
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   );
+}
+
+const ctrlBtn = {
+  width: 46,
+  height: 46,
+  borderRadius: "50%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  cursor: "pointer",
+  background: "#fff",
+  border: "1px solid rgba(99,102,241,.35)",
+  boxShadow: "0 8px 20px -10px rgba(99,102,241,.5)",
 };
 
-export default WhyUs;
+const grad = {
+  background: "linear-gradient(90deg,#a78bfa,#38bdf8)",
+  WebkitBackgroundClip: "text",
+  backgroundClip: "text",
+  color: "transparent",
+};

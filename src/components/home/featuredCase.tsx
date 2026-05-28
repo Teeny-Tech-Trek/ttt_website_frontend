@@ -48,7 +48,7 @@ const AIServicesCards = () => {
                       2xl:max-w-[1600px]">
         {/* Header */}
         <div className="mb-8 text-center sm:mb-12 lg:mb-16 xl:mb-20 2xl:mb-24">
-          <h1 className="mb-3 text-2xl font-bold text-blue-900 sm:text-3xl sm:mb-4 md:text-3xl lg:text-4xl lg:mb-6 xl:text-5xl xl:mb-8 2xl:text-6xl 2xl:mb-10">
+          <h1 className="mb-3 text-xl font-bold text-blue-900 sm:text-2xl sm:mb-4 md:text-2xl lg:text-3xl lg:mb-6 xl:text-4xl xl:mb-8 2xl:text-5xl 2xl:mb-10">
             Use Cases
           </h1>
           <p className="max-w-2xl mx-auto text-base text-black sm:text-lg sm:max-w-3xl md:text-xl lg:text-2xl lg:max-w-4xl xl:text-2xl xl:max-w-5xl 2xl:text-3xl 2xl:max-w-6xl">
@@ -65,11 +65,11 @@ const AIServicesCards = () => {
               className="overflow-hidden transition-all duration-300 bg-white border border-gray-200 shadow-lg cursor-pointer rounded-xl hover:shadow-xl hover:transform hover:-translate-y-2 sm:rounded-2xl lg:hover:-translate-y-3 xl:rounded-3xl 2xl:hover:-translate-y-4"
             >
              {/* Image Section */}
-              <div className="relative w-full overflow-hidden bg-gradient-to-br from-blue-900 to-blue-700 rounded-3xl">
-                <img 
+              <div className="relative w-full overflow-hidden bg-gradient-to-br from-blue-900 to-blue-700 rounded-3xl aspect-[16/10] sm:aspect-[16/9] lg:aspect-[4/3] xl:aspect-[16/10]">
+                <img
                   src={service.image}
                   alt={service.title}
-                  className="object-cover w-full h-full transition-transform duration-300 opacity-80 hover:scale-105"
+                  className="object-cover w-full h-full transition-transform duration-300 opacity-80  hover:scale-105"
                 />
                 <div className="absolute top-3 left-3 sm:top-4 sm:left-4 xl:top-6 xl:left-6">
                   <span className="px-2 py-1 text-xs font-medium text-white bg-blue-900 rounded-full sm:px-3 sm:text-sm lg:px-4 lg:py-2 xl:text-base xl:px-5 xl:py-2 2xl:text-lg 2xl:px-6 2xl:py-3">
@@ -83,11 +83,11 @@ const AIServicesCards = () => {
               <div className="p-4 sm:p-6 lg:p-8 xl:p-10 2xl:p-12">
                 
                 
-                <h3 className="mb-3 text-lg font-bold leading-tight text-blue-900 sm:text-xl sm:mb-4 md:text-xl lg:text-2xl lg:mb-5 xl:text-3xl xl:mb-6 2xl:text-4xl 2xl:mb-8">
+                <h3 className="mb-3 text-base font-bold leading-tight text-blue-900 sm:text-lg sm:mb-4 md:text-lg lg:text-xl lg:mb-5 xl:text-2xl xl:mb-6 2xl:text-3xl 2xl:mb-8">
                   {service.title}
                 </h3>
                 
-                <p className="mb-3 text-sm leading-relaxed text-black sm:text-base sm:mb-4 lg:text-lg lg:mb-6 xl:text-xl xl:mb-8 2xl:text-2xl 2xl:mb-10">
+                <p className="mb-3 text-xs leading-relaxed text-black sm:text-sm sm:mb-4 lg:text-base lg:mb-6 xl:text-lg xl:mb-8 2xl:text-xl 2xl:mb-10">
                   {service.description}
                 </p>
 

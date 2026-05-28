@@ -22,12 +22,12 @@ const AppContent = () => {
   const isChatOnlyRoute = location.pathname === '/chat';
 
   // Shared chatbot state
-  const [isChatbotOpen, setIsChatbotOpen] = useState(true);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
   // Functions to control chatbot
   const openChatbot = () => setIsChatbotOpen(true);
   const closeChatbot = () => setIsChatbotOpen(false);
-  const toggleChatbot = () => setIsChatbotOpen(!isChatbotOpen);
+  const toggleChatbot = () => setIsChatbotOpen((open) => !open);
 
   return (
     <div className="relative overflow-hidden">

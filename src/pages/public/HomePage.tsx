@@ -1,6 +1,5 @@
 ﻿// src/pages/public/HomePage.tsx
 import { useEffect } from 'react';
-import Particles from '../../components/ui/Particles';
 import Hero from '../../components/home/Hero';
 import Services from '../../components/home/ServicesList';
 import TechStack from '../../components/home/TechStack';
@@ -66,7 +65,6 @@ const HomePage = ({ onOpenChatbot }: HomePageProps) => {
         <link rel="canonical" href="https://www.teenytechtrek.com/" />
       </Helmet>
       <section id="home" className="relative">
-        <Particles />
         {/* Pass the onOpenChatbot prop to Hero */}
         <Hero onOpenChatbot={onOpenChatbot} />
       </section>
