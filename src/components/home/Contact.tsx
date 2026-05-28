@@ -1,11 +1,12 @@
 ﻿import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Send, Mail, Phone, MapPin } from 'lucide-react';
+import { CheckCircle2, Send, Mail, Phone, MapPin } from 'lucide-react';
 import { FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import Container from '../ui/Container';
 import SectionHeading from '../ui/SectionHeading';
 import { createContact } from '../../services/contactService';
+import { isLeadCaptured, markLeadCaptured, notifyChatbotLead } from '../../utils/leadCapture';
 import { toast } from 'react-hot-toast';
 
 interface FormData {
@@ -44,6 +45,10 @@ const Contact = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  // If the visitor already submitted either the chatbot intake or this form
+  // within the 30-day TTL, suppress the form on this side too. Lazy init so we
+  // only read localStorage once.
+  const [isBypassed, setIsBypassed] = useState(() => isLeadCaptured());
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -65,6 +70,17 @@ const Contact = () => {
         message: formData.message,
         subject: formData.service,
       });
+      // Tell the chatbot backend this session is captured so its gate stops
+      // firing on subsequent /chat calls. Best-effort — Contact Us still
+      // succeeded even if this POST fails.
+      void notifyChatbotLead({
+        name: formData.name,
+        email: formData.email,
+        service: formData.service,
+        message: formData.message,
+      });
+      markLeadCaptured('contact_us');
+      setIsBypassed(true);
       setIsSubmitted(true);
       setFormData({ name: '', email: '', service: '', message: '' });
       setTimeout(() => setIsSubmitted(false), 5000);
@@ -266,6 +282,35 @@ const Contact = () => {
                     <div>
                       <strong className="font-semibold">Success!</strong>
                       <span className="block text-sm">Your message has been sent. We'll respond soon.</span>
+                    </div>
+                  </motion.div>
+                ) : isBypassed ? (
+                  // Returning visitor who already submitted the chatbot intake
+                  // or this form within the TTL — bypass without re-prompting.
+                  <motion.div
+                    key="bypass"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className="flex flex-col items-center gap-4 p-8 text-center bg-[#f8fafc] border border-[#93c5fd]/50 rounded-2xl"
+                    role="status"
+                  >
+                    <div className="flex items-center justify-center w-14 h-14 rounded-full bg-[#93c5fd]/20">
+                      <CheckCircle2 className="w-7 h-7 text-[#3b82f6]" aria-hidden="true" />
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-semibold text-[#1e40af]">We've got your details</h4>
+                      <p className="mt-1 text-sm text-[#1e40af]/80">
+                        Thanks for reaching out — we'll be in touch shortly. If you need to add to your message,
+                        email{' '}
+                        <a
+                          href="mailto:anisha.singla@teenytechtrek.com"
+                          className="font-medium text-[#3b82f6] hover:underline"
+                        >
+                          anisha.singla@teenytechtrek.com
+                        </a>
+                        .
+                      </p>
                     </div>
                   </motion.div>
                 ) : (
