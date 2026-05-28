@@ -650,6 +650,21 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
 
   const handleOptionClick = async (opt: ButtonOption) => {
     if (isTyping) return;
+    if (opt.value.startsWith('external:')) {
+      const url = opt.value.slice('external:'.length).trim();
+      if (!url) return;
+      try {
+        const parsed = new URL(url, window.location.origin);
+        if (parsed.origin === window.location.origin) {
+          navigateToRoute(parsed.pathname + (parsed.hash || ''), navigate, location.pathname);
+        } else {
+          window.open(url, '_blank', 'noopener,noreferrer');
+        }
+      } catch {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      }
+      return;
+    }
     if (opt.value.startsWith('learn_more')) {
       const target = opt.value.includes(':') ? opt.value.slice(opt.value.indexOf(':') + 1) : null;
       if (target) {
