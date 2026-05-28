@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import realEstateImg from "../../Images/WhatsApp Image 2025-09-15 at 10.16.38 PM (1).jpeg"
-import educationImg from "../../Images/WhatsApp Image 2025-09-15 at 10.16.48 PM (1).jpeg"
-import ecommerceImg from "../../Images/WhatsApp Image 2025-09-15 at 10.16.44 PM (1).jpeg"
+import realEstateImg from "../../Images/real estate.png"
+import educationImg from "../../Images/education solutions.png"
+import ecommerceImg from "../../Images/d2c business chatbot.png"
 
 const AIServicesCards = () => {
   const navigate = useNavigate();
@@ -69,13 +69,13 @@ const AIServicesCards = () => {
                 <img
                   src={service.image}
                   alt={service.title}
-                  className="object-cover w-full h-full transition-transform duration-300 opacity-80  hover:scale-105"
+                  className="object-cover w-full h-full transition-transform duration-300   hover:scale-105"
                 />
-                <div className="absolute top-3 left-3 sm:top-4 sm:left-4 xl:top-6 xl:left-6">
+                {/* <div className="absolute top-3 left-3 sm:top-4 sm:left-4 xl:top-6 xl:left-6">
                   <span className="px-2 py-1 text-xs font-medium text-white bg-blue-900 rounded-full sm:px-3 sm:text-sm lg:px-4 lg:py-2 xl:text-base xl:px-5 xl:py-2 2xl:text-lg 2xl:px-6 2xl:py-3">
                     {service.category}
                   </span>
-                </div>
+                </div> */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
               </div>
 

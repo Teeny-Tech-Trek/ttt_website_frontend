@@ -498,6 +498,10 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
           animate={inView ? { opacity: 1 } : { opacity: 0 }}
           className="mt-20"
         >
+          <div className="max-w-4xl px-6 py-10 mx-auto mb-12  border border-gray-100 rounded-2xl">
+              <img src={AgenticWorkflowsImg} alt="AgenticWorkflowsImg" className="rounded-xl" />
+            </div>
+
           <h2 className="mb-12 text-3xl font-bold text-center text-gray-900">FAQs</h2>
           <div className="max-w-3xl mx-auto space-y-8">
             <div className="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
@@ -526,9 +530,7 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
                 No. The goal is a clear, specific plan that fits your stack and constraints.
               </p>
             </div>
-            <div >
-              <img src={AgenticWorkflowsImg} alt="AgenticWorkflowsImg" className="rounded-xl" />
-            </div>
+            
           </div>
         </motion.div>
       </Container>

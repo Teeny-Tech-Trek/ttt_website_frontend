@@ -125,7 +125,7 @@ const navigate = useNavigate();
   const answeredQuestions = Object.values(answers).filter(a => a !== null).length;
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-6 mt-20">
       {/* Header */}
       <div className="text-center mb-12">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-teal-600 rounded-full mb-6">

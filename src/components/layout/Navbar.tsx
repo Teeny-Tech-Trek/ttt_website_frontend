@@ -189,7 +189,7 @@ const Navbar = () => {
       name: 'Solutions',
       href: isHomePage ? '#solutions' : '/solutions',
       key: 'solutions',
-      hash: '#solutions',
+      // hash: '#solutions',
       path: '/',
       subLinks: [
         { name: 'TechTrekkers.ai', href: 'https://techtrekkers.ai', key: 'techtrekkers', products: techTrekkersProducts },
@@ -355,7 +355,7 @@ const Navbar = () => {
                           />
                         )}
                       </MotionLink>
-                    ) : link.key === 'resources' ? (
+                    ) : link.key === 'resources' || link.key === 'solutions' ? (
                       <span
                         className={`relative text-xs xl:text-sm font-medium text-blue-900/70 transition-colors hover:text-blue-600 flex items-center cursor-pointer whitespace-nowrap ${
                           isLinkActive(link) ? 'text-blue-600' : ''
@@ -520,29 +520,7 @@ const Navbar = () => {
           {/* Mobile Navigation - Enhanced for different mobile sizes */}
           <div className="flex items-center gap-1 sm:gap-2 lg:hidden">
             {/* Mobile AI Call Button */}
-            <motion.button
-              onClick={handleTalkToAI}
-              disabled={!isWidgetReady}
-              className={`px-2 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm font-medium rounded-full transition-all flex items-center gap-1 relative overflow-hidden whitespace-nowrap ${
-                isWidgetReady ? 'bg-black text-white hover:text-blue-500' : 'bg-gray-300 text-black-500 cursor-not-allowed'
-              }`}
-              whileHover={isWidgetReady ? { scale: 1.05 } : {}}
-              whileTap={isWidgetReady ? { scale: 0.95 } : {}}
-            >
-              {isWidgetReady && (
-                <motion.span
-                  className="absolute inset-0 z-0 bg-white"
-                  initial={{ scale: 0 }}
-                  whileHover={{ scale: 1 }}
-                  transition={{ duration: 0.3 }}
-                />
-              )}
-              <motion.span className="relative z-10 flex items-center gap-1">
-                <Bot size={12} className="sm:w-4 sm:h-4" />
-                <span className="hidden sm:inline">AI Call</span>
-                <span className="sm:hidden">AI</span>
-              </motion.span>
-            </motion.button>
+           
             
             {/* Mobile Menu Button */}
             <motion.button
@@ -721,76 +699,7 @@ const Navbar = () => {
                   );
                 })}
                 
-                {/* Mobile User Section */}
-                {user ? (
-                  <>
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.7, duration: 0.3 }}
-                      className="w-full max-w-sm"
-                    >
-                      <MotionLink
-                        to="/admin"
-                        smooth
-                        className="flex items-center justify-end gap-2 text-base font-medium sm:text-lg text-blue-900/70 hover:text-blue-600"
-                        onClick={() => {
-                          setIsMenuOpen(false);
-                          setActiveSection('');
-                        }}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        Hi, {user.username}
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-4 h-4 sm:w-5 sm:h-5"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 19v-6a2 2 0 00-2-2H4a2 2 0 00-2-2h6a2 2 0 00-2-2v6a2 2 0 002 2h2a2 2 0 002-2V9a2 2 0 00-2-2h-2a2 2 0 00-2 2v10m0 0a2 2 0 01-2 2h-5a2 2 0 01-2-2V9"
-                          />
-                        </svg>
-                      </MotionLink>
-                    </motion.div>
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.8, duration: 0.3 }}
-                      className="w-full max-w-sm"
-                    >
-                      <motion.button
-                        onClick={handleLogout}
-                        className="w-full py-3 text-base font-medium text-right text-red-500 sm:text-lg hover:text-red-600"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        Logout
-                      </motion.button>
-                    </motion.div>
-                  </>
-                ) : (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.7, duration: 0.3 }}
-                    className="w-full max-w-sm"
-                  >
-                    <motion.button
-                      onClick={handleLoginClick}
-                      className="w-full py-3 text-base font-medium text-right sm:text-lg text-blue-900/70 hover:text-blue-600"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Login
-                    </motion.button>
-                  </motion.div>
-                )}
+                
                 
                 {/* Mobile Get Started Button - Only show if not logged in */}
                 {!user && (

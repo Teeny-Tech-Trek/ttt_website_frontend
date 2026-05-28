@@ -208,7 +208,7 @@ const Services = () => {
               <motion.div
                 key={idx}
                 variants={cardVariants}
-                className="relative bg-white rounded-2xl shadow-lg hover:shadow-xl border border-blue-200/50 transition-all duration-500 flex flex-col p-6 min-h-[260px] h-full group overflow-hidden"
+                className="relative bg-blue-900 rounded-2xl shadow-lg hover:shadow-xl border border-blue-700/60 transition-all duration-500 flex flex-col p-6 min-h-[260px] h-full group overflow-hidden"
                 tabIndex={0}
                 role="region"
                 aria-label={service.title}
@@ -219,31 +219,31 @@ const Services = () => {
                   tabIndex={-1}
                   aria-hidden="true"
                 />
-                <div className="absolute inset-0 transition-opacity duration-500 opacity-0 bg-gradient-to-br from-blue-50/50 to-transparent group-hover:opacity-100" />
-                
+                <div className="absolute inset-0 transition-opacity duration-500 opacity-0 bg-gradient-to-br from-blue-800/60 to-transparent group-hover:opacity-100" />
+
                 <div className="flex items-center gap-3 mb-4">
                   {React.cloneElement(service.icon, {
-                    className: 'w-8 h-8 text-blue-900',
+                    className: 'w-8 h-8 text-white',
                   })}
-                  <h3 className="text-lg font-bold leading-tight text-blue-900 transition-colors duration-300 group-hover:text-blue-700">
+                  <h3 className="text-lg font-bold leading-tight text-white transition-colors duration-300 group-hover:text-blue-200">
                     {service.title}
                   </h3>
                 </div>
 
-                <p className="mb-4 text-sm leading-relaxed text-black">{service.description}</p>
+                <p className="mb-4 text-sm leading-relaxed text-blue-100">{service.description}</p>
 
                 {/* Features with updated icons */}
                 <div className="grid grid-cols-1 gap-3 mb-4 sm:grid-cols-2">
                   {service.features.map((feature, i) => (
-                    <div key={i} className="flex items-center gap-3 p-2 rounded-lg bg-blue-50/30">
+                    <div key={i} className="flex items-center gap-3 p-2 rounded-lg">
                       {getIconForFeature(feature)}
-                      <span className="text-sm font-medium text-blue-900">{truncateFeature(feature)}</span>
+                      <span className="text-sm font-medium text-white">{truncateFeature(feature)}</span>
                     </div>
                   ))}
                 </div>
 
                 <div className="mt-auto">
-                  <span className="inline-flex items-center gap-2 font-medium text-blue-900 transition-all cursor-pointer hover:text-blue-500 group-hover:translate-x-1">
+                  <span className="inline-flex items-center gap-2 font-medium text-white transition-all cursor-pointer hover:text-blue-200 group-hover:translate-x-1">
                     Discover More
                     <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </span>

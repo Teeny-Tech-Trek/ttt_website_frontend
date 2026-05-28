@@ -70,6 +70,9 @@ const HomePage = ({ onOpenChatbot }: HomePageProps) => {
       </section>
       <section id="login" className="h-0" aria-hidden="true" />
       <section id="solutions" className="h-0" aria-hidden="true" />
+      <section id="industries">
+       <Industries />
+     </section>
       <section id="services">
         <Services />
       </section>
@@ -77,9 +80,6 @@ const HomePage = ({ onOpenChatbot }: HomePageProps) => {
       {/* <section id="about">
         <About />
       </section> */}
-       <section id="industries">
-        <Industries />
-      </section>
        <section id="use-cases" className="h-0" aria-hidden="true" />
        <section id="featuredCase">
         <AIServicesCards />

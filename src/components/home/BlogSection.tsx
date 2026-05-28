@@ -522,7 +522,7 @@ export function BlogSection({ blogPosts }: BlogSectionProps) {
             <img
               src={selectedPost.image}
               alt={selectedPost.title}
-              className="w-full h-[400px] object-cover"
+              className="w-full  object-cover"
             />
           </div>
 
@@ -651,7 +651,7 @@ export function BlogSection({ blogPosts }: BlogSectionProps) {
               className="group cursor-pointer bg-white rounded-2xl overflow-hidden border border-gray-200 hover:border-blue-300 transition-all duration-300 hover:shadow-xl"
             >
               {/* Image */}
-              <div className="relative h-48 overflow-hidden bg-gray-100">
+              <div className="relative  overflow-hidden bg-gray-100">
                 <img
                   src={post.image}
                   alt={post.title}

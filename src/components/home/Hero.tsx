@@ -463,7 +463,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenChatbot }) => {
             ease: 'power2.out',
             onUpdate(this: gsap.core.Tween) {
               const val = Math.round((this.targets()[0] as { v: number }).v);
-              el.innerHTML = `${val}<span style="color:#00aaff">${stat.unit}</span>`;
+              el.innerHTML = `${val}<span style="color:#1e3a8a">${stat.unit}</span>`;
             },
           }
         );
@@ -530,10 +530,10 @@ const Hero: React.FC<HeroProps> = ({ onOpenChatbot }) => {
 
         {/* ── Scene: brain + floating cards (3 left, 2-card stack right) ── */}
         <div className="relative z-20 mx-auto w-full max-w-[1000px]">
-          {/* ─── MOBILE & TABLET LAYOUT (uses heroImg2): flex row [left cards | brain | rich stack] ─── */}
-          <div className="flex items-center justify-center gap-1.5 sm:gap-3 md:gap-5 mt-4 sm:mt-6 px-2 sm:px-4 lg:hidden">
+          {/* ─── MOBILE, TABLET & iPad LAYOUT (uses heroImg2): flex row [left cards | brain | rich stack] ─── */}
+          <div className="flex items-center justify-center gap-1.5 sm:gap-3 md:gap-5 lg:gap-7 mt-4 sm:mt-6 px-2 sm:px-4 lg:px-6 xl:hidden">
             {/* Left column - 3 simple cards stacked */}
-            <div className="flex flex-shrink-0 flex-col gap-1.5 sm:gap-2.5 w-[24vw] max-w-[105px] sm:w-[140px] sm:max-w-none md:w-[175px]">
+            <div className="flex flex-shrink-0 flex-col gap-1.5 sm:gap-2.5 lg:gap-3 w-[24vw] max-w-[105px] sm:w-[140px] sm:max-w-none md:w-[175px] lg:w-[215px]">
               {CARDS.slice(0, 3).map((card, i) => (
                 <div
                   key={card.title}
@@ -555,7 +555,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenChatbot }) => {
             {/* Brain image (mobile/tablet only - uses heroImg2) */}
             <div className="relative flex flex-shrink-0 items-center justify-center">
               <div
-                className="pointer-events-none absolute left-1/2 top-1/2 h-[180px] w-[180px] sm:h-[260px] sm:w-[260px] md:h-[300px] md:w-[300px] rounded-full animate-[cgPulse_4s_ease-in-out_infinite]"
+                className="pointer-events-none absolute left-1/2 top-1/2 h-[180px] w-[180px] sm:h-[260px] sm:w-[260px] md:h-[300px] md:w-[300px] lg:h-[360px] lg:w-[360px] rounded-full animate-[cgPulse_4s_ease-in-out_infinite]"
                 style={{
                   background: 'radial-gradient(circle, rgba(0,160,255,0.13) 0%, transparent 65%)',
                 }}
@@ -563,13 +563,13 @@ const Hero: React.FC<HeroProps> = ({ onOpenChatbot }) => {
               <img
                 src={heroImg2}
                 alt="AI Brain Visualization"
-                className="relative block h-auto w-[38vw] max-w-[170px] sm:w-[32vw] sm:max-w-[270px] md:w-[34vw] md:max-w-[320px]"
+                className="relative block h-auto w-[38vw] max-w-[170px] sm:w-[32vw] sm:max-w-[270px] md:w-[34vw] md:max-w-[320px] lg:w-[36vw] lg:max-w-[380px]"
               />
             </div>
 
             {/* Right column - rich stack (chatbot + claude automation) */}
             <div
-              className="flex-shrink-0 w-[30vw] max-w-[130px] sm:w-[180px] sm:max-w-none md:w-[220px]"
+              className="flex-shrink-0 w-[30vw] max-w-[130px] sm:w-[180px] sm:max-w-none md:w-[220px] lg:w-[270px]"
               ref={(el) => {
                 cardRefs.current[3] = el;
               }}
@@ -584,8 +584,8 @@ const Hero: React.FC<HeroProps> = ({ onOpenChatbot }) => {
             </div>
           </div>
 
-          {/* ─── DESKTOP (LG+) LAYOUT (uses heroImg): brain centered + absolutely positioned cards ─── */}
-          <div className="hidden lg:block">
+          {/* ─── DESKTOP (XL+) LAYOUT (uses heroImg): brain centered + absolutely positioned cards ─── */}
+          <div className="hidden xl:block">
             <div
               ref={imageWrapRef}
               className="relative mt-7 flex justify-center will-change-transform"
@@ -645,7 +645,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenChatbot }) => {
           >
             Chat with AI
           </button>
-          <button className="flex items-center justify-center gap-[9px] whitespace-nowrap rounded-full bg-gradient-to-br from-[#003ccf] to-[#0088ff] px-8 py-[13px] [font-family:Rajdhani,sans-serif] text-base font-bold tracking-wide text-white shadow-[0_6px_28px_rgba(0,100,255,0.48)] transition-all duration-300 hover:-translate-y-[3px] hover:shadow-[0_10px_38px_rgba(0,100,255,0.65)] max-lg:w-full max-lg:px-5 max-lg:py-3">
+          <button className="flex items-center justify-center gap-[9px] whitespace-nowrap rounded-full bg-blue-900 px-8 py-[13px] [font-family:Rajdhani,sans-serif] text-base font-bold tracking-wide text-white shadow-[0_6px_28px_rgba(0,100,255,0.48)] transition-all duration-300 hover:-translate-y-[3px] hover:shadow-[0_10px_38px_rgba(0,100,255,0.65)] max-lg:w-full max-lg:px-5 max-lg:py-3">
             Book a Consultation
           </button>
         </div>

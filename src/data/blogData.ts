@@ -1,11 +1,13 @@
-import chatbotImg from "../Images/Images-Blogs/Chotbot2.png"
-import AiPowered from "../Images/Images-Blogs/Ai-Powered-Automation1.png"
-import Financial from "../Images/Images-Blogs/Financial.png"
-import Healthcare from "../Images/Images-Blogs/Healthcare3.png"
-import MachineLearning from "../Images/Images-Blogs/Machine Learning.png"
-import Manufacturing from "../Images/Images-Blogs/Manufacturing-Ai.png"
-import NaturalLanguage from "../Images/Images-Blogs/Natural-Language.png"
-import RetailRevoulation from "../Images/Images-Blogs/Retail-Revolution.png"
+import chatbotImg from "../Images/Images-Blogs/chatbots-Image.png"
+import AiPowered from "../Images/Images-Blogs/ai-powered-automation-Image.png"
+import AiMedical from "../Images/Images-Blogs/ai-in-medical-practices-Image.png"
+import Finacial from "../Images/Images-Blogs/financial-Image.png"
+import GettingStarted from "../Images/Images-Blogs/getting-started-Image.png"
+import Manufacturing from "../Images/Images-Blogs/manufacturing-meets.png"
+import NaturalLanguage from "../Images/Images-Blogs/natural-language-Image.png"
+import RetailRevolution from "../Images/Images-Blogs/Retail-Revolution-Image.png"
+
+
 
 
 export const blogPosts = [
@@ -381,7 +383,7 @@ Before implementing any AI tools, run through this critical four-step integratio
     category: "Industry Insights",
     date: "Jan 8, 2025",
     readTime: "7 min read",
-    image: Healthcare,
+    image: AiMedical,
     author: "Dr. Elizabeth Wu"
   },
   {
@@ -468,7 +470,7 @@ Before implementing any AI tools, run through this critical four-step integratio
     category: "Industry Insights",
     date: "Jan 5, 2025",
     readTime: "6 min read",
-    image: RetailRevoulation,
+    image: RetailRevolution,
     author: "David Martinez"
   },
   {
@@ -565,7 +567,7 @@ This modern method enables real estate firms to bypass slow, manual appraisals, 
     category: "AI Solutions",
     date: "Jan 2, 2025",
     readTime: "8 min read",
-    image: MachineLearning,
+    image: GettingStarted,
     author: "Professor James Liu"
   },
   {
@@ -712,7 +714,7 @@ Automating compliance allows small providers to **meet strict regulatory mandate
     category: "Industry Insights",
     date: "Dec 28, 2024",
     readTime: "7 min read",
-    image: Financial,
+    image: Finacial,
     author: "Robert Goldman"
   },
   {

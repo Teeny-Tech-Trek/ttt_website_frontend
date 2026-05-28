@@ -16,6 +16,7 @@ const services: Service[] = [
   { title: 'Agentic AI Workflows', slug: 'agentic-ai-workflows' },
   { title: 'Smart Process Automation', slug: 'smart-process-automation' },
   { title: 'Lightweight AI Apps', slug: 'ai-apps-micro-saas' },
+  { title: 'Claude Automation', slug: 'claude-automation' },
 ];
 
 const Footer = () => {
