@@ -6,6 +6,8 @@ export const services = [
     icon: <Bot size={32} className="text-primary" />,
     title: "AI-Powered Chatbots & Virtual Assistants",
     slug: "ai-chatbots",
+    // 👇 IS CARD KI IMAGE — yahan apna real path daal dena (e.g. '/images/services/ai-chatbots.png')
+    image: "/Services-Image/Chatbot-Image.png",
     description: "Context-aware GPT bots for customer support, onboarding, or internal tools — integrated with your existing platforms (Slack, Notion, CRMs, etc.)",
     features: ["Customer Support", "User Onboarding", "Internal Knowledge Base", "Platform Integration"],
     featureDescriptions: [
@@ -53,6 +55,8 @@ export const services = [
     icon: <PuzzlePiece size={32} className="text-primary" />,
     title: "Agentic AI Workflows",
     slug: "agentic-ai-workflows",
+    // 👇 IS CARD KI IMAGE — yahan apna real path daal dena
+    image: "/Services-Image/Agentic-Workflow-Image.png",
     description: "Autonomous agents that can retrieve data, summarize content, make decisions, and complete multi-step tasks using LangChain, AutoGen, or CrewAI.",
     features: ["Data Retrieval", "Content Summarization", "Decision Making", "Multi-step Task Automation"],
     featureDescriptions: [
@@ -105,6 +109,8 @@ export const services = [
     icon: <Cog size={32} className="text-primary" />,
     title: "Smart Process Automation",
     slug: "smart-process-automation",
+    // 👇 IS CARD KI IMAGE — yahan apna real path daal dena
+    image: "/Services-Image/SmartProcess-Image.png",
     description: "Save hours by automating repetitive tasks with Python, APIs, Zapier, and Make. From CRM updates to email replies — we connect your stack, end-to-end.",
     features: ["CRM Automation", "Email Management", "Data Processing", "Workflow Integration"],
     featureDescriptions: [
@@ -162,6 +168,8 @@ export const services = [
     icon: <Sparkles size={32} className="text-primary" />,
     title: "Claude Automation",
     slug: "claude-automation",
+    // 👇 IS CARD KI IMAGE — yahan apna real path daal dena
+    image: "/Services-Image/Claude-Image.png",
     description: "Leverage Claude AI to automate complex tasks — tool connections, custom MCP integrations, scheduled runs, and human-in-the-loop workflows for smarter business operations.",
     features: ["Tool Connections", "Custom MCP Tools", "Cowork Setups", "Recurring Runs"],
     featureDescriptions: [
