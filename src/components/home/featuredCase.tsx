@@ -65,7 +65,7 @@ const AIServicesCards = () => {
               className="overflow-hidden transition-all duration-300 bg-white border border-gray-200 shadow-lg cursor-pointer rounded-xl hover:shadow-xl hover:transform hover:-translate-y-2 sm:rounded-2xl lg:hover:-translate-y-3 xl:rounded-3xl 2xl:hover:-translate-y-4"
             >
              {/* Image Section */}
-              <div className="relative w-full overflow-hidden bg-gradient-to-br from-blue-900 to-blue-700 rounded-3xl aspect-[16/10] sm:aspect-[16/9] lg:aspect-[4/3] xl:aspect-[16/10]">
+              <div className="relative w-full overflow-hidden rounded-t-xl sm:rounded-t-2xl lg:rounded-t-3xl">
                 <img
                   src={service.image}
                   alt={service.title}

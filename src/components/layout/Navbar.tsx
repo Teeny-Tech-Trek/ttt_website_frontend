@@ -504,11 +504,11 @@ const Navbar = () => {
               >
                 <MotionLink
                   smooth
-                  to="/#contact"
+                  to="/#pricing"
                   className="px-4 xl:px-8 py-1.5 xl:py-2.5 bg-blue-900 text-white text-xs xl:text-sm font-medium rounded-full hover:bg-blue-700 transition-all shadow-sm hover:shadow-md whitespace-nowrap"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => setActiveSection('#contact')}
+                  onClick={() => setActiveSection('#pricing')}
                 >
                   <span className="hidden xl:inline">Book Consultation</span>
                   <span className="xl:hidden">Start</span>
@@ -711,11 +711,11 @@ const Navbar = () => {
                   >
                     <MotionLink
                       smooth
-                      to="/#contact"
+                      to="/#pricing"
                       className="block w-full px-6 py-3 text-base font-medium text-center text-white transition-colors bg-blue-600 rounded-full shadow-sm sm:py-4 sm:text-lg hover:bg-blue-700 hover:shadow-md"
                       onClick={() => {
                         setIsMenuOpen(false);
-                        setActiveSection('#contact');
+                        setActiveSection('#pricing');
                       }}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}

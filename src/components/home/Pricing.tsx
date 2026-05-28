@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 import { useAuth } from "../../context/AuthContext";
 import Container from "../ui/Container";
 import SectionHeading from "../ui/SectionHeading";
-import AgenticWorkflowsImg from "../../Images/Extra Resources - Hero Page/WhatsApp Image 2025-09-22 at 10.31.55 PM.jpeg";
 
 const DEFAULT_API_BASE_URL = import.meta.env.DEV
   ? "http://localhost:5000"
@@ -53,19 +52,26 @@ const loadRazorpay = (): Promise<boolean> => {
 const packages = [
   {
     id: "d0f1c2a3-b456-4c78-9abc-def123456789",
-    name: "DIY Audit Kit",
-    description: "Best for browsing, early scoping, sharing with your team.",
+    name: "AI Consultation Session",
+    description:
+      "Perfect for founders, startups, and teams exploring AI automation, chatbots, workflows, integrations, or custom AI solutions.",
     price: 0,
+    priceLabel: "30 Min",
     duration: 0,
-    for: "Anyone",
-    ledBy: "Self-guided",
+    for: "Google Meet",
+    forLabel: "Mode",
+    ledBy: "TTT Team",
     deliverables: [
-      "AI Readiness Audit (Lite) 8-page PDF checklist",
-      "Ops Inventory Sheet (CSV) log top 10 processes",
-      "3 sample prompts to test your data",
+      "AI project discussion",
+      "Workflow & automation guidance",
+      "AI tool recommendations",
+      "Use-case brainstorming",
+      "Tech stack suggestions",
+      "Live Google Meet session",
+      "Follow-up resources via email",
     ],
-    followUp: "Optional email tips (48–72h)",
-    cta: "Get your free audit",
+    followUp: "",
+    cta: "Book a Free Meet",
     schemaType: "Product",
   },
 ];
@@ -131,7 +137,9 @@ const SubscriptionPricing: React.FC = () => {
     if (pkg.price === 0) {
       setLoadingAction(pkg.id);
       window.dataLayer?.push({ event: "consult_file_download", file: "audit_kit" });
-      toast.success("Get ready for the AI Readiness Audit!");
+      toast.success(
+        "Your Google Meet consultation has been booked successfully. A calendar invite and meeting link have been sent to your email"
+      );
            navigate("/auditform");
       setLoadingAction(null);
       return;
@@ -269,8 +277,8 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
       <div className="absolute inset-0 bg-gradient-to-br from-blue-50/30 to-white/50" />
       <Container className="relative z-10">
         <SectionHeading
-          title="Get your free AI Readiness Audit"
-          subtitle="Browse, scope early, and share with your team—the DIY Audit Kit gives you a practical checklist and starter tools, at no cost and no commitment."
+          title="Book your free AI Strategy Call"
+          subtitle="Discuss your AI goals, workflows, automation ideas, and implementation roadmap with our team in a live Google Meet consultation."
         />
 
         {error && (
@@ -292,7 +300,9 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
           className="max-w-xl mx-auto"
         >
           {packages.map((pkg) => {
-            const priceText = pkg.price === 0 ? "Free" : `₹${pkg.price.toLocaleString()}`;
+            const priceText =
+              (pkg as any).priceLabel ??
+              (pkg.price === 0 ? "Free" : `₹${pkg.price.toLocaleString()}`);
             return (
               <motion.div
                 key={pkg.id}
@@ -309,7 +319,7 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
                 {/* Header */}
                 <div className="mb-6 text-center">
                   <span className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wide text-blue-800 uppercase rounded-full bg-blue-100">
-                    Free Kit
+                    Free Google Meet
                   </span>
                   <h3 className="mb-2 text-3xl font-bold text-gray-900">{pkg.name}</h3>
                   <p className="text-gray-600">{pkg.description}</p>
@@ -326,7 +336,7 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
                 {/* Meta */}
                 <div className="flex flex-wrap justify-center mb-6 text-sm text-gray-500 gap-x-6 gap-y-1">
                   <span>
-                    <span className="font-medium text-gray-700 mr-1.5">For:</span>{pkg.for}
+                    <span className="font-medium text-gray-700 mr-1.5">{(pkg as any).forLabel ?? "For"}:</span>{pkg.for}
                   </span>
                   <span>
                     <span className="font-medium text-gray-700 mr-1.5">Led by:</span>{pkg.ledBy}
@@ -343,10 +353,12 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
                         <span className="text-sm">{deliverable}</span>
                       </li>
                     ))}
-                    <li className="flex items-start gap-3 pt-3 border-t border-gray-200">
-                      <Check className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm"><span className="font-medium">Follow-up:</span> {pkg.followUp}</span>
-                    </li>
+                    {pkg.followUp && (
+                      <li className="flex items-start gap-3 pt-3 border-t border-gray-200">
+                        <Check className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-sm"><span className="font-medium">Follow-up:</span> {pkg.followUp}</span>
+                      </li>
+                    )}
                   </ul>
                 </div>
 
@@ -492,47 +504,6 @@ const handleFormSubmit = async (pkg: typeof packages[0]) => {
           </p>
         </motion.div>
 
-        <motion.div
-          id="faq"
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : { opacity: 0 }}
-          className="mt-20"
-        >
-          <div className="max-w-4xl px-6 py-10 mx-auto mb-12  border border-gray-100 rounded-2xl">
-              <img src={AgenticWorkflowsImg} alt="AgenticWorkflowsImg" className="rounded-xl" />
-            </div>
-
-          <h2 className="mb-12 text-3xl font-bold text-center text-gray-900">FAQs</h2>
-          <div className="max-w-3xl mx-auto space-y-8">
-            <div className="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
-              <h3 className="mb-3 text-xl font-semibold text-gray-900">
-                Can we apply the consultation fee to a pilot?
-              </h3>
-              <p className="text-gray-600">
-                Yes—credit 100% of your consultation toward a 4-week Pilot if you start within 30 days.
-              </p>
-            </div>
-            <div className="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
-              <h3 className="mb-3 text-xl font-semibold text-gray-900">What if we need to reschedule?</h3>
-              <p className="text-gray-600">
-                You can reschedule up to 24 hours before the slot—link in your invite.
-              </p>
-            </div>
-            <div className="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
-              <h3 className="mb-3 text-xl font-semibold text-gray-900">Do you sign NDAs?</h3>
-              <p className="text-gray-600">
-                Yes. We can sign a mutual NDA before the session if required.
-              </p>
-            </div>
-            <div className="p-6 bg-white border border-gray-100 shadow-sm rounded-2xl">
-              <h3 className="mb-3 text-xl font-semibold text-gray-900">Will you sell us a generic chatbot?</h3>
-              <p className="text-gray-600">
-                No. The goal is a clear, specific plan that fits your stack and constraints.
-              </p>
-            </div>
-            
-          </div>
-        </motion.div>
       </Container>
     </section>
   );

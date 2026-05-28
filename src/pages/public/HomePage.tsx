@@ -4,6 +4,7 @@ import Hero from '../../components/home/Hero';
 import Services from '../../components/home/ServicesList';
 import TechStack from '../../components/home/TechStack';
 import Pricing from '../../components/home/Pricing';
+import FAQ from '../../components/home/FAQ';
 import Contact from '../../components/home/Contact';
 
 import About from '../../components/home/About';
@@ -91,6 +92,9 @@ const HomePage = ({ onOpenChatbot }: HomePageProps) => {
         <div id="book-consultation">
           <Pricing />
         </div>
+      </section>
+      <section id="faq">
+        <FAQ />
       </section>
       <section id="blogs" className="h-0" aria-hidden="true" />
       
