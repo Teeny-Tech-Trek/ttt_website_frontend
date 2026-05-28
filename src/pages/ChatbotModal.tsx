@@ -1,5 +1,20 @@
 ﻿import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { LogIn, MoreVertical, Send, UserPlus, X } from 'lucide-react';
+import {
+  BookOpen,
+  Building2,
+  Calendar,
+  LayoutGrid,
+  LogIn,
+  MessageSquare,
+  MoreVertical,
+  Plug,
+  Send,
+  Sparkles,
+  Tag,
+  UserPlus,
+  X,
+  type LucideIcon,
+} from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
@@ -8,6 +23,11 @@ import {
   inferLearnMoreIntent,
   navigateToRoute,
 } from '../utils/chatbotRouter';
+import {
+  getChatSessionId as readSessionIdFromStorage,
+  isLeadCaptured,
+  markLeadCaptured,
+} from '../utils/leadCapture';
 import tttLogo from '../assets/teeny-logo.svg';
 
 interface ChatbotModalProps {
@@ -20,6 +40,30 @@ interface ButtonOption {
   id: string;
   label: string;
   value: string;
+}
+
+interface LeadFieldOption {
+  label: string;
+  value: string;
+}
+
+type LeadFieldType = 'text' | 'email' | 'tel' | 'select' | 'textarea';
+
+interface LeadField {
+  name: string;
+  label: string;
+  type: LeadFieldType;
+  required: boolean;
+  placeholder?: string;
+  options: LeadFieldOption[];
+}
+
+interface LeadFormSpec {
+  title: string;
+  description: string;
+  submit_endpoint: string;
+  submit_label: string;
+  fields: LeadField[];
 }
 
 interface Message {
@@ -36,9 +80,23 @@ interface Message {
 }
 
 const DEFAULT_GREETING =
-  "Hey there! I'm Anisha, your AI assistant at Teeny Tech Trek. Ask me anything about our AI services, integrations, pricing, or solutions.";
+  "Hi! I'm the Teeny Tech Trek assistant. Ask me anything about our AI services, integrations, pricing, or solutions.";
 
 const DEFAULT_GREETING_ACTIONS = ['AI Services', 'Integrations', 'Pricing', 'Solutions'];
+
+// Pick a Lucide icon for a suggestion chip based on its label. Keyword-matched
+// so it still works for arbitrary suggested_actions the backend may return.
+const getChipIcon = (label: string): LucideIcon => {
+  const l = label.toLowerCase();
+  if (l.includes('integrat')) return Plug;
+  if (l.includes('pric') || l.includes('plan') || l.includes('cost')) return Tag;
+  if (l.includes('solution')) return LayoutGrid;
+  if (l.includes('industr') || l.includes('use case') || l.includes('case stud')) return Building2;
+  if (l.includes('consult') || l.includes('book') || l.includes('call') || l.includes('contact')) return Calendar;
+  if (l.includes('blog') || l.includes('article') || l.includes('resource')) return BookOpen;
+  if (l.includes('servic')) return Sparkles;
+  return MessageSquare;
+};
 
 interface ChatApiResult {
   reply: string;
@@ -50,6 +108,8 @@ interface ChatApiResult {
   buttons?: string[] | null;
   suggested_actions?: string[] | null;
   options?: ButtonOption[] | null;
+  form?: LeadFormSpec | null;
+  metadata?: { gate?: string | null } | null;
 }
 
 const ServiceCard: React.FC<{ title: string; description: string; price?: string }> = ({ title, description, price }) => (
@@ -75,6 +135,12 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // Lead-capture gate: when set, the intake form is shown and chat is blocked
+  // until it's submitted. The shape is owned by the backend (/api/chatbot/intro).
+  const [leadForm, setLeadForm] = useState<LeadFormSpec | null>(null);
+  const [leadValues, setLeadValues] = useState<Record<string, string>>({});
+  const [leadErrors, setLeadErrors] = useState<Record<string, string>>({});
+  const [isSubmittingLead, setIsSubmittingLead] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -84,16 +150,11 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
 
   const getSessionId = useCallback(() => {
     if (sessionIdRef.current) return sessionIdRef.current;
-    const storageKey = 'ttt_chat_session_id';
-    const existing = localStorage.getItem(storageKey);
-    if (existing) {
-      sessionIdRef.current = existing;
-      return existing;
-    }
-    const newId = `web-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-    localStorage.setItem(storageKey, newId);
-    sessionIdRef.current = newId;
-    return newId;
+    // Shared storage key lives in utils/leadCapture so the Contact Us form
+    // can satisfy the chatbot's gate for the same anonymous visitor.
+    const id = readSessionIdFromStorage();
+    sessionIdRef.current = id;
+    return id;
   }, []);
 
   const scrollToBottom = () => {
@@ -185,6 +246,221 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
     ]);
   }, [createId]);
 
+  const buildEmptyLeadValues = useCallback((form: LeadFormSpec): Record<string, string> => {
+    const values: Record<string, string> = {};
+    (form.fields || []).forEach((field) => {
+      values[field.name] = '';
+    });
+    return values;
+  }, []);
+
+  // Show the intake form and reset any prior field state. Chat stays blocked
+  // (the input is hidden) until the form submits successfully.
+  const showLeadForm = useCallback(
+    (form: LeadFormSpec) => {
+      setLeadForm(form);
+      setLeadValues(buildEmptyLeadValues(form));
+      setLeadErrors({});
+    },
+    [buildEmptyLeadValues]
+  );
+
+  // Mirror the backend's per-field validation so users don't bounce off a 422.
+  const validateLeadField = useCallback((field: LeadField, rawValue: string): string | null => {
+    const value = (rawValue || '').trim();
+    if (field.required && !value) {
+      return `${field.label} is required.`;
+    }
+    if (!value) return null; // optional + empty: nothing else to check
+    if (field.type === 'select') {
+      const allowed = (field.options || []).map((opt) => opt.value);
+      if (allowed.length > 0 && !allowed.includes(value)) {
+        return `Please choose a valid ${field.label.toLowerCase()}.`;
+      }
+    }
+    // Per-field rules mirror the Contact Us form (name / email / service / message).
+    // Unknown field names fall through — generic required + select-membership
+    // checks above still cover them, so the form keeps working if the backend
+    // tweaks the spec.
+    switch (field.name) {
+      case 'name':
+        if (value.length > 120) return 'Name must be 120 characters or fewer.';
+        break;
+      case 'email':
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          return 'Enter a valid email like you@company.com.';
+        }
+        break;
+      case 'service':
+        if (value.length > 120) return 'Please choose a valid service.';
+        break;
+      case 'message':
+        if (value.length < 2) return 'Please share a short message.';
+        if (value.length > 2000) return 'Message must be 2000 characters or fewer.';
+        break;
+      default:
+        break;
+    }
+    return null;
+  }, []);
+
+  // Raw call to the intro endpoint. Returns either the gated shape ({ message, form })
+  // or the legacy shape ({ message, options }). Callers decide how to render it.
+  const requestIntro = useCallback(async () => {
+    const sessionId = getSessionId();
+    const response = await fetch(
+      `${API_BASE_URL}/api/chatbot/intro?session_id=${encodeURIComponent(sessionId)}`
+    );
+    if (!response.ok) throw new Error('Intro request failed');
+    return response.json();
+  }, [API_BASE_URL, getSessionId]);
+
+  // Called on widget open. Branches on whether the response carries a "form".
+  // If the visitor already submitted either form (chatbot or Contact Us) inside
+  // the TTL, we bypass the gate even when the backend returns one — the local
+  // flag is our cross-touchpoint memory.
+  const fetchIntro = useCallback(async () => {
+    try {
+      const data = await requestIntro();
+      const alreadyCaptured = isLeadCaptured();
+      if (data && data.form && !alreadyCaptured) {
+        setMessages([
+          {
+            id: createId(),
+            text: data.message || DEFAULT_GREETING,
+            isUser: false,
+            timestamp: new Date(),
+            type: 'text',
+          },
+        ]);
+        showLeadForm(data.form);
+        return;
+      }
+      const introOptions =
+        Array.isArray(data?.options) && data.options.length > 0
+          ? (data.options as ButtonOption[])
+          : undefined;
+      setLeadForm(null);
+      // If we're bypassing a returned form via the local flag, the backend's
+      // "share a few details" copy would be confusing — fall back to the
+      // standard greeting.
+      const introText = alreadyCaptured && data?.form
+        ? DEFAULT_GREETING
+        : data?.message || DEFAULT_GREETING;
+      setMessages([
+        {
+          id: createId(),
+          text: introText,
+          isUser: false,
+          timestamp: new Date(),
+          type: 'text',
+          options: introOptions,
+          suggestedActions: introOptions ? undefined : DEFAULT_GREETING_ACTIONS,
+        },
+      ]);
+    } catch (error) {
+      console.error('Intro API Error:', error);
+      setLeadForm(null);
+      showGreetingMessage();
+    }
+  }, [createId, requestIntro, showGreetingMessage, showLeadForm]);
+
+  const handleLeadChange = (name: string, value: string) => {
+    setLeadValues((prev) => ({ ...prev, [name]: value }));
+    // Clear the field's error as the user fixes it.
+    setLeadErrors((prev) => {
+      if (!prev[name] && !prev._form) return prev;
+      const next = { ...prev };
+      delete next[name];
+      delete next._form;
+      return next;
+    });
+  };
+
+  const handleLeadSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!leadForm || isSubmittingLead) return;
+
+    // Validate everything client-side first.
+    const errors: Record<string, string> = {};
+    leadForm.fields.forEach((field) => {
+      const err = validateLeadField(field, leadValues[field.name] || '');
+      if (err) errors[field.name] = err;
+    });
+    if (Object.keys(errors).length > 0) {
+      setLeadErrors(errors);
+      return;
+    }
+    setLeadErrors({});
+    setIsSubmittingLead(true);
+
+    try {
+      const body: Record<string, string> = { session_id: getSessionId() };
+      leadForm.fields.forEach((field) => {
+        body[field.name] = (leadValues[field.name] || '').trim();
+      });
+
+      const response = await fetch(`${API_BASE_URL}${leadForm.submit_endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      // FastAPI validation error: surface inline and let the user retry.
+      if (response.status === 422) {
+        const data = await response.json().catch(() => null);
+        const fieldErrors: Record<string, string> = {};
+        if (data && Array.isArray(data.detail)) {
+          data.detail.forEach((item: { loc?: unknown[]; msg?: string }) => {
+            const loc = Array.isArray(item.loc) ? item.loc : [];
+            const fieldName = loc[loc.length - 1];
+            if (typeof fieldName === 'string' && fieldName !== 'body') {
+              fieldErrors[fieldName] = item.msg || 'Invalid value.';
+            }
+          });
+        }
+        setLeadErrors(
+          Object.keys(fieldErrors).length > 0
+            ? fieldErrors
+            : { _form: 'Please check your details and try again.' }
+        );
+        return;
+      }
+
+      if (!response.ok) throw new Error('Lead submit failed');
+
+      const data = await response.json();
+      const welcomeOptions =
+        Array.isArray(data?.options) && data.options.length > 0
+          ? (data.options as ButtonOption[])
+          : undefined;
+
+      // Form passed: hide it, drop the welcome bubble + menu, re-enable chat.
+      // Also flag the lead as captured so Contact Us can bypass on this device.
+      markLeadCaptured('chatbot');
+      setLeadForm(null);
+      setLeadValues({});
+      setLeadErrors({});
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: createId(),
+          text: data?.message || DEFAULT_GREETING,
+          isUser: false,
+          timestamp: new Date(),
+          type: 'text',
+          options: welcomeOptions,
+          suggestedActions: welcomeOptions ? undefined : DEFAULT_GREETING_ACTIONS,
+        },
+      ]);
+    } catch (error) {
+      console.error('Lead submit error:', error);
+      setLeadErrors({ _form: 'Something went wrong. Please try again.' });
+    } finally {
+      setIsSubmittingLead(false);
+    }
+  };
+
   const sendMessageToAPI = async (
     payload: { message: string; type: 'text' | 'button' },
     onPartial: (text: string, done: boolean) => void
@@ -244,6 +520,8 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
                   buttons: parsed.final.buttons || null,
                   suggested_actions: parsed.final.suggested_actions || null,
                   options: normalizeOptions(parsed.final.options || null, parsed.final.buttons || null),
+                  form: parsed.final.form || null,
+                  metadata: parsed.final.metadata || null,
                 };
               }
             } catch {
@@ -270,6 +548,8 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
         buttons: data.buttons || null,
         suggested_actions: data.suggested_actions || null,
         options: normalizeOptions(data.options || null, data.buttons || null),
+        form: data.form || null,
+        metadata: data.metadata || null,
       };
     } catch (error) {
       console.error('Chat API Error:', error);
@@ -299,6 +579,39 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
     setIsTyping(false);
     if (aiResponse.open_login_modal) {
       openAuthModal('login');
+    }
+
+    // Defensive: the gate can fire mid-session. If /chat returns a form (or
+    // metadata.gate === "lead_capture"), re-show the intake form instead of a
+    // chat bubble — unless the local capture flag says this visitor already
+    // gave us their details via Contact Us / earlier session, in which case we
+    // fall through and render the reply normally.
+    const backendWantsForm = !!aiResponse.form || aiResponse.metadata?.gate === 'lead_capture';
+    if (backendWantsForm && !isLeadCaptured()) {
+      const gateText = aiResponse.short_message || aiResponse.reply;
+      if (gateText) {
+        setMessages((prev) => [
+          ...prev,
+          { id: createId(), text: gateText, isUser: false, timestamp: new Date(), type: 'text' },
+        ]);
+      }
+      if (aiResponse.form) {
+        showLeadForm(aiResponse.form);
+      } else {
+        // Gate fired without a form payload — pull the spec from the intro endpoint.
+        try {
+          const data = await requestIntro();
+          if (data && data.form) showLeadForm(data.form);
+        } catch (error) {
+          console.error('Failed to load lead form spec:', error);
+        }
+      }
+      return;
+    }
+    if (backendWantsForm) {
+      // Local flag overrides the backend gate. Worth a log so a real
+      // server-side gating bug doesn't go silent.
+      console.warn('Chatbot gate fired despite local capture flag — rendering reply anyway.');
     }
 
     const shortText = aiResponse.short_message || aiResponse.reply || '';
@@ -357,23 +670,37 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
     navigate(path);
   };
 
+  // Conversion CTA on the opening screen — routes to the consultation section.
+  const handleBookConsultation = () => {
+    navigateToRoute('/#pricing', navigate, location.pathname);
+    if (!fullPage) onClose();
+  };
+
   const latestSuggestedActions =
     [...messages].reverse().find((msg) => !msg.isUser && msg.suggestedActions && msg.suggestedActions.length > 0)
       ?.suggestedActions || [];
 
+  // The opening state (rich chip cards + CTA) only shows before the visitor sends anything.
+  const hasUserMessages = messages.some((msg) => msg.isUser);
+
   useEffect(() => {
-    if (isOpen) {
-      getSessionId();
-      inputRef.current?.focus();
-      showGreetingMessage();
-    } else {
+    if (!isOpen) {
       setMessages([]);
+      setLeadForm(null);
+      setLeadValues({});
+      setLeadErrors({});
+      return;
     }
-  }, [getSessionId, isOpen, showGreetingMessage]);
+    getSessionId();
+    fetchIntro();
+    // Defer focus until the input has mounted/animated in.
+    const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 80);
+    return () => window.clearTimeout(focusTimer);
+  }, [getSessionId, isOpen, fetchIntro]);
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, isTyping]);
+  }, [messages, isTyping, leadForm]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -407,6 +734,9 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
       )}
 
       <div
+        role="dialog"
+        aria-modal={!fullPage}
+        aria-label="Teeny Tech Trek AI assistant chat"
         className={
           fullPage
             ? `fixed z-[9999] inset-0 h-[100dvh] bg-white overflow-hidden flex flex-col
@@ -415,25 +745,26 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
                transition-opacity duration-200
                ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`
             : `
-        fixed z-[9999] border border-blue-100 bg-white shadow-[0_25px_60px_rgba(0,0,0,0.15),0_8px_20px_rgba(0,0,0,0.08)]
-        right-3 left-3 bottom-24 md:left-auto md:right-6 md:bottom-24
-        w-auto md:w-[400px] md:min-w-[390px]
-        h-[500px] max-h-[500px]
-        rounded-[18px] overflow-hidden
+        fixed z-[9999] flex flex-col overflow-hidden bg-white border border-blue-100
+        shadow-[0_25px_60px_rgba(0,0,0,0.15),0_8px_20px_rgba(0,0,0,0.08)]
+        inset-0 rounded-none
+        md:inset-auto md:bottom-24 md:right-6 md:left-auto md:top-auto
+        md:h-[560px] md:max-h-[560px] md:w-[400px] md:min-w-[390px] md:rounded-[18px]
         transform-gpu origin-bottom-right transition-all duration-300 ease-in-out
         ${isOpen ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto' : 'opacity-0 translate-y-10 scale-95 pointer-events-none'}
-        flex flex-col
       `}
       >
         <div className="relative flex items-center justify-between h-[58px] px-4 text-white border-b border-blue-200/60 bg-[linear-gradient(135deg,#2563EB,#4F46E5)]">
           <div className="flex items-center min-w-0 gap-3">
-            <div className="relative flex items-center justify-center w-9 h-9 rounded-full bg-white shrink-0">
-              <img src={tttLogo} alt="Teeny Tech Trek" className="w-5 h-6 object-contain" />
+            <div className="relative flex items-center justify-center bg-white rounded-full w-9 h-9 shrink-0">
+              <img src={tttLogo} alt="Teeny Tech Trek" className="object-contain w-5 h-6" />
               <span className="absolute w-2.5 h-2.5 bg-green-400 border-2 border-white rounded-full -right-0.5 bottom-0" />
             </div>
-            <div className="flex flex-col justify-center min-w-0 gap-0.5">
-              <p className="text-[10px] leading-none text-blue-100/95">Chat with</p>
-              <h2 className="text-[15px] leading-none font-semibold tracking-tight">Anisha</h2>
+            <div className="flex flex-col justify-center min-w-0 gap-1">
+              <h2 className="text-[15px] leading-none font-semibold tracking-tight truncate">Teeny Tech Trek</h2>
+              <p className="text-[11px] leading-none text-blue-100/95">
+                {isTyping ? 'Typing…' : 'AI Assistant · Online'}
+              </p>
             </div>
           </div>
           <div ref={menuRef} className="flex items-center gap-1">
@@ -443,7 +774,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
                 e.stopPropagation();
                 setIsMenuOpen((prev) => !prev);
               }}
-              className="p-2 rounded-full text-white/90 transition-all duration-200 hover:bg-white/15 hover:scale-105"
+              className="p-2 rounded-full text-white/90 transition-all duration-200 hover:bg-white/15 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
               aria-label="Open menu"
             >
               <MoreVertical size={19} />
@@ -451,7 +782,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
             {!fullPage && (
               <button
                 onClick={onClose}
-                className="p-2 text-white/90 transition-all duration-200 rounded-full hover:bg-white/15 hover:scale-105"
+                className="p-2 text-white/90 transition-all duration-200 rounded-full hover:bg-white/15 hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
                 aria-label="Close chat"
               >
                 <X size={19} />
@@ -481,7 +812,13 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
           </div>
         </div>
 
-        <div className="flex-1 px-4 pt-2.5 pb-4 space-y-3.5 overflow-y-auto bg-gradient-to-b from-blue-50 via-white to-white scrollbar-thin scrollbar-thumb-blue-200 scrollbar-track-transparent">
+        <div
+          className="flex-1 px-4 pt-2.5 pb-4 space-y-3.5 overflow-y-auto bg-gradient-to-b from-blue-50 via-white to-white scrollbar-thin scrollbar-thumb-blue-200 scrollbar-track-transparent"
+          role="log"
+          aria-live="polite"
+          aria-relevant="additions text"
+          aria-label="Conversation"
+        >
           {messages.map((msg, index) => (
             <div key={index} className={`flex ${msg.isUser ? 'justify-end' : 'justify-start'} animate-fade-in-up`}>
               {msg.type === 'service' ? (
@@ -516,14 +853,14 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
                             type="button"
                             onClick={() => handleOptionClick(opt)}
                             disabled={isTyping}
-                            className="px-3 py-1.5 text-[13px] font-medium text-blue-700 bg-[#EEF2FF] rounded-[20px] hover:bg-blue-100 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60"
+                            className="px-3 py-1.5 text-[13px] font-medium text-blue-700 bg-[#EEF2FF] rounded-[20px] hover:bg-blue-100 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
                           >
                             {opt.label}
                           </button>
                         ))}
                       </div>
                     )}
-                    <div className={`mt-2 text-xs ${msg.isUser ? 'text-blue-100/90' : 'text-gray-500'} flex justify-end`}>
+                    <div className={`mt-2 text-[11px] ${msg.isUser ? 'text-blue-100' : 'text-gray-600'} flex justify-end`}>
                       {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </div>
                   </div>
@@ -534,17 +871,149 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
 
           {isTyping && (
             <div className="flex justify-start animate-fade-in-up">
-              <div className="max-w-[85%] px-3 py-2.5 text-gray-600 bg-[#F8FAFF] border border-blue-100 rounded-2xl rounded-bl-md shadow-sm">
-                <div className="flex space-x-1">
-                  <div className="w-2 h-2 bg-blue-400/80 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 delay-150 bg-blue-400/80 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 delay-300 bg-blue-400/80 rounded-full animate-bounce"></div>
+              <div className="flex items-start gap-2.5">
+                <div className="flex items-center justify-center bg-white border border-gray-200 rounded-full w-9 h-9 shrink-0">
+                  <img src={tttLogo} alt="" className="object-contain w-4 h-5" />
+                </div>
+                <div className="px-3.5 py-3 bg-[#F3F4F6] border border-gray-200 rounded-[14px] shadow-sm">
+                  <span className="sr-only">Assistant is typing</span>
+                  <div className="flex space-x-1" aria-hidden="true">
+                    <span className="w-2 h-2 rounded-full bg-blue-400/80 animate-bounce"></span>
+                    <span className="w-2 h-2 delay-150 rounded-full bg-blue-400/80 animate-bounce"></span>
+                    <span className="w-2 h-2 delay-300 rounded-full bg-blue-400/80 animate-bounce"></span>
+                  </div>
                 </div>
               </div>
             </div>
           )}
 
-          {latestSuggestedActions.length > 0 && (
+          {leadForm && (
+            <div className="animate-fade-in-up">
+              <form
+                onSubmit={handleLeadSubmit}
+                className="p-4 space-y-3 bg-white border shadow-sm border-blue-100 rounded-[14px]"
+                noValidate
+              >
+                <div>
+                  <h3 className="text-sm font-semibold text-blue-700">{leadForm.title}</h3>
+                  {leadForm.description && (
+                    <p className="mt-1 text-xs leading-relaxed text-gray-500">{leadForm.description}</p>
+                  )}
+                </div>
+
+                {leadForm.fields.map((field) => {
+                  const value = leadValues[field.name] || '';
+                  const error = leadErrors[field.name];
+                  const fieldId = `lead-${field.name}`;
+                  const baseClasses = `w-full px-3 py-2 text-sm text-gray-800 bg-white border rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[rgba(59,130,246,0.25)] ${
+                    error
+                      ? 'border-red-300 focus:border-red-400'
+                      : 'border-blue-100 focus:border-[#60A5FA]'
+                  }`;
+
+                  return (
+                    <div key={field.name} className="flex flex-col gap-1">
+                      <label htmlFor={fieldId} className="text-xs font-medium text-gray-700">
+                        {field.label}
+                        {field.required && <span className="text-red-500"> *</span>}
+                      </label>
+
+                      {field.type === 'select' ? (
+                        <select
+                          id={fieldId}
+                          value={value}
+                          onChange={(e) => handleLeadChange(field.name, e.target.value)}
+                          className={baseClasses}
+                          aria-invalid={!!error}
+                        >
+                          <option value="" disabled>
+                            {field.placeholder || 'Select an option'}
+                          </option>
+                          {(field.options || []).map((opt) => (
+                            <option key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </option>
+                          ))}
+                        </select>
+                      ) : field.type === 'textarea' ? (
+                        <textarea
+                          id={fieldId}
+                          value={value}
+                          rows={3}
+                          placeholder={field.placeholder}
+                          onChange={(e) => handleLeadChange(field.name, e.target.value)}
+                          className={`${baseClasses} min-h-[80px] resize-none`}
+                          aria-invalid={!!error}
+                        />
+                      ) : (
+                        <input
+                          id={fieldId}
+                          type={field.type === 'email' ? 'email' : field.type === 'tel' ? 'tel' : 'text'}
+                          value={value}
+                          placeholder={field.placeholder}
+                          onChange={(e) => handleLeadChange(field.name, e.target.value)}
+                          className={baseClasses}
+                          aria-invalid={!!error}
+                        />
+                      )}
+
+                      {error && <p className="text-[11px] text-red-500">{error}</p>}
+                    </div>
+                  );
+                })}
+
+                {leadErrors._form && <p className="text-[11px] text-red-500">{leadErrors._form}</p>}
+
+                <button
+                  type="submit"
+                  disabled={isSubmittingLead}
+                  className="w-full px-3 py-2.5 text-sm font-medium text-white rounded-lg bg-[linear-gradient(135deg,#2563EB,#1D4ED8)] hover:brightness-110 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+                >
+                  {isSubmittingLead ? 'Submitting…' : leadForm.submit_label}
+                </button>
+              </form>
+            </div>
+          )}
+
+          {/* Opening state: richer tappable cards + a conversion CTA. Fills the panel
+              so it never reads as "content failed to load", and disappears once the
+              visitor starts chatting. */}
+          {!leadForm && !hasUserMessages && (
+            <div className="pt-1 space-y-2.5 animate-fade-in-up">
+              {latestSuggestedActions.length > 0 && (
+                <div className="grid grid-cols-2 gap-2">
+                  {latestSuggestedActions.map((action) => {
+                    const Icon = getChipIcon(action);
+                    return (
+                      <button
+                        key={`chip-${action}`}
+                        type="button"
+                        onClick={() => handleSuggestionClick(action)}
+                        disabled={isTyping}
+                        className="flex items-center gap-2.5 px-3 py-2.5 text-left text-[13px] font-medium text-gray-700 bg-white border border-blue-100 shadow-sm rounded-xl hover:border-blue-300 hover:bg-blue-50/60 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+                      >
+                        <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-[#EEF2FF] text-blue-600 shrink-0">
+                          <Icon size={15} />
+                        </span>
+                        <span className="leading-tight">{action}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+              <button
+                type="button"
+                onClick={handleBookConsultation}
+                className="flex items-center justify-center w-full gap-2 px-4 py-2.5 text-sm font-semibold text-white shadow-sm rounded-xl bg-[linear-gradient(135deg,#2563EB,#4F46E5)] hover:brightness-110 hover:-translate-y-0.5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+              >
+                <Calendar size={16} />
+                Book a free consultation
+              </button>
+            </div>
+          )}
+
+          {/* Mid-conversation: keep suggestions light so they don't dominate the thread. */}
+          {!leadForm && hasUserMessages && latestSuggestedActions.length > 0 && (
             <div className="pt-3 mt-2 border-t border-gray-200 animate-fade-in-up">
               <p className="mb-1.5 text-xs font-semibold tracking-wide text-gray-500">Suggested</p>
               <div className="flex flex-wrap gap-1.5">
@@ -554,7 +1023,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
                     type="button"
                     onClick={() => handleSuggestionClick(action)}
                     disabled={isTyping}
-                    className="px-3 py-1 text-[12.5px] font-medium text-blue-700 bg-[#EEF2FF] rounded-[20px] hover:bg-blue-100 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60"
+                    className="px-3 py-1 text-[12.5px] font-medium text-blue-700 bg-[#EEF2FF] rounded-[20px] hover:bg-blue-100 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
                   >
                     {action}
                   </button>
@@ -568,28 +1037,36 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
 
         <div
           className="p-3 border-t bg-white border-blue-100"
-          style={fullPage ? { paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))' } : undefined}
+          style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom))' }}
         >
-          <form onSubmit={handleSendMessage} className="flex gap-2">
-            <input
-              ref={inputRef}
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Type your message..."
-              className="flex-1 px-4 py-3 text-sm text-gray-800 placeholder:text-gray-400 transition-all duration-200 border border-blue-100 rounded-full bg-white focus:outline-none focus:border-[#60A5FA] focus:ring-2 focus:ring-[rgba(59,130,246,0.25)]"
-              autoFocus
-            />
-            <button
-              type="submit"
-              disabled={!message.trim() || isTyping}
-              className="flex items-center justify-center w-11 h-11 text-white transition-all duration-200 rounded-full bg-[linear-gradient(135deg,#3B82F6,#2563EB)] hover:shadow-md hover:-translate-y-0.5 hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.99]"
-              aria-label="Send message"
-            >
-              <Send size={17} />
-            </button>
-          </form>
-          <p className="mt-2 text-xs text-center text-gray-500">Powered by TeenyTech Trek</p>
+          {leadForm ? (
+            <p className="text-xs text-center text-gray-400">
+              Complete the form above to start chatting.
+            </p>
+          ) : (
+            <form onSubmit={handleSendMessage} className="flex gap-2">
+              <input
+                ref={inputRef}
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Type your message..."
+                className="flex-1 px-4 py-3 text-sm text-gray-800 placeholder:text-gray-400 transition-all duration-200 border border-blue-100 rounded-full bg-white focus:outline-none focus:border-[#60A5FA] focus:ring-2 focus:ring-[rgba(59,130,246,0.25)]"
+                autoFocus
+              />
+              <button
+                type="submit"
+                disabled={!message.trim() || isTyping}
+                className="flex items-center justify-center w-11 h-11 text-white transition-all duration-200 rounded-full bg-[linear-gradient(135deg,#3B82F6,#2563EB)] hover:shadow-md hover:-translate-y-0.5 hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+                aria-label="Send message"
+              >
+                <Send size={17} />
+              </button>
+            </form>
+          )}
+          <p className="mt-2 text-[11px] text-center text-gray-400">
+            Responses are AI-generated · Powered by Teeny Tech Trek
+          </p>
         </div>
       </div>
     </>

@@ -33,7 +33,7 @@ const AppContent = () => {
     <div className="relative overflow-hidden">
       {!isChatOnlyRoute && <Navbar />}
       <RouteSeo />
-      {!isChatOnlyRoute && <ChatbotButton onToggleChatbot={toggleChatbot} />}
+      {!isChatOnlyRoute && <ChatbotButton onToggleChatbot={toggleChatbot} isOpen={isChatbotOpen} />}
 
       {/* Pass open function to AppRoutes (and subsequently to Hero) */}
       <AppRoutes onOpenChatbot={openChatbot} />
