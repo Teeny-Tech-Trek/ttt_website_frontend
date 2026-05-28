@@ -197,7 +197,7 @@ const Services = () => {
 
                   {/* 👉 RIGHT SIDE IMAGE — har card ki apni (crisp + minimal left fade for text readability) */}
                   {cardImage && (
-                    <div className="absolute top-0 bottom-0 right-0 z-0 hidden w-[48%] bg-blue-900 pointer-events-none md:block">
+                    <div className="absolute top-0 bottom-0 right-0  z-0 hidden bg-blue-900 pointer-events-none md:block">
                       <img
                         src={cardImage}
                         alt={service.title}
@@ -229,7 +229,7 @@ const Services = () => {
                       </h3>
                     </div>
 
-                    <p className="mb-5 text-sm leading-relaxed text-blue-100/80">
+                    <p className="mb-5 text-sm leading-relaxed text-white/90">
                       {service.description}
                     </p>
 
