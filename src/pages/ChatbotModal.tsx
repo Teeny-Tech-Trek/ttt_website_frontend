@@ -79,10 +79,17 @@ interface Message {
   suggestedActions?: string[];
 }
 
+// Keep these mirrored with the chatbot's server-side welcome (lead/service.py:
+// WELCOME_MESSAGE + welcome_options()). They are the fallback rendered when the
+// intro is bypassed locally (stale lead_captured flag) or the intro call fails,
+// so divergence here causes the laptop vs. phone mismatch we hit before.
 const DEFAULT_GREETING =
-  "Hi! I'm the Teeny Tech Trek assistant. Ask me anything about our AI services, integrations, pricing, or solutions.";
+  "Hey there! I'm Anisha, your AI assistant at Teeny Tech Trek. Ask me anything about our AI services and solutions.";
 
-const DEFAULT_GREETING_ACTIONS = ['AI Services', 'Integrations', 'Pricing', 'Solutions'];
+const DEFAULT_GREETING_OPTIONS: ButtonOption[] = [
+  { id: 'services', label: 'AI Services', value: 'external:https://www.teenytechtrek.com/#services' },
+  { id: 'solutions', label: 'Solutions', value: 'external:https://www.techtrekkers.ai/' },
+];
 
 // Pick a Lucide icon for a suggestion chip based on its label. Keyword-matched
 // so it still works for arbitrary suggested_actions the backend may return.
@@ -241,7 +248,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
         isUser: false,
         timestamp: new Date(),
         type: 'text',
-        suggestedActions: DEFAULT_GREETING_ACTIONS,
+        options: DEFAULT_GREETING_OPTIONS,
       },
     ]);
   }, [createId]);
@@ -354,8 +361,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
           isUser: false,
           timestamp: new Date(),
           type: 'text',
-          options: introOptions,
-          suggestedActions: introOptions ? undefined : DEFAULT_GREETING_ACTIONS,
+          options: introOptions || DEFAULT_GREETING_OPTIONS,
         },
       ]);
     } catch (error) {
@@ -449,8 +455,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
           isUser: false,
           timestamp: new Date(),
           type: 'text',
-          options: welcomeOptions,
-          suggestedActions: welcomeOptions ? undefined : DEFAULT_GREETING_ACTIONS,
+          options: welcomeOptions || DEFAULT_GREETING_OPTIONS,
         },
       ]);
     } catch (error) {
@@ -687,8 +692,11 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
 
   // Conversion CTA on the opening screen — routes to the consultation section.
   const handleBookConsultation = () => {
-    navigateToRoute('/#pricing', navigate, location.pathname);
+    // Close the sheet first so the full-screen mobile overlay isn't covering the
+    // page when we scroll; navigateToRoute now polls for #pricing, so it lands
+    // correctly even though the section may mount a moment after the route change.
     if (!fullPage) onClose();
+    navigateToRoute('/#pricing', navigate, location.pathname);
   };
 
   const latestSuggestedActions =

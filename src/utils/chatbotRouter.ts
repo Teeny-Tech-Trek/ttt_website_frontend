@@ -149,17 +149,23 @@ export const navigateToRoute = (
     }
 
     if (hash) {
-      const shouldScrollNow = !pathname || pathname === currentPathname || pathname === '/';
       const selector = `#${hash}`;
-      const scroll = () => {
+      // Poll for the target instead of scrolling once. On a cross-route jump (or a
+      // slow mobile layout) the section isn't in the DOM yet when navigation fires,
+      // so a single delayed scrollIntoView silently no-ops and the visitor is left
+      // at the top of the page. Retry until the element exists (~3s budget).
+      const sameView = !pathname || pathname === currentPathname || pathname === '/';
+      let attempts = 0;
+      const maxAttempts = 30;
+      const tryScroll = () => {
         const el = document.querySelector(selector) as HTMLElement | null;
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          return;
+        }
+        if (attempts++ < maxAttempts) window.setTimeout(tryScroll, 100);
       };
-      if (shouldScrollNow) {
-        window.setTimeout(scroll, 50);
-      } else {
-        window.setTimeout(scroll, 250);
-      }
+      window.setTimeout(tryScroll, sameView ? 50 : 200);
     }
     return true;
   }
