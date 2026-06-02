@@ -56,7 +56,7 @@ export const services = [
     title: "Agentic AI Workflows",
     slug: "agentic-ai-workflows",
     // 👇 IS CARD KI IMAGE — yahan apna real path daal dena
-    image: "/Services-Image/Agentic-Workflow-Image.png",
+    image: "/Services-Image/Agentic-Image.png",
     description: "Autonomous agents that can retrieve data, summarize content, make decisions, and complete multi-step tasks using LangChain, AutoGen, or CrewAI.",
     features: ["Data Retrieval", "Content Summarization", "Decision Making", "Multi-step Task Automation"],
     featureDescriptions: [

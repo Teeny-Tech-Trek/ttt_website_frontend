@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import SectionLink from '../components/ui/SectionLink';
 import { 
   ArrowRight, 
   MessageCircle, 
@@ -177,13 +178,13 @@ const CaseStudies: React.FC<CaseStudyProps> = ({ id = 'case-studies', className 
             <p className="mb-6 text-gray-600">
               See how AI can revolutionize your industry with our proven solutions
             </p>
-            <a
-              href="/#contact"
+            <SectionLink
+              to="/#contact"
               className="inline-flex items-center gap-3 px-8 py-4 font-semibold text-white transition-all bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl hover:shadow-lg hover:scale-105"
             >
               <span>Get Started Today</span>
               <ArrowRight className="w-5 h-5" />
-            </a>
+            </SectionLink>
           </div>
         </div>
 

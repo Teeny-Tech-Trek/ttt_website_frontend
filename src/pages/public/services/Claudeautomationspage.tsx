@@ -23,7 +23,7 @@ import {
   RotateCcw,
   Loader2,
 } from 'lucide-react';
-import { HashLink } from 'react-router-hash-link';
+import HashLink from '../../../components/ui/SectionLink';
 import { useNavigate } from 'react-router-dom';
 import ClaudeAutomationRichCard from '../../../components/home/ClaudeAutomationRichCard';
 

@@ -1,5 +1,6 @@
 ﻿import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
+import SectionLink from '../ui/SectionLink';
 import { ArrowUp, Mail, Phone, MapPin } from 'lucide-react';
 import { FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import Container from '../ui/Container';
@@ -84,7 +85,7 @@ const Footer = () => {
     { name: 'About', href: '/aboutUs' },
     { name: 'Services', href: '/#services' },
     { name: 'Use Cases', href: '/use-cases' },
-    { name: 'Why Us', href: '/#why-us' },
+    { name: 'Why Us', href: '/#about-us' },
     { name: 'Contact', href: '/#contact' },
   ];
 
@@ -138,13 +139,13 @@ const Footer = () => {
             <ul className="space-y-3">
               {serviceLinks.map((service, index) => (
                 <li key={index}>
-                  <a
-                    href={service.href}
+                  <SectionLink
+                    to={service.href}
                     className="text-[#93c5fd] hover:text-white text-sm transition-all duration-300 flex items-center group"
                   >
                     <span className="w-2 h-2 bg-[#3b82f6] rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     {service.name}
-                  </a>
+                  </SectionLink>
                 </li>
               ))}
             </ul>
@@ -156,13 +157,13 @@ const Footer = () => {
             <ul className="space-y-3">
               {companyLinks.map((link, index) => (
                 <li key={index}>
-                  <a
-                    href={link.href}
+                  <SectionLink
+                    to={link.href}
                     className="text-[#93c5fd] hover:text-white text-sm transition-all duration-300 flex items-center group"
                   >
                     <span className="w-2 h-2 bg-[#3b82f6] rounded-full mr-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     {link.name}
-                  </a>
+                  </SectionLink>
                 </li>
               ))}
             </ul>
@@ -238,15 +239,15 @@ const Footer = () => {
             Â© {new Date().getFullYear()} Teeny Tech Trek. All rights reserved.
           </p>
           <div className="flex gap-6 text-xs text-[#93c5fd]">
-            <a href="/privacy" className="transition-colors duration-300 hover:text-white">
+            <Link to="/privacy" className="transition-colors duration-300 hover:text-white">
               Privacy Policy
-            </a>
-            <a href="/terms" className="transition-colors duration-300 hover:text-white">
+            </Link>
+            <Link to="/terms" className="transition-colors duration-300 hover:text-white">
               Terms of Service
-            </a>
-            <a href="/refund" className="transition-colors duration-300 hover:text-white">
+            </Link>
+            <Link to="/refund" className="transition-colors duration-300 hover:text-white">
               Refund Policy
-            </a>
+            </Link>
           </div>
           <button
             onClick={scrollToTop}

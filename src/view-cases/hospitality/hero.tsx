@@ -416,7 +416,7 @@ import {
   CheckCircle,
   Home
 } from 'lucide-react';
-import { HashLink } from 'react-router-hash-link';
+import HashLink from '../../components/ui/SectionLink';
 import { motion } from 'framer-motion';
 import hospitalityImage from "../../Images/Case Studies/Hospitality.png"
 

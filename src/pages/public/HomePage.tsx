@@ -1,18 +1,17 @@
 ﻿// src/pages/public/HomePage.tsx
 import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { scrollToSection } from '../../utils/scrollToSection';
 import Hero from '../../components/home/Hero';
 import Services from '../../components/home/ServicesList';
-import TechStack from '../../components/home/TechStack';
 import Pricing from '../../components/home/Pricing';
 import FAQ from '../../components/home/FAQ';
 import Contact from '../../components/home/Contact';
 
-import About from '../../components/home/About';
 import WhyUs from '../../components/home/WhyUs';
 import WhyUsQuote from '../../components/home/WhyUsQuote';
 import { Helmet } from 'react-helmet-async';
 import Industries from '../../components/home/industries';
-import AboutPage from '../../components/layout/AboutUs';
 import AIServicesCards from '../../components/home/featuredCase';
 import AutonomousAgentic from '../../components/home/AutonomousAgentic';
 
@@ -21,40 +20,18 @@ interface HomePageProps {
 }
 
 const HomePage = ({ onOpenChatbot }: HomePageProps) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // When we arrive here from another route via a SectionLink, the target section
+  // is carried in router state (so the URL stays clean — no `#hash`). Scroll to it
+  // once, then clear the state so a refresh or Back press doesn't re-trigger it.
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = document.querySelectorAll('section[id]');
-      const navLinks = document.querySelectorAll('.nav-link');
-      let current = '';
-
-      sections.forEach((section) => {
-        const sectionTop = (section as HTMLElement).offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (
-          window.scrollY >= sectionTop - 200 &&
-          window.scrollY < sectionTop + sectionHeight - 200
-        ) {
-          current = section.getAttribute('id') || '';
-        }
-      });
-
-      // If no section is in view, default to 'home'
-      if (!current && window.scrollY < 200) {
-        current = 'home';
-      }
-
-      navLinks.forEach((link) => {
-        link.classList.remove('active');
-        const href = link.getAttribute('href');
-        if (href && href.includes(`#${current}`)) {
-          link.classList.add('active');
-        }
-      });
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    const target = (location.state as { scrollTo?: string } | null)?.scrollTo;
+    if (!target) return;
+    scrollToSection(target);
+    navigate(location.pathname, { replace: true, state: null });
+  }, [location, navigate]);
 
   return (
     <main>

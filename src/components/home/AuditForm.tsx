@@ -224,7 +224,7 @@ const navigate = useNavigate();
           </p>
           
 <button
-  onClick={() => navigate("/#contact")}
+  onClick={() => navigate("/", { state: { scrollTo: "contact" } })}
   className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-teal-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-teal-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
 >
   <MessageSquare className="w-5 h-5 mr-2" />

@@ -16,7 +16,7 @@ import {
 import { motion } from "framer-motion";
 
 import realStateImg from "../../Images/Case Studies/RealEstate.png"
-import { HashLink } from 'react-router-hash-link';
+import HashLink from '../../components/ui/SectionLink';
 
 // Animation variants with responsive considerations
 const slideFromLeft = {

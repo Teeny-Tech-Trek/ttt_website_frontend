@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 
 import imageOfAgo from "../../Images/Case Studies/AEO_GEO.png"
-import { HashLink } from 'react-router-hash-link';
+import HashLink from '../../components/ui/SectionLink';
 
 // Animation variants
 const slideFromLeft = {

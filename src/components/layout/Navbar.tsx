@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react';
 import { Menu, X, Bot, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { HashLink as Link } from 'react-router-hash-link';
+import SectionLink from '../ui/SectionLink';
 import Container from '../ui/Container';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 import logo from '../../assets/teeny-logo.svg';
 
 // Create a motion-enabled Link component
-const MotionLink = motion.create(Link);
+const MotionLink = motion.create(SectionLink);
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

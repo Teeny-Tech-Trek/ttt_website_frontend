@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowRight, CheckCircle, Star } from 'lucide-react';
-import { HashLink } from 'react-router-hash-link';
+import HashLink from '../../components/ui/SectionLink';
 
 const FinalCTASection = () => {
   const testimonials = [

@@ -218,7 +218,7 @@ import {
   ArrowRight, Target, Clock, DollarSign, Rocket, TrendingUp, 
   Settings, FileText 
 } from 'lucide-react';
-import { HashLink } from 'react-router-hash-link';
+import HashLink from '../../components/ui/SectionLink';
 
 import heroImage from "../../Images/Case Studies/Logistics_Manufacturing.png"
 

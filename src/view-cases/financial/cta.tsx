@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight, Star, Users, TrendingUp, Clock, Shield, Award, CheckCircle } from 'lucide-react';
+import SectionLink from '../../components/ui/SectionLink';
 
 const CTASection = () => {
   const testimonials = [
@@ -106,13 +107,13 @@ const CTASection = () => {
             
             {/* CTA Button - Responsive */}
             <div className="flex flex-col justify-center gap-4 mb-6 sm:mb-8">
-              <a 
-                href="#pricing"
+              <SectionLink
+                to="/#pricing"
                 className="flex items-center justify-center w-full gap-2 px-6 py-4 text-base font-bold text-blue-900 transition-all duration-300 bg-white border-2 border-blue-900 shadow-lg sm:gap-3 sm:px-8 lg:px-10 sm:py-5 sm:text-lg rounded-xl hover:bg-blue-50 hover:border-blue-800 hover:bg-blue-900 hover:text-white sm:w-auto sm:mx-auto"
               >
                 Schedule Free Assessment
                 <ArrowRight className="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6" />
-              </a>
+              </SectionLink>
             </div>
 
             {/* Trust indicators - Responsive Layout */}

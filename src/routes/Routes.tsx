@@ -33,11 +33,15 @@ import { blogPosts } from '../data/blogData';
 import ClaudeAutomationsPage from '../pages/public/services/Claudeautomationspage';
 
 const ScrollToTop = () => {
-  const { pathname, hash } = useLocation();
+  const { pathname, hash, state } = useLocation();
 
   useEffect(() => {
-    if (!hash) window.scrollTo(0, 0);
-  }, [pathname, hash]);
+    // Don't jump to top when the navigation asked for a specific section —
+    // HomePage will smooth-scroll to it instead.
+    if (hash) return;
+    if ((state as { scrollTo?: string } | null)?.scrollTo) return;
+    window.scrollTo(0, 0);
+  }, [pathname, hash, state]);
 
   return null;
 };

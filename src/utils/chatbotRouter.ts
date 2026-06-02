@@ -141,10 +141,13 @@ export const navigateToRoute = (
 
   if (target.startsWith('/')) {
     const [pathname, hash] = target.split('#');
+    const cleanPath = pathname || '/';
+    // Navigate to the clean route only — never push the `#hash` into the URL.
+    // The hash is used purely to drive the smooth scroll below.
     if (navigate) {
-      navigate(hash ? `${pathname || '/'}#${hash}` : pathname || '/');
+      navigate(cleanPath);
     } else {
-      window.history.pushState({}, '', hash ? `${pathname || '/'}#${hash}` : pathname || '/');
+      window.history.pushState({}, '', cleanPath);
       window.dispatchEvent(new PopStateEvent('popstate'));
     }
 

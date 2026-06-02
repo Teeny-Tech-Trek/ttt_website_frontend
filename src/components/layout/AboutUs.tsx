@@ -4,7 +4,7 @@ import { ChevronRight, Users, Zap, Shield, Code, Star, ArrowRight, Phone, Messag
 import heroImage from "../../Images/Extra Resources - Hero Page/FounderPage-removebg-preview.png"
 import characterImage from "../../Images/Extra Resources - Hero Page/Oisha_Character-removebg-preview.png"
 import Services from '../home/ServicesList';
-import { HashLink } from 'react-router-hash-link';
+import HashLink from '../ui/SectionLink';
 
 const AboutUs = () => {
   // Smooth scroll function

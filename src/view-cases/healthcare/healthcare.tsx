@@ -724,7 +724,7 @@ import {
 } from 'lucide-react';
 
 import healthcareImage from "../../Images/Case Studies/Healthcare.png"
-import { HashLink } from 'react-router-hash-link';
+import HashLink from '../../components/ui/SectionLink';
 
 // Animation variants
 const slideFromLeft = {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database, GitBranch, Workflow, Search, CheckSquare, AlertTriangle, Activity, Layers } from 'lucide-react';
 import AgenticWorkflowRichCard from "../../../components/home/AgenticWorkflowRichCard";
-import { HashLink } from 'react-router-hash-link';
+import HashLink from '../../../components/ui/SectionLink';
 import { useNavigate } from 'react-router-dom';
 
 // Animation variants

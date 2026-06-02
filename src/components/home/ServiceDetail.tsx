@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { ArrowLeft, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SectionLink from '../ui/SectionLink';
 import Container from '../ui/Container';
 import { Service } from '../../types/service';
 import { services } from '../../data/services';
@@ -177,9 +178,9 @@ const ServiceDetail = ({ serviceId }: ServiceDetailProps) => {
           <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
             Contact us today to discuss how our {service.title} can help your business grow.
           </p>
-          <Link to="#contact" className="btn btn-primary inline-flex items-center gap-2">
+          <SectionLink to="/#contact" className="btn btn-primary inline-flex items-center gap-2">
             Discuss Your Project
-          </Link>
+          </SectionLink>
         </motion.div>
       </Container>
     </section>

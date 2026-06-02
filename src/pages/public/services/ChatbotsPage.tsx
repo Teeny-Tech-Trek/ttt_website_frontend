@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap,Star, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database } from 'lucide-react';
-import { HashLink } from 'react-router-hash-link';
+import HashLink from '../../../components/ui/SectionLink';
 import { useNavigate } from 'react-router-dom';
 import ChatbotRichCard from '../../../components/home/ChatbotRichCard';
 

@@ -6,7 +6,7 @@ import {
   TrendingUp, 
   Sparkles
 } from 'lucide-react';
-import { HashLink } from 'react-router-hash-link';
+import HashLink from '../../components/ui/SectionLink';
 
 const HeroSection = ({onOpenChatbot}) => {
     const handleTryDemo = (e) => {

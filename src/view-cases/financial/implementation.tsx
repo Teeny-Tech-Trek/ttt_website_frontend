@@ -1,12 +1,6 @@
 import React from 'react';
 import { ArrowRight, CheckCircle, Clock, Users, Settings, Rocket, Shield, FileText } from 'lucide-react';
-
-// Mock HashLink component for demo purposes
-const HashLink = ({ children, to, className, smooth }) => (
-  <a href={to} className={className}>
-    {children}
-  </a>
-);
+import HashLink from '../../components/ui/SectionLink';
 
 const ImplementationSection = () => {
   const steps = [

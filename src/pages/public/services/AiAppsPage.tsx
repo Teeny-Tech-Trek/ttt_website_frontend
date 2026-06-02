@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database, GitBranch, Workflow, Search, CheckSquare, AlertTriangle, Activity, Layers, Mail, Upload, Bell, Slack, Filter, AlertCircle, RefreshCw, Lock, RotateCcw, Monitor, Code, Star, CreditCard } from 'lucide-react';
 import AiAppsRichCard from "../../../components/home/AiAppsRichCard";
-import { HashLink } from 'react-router-hash-link';
+import HashLink from '../../../components/ui/SectionLink';
 
 // Animation variants
 const fadeInUp = {

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import SectionLink from '../../components/ui/SectionLink';
 import { getPublicPackagesByField } from '../../services/packageService';
 import type { Package } from '../../types/package';
 
@@ -74,12 +75,12 @@ const PackageDetailPage: React.FC = () => {
           ))}
       </dl>
       <div className="mt-8">
-        <a
-          href="/#contact"
+        <SectionLink
+          to="/#contact"
           className="inline-block bg-blue-700 text-white py-3 px-8 rounded-xl text-lg font-semibold shadow hover:bg-blue-800 transition"
         >
           Contact us about this package
-        </a>
+        </SectionLink>
       </div>
     </div>
   );
