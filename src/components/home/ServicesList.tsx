@@ -30,7 +30,7 @@ const Services = () => {
   return (
     <motion.section
       id="services"
-      className="relative py-20 font-sans min-h-[90vh]"
+      className="relative py-12 font-sans"
       style={{ opacity: bgOpacity }}
     >
       <Container className="relative z-10">
@@ -44,7 +44,7 @@ const Services = () => {
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
           variants={{ visible: { transition: { staggerChildren: 0.12 } } }}
-          className="grid grid-cols-1 gap-6 mt-10 md:grid-cols-2"
+          className="grid grid-cols-1 gap-4 mt-6 md:grid-cols-2"
         >
           <AnimatePresence>
             {services.map((service, idx) => {
@@ -54,7 +54,7 @@ const Services = () => {
                 <motion.div
                   key={idx}
                   variants={cardVariants}
-                  className="group relative flex h-full min-h-[230px] overflow-hidden rounded-2xl border border-blue-500/15 bg-blue-900 shadow-lg transition-all duration-500 hover:border-blue-400/30 hover:shadow-xl hover:shadow-blue-900/30"
+                  className="group relative flex h-full min-h-[180px] overflow-hidden rounded-2xl border border-blue-500/15 bg-blue-900 shadow-lg transition-all duration-500 hover:border-blue-400/30 hover:shadow-xl hover:shadow-blue-900/30"
                   tabIndex={0}
                   role="region"
                   aria-label={service.title}
@@ -71,9 +71,9 @@ const Services = () => {
                   <div className="absolute inset-0 z-[1] bg-gradient-to-br from-blue-600/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
                   {/* 👉 LEFT COLUMN — image (top) + Discover More (bottom) */}
-                  <div className="relative z-10 hidden w-[34%] flex-shrink-0 flex-col p-5 sm:flex">
+                  <div className="relative z-10 hidden w-[34%] flex-shrink-0 flex-col p-4 sm:flex">
                     <div className="flex flex-1 items-center justify-center">
-                      <div className=" w-full max-w-[150px] overflow-hidden rounded-2xl">
+                      <div className=" w-full max-w-[120px] overflow-hidden rounded-2xl">
                         {cardImage ? (
                           <img
                             src={cardImage}
@@ -92,24 +92,24 @@ const Services = () => {
                     </div>
 
                     {/* Discover More — image ke niche */}
-                    <span className="mt-4 inline-flex cursor-pointer items-center gap-1.5 text-[13.5px] font-semibold text-blue-300 transition-transform duration-300 group-hover:translate-x-1">
+                    <span className="mt-3 inline-flex cursor-pointer items-center gap-1.5 text-[12.5px] font-semibold text-blue-300 transition-transform duration-300 group-hover:translate-x-1">
                       Discover More
-                      <ArrowRight className="h-4 w-4" />
+                      <ArrowRight className="h-3.5 w-3.5" />
                     </span>
                   </div>
 
                   {/* CONTENT — right side */}
-                  <div className="relative z-10 flex flex-1 flex-col p-6 sm:pl-2">
-                    <h3 className="mb-3 text-[19px] font-bold leading-snug text-white">
+                  <div className="relative z-10 flex flex-1 flex-col p-4 sm:pl-2">
+                    <h3 className="mb-2 text-[17px] font-bold leading-snug text-white">
                       {service.title}
                     </h3>
 
-                    <p className="mb-5 text-[13.5px] leading-relaxed text-slate-300/80">
+                    <p className="mb-3 text-[12.5px] leading-relaxed text-slate-300/80">
                       {service.description}
                     </p>
 
                     {/* Features — simple cyan checks (image jaisa) */}
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-2.5">
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                       {service.features.map((feature, i) => (
                         <div key={i} className="flex items-center gap-2">
                           <span className="flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full bg-cyan-400/15">
@@ -123,7 +123,7 @@ const Services = () => {
                     </div>
 
                     {/* Mobile-only Discover More (left column hidden on mobile) */}
-                    <div className="mt-5 sm:hidden">
+                    <div className="mt-3 sm:hidden">
                       <span className="inline-flex cursor-pointer items-center gap-1.5 text-[13.5px] font-semibold text-blue-300">
                         Discover More
                         <ArrowRight className="h-4 w-4" />
