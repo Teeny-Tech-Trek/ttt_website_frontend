@@ -99,6 +99,7 @@ export default function BlogDisplayPage() {
       };
     };
 
+    let rafId = 0;
     const animateFloatingElements = () => {
       const floatingElements = document.querySelectorAll('.floating-element');
       floatingElements.forEach((element, index) => {
@@ -106,11 +107,11 @@ export default function BlogDisplayPage() {
         const intensity = (index + 1) * 0.3;
         const offsetX = mouseRef.current.x * intensity * 15;
         const offsetY = mouseRef.current.y * intensity * 15;
-        
+
         htmlElement.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0) rotate(${mouseRef.current.x * 2}deg)`;
       });
 
-      requestAnimationFrame(animateFloatingElements);
+      rafId = requestAnimationFrame(animateFloatingElements);
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -118,6 +119,7 @@ export default function BlogDisplayPage() {
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(rafId);
     };
   }, []);
 

@@ -918,6 +918,7 @@ const Community = () => {
       };
     };
 
+    let rafId = 0;
     const animateElements = () => {
       const nodes = document.querySelectorAll('.community-node');
       const shapes = document.querySelectorAll('.bg-shape');
@@ -940,7 +941,7 @@ const Community = () => {
         element.style.transform = `translate3d(${offsetX}px, ${offsetY}px, ${index * 25}px)`;
       });
 
-      requestAnimationFrame(animateElements);
+      rafId = requestAnimationFrame(animateElements);
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -951,6 +952,7 @@ const Community = () => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('resize', checkIfMobile);
+      cancelAnimationFrame(rafId);
     };
   }, [isMobile]);
 

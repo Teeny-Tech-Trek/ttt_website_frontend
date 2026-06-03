@@ -49,8 +49,9 @@ const Particles = () => {
     }
 
     // Animation loop
+    let rafId = 0;
     const animate = () => {
-      requestAnimationFrame(animate);
+      rafId = requestAnimationFrame(animate);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       particles.forEach((p) => {
@@ -99,6 +100,7 @@ const Particles = () => {
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      cancelAnimationFrame(rafId);
     };
   }, []);
 

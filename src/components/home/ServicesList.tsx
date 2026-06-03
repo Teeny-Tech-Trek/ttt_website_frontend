@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import Link from '../ui/SectionLink';
 import Container from '../ui/Container';
@@ -8,135 +8,186 @@ import { ArrowRight, Check } from 'lucide-react';
 import React from 'react';
 
 /* ------------------------------------------------------------------ *
- *  LEFT-SIDE IMAGE — har card ki apni `image: '...'` field se aati hai *
- *  (data/services me set karo). Jis card me image nahi, uske jagah    *
- *  card ka icon ek soft tile me show hoga.                            *
+ *  SERVICES — glass cards, but DARKER tint + crisp text.
+ *  - Glass kept (backdrop-blur + translucency + edge sheen).
+ *  - Text contrast boosted: brighter colours + subtle text-shadow.
  * ------------------------------------------------------------------ */
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } },
-};
+const LINE = '#1E3A8A'; // tailwind blue-900
+const TEXT_SHADOW = '0 1px 10px rgba(2,6,23,0.45)';
 
-// Long feature labels ko trim
+const STEP = 0.45;
+const nodeDelay = (idx) => idx * STEP;
+const cardDelay = (idx) => idx * STEP + STEP / 2;
+
 const truncateFeature = (feature) =>
   feature.length > 40 ? feature.substring(0, 37) + '...' : feature;
 
 const Services = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.05 });
-  const { scrollYProgress } = useScroll();
-  const bgOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0.95]);
 
   return (
-    <motion.section
+    <section
       id="services"
-      className="relative py-12 font-sans"
-      style={{ opacity: bgOpacity }}
+      className="relative overflow-hidden bg-white py-16 font-sans md:py-20"
     >
+      {/* soft colour blobs (glass ke liye halka background tint) */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute left-[6%] top-[42%] h-72 w-72 rounded-full bg-blue-400/20 blur-3xl" />
+        <div className="absolute left-1/2 top-[30%] h-80 w-80 -translate-x-1/2 rounded-full bg-indigo-400/15 blur-3xl" />
+        <div className="absolute right-[8%] top-[45%] h-72 w-72 rounded-full bg-cyan-300/20 blur-3xl" />
+      </div>
+
       <Container className="relative z-10">
         <SectionHeading
           title="Our AI-Powered Solutions"
           subtitle="Innovative tools for visionary teams."
         />
 
-        <motion.div
-          ref={ref}
-          initial="hidden"
-          animate={inView ? 'visible' : 'hidden'}
-          variants={{ visible: { transition: { staggerChildren: 0.12 } } }}
-          className="grid grid-cols-1 gap-4 mt-6 md:grid-cols-2"
-        >
-          <AnimatePresence>
-            {services.map((service, idx) => {
-              const cardImage = service.image; // har card ki apni image
+        {/* ---------------- BLUE-900 TIMELINE ---------------- */}
+        <div className="relative mt-12 mb-3 hidden lg:block">
+          <div className="relative h-4">
+            <motion.div
+              className="absolute inset-x-0 top-1/2 h-px origin-left -translate-y-1/2"
+              style={{
+                background:
+                  `linear-gradient(90deg, ${LINE}00, ${LINE}cc 7%, ${LINE}cc 93%, ${LINE}00)`,
+              }}
+              initial={{ scaleX: 0 }}
+              animate={inView ? { scaleX: 1 } : { scaleX: 0 }}
+              transition={{ duration: 0.9, ease: 'easeInOut' }}
+            />
 
-              return (
-                <motion.div
-                  key={idx}
-                  variants={cardVariants}
-                  className="group relative flex h-full min-h-[180px] overflow-hidden rounded-2xl border border-blue-500/15 bg-blue-900 shadow-lg transition-all duration-500 hover:border-blue-400/30 hover:shadow-xl hover:shadow-blue-900/30"
-                  tabIndex={0}
-                  role="region"
-                  aria-label={service.title}
+            <div className="grid h-full grid-cols-4 gap-5">
+              {services.map((service, idx) => (
+                <div
+                  key={service.slug ?? idx}
+                  className="flex items-center justify-center"
                 >
-                  {/* Pura card clickable */}
-                  <Link
-                    to={`/services/${service.slug}`}
-                    className="absolute inset-0 z-30 rounded-2xl"
-                    tabIndex={-1}
-                    aria-hidden="true"
+                  <motion.span
+                    aria-hidden
+                    className="h-3.5 w-3.5 rounded-full"
+                    style={{ backgroundColor: LINE }}
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={
+                      inView
+                        ? {
+                            scale: 1,
+                            opacity: 1,
+                            boxShadow: [
+                              `0 0 0 4px ${LINE}22, 0 0 10px 3px ${LINE}66`,
+                              `0 0 0 5px ${LINE}2e, 0 0 18px 5px ${LINE}aa`,
+                              `0 0 0 4px ${LINE}22, 0 0 10px 3px ${LINE}66`,
+                            ],
+                          }
+                        : { scale: 0, opacity: 0 }
+                    }
+                    transition={{
+                      scale: { duration: 0.4, ease: 'backOut', delay: nodeDelay(idx) },
+                      opacity: { duration: 0.4, delay: nodeDelay(idx) },
+                      boxShadow: {
+                        duration: 2.8,
+                        repeat: Infinity,
+                        ease: 'easeInOut',
+                        delay: nodeDelay(idx),
+                      },
+                    }}
                   />
+                </div>
+              ))}
+            </div>
+          </div>
 
-                  {/* Hover glow */}
-                  <div className="absolute inset-0 z-[1] bg-gradient-to-br from-blue-600/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+          <div className="mt-4 grid grid-cols-4 gap-5">
+            {services.map((service, idx) => (
+              <div key={service.slug ?? idx} className="flex justify-center">
+                <motion.span
+                  className="text-[12px] font-semibold tracking-[0.35em]"
+                  style={{ color: LINE }}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
+                  transition={{ duration: 0.35, delay: nodeDelay(idx) }}
+                >
+                  {String(idx + 1).padStart(2, '0')}
+                </motion.span>
+              </div>
+            ))}
+          </div>
+        </div>
 
-                  {/* 👉 LEFT COLUMN — image (top) + Discover More (bottom) */}
-                  <div className="relative z-10 hidden w-[34%] flex-shrink-0 flex-col p-4 sm:flex">
-                    <div className="flex flex-1 items-center justify-center">
-                      <div className=" w-full max-w-[120px] overflow-hidden rounded-2xl">
-                        {cardImage ? (
-                          <img
-                            src={cardImage}
-                            alt={service.title}
-                            decoding="async"
-                            className="h-full w-full  rounded-2xl object-cover"
-                          />
-                        ) : (
-                          <div className="flex h-full w-full items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-600 shadow-lg shadow-blue-900/40">
-                            {React.cloneElement(service.icon, {
-                              className: 'w-10 h-10 text-white',
-                            })}
-                          </div>
-                        )}
-                      </div>
-                    </div>
+        {/* ---------------- GLASS CARDS (darker + crisp text) ---------------- */}
+        <div
+          ref={ref}
+          className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"
+        >
+          {services.map((service, idx) => (
+            <motion.div
+              key={service.slug ?? idx}
+              initial={{ opacity: 0, y: 24 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: cardDelay(idx) }}
+              className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/15 bg-gradient-to-br from-blue-950/90 to-blue-900/80 p-6 shadow-xl shadow-blue-900/25 backdrop-blur-xl transition-all duration-500 hover:-translate-y-1.5 hover:border-white/25 hover:shadow-2xl hover:shadow-blue-900/35"
+              tabIndex={0}
+              role="region"
+              aria-label={service.title}
+            >
+              {/* Pura card clickable */}
+              <Link
+                to={`/services/${service.slug}`}
+                className="absolute inset-0 z-30 rounded-2xl"
+                tabIndex={-1}
+                aria-hidden="true"
+              />
 
-                    {/* Discover More — image ke niche */}
-                    <span className="mt-3 inline-flex cursor-pointer items-center gap-1.5 text-[12.5px] font-semibold text-blue-300 transition-transform duration-300 group-hover:translate-x-1">
-                      Discover More
-                      <ArrowRight className="h-3.5 w-3.5" />
+              {/* glass edge sheen — sirf top, text area ke upar nahi */}
+              <div className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-px bg-gradient-to-r from-transparent via-white/45 to-transparent" />
+              <div className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-20 bg-gradient-to-b from-white/10 to-transparent" />
+              {/* hover glow */}
+              <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-br from-cyan-300/10 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+
+              {/* title */}
+              <h3
+                className="relative z-10 mb-2.5 text-[17px] font-bold leading-snug text-white"
+                style={{ textShadow: TEXT_SHADOW }}
+              >
+                {service.title}
+              </h3>
+
+              {/* description */}
+              <p
+                className="relative z-10 mb-5 text-[12.5px] font-medium leading-relaxed text-blue-50/95"
+                style={{ textShadow: '0 1px 6px rgba(2,6,23,0.35)' }}
+              >
+                {service.description}
+              </p>
+
+              {/* features */}
+              <div className="relative z-10 mb-6 grid grid-cols-1 gap-y-2.5">
+                {service.features?.map((feature, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <span className="flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full bg-cyan-400/25 ring-1 ring-cyan-300/40">
+                      <Check className="h-3 w-3 text-cyan-300" strokeWidth={3.5} />
+                    </span>
+                    <span
+                      className="text-[13px] font-semibold text-white"
+                      style={{ textShadow: '0 1px 6px rgba(2,6,23,0.35)' }}
+                    >
+                      {truncateFeature(feature)}
                     </span>
                   </div>
+                ))}
+              </div>
 
-                  {/* CONTENT — right side */}
-                  <div className="relative z-10 flex flex-1 flex-col p-4 sm:pl-2">
-                    <h3 className="mb-2 text-[17px] font-bold leading-snug text-white">
-                      {service.title}
-                    </h3>
-
-                    <p className="mb-3 text-[12.5px] leading-relaxed text-slate-300/80">
-                      {service.description}
-                    </p>
-
-                    {/* Features — simple cyan checks (image jaisa) */}
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-2">
-                      {service.features.map((feature, i) => (
-                        <div key={i} className="flex items-center gap-2">
-                          <span className="flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full bg-cyan-400/15">
-                            <Check className="h-3 w-3 text-cyan-400" strokeWidth={3} />
-                          </span>
-                          <span className="text-[13px] font-medium text-slate-200">
-                            {truncateFeature(feature)}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Mobile-only Discover More (left column hidden on mobile) */}
-                    <div className="mt-3 sm:hidden">
-                      <span className="inline-flex cursor-pointer items-center gap-1.5 text-[13.5px] font-semibold text-blue-300">
-                        Discover More
-                        <ArrowRight className="h-4 w-4" />
-                      </span>
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
-        </motion.div>
+              {/* discover more */}
+              <span className="relative z-10 mt-auto inline-flex cursor-pointer items-center gap-1.5 text-[12.5px] font-bold text-cyan-300 transition-transform duration-300 group-hover:translate-x-1">
+                Discover More
+                <ArrowRight className="h-3.5 w-3.5" />
+              </span>
+            </motion.div>
+          ))}
+        </div>
       </Container>
-    </motion.section>
+    </section>
   );
 };
 
