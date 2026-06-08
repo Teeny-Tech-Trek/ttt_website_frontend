@@ -15,6 +15,10 @@ const AppContent = () => {
   // Standalone chatbot-only route (used by the QR code).
   const isChatOnlyRoute = location.pathname === '/chat';
 
+  // Internal admin CRM renders without the public navbar/footer/chatbot chrome.
+  const isAdminRoute = location.pathname.startsWith('/admin');
+  const hideChrome = isChatOnlyRoute || isAdminRoute;
+
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   const openChatbot = () => setIsChatbotOpen(true);
   const closeChatbot = () => setIsChatbotOpen(false);
@@ -22,18 +26,20 @@ const AppContent = () => {
 
   return (
     <div className="relative overflow-hidden">
-      {!isChatOnlyRoute && <Navbar />}
+      {!hideChrome && <Navbar />}
       <RouteSeo />
-      {!isChatOnlyRoute && <ChatbotButton onToggleChatbot={toggleChatbot} isOpen={isChatbotOpen} />}
+      {!hideChrome && <ChatbotButton onToggleChatbot={toggleChatbot} isOpen={isChatbotOpen} />}
 
       <AppRoutes onOpenChatbot={openChatbot} />
-      {!isChatOnlyRoute && <Footer />}
+      {!hideChrome && <Footer />}
 
-      <ChatbotModal
-        isOpen={isChatOnlyRoute ? true : isChatbotOpen}
-        onClose={closeChatbot}
-        fullPage={isChatOnlyRoute}
-      />
+      {!isAdminRoute && (
+        <ChatbotModal
+          isOpen={isChatOnlyRoute ? true : isChatbotOpen}
+          onClose={closeChatbot}
+          fullPage={isChatOnlyRoute}
+        />
+      )}
 
       <Toaster
         position="top-right"

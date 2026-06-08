@@ -31,6 +31,8 @@ import Pilot from '../pages/Pilot';
 import { BlogSection } from '../components/home/BlogSection';
 import { blogPosts } from '../data/blogData';
 import ClaudeAutomationsPage from '../pages/public/services/Claudeautomationspage';
+import AdminLogin from '../pages/admin/AdminLogin';
+import AdminCRM from '../pages/admin/AdminCRM';
 
 const ScrollToTop = () => {
   const { pathname, hash, state } = useLocation();
@@ -88,6 +90,10 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ onOpenChatbot }) => (
 
       {/* Package details */}
       <Route path="/packages/:slug" element={<PackageDetailPage />} />
+
+      {/* Internal Admin CRM (auth handled inside the pages) */}
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin" element={<AdminCRM />} />
 
       {/* Service routes */}
       <Route path="/services/ai-chatbots" element={<ChatbotsPage onOpenChatbot={onOpenChatbot} />} />
