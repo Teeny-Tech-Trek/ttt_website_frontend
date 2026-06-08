@@ -1,4 +1,4 @@
-import { Bot, Puzzle as PuzzlePiece, Cog, Sparkles } from 'lucide-react';
+import { Bot, Puzzle as PuzzlePiece, Cog, Sparkles, Rocket, Boxes } from 'lucide-react';
 import React from 'react';
 
 export const services = [
@@ -206,6 +206,82 @@ export const services = [
       {
         title: "Document Review with MCP Tools",
         description: "Custom MCP tools let Claude review incoming contracts against the client's playbook, flag issues, and draft response emails for human approval."
+      }
+    ]
+  },
+  {
+    icon: <Rocket size={32} className="text-primary" />,
+    title: "Lightweight AI Apps",
+    slug: "ai-apps-micro-saas",
+    // 👇 IS CARD KI IMAGE — yahan apna real path daal dena
+    image: "/Services-Image/Lightweight-Image.png",
+    description: "Ship focused micro-SaaS and internal AI tools fast — single-purpose apps with clean UIs, built on modern stacks and ready to launch in weeks, not months.",
+    features: ["Rapid MVPs", "Micro-SaaS Tools", "Internal Dashboards", "API-First Builds"],
+    featureDescriptions: [
+      "Validate ideas quickly with lean, functional MVPs that put a working AI product in front of real users in record time.",
+      "Launch focused micro-SaaS products that solve one problem really well, with billing, auth, and AI baked in.",
+      "Build internal tools and dashboards that wrap your AI workflows in a simple interface your team actually enjoys using.",
+      "Deliver apps designed API-first so they plug cleanly into your existing systems and scale as you grow."
+    ],
+    detailedContent: `
+      <h2>Small Apps, Big Impact</h2>
+      <p>Not every AI project needs a massive platform. Lightweight AI apps let you ship a focused, polished tool fast — proving value before you invest in scale.</p>
+
+      <h3>What We Build</h3>
+      <ul>
+        <li>Single-purpose micro-SaaS products with auth and billing</li>
+        <li>Internal tools and admin dashboards for your team</li>
+        <li>AI-powered utilities that wrap a model in a clean UI</li>
+        <li>Prototypes and MVPs to validate ideas with real users</li>
+      </ul>
+
+      <h3>Our Stack</h3>
+      <p>We build with modern, battle-tested tools — React, Next.js, Tailwind, and serverless backends — so your app is fast, maintainable, and easy to extend.</p>
+    `,
+    caseStudies: [
+      {
+        title: "AI Resume Screener",
+        description: "We shipped a focused micro-SaaS that ranks incoming resumes against a job spec, helping a recruiting agency triage applicants 5x faster."
+      },
+      {
+        title: "Internal Knowledge Search Tool",
+        description: "A lightweight internal app let a client's team search across docs and tickets with natural language, cutting time-to-answer dramatically."
+      }
+    ]
+  },
+  {
+    icon: <Boxes size={32} className="text-primary" />,
+    title: "Custom AI Integrations",
+    slug: "custom-ai-integrations",
+    // 👇 IS CARD KI IMAGE — yahan apna real path daal dena (MOCK DATA — replace later)
+    image: "/Services-Image/Custom-Image.png",
+    description: "Mock placeholder service — connect AI models into your existing products with tailored integrations, embeddings, and vector search. Replace this copy later.",
+    features: ["Model Integration", "Embeddings & RAG", "Vector Search", "Custom Pipelines"],
+    featureDescriptions: [
+      "Placeholder description — integrate large language models directly into your existing apps and services.",
+      "Placeholder description — build retrieval-augmented generation pipelines on top of your own data.",
+      "Placeholder description — add fast semantic search powered by vector databases.",
+      "Placeholder description — design custom data and inference pipelines tailored to your needs."
+    ],
+    detailedContent: `
+      <h2>Custom AI Integrations (Mock)</h2>
+      <p>This is placeholder content for a sixth service. Replace it with real copy when ready.</p>
+
+      <h3>Placeholder Section</h3>
+      <ul>
+        <li>Mock bullet one</li>
+        <li>Mock bullet two</li>
+        <li>Mock bullet three</li>
+      </ul>
+    `,
+    caseStudies: [
+      {
+        title: "Mock Case Study One",
+        description: "Placeholder case study description — replace with a real example later."
+      },
+      {
+        title: "Mock Case Study Two",
+        description: "Placeholder case study description — replace with a real example later."
       }
     ]
   },
