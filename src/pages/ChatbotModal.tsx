@@ -1,9 +1,13 @@
-﻿import React, { useCallback, useEffect, useRef, useState } from 'react';
+﻿import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
+  ArrowLeft,
   BookOpen,
   Building2,
   Calendar,
+  CheckCircle2,
+  Clock,
   LayoutGrid,
+  Loader2,
   LogIn,
   MessageSquare,
   MoreVertical,
@@ -12,6 +16,7 @@ import {
   Sparkles,
   Tag,
   UserPlus,
+  Video,
   X,
   type LucideIcon,
 } from 'lucide-react';
@@ -91,6 +96,62 @@ const DEFAULT_GREETING_OPTIONS: ButtonOption[] = [
   { id: 'solutions', label: 'Solutions', value: 'external:https://www.techtrekkers.ai/' },
 ];
 
+// In-chat consultation booking. These mirror the full scheduler in
+// components/home/Pricing.tsx (fixed slots, same startTime/endTime math) so the
+// chatbot and the page post identical payloads to /api/consultations/book — the
+// calendar + email flow on the backend is unchanged.
+type BookingStep = 'date' | 'time' | 'details' | 'success';
+
+const BOOKING_TIME_SLOTS: { label: string; value: string }[] = [
+  { label: '10:00 AM', value: '10:00' },
+  { label: '10:30 AM', value: '10:30' },
+  { label: '11:00 AM', value: '11:00' },
+  { label: '11:30 AM', value: '11:30' },
+  { label: '2:00 PM', value: '14:00' },
+  { label: '2:30 PM', value: '14:30' },
+  { label: '3:00 PM', value: '15:00' },
+  { label: '3:30 PM', value: '15:30' },
+  { label: '4:00 PM', value: '16:00' },
+  { label: '4:30 PM', value: '16:30' },
+];
+
+const formatDateValue = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+// Next `count` days starting tomorrow (matches the scheduler, which never offers
+// same-day slots so a slot can't be in the past).
+const buildBookingDays = (count = 7) =>
+  Array.from({ length: count }, (_, index) => {
+    const date = new Date();
+    date.setDate(date.getDate() + index + 1);
+    return {
+      value: formatDateValue(date),
+      weekday: date.toLocaleDateString(undefined, { weekday: 'short' }),
+      day: date.getDate(),
+      month: date.toLocaleDateString(undefined, { month: 'short' }),
+    };
+  });
+
+const getSlotDateRange = (dateValue: string, timeValue: string) => {
+  const [hour, minute] = timeValue.split(':').map(Number);
+  const start = new Date(`${dateValue}T00:00:00`);
+  start.setHours(hour, minute, 0, 0);
+  const end = new Date(start);
+  end.setMinutes(end.getMinutes() + 30);
+  return { startTime: start.toISOString(), endTime: end.toISOString() };
+};
+
+const formatBookingLongDate = (dateValue: string) =>
+  new Date(`${dateValue}T12:00:00`).toLocaleDateString(undefined, {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+  });
+
 // Pick a Lucide icon for a suggestion chip based on its label. Keyword-matched
 // so it still works for arbitrary suggested_actions the backend may return.
 const getChipIcon = (label: string): LucideIcon => {
@@ -152,6 +213,19 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
   const inputRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const sessionIdRef = useRef<string>('');
+
+  // In-chat consultation booking state.
+  const [bookingOpen, setBookingOpen] = useState(false);
+  const [bookingStep, setBookingStep] = useState<BookingStep>('date');
+  const [bookingDate, setBookingDate] = useState('');
+  const [bookingSlot, setBookingSlot] = useState('');
+  const [bookingForm, setBookingForm] = useState({ name: '', email: '', message: '' });
+  const [bookingSubmitting, setBookingSubmitting] = useState(false);
+  const [bookingError, setBookingError] = useState('');
+  const [bookingResult, setBookingResult] = useState<{ meetLink?: string } | null>(null);
+  const bookingDays = useMemo(() => buildBookingDays(7), []);
+  // Name/email the visitor already gave in the lead form, used to prefill booking.
+  const capturedLeadRef = useRef<{ name?: string; email?: string }>({});
 
   const createId = useCallback(() => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`, []);
 
@@ -405,6 +479,9 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
       leadForm.fields.forEach((field) => {
         body[field.name] = (leadValues[field.name] || '').trim();
       });
+
+      // Remember name/email so the in-chat booking can prefill them.
+      capturedLeadRef.current = { name: body.name, email: body.email };
 
       const response = await fetch(`${API_BASE_URL}${leadForm.submit_endpoint}`, {
         method: 'POST',
@@ -690,13 +767,80 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
     navigate(path);
   };
 
-  // Conversion CTA on the opening screen — routes to the consultation section.
-  const handleBookConsultation = () => {
+  const resetBooking = useCallback(() => {
+    setBookingOpen(false);
+    setBookingStep('date');
+    setBookingDate('');
+    setBookingSlot('');
+    setBookingSubmitting(false);
+    setBookingError('');
+    setBookingResult(null);
+  }, []);
+
+  // Conversion CTA on the opening screen — opens the in-chat booking flow.
+  const startBooking = () => {
+    setBookingError('');
+    setBookingResult(null);
+    setBookingDate('');
+    setBookingSlot('');
+    setBookingStep('date');
+    setBookingForm({
+      name: capturedLeadRef.current.name || '',
+      email: capturedLeadRef.current.email || '',
+      message: '',
+    });
+    setBookingOpen(true);
+  };
+
+  // "Not the date you wanted?" — fall back to the full scheduler on /#pricing,
+  // the same destination the button used before.
+  const openFullScheduler = () => {
+    resetBooking();
     // Close the sheet first so the full-screen mobile overlay isn't covering the
-    // page when we scroll; navigateToRoute now polls for #pricing, so it lands
+    // page when we scroll; navigateToRoute polls for #pricing so it lands
     // correctly even though the section may mount a moment after the route change.
     if (!fullPage) onClose();
     navigateToRoute('/#pricing', navigate, location.pathname);
+  };
+
+  // Submit the booking — identical payload + endpoint to the page scheduler, so
+  // the Google Calendar + email flow is unchanged.
+  const handleBookingSubmit = async () => {
+    setBookingError('');
+    const name = bookingForm.name.trim();
+    const email = bookingForm.email.trim();
+    if (!name || !email) {
+      setBookingError('Please enter your name and email to receive the invite.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setBookingError('Enter a valid email like you@company.com.');
+      return;
+    }
+    if (!bookingDate || !bookingSlot) {
+      setBookingError('Please choose a date and time.');
+      return;
+    }
+
+    setBookingSubmitting(true);
+    try {
+      const { startTime, endTime } = getSlotDateRange(bookingDate, bookingSlot);
+      const response = await fetch(`${API_BASE_URL}/api/consultations/book`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, startTime, endTime, message: bookingForm.message.trim() }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Could not book your meeting. Please try again.');
+      }
+      setBookingResult({ meetLink: data.meetLink });
+      setBookingStep('success');
+    } catch (err: any) {
+      setBookingError(err.message || 'Could not book your meeting. Please try again.');
+    } finally {
+      setBookingSubmitting(false);
+    }
   };
 
   const latestSuggestedActions =
@@ -712,6 +856,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
       setLeadForm(null);
       setLeadValues({});
       setLeadErrors({});
+      resetBooking();
       return;
     }
     getSessionId();
@@ -719,11 +864,11 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
     // Defer focus until the input has mounted/animated in.
     const focusTimer = window.setTimeout(() => inputRef.current?.focus(), 80);
     return () => window.clearTimeout(focusTimer);
-  }, [getSessionId, isOpen, fetchIntro]);
+  }, [getSessionId, isOpen, fetchIntro, resetBooking]);
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages, isTyping, leadForm]);
+  }, [messages, isTyping, leadForm, bookingOpen, bookingStep]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -998,10 +1143,202 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
             </div>
           )}
 
+          {/* In-chat consultation booking: date chips → time slots → details → success.
+              Posts to the same /api/consultations/book endpoint as the page scheduler. */}
+          {bookingOpen && !leadForm && (
+            <div className="animate-fade-in-up">
+              <div className="p-4 bg-white border shadow-sm border-blue-100 rounded-[14px]">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center min-w-0 gap-2">
+                    {(bookingStep === 'time' || bookingStep === 'details') && (
+                      <button
+                        type="button"
+                        onClick={() => setBookingStep(bookingStep === 'details' ? 'time' : 'date')}
+                        className="p-1 -ml-1 text-gray-500 rounded-md hover:bg-gray-100"
+                        aria-label="Back"
+                      >
+                        <ArrowLeft size={16} />
+                      </button>
+                    )}
+                    <h3 className="text-sm font-semibold text-blue-700 truncate">
+                      {bookingStep === 'success' ? 'Meeting booked' : 'Book a free consultation'}
+                    </h3>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={resetBooking}
+                    className="p-1 text-gray-400 rounded-md hover:bg-gray-100 hover:text-gray-700"
+                    aria-label="Close booking"
+                  >
+                    <X size={16} />
+                  </button>
+                </div>
+
+                {bookingStep === 'date' && (
+                  <div className="space-y-3">
+                    <p className="text-xs text-gray-500">Pick a day for your 30-min Google Meet call.</p>
+                    <div className="flex flex-wrap justify-center gap-2">
+                      {bookingDays.map((d) => {
+                        const selected = d.value === bookingDate;
+                        return (
+                          <button
+                            key={d.value}
+                            type="button"
+                            onClick={() => {
+                              setBookingDate(d.value);
+                              setBookingStep('time');
+                            }}
+                            className={`flex flex-col items-center justify-center w-[52px] h-[52px] rounded-full border text-center transition-all ${
+                              selected
+                                ? 'bg-blue-600 text-white border-blue-600'
+                                : 'bg-white text-gray-700 border-blue-100 hover:border-blue-300 hover:bg-blue-50'
+                            }`}
+                          >
+                            <span className="text-[10px] font-medium leading-none opacity-80">{d.weekday}</span>
+                            <span className="text-base font-bold leading-tight">{d.day}</span>
+                            <span className="text-[9px] leading-none opacity-70">{d.month}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={openFullScheduler}
+                      className="block w-full text-xs font-medium text-center text-blue-600 hover:text-blue-800"
+                    >
+                      Not the date you wanted? Choose from here →
+                    </button>
+                  </div>
+                )}
+
+                {bookingStep === 'time' && (
+                  <div className="space-y-3">
+                    <p className="flex items-center gap-1.5 text-xs font-medium text-gray-600">
+                      <Clock size={13} className="text-blue-600" />
+                      {formatBookingLongDate(bookingDate)}
+                    </p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {BOOKING_TIME_SLOTS.map((s) => {
+                        const selected = s.value === bookingSlot;
+                        return (
+                          <button
+                            key={s.value}
+                            type="button"
+                            onClick={() => {
+                              setBookingSlot(s.value);
+                              setBookingStep('details');
+                            }}
+                            className={`rounded-lg border px-2 py-2 text-[12px] font-semibold transition-all ${
+                              selected
+                                ? 'border-blue-600 bg-blue-50 text-blue-700'
+                                : 'border-blue-100 text-gray-700 hover:border-blue-300 hover:bg-blue-50'
+                            }`}
+                          >
+                            {s.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={openFullScheduler}
+                      className="block w-full text-xs font-medium text-center text-blue-600 hover:text-blue-800"
+                    >
+                      Not the time you wanted? Choose from here →
+                    </button>
+                  </div>
+                )}
+
+                {bookingStep === 'details' && (
+                  <div className="space-y-3">
+                    <p className="flex items-center gap-1.5 text-xs font-medium text-gray-600">
+                      <Calendar size={13} className="text-blue-600" />
+                      {formatBookingLongDate(bookingDate)} ·{' '}
+                      {BOOKING_TIME_SLOTS.find((s) => s.value === bookingSlot)?.label}
+                    </p>
+                    <div className="space-y-2">
+                      <input
+                        type="text"
+                        value={bookingForm.name}
+                        onChange={(e) => setBookingForm((p) => ({ ...p, name: e.target.value }))}
+                        placeholder="Your name"
+                        className="w-full px-3 py-2 text-sm text-gray-800 border rounded-lg border-blue-100 focus:outline-none focus:border-[#60A5FA] focus:ring-2 focus:ring-[rgba(59,130,246,0.25)]"
+                      />
+                      <input
+                        type="email"
+                        value={bookingForm.email}
+                        onChange={(e) => setBookingForm((p) => ({ ...p, email: e.target.value }))}
+                        placeholder="you@company.com"
+                        className="w-full px-3 py-2 text-sm text-gray-800 border rounded-lg border-blue-100 focus:outline-none focus:border-[#60A5FA] focus:ring-2 focus:ring-[rgba(59,130,246,0.25)]"
+                      />
+                      <textarea
+                        value={bookingForm.message}
+                        rows={2}
+                        onChange={(e) => setBookingForm((p) => ({ ...p, message: e.target.value }))}
+                        placeholder="What would you like to discuss? (optional)"
+                        className="w-full px-3 py-2 text-sm text-gray-800 border rounded-lg resize-none border-blue-100 focus:outline-none focus:border-[#60A5FA] focus:ring-2 focus:ring-[rgba(59,130,246,0.25)]"
+                      />
+                    </div>
+                    {bookingError && <p className="text-[11px] text-red-500">{bookingError}</p>}
+                    <button
+                      type="button"
+                      onClick={handleBookingSubmit}
+                      disabled={bookingSubmitting}
+                      className="flex items-center justify-center w-full gap-2 px-3 py-2.5 text-sm font-medium text-white rounded-lg bg-[linear-gradient(135deg,#2563EB,#1D4ED8)] hover:brightness-110 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+                    >
+                      {bookingSubmitting ? (
+                        <>
+                          <Loader2 size={15} className="animate-spin" /> Booking…
+                        </>
+                      ) : (
+                        <>
+                          <Video size={15} /> Confirm booking
+                        </>
+                      )}
+                    </button>
+                  </div>
+                )}
+
+                {bookingStep === 'success' && (
+                  <div className="py-2 space-y-3 text-center">
+                    <div className="flex items-center justify-center w-12 h-12 mx-auto rounded-full bg-green-50">
+                      <CheckCircle2 className="text-green-600 w-7 h-7" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-900">You're booked!</p>
+                      <p className="mt-1 text-xs leading-relaxed text-gray-500">
+                        A Google Calendar invite with the Meet link has been emailed to you.
+                      </p>
+                    </div>
+                    {bookingResult?.meetLink && (
+                      <a
+                        href={bookingResult.meetLink}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-semibold text-blue-700 rounded-lg bg-blue-50 hover:bg-blue-100"
+                      >
+                        <Video size={14} /> Open Google Meet
+                      </a>
+                    )}
+                    <div>
+                      <button
+                        type="button"
+                        onClick={resetBooking}
+                        className="text-xs font-medium text-gray-500 hover:text-gray-700"
+                      >
+                        Done
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Opening state: richer tappable cards + a conversion CTA. Fills the panel
               so it never reads as "content failed to load", and disappears once the
               visitor starts chatting. */}
-          {!leadForm && !hasUserMessages && (
+          {!leadForm && !hasUserMessages && !bookingOpen && (
             <div className="pt-1 space-y-2.5 animate-fade-in-up">
               {latestSuggestedActions.length > 0 && (
                 <div className="grid grid-cols-2 gap-2">
@@ -1026,7 +1363,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
               )}
               <button
                 type="button"
-                onClick={handleBookConsultation}
+                onClick={startBooking}
                 className="flex items-center justify-center w-full gap-2 px-4 py-2.5 text-sm font-semibold text-white shadow-sm rounded-xl bg-[linear-gradient(135deg,#2563EB,#4F46E5)] hover:brightness-110 hover:-translate-y-0.5 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
               >
                 <Calendar size={16} />
@@ -1065,6 +1402,10 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
           {leadForm ? (
             <p className="text-xs text-center text-gray-400">
               Complete the form above to start chatting.
+            </p>
+          ) : bookingOpen && bookingStep !== 'success' ? (
+            <p className="text-xs text-center text-gray-400">
+              Complete your booking above, or close it to keep chatting.
             </p>
           ) : (
             <form onSubmit={handleSendMessage} className="flex gap-2">
