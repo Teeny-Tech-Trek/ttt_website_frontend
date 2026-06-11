@@ -11,6 +11,10 @@
 
 export const CHAT_SESSION_STORAGE_KEY = 'ttt_chat_session_id';
 export const LEAD_CAPTURED_STORAGE_KEY = 'ttt_lead_captured';
+// Holds the visitor's submitted name/email (+ service/message) so the in-chat
+// consultation booking can prefill them without re-asking. Mirrors the gate's
+// 30-day TTL so it expires exactly when the lead form would reappear.
+export const LEAD_IDENTITY_STORAGE_KEY = 'ttt_lead_identity';
 
 // Mirrors the backend's 30-day capture TTL so the frontend bypass and the
 // backend gate expire together.
@@ -89,6 +93,60 @@ export const clearLeadCaptured = (): void => {
   }
 };
 
+export interface LeadIdentity {
+  name?: string;
+  email?: string;
+  service?: string;
+  message?: string;
+}
+
+interface StoredLeadIdentity extends LeadIdentity {
+  capturedAt: string; // ISO timestamp
+}
+
+// Persist the lead's details so the booking flow can prefill them later. PII is
+// the visitor's own, stored only on their device. Best-effort (private mode).
+export const storeLeadIdentity = (identity: LeadIdentity): void => {
+  if (typeof window === 'undefined') return;
+  try {
+    const record: StoredLeadIdentity = {
+      name: identity.name?.trim() || undefined,
+      email: identity.email?.trim() || undefined,
+      service: identity.service?.trim() || undefined,
+      message: identity.message?.trim() || undefined,
+      capturedAt: new Date().toISOString(),
+    };
+    window.localStorage.setItem(LEAD_IDENTITY_STORAGE_KEY, JSON.stringify(record));
+  } catch {
+    /* non-fatal */
+  }
+};
+
+// Returns the saved identity iff it exists and is within the 30-day TTL.
+// Self-heals by clearing expired records, matching isLeadCaptured().
+export const getLeadIdentity = (): LeadIdentity | null => {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.localStorage.getItem(LEAD_IDENTITY_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<StoredLeadIdentity> | null;
+    if (!parsed?.capturedAt) return null;
+    const age = Date.now() - new Date(parsed.capturedAt).getTime();
+    if (Number.isNaN(age) || age > LEAD_TTL_MS) {
+      window.localStorage.removeItem(LEAD_IDENTITY_STORAGE_KEY);
+      return null;
+    }
+    return {
+      name: parsed.name,
+      email: parsed.email,
+      service: parsed.service,
+      message: parsed.message,
+    };
+  } catch {
+    return null;
+  }
+};
+
 export interface ChatbotLeadPayload {
   name: string;
   email: string;
@@ -104,6 +162,14 @@ export interface ChatbotLeadPayload {
 export const notifyChatbotLead = async (payload: ChatbotLeadPayload): Promise<void> => {
   const sessionId = getChatSessionId();
   if (!sessionId) return;
+  // Save identity here too, so a lead captured via Contact Us also prefills the
+  // in-chat booking (mirrors the cross-touchpoint gate bypass).
+  storeLeadIdentity({
+    name: payload.name,
+    email: payload.email,
+    service: payload.service,
+    message: payload.message,
+  });
   try {
     await fetch(`${getApiBaseUrl()}/api/chatbot/lead`, {
       method: 'POST',

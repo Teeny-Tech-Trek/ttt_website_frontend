@@ -30,8 +30,10 @@ import {
 } from '../utils/chatbotRouter';
 import {
   getChatSessionId as readSessionIdFromStorage,
+  getLeadIdentity,
   isLeadCaptured,
   markLeadCaptured,
+  storeLeadIdentity,
 } from '../utils/leadCapture';
 import tttLogo from '../assets/teeny-logo.svg';
 
@@ -480,8 +482,16 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
         body[field.name] = (leadValues[field.name] || '').trim();
       });
 
-      // Remember name/email so the in-chat booking can prefill them.
+      // Remember name/email so the in-chat booking can prefill them — both in
+      // memory (this session) and in localStorage (returning visitors within the
+      // 30-day window, when the lead form is skipped).
       capturedLeadRef.current = { name: body.name, email: body.email };
+      storeLeadIdentity({
+        name: body.name,
+        email: body.email,
+        service: body.service,
+        message: body.message,
+      });
 
       const response = await fetch(`${API_BASE_URL}${leadForm.submit_endpoint}`, {
         method: 'POST',
@@ -784,10 +794,13 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
     setBookingDate('');
     setBookingSlot('');
     setBookingStep('date');
+    // Prefer this session's captured lead; fall back to the stored identity for
+    // returning visitors (within 30 days) who skipped the lead form.
+    const stored = getLeadIdentity();
     setBookingForm({
-      name: capturedLeadRef.current.name || '',
-      email: capturedLeadRef.current.email || '',
-      message: '',
+      name: capturedLeadRef.current.name || stored?.name || '',
+      email: capturedLeadRef.current.email || stored?.email || '',
+      message: '', // fresh per booking — the lead's message is a different prompt
     });
     setBookingOpen(true);
   };
