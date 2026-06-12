@@ -35,6 +35,7 @@ import {
   markLeadCaptured,
   storeLeadIdentity,
 } from '../utils/leadCapture';
+import { BOOKING_TIME_SLOTS, buildBookingDays, getSlotDateRange } from '../config/booking';
 import tttLogo from '../assets/teeny-logo.svg';
 
 interface ChatbotModalProps {
@@ -98,54 +99,11 @@ const DEFAULT_GREETING_OPTIONS: ButtonOption[] = [
   { id: 'solutions', label: 'Solutions', value: 'external:https://www.techtrekkers.ai/' },
 ];
 
-// In-chat consultation booking. These mirror the full scheduler in
-// components/home/Pricing.tsx (fixed slots, same startTime/endTime math) so the
-// chatbot and the page post identical payloads to /api/consultations/book — the
-// calendar + email flow on the backend is unchanged.
+// In-chat consultation booking. Day/slot rules come from the shared booking
+// config (src/config/booking.ts) so the chatbot and the page scheduler always
+// offer the same weekdays + time slots and post identical payloads to
+// /api/consultations/book — the calendar + email flow is unchanged.
 type BookingStep = 'date' | 'time' | 'details' | 'success';
-
-const BOOKING_TIME_SLOTS: { label: string; value: string }[] = [
-  { label: '10:00 AM', value: '10:00' },
-  { label: '10:30 AM', value: '10:30' },
-  { label: '11:00 AM', value: '11:00' },
-  { label: '11:30 AM', value: '11:30' },
-  { label: '2:00 PM', value: '14:00' },
-  { label: '2:30 PM', value: '14:30' },
-  { label: '3:00 PM', value: '15:00' },
-  { label: '3:30 PM', value: '15:30' },
-  { label: '4:00 PM', value: '16:00' },
-  { label: '4:30 PM', value: '16:30' },
-];
-
-const formatDateValue = (date: Date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-};
-
-// Next `count` days starting tomorrow (matches the scheduler, which never offers
-// same-day slots so a slot can't be in the past).
-const buildBookingDays = (count = 7) =>
-  Array.from({ length: count }, (_, index) => {
-    const date = new Date();
-    date.setDate(date.getDate() + index + 1);
-    return {
-      value: formatDateValue(date),
-      weekday: date.toLocaleDateString(undefined, { weekday: 'short' }),
-      day: date.getDate(),
-      month: date.toLocaleDateString(undefined, { month: 'short' }),
-    };
-  });
-
-const getSlotDateRange = (dateValue: string, timeValue: string) => {
-  const [hour, minute] = timeValue.split(':').map(Number);
-  const start = new Date(`${dateValue}T00:00:00`);
-  start.setHours(hour, minute, 0, 0);
-  const end = new Date(start);
-  end.setMinutes(end.getMinutes() + 30);
-  return { startTime: start.toISOString(), endTime: end.toISOString() };
-};
 
 const formatBookingLongDate = (dateValue: string) =>
   new Date(`${dateValue}T12:00:00`).toLocaleDateString(undefined, {

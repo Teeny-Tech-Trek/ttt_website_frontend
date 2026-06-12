@@ -563,6 +563,12 @@ import {
   X,
 } from "lucide-react";
 import Container from "../ui/Container";
+import {
+  BOOKING_TIME_SLOTS,
+  buildBookingDays,
+  getInitialBookingDate,
+  getSlotDateRange,
+} from "../../config/booking";
 
 const DEFAULT_API_BASE_URL = import.meta.env.DEV
   ? "http://localhost:5000"
@@ -613,30 +619,10 @@ const features = [
   },
 ];
 
-const timeSlots = [
-  { label: "10:00 AM", value: "10:00" },
-  { label: "10:30 AM", value: "10:30" },
-  { label: "11:00 AM", value: "11:00" },
-  { label: "11:30 AM", value: "11:30" },
-  { label: "2:00 PM", value: "14:00" },
-  { label: "2:30 PM", value: "14:30" },
-  { label: "3:00 PM", value: "15:00" },
-  { label: "3:30 PM", value: "15:30" },
-  { label: "4:00 PM", value: "16:00" },
-  { label: "4:30 PM", value: "16:30" },
-];
-
 type BookingForm = {
   name: string;
   email: string;
   message: string;
-};
-
-const formatDateValue = (date: Date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
 };
 
 const formatCalendarLabel = (dateValue: string) => {
@@ -648,26 +634,6 @@ const formatCalendarLabel = (dateValue: string) => {
   });
 };
 
-const getSlotDateRange = (dateValue: string, timeValue: string) => {
-  const [hour, minute] = timeValue.split(":").map(Number);
-  const start = new Date(`${dateValue}T00:00:00`);
-  start.setHours(hour, minute, 0, 0);
-
-  const end = new Date(start);
-  end.setMinutes(end.getMinutes() + 30);
-
-  return {
-    startTime: start.toISOString(),
-    endTime: end.toISOString(),
-  };
-};
-
-const getInitialDate = () => {
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  return formatDateValue(tomorrow);
-};
-
 const SchedulingModal = ({
   isOpen,
   onClose,
@@ -675,30 +641,20 @@ const SchedulingModal = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  const [selectedDate, setSelectedDate] = useState(getInitialDate);
-  const [selectedSlot, setSelectedSlot] = useState(timeSlots[0].value);
+  const [selectedDate, setSelectedDate] = useState(getInitialBookingDate);
+  const [selectedSlot, setSelectedSlot] = useState(BOOKING_TIME_SLOTS[0].value);
   const [form, setForm] = useState<BookingForm>({ name: "", email: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState<{ meetLink?: string } | null>(null);
 
-  const days = useMemo(() => {
-    return Array.from({ length: 14 }, (_, index) => {
-      const date = new Date();
-      date.setDate(date.getDate() + index + 1);
-      return {
-        value: formatDateValue(date),
-        weekday: date.toLocaleDateString(undefined, { weekday: "short" }),
-        day: date.getDate(),
-        month: date.toLocaleDateString(undefined, { month: "short" }),
-      };
-    });
-  }, []);
+  // Mon–Fri only, from the shared booking config. 10 business days ≈ 2 weeks.
+  const days = useMemo(() => buildBookingDays(10), []);
 
   if (!isOpen) return null;
 
   const selectedSlotLabel =
-    timeSlots.find((slot) => slot.value === selectedSlot)?.label || timeSlots[0].label;
+    BOOKING_TIME_SLOTS.find((slot) => slot.value === selectedSlot)?.label || BOOKING_TIME_SLOTS[0].label;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -884,7 +840,7 @@ const SchedulingModal = ({
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {timeSlots.map((slot) => {
+                  {BOOKING_TIME_SLOTS.map((slot) => {
                     const isSelected = slot.value === selectedSlot;
                     return (
                       <button
