@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 
 import HomePage from '../pages/public/HomePage';
+import BookConsultation from '../pages/public/BookConsultation';
 import BlogSingleView from '../pages/public/BlogDetail';
 import SingleEventPage from '../pages/public/EventDetail';
 import PackageDetailPage from '../pages/public/PackageDetail';
@@ -63,6 +64,10 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ onOpenChatbot }) => (
 
       {/* Public routes */}
       <Route path="/" element={<HomePage onOpenChatbot={onOpenChatbot} />} />
+
+      {/* Dedicated consultation/booking route — opens directly on the
+          consultation section (no scroll-from-top). Reuses the same Pricing UI. */}
+      <Route path="/book-consultation" element={<BookConsultation />} />
 
       <Route path="/refund" element={<Refund />} />
       <Route path="/privacy" element={<Privacy />} />

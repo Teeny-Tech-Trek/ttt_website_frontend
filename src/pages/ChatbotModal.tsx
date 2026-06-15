@@ -763,15 +763,14 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
     setBookingOpen(true);
   };
 
-  // "Not the date you wanted?" — fall back to the full scheduler on /#pricing,
-  // the same destination the button used before.
+  // "Not the date you wanted?" — fall back to the full scheduler on the dedicated
+  // /book-consultation route, which opens directly on the consultation section.
   const openFullScheduler = () => {
     resetBooking();
     // Close the sheet first so the full-screen mobile overlay isn't covering the
-    // page when we scroll; navigateToRoute polls for #pricing so it lands
-    // correctly even though the section may mount a moment after the route change.
+    // page after we navigate.
     if (!fullPage) onClose();
-    navigateToRoute('/#pricing', navigate, location.pathname);
+    navigateToRoute('/book-consultation', navigate, location.pathname);
   };
 
   // Submit the booking — identical payload + endpoint to the page scheduler, so

@@ -260,7 +260,7 @@ function Pilot() {
             <div className="flex flex-col items-center justify-center gap-4 mb-8 sm:flex-row">
               <HashLink
                 smooth
-                to="/#pricing"
+                to="/book-consultation"
                 className="flex items-center px-8 py-4 space-x-2 font-semibold text-blue-700 transition-colors duration-300 bg-white shadow-lg rounded-xl hover:bg-gray-50"
               >
                 <Zap className="w-5 h-5" />

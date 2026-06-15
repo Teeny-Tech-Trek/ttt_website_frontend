@@ -108,7 +108,7 @@ const CTASection = () => {
             {/* CTA Button - Responsive */}
             <div className="flex flex-col justify-center gap-4 mb-6 sm:mb-8">
               <SectionLink
-                to="/#pricing"
+                to="/book-consultation"
                 className="flex items-center justify-center w-full gap-2 px-6 py-4 text-base font-bold text-blue-900 transition-all duration-300 bg-white border-2 border-blue-900 shadow-lg sm:gap-3 sm:px-8 lg:px-10 sm:py-5 sm:text-lg rounded-xl hover:bg-blue-50 hover:border-blue-800 hover:bg-blue-900 hover:text-white sm:w-auto sm:mx-auto"
               >
                 Schedule Free Assessment

@@ -179,7 +179,7 @@ const CaseStudies: React.FC<CaseStudyProps> = ({ id = 'case-studies', className 
               See how AI can revolutionize your industry with our proven solutions
             </p>
             <SectionLink
-              to="/#pricing"
+              to="/book-consultation"
               className="inline-flex items-center gap-3 px-8 py-4 font-semibold text-white transition-all bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl hover:shadow-lg hover:scale-105"
             >
               <span>Get Started Today</span>
