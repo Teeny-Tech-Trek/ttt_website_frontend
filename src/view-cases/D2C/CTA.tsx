@@ -101,7 +101,7 @@ const FinalCTASection = () => {
               </button> */}
               <HashLink 
                 smooth 
-                to="/#pricing"
+                to="/book-consultation"
                 className="flex items-center justify-center gap-2 px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg shadow-lg hover:bg-blue-800">
                    Get Started Free <ArrowRight className="w-5 h-5" />
               </HashLink>
@@ -110,7 +110,7 @@ const FinalCTASection = () => {
               </button> */}
               <HashLink 
                 smooth 
-                to="/#pricing"
+                to="/book-consultation"
                 className="flex items-center justify-center gap-2 px-8 py-4 font-semibold text-black transition-colors bg-gray-100 rounded-lg hover:bg-gray-200">
                 Schedule Demo
               </HashLink>

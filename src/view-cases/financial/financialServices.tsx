@@ -18,7 +18,6 @@ const FinancialServices = () => {
       <IntegrationsSection />
       <ImplementationSection />
       <SecuritySection />
-      <CTASection />
     </div>
   );
 };

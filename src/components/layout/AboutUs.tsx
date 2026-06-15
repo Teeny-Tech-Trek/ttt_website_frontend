@@ -146,7 +146,7 @@ const AboutUs = () => {
                 >
                   <HashLink 
                     smooth 
-                    to="/#pricing"
+                    to="/book-consultation"
                     className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-blue-900 transition-all duration-300 bg-white border-2 border-blue-900 shadow-lg rounded-xl hover:bg-blue-50 hover:border-blue-800"
                   >
                      <Phone className="w-5 h-5 mr-2" />
@@ -540,7 +540,7 @@ const AboutUs = () => {
           >
             <HashLink 
               smooth 
-              to="/#pricing"
+              to="/book-consultation"
               className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-blue-900 transition-all duration-300 bg-white border-2 border-blue-900 shadow-lg rounded-xl hover:bg-blue-50 hover:border-blue-800 hover:bg-blue-900 hover:text-white"
             >
               <Phone className="w-5 h-5" />

@@ -1,5 +1,7 @@
 import React from 'react';
 import { Clock, Target, Users, CheckCircle, ArrowRight, Zap, BarChart3, Settings, MessageSquare, Database, Shield, Rocket } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import HashLink from '../components/ui/SectionLink';
 
 function Pilot() {
   const sprints = [
@@ -256,15 +258,22 @@ function Pilot() {
             </p>
             
             <div className="flex flex-col items-center justify-center gap-4 mb-8 sm:flex-row">
-              <button className="flex items-center px-8 py-4 space-x-2 font-semibold text-blue-700 transition-colors duration-300 bg-white shadow-lg rounded-xl hover:bg-gray-50">
+              <HashLink
+                smooth
+                to="/book-consultation"
+                className="flex items-center px-8 py-4 space-x-2 font-semibold text-blue-700 transition-colors duration-300 bg-white shadow-lg rounded-xl hover:bg-gray-50"
+              >
                 <Zap className="w-5 h-5" />
                 <span>Schedule Strategy Session</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
-              <button className="flex items-center px-8 py-4 space-x-2 font-semibold text-white transition-colors duration-300 border-2 border-white rounded-xl hover:bg-white/10">
+              </HashLink>
+              <Link
+                to="/auditform"
+                className="flex items-center px-8 py-4 space-x-2 font-semibold text-white transition-colors duration-300 border-2 border-white rounded-xl hover:bg-white/10"
+              >
                 <MessageSquare className="w-5 h-5" />
                 <span>View Implementation Guide</span>
-              </button>
+              </Link>
             </div>
             
             <p className="text-sm text-blue-200">

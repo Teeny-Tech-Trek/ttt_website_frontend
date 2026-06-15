@@ -446,52 +446,6 @@ const Hero: React.FC = () => {
               your operations 24/7.
             </p>
 
-            <div className="flex flex-col gap-4 sm:flex-row">
-              {/* <button className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group">
-                Start Free Trial
-                <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-              </button> */}
-              <HashLink 
-                smooth 
-                to="/#pricing"
-                className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group"
-              >
-                Start Free Trial
-                 <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-              </HashLink>
-              
-              {/* <button className="flex items-center justify-center px-8 py-4 font-semibold text-gray-700 transition-colors border-2 border-gray-300 rounded-lg hover:border-blue-900 hover:text-blue-900">
-                <Phone className="w-5 h-5 mr-2" />
-                Try Voice Demo
-              </button> */}
-               <div className="flex flex-col items-center ">
-                  {/* Wrap in relative container */}
-                  <div className="relative flex flex-col items-center w-full">
-                    <motion.button 
-                    className="flex items-center justify-center px-8 py-4 text-gray-700 transition-colors border-2 border-gray-300 rounded-lg border-blue-900font-semibold hover:border-blue-900 hover:text-blue-900"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={handleClick}
-                    >
-                      <Phone className="w-5 h-5 mr-2" />
-                Try Voice Demo
-                    </motion.button>
-
-                    {/* Absolutely positioned message */}
-                    {message && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.3 }}
-                        className="absolute max-w-md px-4 py-2 mt-20 text-sm text-center text-gray-700 bg-gray-200 rounded-lg shadow-md w-max"
-                      >
-                        {message}
-                      </motion.div>
-                    )}
-                  </div>
-                </div>
-            </div>
           </div>
 
           {/* Right Visual - Simple Hotel Image */}
@@ -557,36 +511,6 @@ const CoreServices: React.FC = () => {
                 </div>
               </div>
 
-              {/* <button className="flex items-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group">
-                Try Voice Demo
-                <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-              </button> */}
-              <div className="flex flex-col items-center ">
-                  {/* Wrap in relative container */}
-                  <div className="relative flex flex-col items-center w-full">
-                    <motion.button 
-                    className="flex items-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group"
-                      whileTap={{ scale: 0.98 }}
-                      onClick={handleClick}
-                    >
-                      <Phone className="w-5 h-5 mr-2" />
-                Try Voice Demo
-                    </motion.button>
-
-                    {/* Absolutely positioned message */}
-                    {message && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.3 }}
-                        className="absolute max-w-md px-4 py-2 mt-20 text-sm text-center text-gray-700 bg-gray-200 rounded-lg shadow-md w-max"
-                      >
-                        {message}
-                      </motion.div>
-                    )}
-                  </div>
-                </div>
             </div>
 
             <div className="lg:w-1/2">
@@ -791,53 +715,6 @@ const HospitalityBenefits: React.FC = () => {
   );
 };
 
-// Light Background CTA
-const LightCTA: React.FC = () => {
-  return (
-    <section className="py-20 bg-gray-50">
-      <div className="max-w-4xl px-6 mx-auto text-center">
-        <div>
-          <h2 className="mb-6 text-4xl font-bold text-black md:text-5xl">
-            Ready to Elevate Your Guest Experience?
-          </h2>
-          
-          <p className="mb-12 text-xl leading-relaxed text-gray-700">
-            Join hospitality businesses already using AI voice receptionist and data management to enhance guest satisfaction with Teeny Tech Trek.
-          </p>
-
-          {/* <button className="flex items-center justify-center px-12 py-4 mx-auto text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group">
-            <Hotel className="w-5 h-5 mr-2" />
-            Transform Your Hospitality Business
-            <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-          </button> */}
-          <HashLink 
-            smooth 
-            to="/#pricing"
-            className="flex items-center justify-center px-12 py-4 mx-auto text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group"
-          >
-           <Hotel className="w-5 h-5 mr-2" />
-            Transform Your Hospitality Business
-            <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-          </HashLink>
-
-          {/* Feature Pills */}
-          <div className="flex flex-wrap justify-center gap-4 mt-8">
-            <span className="px-4 py-2 text-sm font-medium text-black bg-white border border-gray-200 rounded-full">
-              🗣️ AI Voice Receptionist
-            </span>
-            <span className="px-4 py-2 text-sm font-medium text-black bg-white border border-gray-200 rounded-full">
-              📊 Smart Data Management
-            </span>
-            <span className="px-4 py-2 text-sm font-medium text-black bg-white border border-gray-200 rounded-full">
-              🌟 24/7 Guest Support
-            </span>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 // Main Index
 const HospitalityIndex: React.FC = () => {
   return (
@@ -845,7 +722,6 @@ const HospitalityIndex: React.FC = () => {
       <Hero />
       <CoreServices />
       <HospitalityBenefits />
-      <LightCTA />
     </div>
   );
 };

@@ -247,18 +247,6 @@ const Hero: React.FC = () => (
             AI-powered lead generation that never sleeps. Transform your sales process with intelligent calling that connects you to quality prospects 24/7.
           </motion.p>
 
-          <motion.div className="flex flex-col gap-4 sm:flex-row" variants={slideFromLeft}>
-              <HashLink 
-                smooth 
-                to="/#pricing"
-                className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group"
-              >
-                Start Generating Leads
-                <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-              </HashLink>
-            
-          
-          </motion.div>
         </motion.div>
 
         {/* Right */}
@@ -464,7 +452,6 @@ const ManufacturingLogisticsIndex: React.FC = () => (
     <Hero />
     <AICallFeatures />
     <LeadGeneration />
-    <LightCTA />
   </div>
 );
 

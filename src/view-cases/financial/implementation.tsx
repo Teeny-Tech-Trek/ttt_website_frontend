@@ -148,16 +148,6 @@ const ImplementationSection = () => {
                 ))}
               </div>
 
-              <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
-                <HashLink 
-                  smooth 
-                  to="/#pricing"
-                  className="flex items-center justify-center gap-2 px-4 sm:px-6 md:px-8 py-3 sm:py-4 text-sm sm:text-base md:text-lg font-bold text-blue-900 transition-all duration-300 bg-white border-2 border-blue-900 shadow-lg rounded-lg sm:rounded-xl hover:bg-blue-50 hover:border-blue-800 min-h-[48px] touch-manipulation"
-                >
-                  <span>Schedule Implementation Call</span> 
-                  <ArrowRight className="flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5" />
-                </HashLink>
-              </div>
             </div>
 
             {/* Right Column - Timeline Box */}

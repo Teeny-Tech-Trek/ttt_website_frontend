@@ -346,8 +346,9 @@ const ChatbotsPage = ({ onOpenChatbot }) => {
           viewport={{ once: true, amount: 0.3 }}
         >
           {demoPrompts.map((prompt, index) => (
-            <motion.button 
+            <motion.button
               key={index}
+              onClick={handleTryDemo}
               className="w-full p-4 text-left transition-colors bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50"
               variants={fadeInUp}
               whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
@@ -702,7 +703,7 @@ const ChatbotsPage = ({ onOpenChatbot }) => {
                   
           <HashLink 
             smooth 
-            to="/#pricing"
+            to="/book-consultation"
             className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-blue-900 transition-all duration-300 bg-white border-2 border-blue-900 shadow-lg rounded-xl hover:bg-blue-50 hover:border-blue-800"
           >
             <Phone className="w-5 h-5" />

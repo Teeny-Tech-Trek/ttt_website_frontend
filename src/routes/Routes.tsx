@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 
 import HomePage from '../pages/public/HomePage';
+import BookConsultation from '../pages/public/BookConsultation';
 import BlogSingleView from '../pages/public/BlogDetail';
 import SingleEventPage from '../pages/public/EventDetail';
 import PackageDetailPage from '../pages/public/PackageDetail';
@@ -64,6 +65,10 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ onOpenChatbot }) => (
       {/* Public routes */}
       <Route path="/" element={<HomePage onOpenChatbot={onOpenChatbot} />} />
 
+      {/* Dedicated consultation/booking route — opens directly on the
+          consultation section (no scroll-from-top). Reuses the same Pricing UI. */}
+      <Route path="/book-consultation" element={<BookConsultation />} />
+
       <Route path="/refund" element={<Refund />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/terms" element={<Terms />} />
@@ -99,7 +104,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ onOpenChatbot }) => (
       <Route path="/services/ai-chatbots" element={<ChatbotsPage onOpenChatbot={onOpenChatbot} />} />
       <Route path="/services/agentic-ai-workflows" element={<AgenticWorkflowsPage onOpenChatbot={onOpenChatbot} />} />
       <Route path="/services/smart-process-automation" element={<ProcessAutomationPage onOpenChatbot={onOpenChatbot} />} />
-      <Route path="/services/ai-apps-micro-saas" element={<AiAppsPage />} />
+      <Route path="/services/ai-apps-micro-saas" element={<AiAppsPage onOpenChatbot={onOpenChatbot} />} />
       <Route path="/services/claude-automation" element={<ClaudeAutomationsPage />} />
 
       {/* Catch-all */}

@@ -15,7 +15,7 @@ const STATIC_ROUTES: RouteRegistry = {
   services: '/#services',
   solutions: '/#services',
   'ai solutions': '/#services',
-  pricing: '/#pricing',
+  pricing: '/book-consultation',
   contact: '/#contact',
   blogs: '/blogs',
   blog: '/blogs',
@@ -26,9 +26,9 @@ const STATIC_ROUTES: RouteRegistry = {
   'who are you': '/#about-us',
   'why teeny tech trek': '/#about-us',
   faq: '/#faq',
-  consultation: '/#pricing',
-  'book consultation': '/#pricing',
-  'strategy call': '/#pricing',
+  consultation: '/book-consultation',
+  'book consultation': '/book-consultation',
+  'strategy call': '/book-consultation',
   community: '/community',
   'audit form': '/auditform',
   auditform: '/auditform',
@@ -211,7 +211,7 @@ const LEARN_MORE_ROUTE_MAP: Record<LearnMoreIntent, string> = {
   auditform: '/auditform',
   contact: '/#contact',
   faq: '/#faq',
-  pricing: '/#pricing',
+  pricing: '/book-consultation',
 };
 
 export const inferLearnMoreIntent = (text: string): LearnMoreIntent | null => {

@@ -685,28 +685,6 @@ const Hero: React.FC = () => {
               that empower educators and students.
             </motion.p>
 
-            <motion.div 
-              className="flex flex-col gap-4 sm:flex-row"
-              variants={slideFromLeft}
-            >
-              {/* <button className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group">
-                Start Collaboration
-                <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-              </button> */}
-              <HashLink 
-              smooth 
-              to="/#pricing"
-              className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group"
-            >
-              Start Collaboration
-                <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-            </HashLink>
-                          
-              <button className="flex items-center justify-center px-8 py-4 font-semibold text-gray-700 transition-colors border-2 border-gray-300 rounded-lg hover:border-blue-900 hover:text-blue-900">
-                <Video className="w-5 h-5 mr-2" />
-                View Workshop Demo
-              </button>
-            </motion.div>
           </motion.div>
 
           {/* Right Visual - Simple Education Image */}
@@ -1081,7 +1059,7 @@ const LightCTA: React.FC = () => {
             </button> */}
              <HashLink 
               smooth 
-              to="/#pricing"
+              to="/book-consultation"
               className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group"
             >
              <School className="w-5 h-5 mr-2" />
@@ -1095,7 +1073,7 @@ const LightCTA: React.FC = () => {
             </button> */}
             <HashLink 
               smooth 
-              to="/#pricing"
+              to="/book-consultation"
               className="flex items-center justify-center px-8 py-4 font-semibold text-blue-900 transition-colors bg-white border border-blue-900 rounded-lg hover:border-2 group"
             >
               <Presentation className="w-5 h-5 mr-2" />
@@ -1131,7 +1109,6 @@ const EducationIndex: React.FC = () => {
       <Hero />
       <EducationServices />
       <EducationImpact />
-      <LightCTA />
     </div>
   );
 };

@@ -214,25 +214,6 @@ const navigate = useNavigate();
         </div>
       </div>
 
-      {/* Call to Action */}
-      <div className="text-center mt-12">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">Ready to Take the Next Step?</h3>
-          <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-            Based on your assessment results, we can help you create a customized AI implementation roadmap 
-            tailored to your organization's specific needs and readiness level.
-          </p>
-          
-<button
-  onClick={() => navigate("/", { state: { scrollTo: "contact" } })}
-  className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-teal-600 text-white font-semibold rounded-lg hover:from-blue-700 hover:to-teal-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
->
-  <MessageSquare className="w-5 h-5 mr-2" />
-  Get Your Personalized Roadmap
-</button>
-
-        </div>
-      </div>
     </div>
   );
 };
