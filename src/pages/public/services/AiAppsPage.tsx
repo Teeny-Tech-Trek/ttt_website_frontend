@@ -37,14 +37,18 @@ const scaleIn = {
   transition: { duration: 0.5, ease: "easeOut" }
 };
 
-const AiAppsPage = () => {
+const AiAppsPage = ({ onOpenChatbot }) => {
   const [currentModule, setCurrentModule] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [message, setMessage] = useState("");
+  // 'idle' | 'approved' | 'cancelled' — drives the Action Preview demo state.
+  const [actionState, setActionState] = useState("idle");
 
-   const handleClick = () => {
-    setMessage("✅ Thank you for your interest! Please proceed by clicking on 'Call with AI' to explore the live demo.");
-    setTimeout(() => setMessage(""), 5000); // Auto-hide after 5s
+  const handleTryDemo = (e) => {
+    e?.preventDefault?.();
+    e?.stopPropagation?.();
+    if (onOpenChatbot) {
+      onOpenChatbot();
+    }
   };
 
   const appModules = [
@@ -178,7 +182,8 @@ const AiAppsPage = () => {
               </motion.div>
               
               <motion.h1 
-                className="text-6xl font-bold leading-tight text-black lg:text-7xl"
+             
+             className="text-6xl font-bold leading-tight text-black lg:text-7xl"
                 variants={fadeInUp}
               >
                 Small apps. <span className="text-blue-900">Real impact.</span>
@@ -191,52 +196,20 @@ const AiAppsPage = () => {
                 Internal tools and micro-SaaS that ship in weeks—with the exact actions your team needs and nothing you don't.
               </motion.p>
               
-              <motion.div 
+              <motion.div
                 className="flex flex-col gap-4 sm:flex-row"
                 variants={fadeInUp}
               >
-              <div className="flex flex-row items-center justify-center gap-4">
-              <motion.button 
-              onClick={() => {document.getElementById('examples-modules')?.scrollIntoView({
-                behavior : 'smooth',
-                block : 'start'
-              })}}
-                className="flex items-center justify-center w-auto gap-3 px-10 py-5 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-2xl hover:bg-blue-800"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Monitor className="w-6 h-6" />
-                See examples
-              </motion.button>
-
-               <div className="flex flex-col items-center">
-                              {/* Wrap in relative container */}
-                                <div className="relative flex flex-col items-center">
-                                  <motion.button 
-                                    className="flex items-center justify-center w-auto gap-3 px-10 py-5 text-lg font-semibold transition-colors bg-white border border-blue-900 text-blue rounded-2xl "
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    onClick={handleClick}
-                                  >
-                                    <Phone className="w-5 h-5" />
-                                    Start a scoping call
-                                  </motion.button>
-              
-                                  {/* Absolutely positioned message */}
-                                  {message && (
-                                    <motion.div
-                                      initial={{ opacity: 0, y: -10 }}
-                                      animate={{ opacity: 1, y: 0 }}
-                                      exit={{ opacity: 0, y: -10 }}
-                                      transition={{ duration: 0.3 }}
-                                      className="absolute max-w-md px-4 py-2 mt-20 text-sm text-center text-gray-700 bg-gray-100 rounded-lg shadow-md ml-52 w-max"
-                                    >
-                                      {message}
-                                    </motion.div>
-                                  )}
-                                </div>
-                              </div>
-                           </div>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+                  <HashLink
+                    smooth
+                    to="/#pricing"
+                    className="flex items-center justify-center w-auto gap-2 px-8 py-4 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-2xl hover:bg-blue-800"
+                  >
+                    <Phone className="w-5 h-5" />
+                    Start a scoping call
+                  </HashLink>
+                </motion.div>
               </motion.div>
             </motion.div>
             
@@ -406,8 +379,9 @@ const AiAppsPage = () => {
               </h2>
               <div className="space-y-6">
                 {demoPrompts.map((prompt, index) => (
-                  <motion.button 
+                  <motion.button
                     key={index}
+                    onClick={handleTryDemo}
                     className="w-full p-8 text-left transition-all duration-300 border-2 border-gray-200 rounded-3xl hover:border-blue-300 hover:bg-blue-50 hover:shadow-lg"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -468,14 +442,55 @@ const AiAppsPage = () => {
                   </div>
                 </div>
                 
-                <div className="flex gap-4">
-                  <button className="flex-1 px-6 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-2xl hover:bg-blue-800">
-                    ✓ Approve Action
-                  </button>
-                  <button className="px-6 py-4 font-semibold text-gray-600 transition-colors bg-gray-100 rounded-2xl hover:bg-gray-200">
-                    Cancel
-                  </button>
-                </div>
+                {actionState === 'idle' ? (
+                  <div className="flex gap-4">
+                    <button
+                      type="button"
+                      onClick={() => setActionState('approved')}
+                      className="flex-1 px-6 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-2xl hover:bg-blue-800"
+                    >
+                      ✓ Approve Action
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActionState('cancelled')}
+                      className="px-6 py-4 font-semibold text-gray-600 transition-colors bg-gray-100 rounded-2xl hover:bg-gray-200"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`flex items-center justify-between gap-4 px-6 py-4 rounded-2xl ${
+                      actionState === 'approved'
+                        ? 'bg-green-50 border border-green-200'
+                        : 'bg-gray-50 border border-gray-200'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      {actionState === 'approved' ? (
+                        <CheckCircle2 className="w-6 h-6 text-green-600" />
+                      ) : (
+                        <AlertCircle className="w-6 h-6 text-gray-500" />
+                      )}
+                      <span className="font-semibold text-black">
+                        {actionState === 'approved'
+                          ? 'Action approved — changes applied & logged.'
+                          : 'Action cancelled — nothing was changed.'}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setActionState('idle')}
+                      className="px-4 py-2 text-sm font-semibold text-blue-900 transition-colors rounded-lg hover:bg-blue-50"
+                    >
+                      <RotateCcw className="inline w-4 h-4 mr-1" />
+                      Reset
+                    </button>
+                  </motion.div>
+                )}
               </div>
             </motion.div>
           </div>
@@ -673,14 +688,14 @@ const AiAppsPage = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <HashLink 
-                  smooth 
-                  to="/#pricing"
+                <button
+                  type="button"
+                  onClick={handleTryDemo}
                   className="flex items-center justify-center w-auto gap-3 px-10 py-5 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-2xl hover:bg-blue-800"
                 >
                   <Zap className="w-5 h-5" />
                   Prototype an app in 4–6 weeks
-                </HashLink>
+                </button>
               </motion.div>
             {/* <motion.button 
               className="flex items-center justify-center gap-3 px-8 py-4 text-xl font-bold text-blue-900 transition-all duration-300 bg-white border-2 border-blue-900 shadow-xl rounded-2xl hover:bg-blue-50 hover:border-blue-800"

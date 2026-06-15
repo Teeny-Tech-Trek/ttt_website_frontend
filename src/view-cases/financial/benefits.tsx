@@ -84,14 +84,6 @@ const BenefitsSection = () => {
               ))}
             </div>
 
-            {/* CTA Button - Responsive */}
-            <SectionLink
-              to="/#pricing"
-              className="flex items-center justify-center w-full gap-2 px-6 py-3 text-sm font-semibold text-white transition-colors bg-blue-900 rounded-lg sm:px-8 sm:py-4 sm:text-base hover:bg-blue-800 sm:w-auto sm:inline-flex"
-            >
-              Calculate Your ROI
-              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
-            </SectionLink>
           </div>
 
           {/* Implementation Benefits Card - Responsive */}

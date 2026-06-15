@@ -634,7 +634,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenChatbot }) => {
         </div>
 
         {/* ── CTA buttons ── */}
-        <div
+        {/* <div
           ref={ctaRef}
           className="relative z-20 mt-7 flex gap-[14px] max-lg:w-[min(92vw,420px)] max-lg:flex-col max-lg:items-stretch max-lg:gap-3"
           style={{ opacity: 0, transform: 'translateY(20px)' }}
@@ -648,7 +648,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenChatbot }) => {
           <button className="flex items-center justify-center gap-[9px] whitespace-nowrap rounded-full bg-blue-900 px-8 py-[13px] [font-family:Rajdhani,sans-serif] text-base font-bold tracking-wide text-white shadow-[0_6px_28px_rgba(0,100,255,0.48)] transition-all duration-300 hover:-translate-y-[3px] hover:shadow-[0_10px_38px_rgba(0,100,255,0.65)] max-lg:w-full max-lg:px-5 max-lg:py-3">
             Book a Consultation
           </button>
-        </div>
+        </div> */}
 
         {/* ── Stats bar ── */}
         <div

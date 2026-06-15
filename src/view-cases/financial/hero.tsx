@@ -66,24 +66,6 @@ const FinancialHeroSection = () => {
               </p>
             </div>
 
-            {/* Action buttons - Responsive */}
-            <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
-              <SectionLink
-                to="/#pricing"
-                className="flex items-center justify-center w-full gap-2 px-6 py-3 text-base font-bold text-white transition-all duration-300 bg-blue-900 sm:gap-3 sm:px-8 sm:py-4 sm:text-lg rounded-xl hover:bg-blue-800 sm:w-auto"
-              >
-                <span>Get Free Assessment</span>
-                <ArrowRight className="flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5" />
-              </SectionLink>
-
-              <button className="flex items-center justify-center w-full gap-3 px-6 py-3 font-semibold text-blue-900 transition-all duration-300 border border-blue-900 sm:justify-start sm:px-8 sm:py-4 rounded-xl hover:bg-blue-900/10 sm:w-auto">
-                <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-blue-900/10">
-                  <PlayCircle className="w-4 h-4 text-blue-900 sm:w-5 sm:h-5" />
-                </div>
-                <span>Watch Demo</span>
-              </button>
-            </div>
-
             {/* Key metrics preview - Responsive Grid */}
             <div className="grid grid-cols-2 gap-3 pt-6 sm:gap-4 lg:gap-6 sm:pt-8">
               {metrics.map((metric, index) => (

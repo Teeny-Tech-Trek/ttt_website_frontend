@@ -346,8 +346,9 @@ const ChatbotsPage = ({ onOpenChatbot }) => {
           viewport={{ once: true, amount: 0.3 }}
         >
           {demoPrompts.map((prompt, index) => (
-            <motion.button 
+            <motion.button
               key={index}
+              onClick={handleTryDemo}
               className="w-full p-4 text-left transition-colors bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50"
               variants={fadeInUp}
               whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}

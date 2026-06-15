@@ -828,29 +828,6 @@ const HeroSection = ({onOpenChatbot}) => {
               workforce, and enhancing health outcomes
             </motion.p>
             
-            <motion.div 
-              className="flex flex-wrap gap-4"
-              variants={slideFromLeft}
-            >
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <HashLink 
-                  smooth 
-                  to="/#contact"
-                  className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-950 group"
-                >
-                  Get Started
-                  <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-                </HashLink>
-              </motion.div>
-              
-              <button onClick={handleTryDemo} className="flex items-center gap-2 px-8 py-4 font-semibold text-blue-900 transition-colors border-2 border-blue-900 rounded-lg hover:bg-blue-50">
-                Talk with an AI Agent
-                <MessageCircle className="w-5 h-5" />
-              </button>
-            </motion.div>
           </motion.div>
           
           {/* Right side visualization */}
@@ -1087,21 +1064,6 @@ const CoreServicesSection = () => {
                 </div>
               </div>
             </div>
-
-             <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <HashLink 
-                  smooth 
-                  to="/#contact"
-                 className="flex items-center justify-center w-full px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800 group"
-
-                >
-                  Get Started
-                  <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-                </HashLink>
-              </motion.div>
           </motion.div>
         </div>
       </div>
@@ -1431,23 +1393,9 @@ const FinalCTASection = () => {
             className="mb-10 text-xl leading-relaxed text-gray-700"
             variants={slideFromBottom}
           >
-            Join the healthcare providers already using AI agents to engage patients and scale their 
+            Join the healthcare providers already using AI agents to engage patients and scale their
             practice with Teeny Tech Trek.
           </motion.p>
-                 
-         
-            <div className="flex justify-center">
-              <HashLink
-                smooth
-                to="/#contact"
-                className="flex items-center justify-center px-10 py-5 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg sm:px-12 sm:py-6 sm:text-xl hover:bg-blue-950 group w-96 sm:w-auto"
-              >
-                <span className="hidden sm:inline">Hire Your First AI Agent</span>
-                <span className="sm:hidden">Get Started</span>
-                <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1 sm:w-6 sm:h-6" />
-              </HashLink>
-            </div>
-         
         </motion.div>
       </div>
     </div>

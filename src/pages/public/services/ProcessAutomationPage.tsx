@@ -182,7 +182,7 @@ const ProcessAutomationPage = ({ onOpenChatbot }) => {
                 <div className="flex flex-col items-center">
                   {/* Wrap in relative container */}
                   <div className="relative flex flex-col items-center">
-                    <motion.button 
+                    {/* <motion.button 
                       className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.98 }}
@@ -190,7 +190,7 @@ const ProcessAutomationPage = ({ onOpenChatbot }) => {
                     >
                       <Play className="w-5 h-5" />
                       Try the ops demo
-                    </motion.button>
+                    </motion.button> */}
 
                     {/* Absolutely positioned message */}
                     {message && (
@@ -360,8 +360,9 @@ const ProcessAutomationPage = ({ onOpenChatbot }) => {
               </h2>
               <div className="space-y-6">
                 {demoPrompts.map((prompt, index) => (
-                  <motion.button 
+                  <motion.button
                     key={index}
+                    onClick={handleTryDemo}
                     className="w-full p-8 text-left transition-all duration-300 border-2 border-gray-200 rounded-3xl hover:border-blue-300 hover:bg-blue-50 hover:shadow-lg"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -422,14 +423,14 @@ const ProcessAutomationPage = ({ onOpenChatbot }) => {
                     </div>
                   </div>
                   
-                  <div className="flex gap-4">
+                  {/* <div className="flex gap-4">
                     <button className="px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800">
                       Notify Customer
                     </button>
                     <button className="px-6 py-3 font-semibold text-gray-600 transition-colors bg-gray-100 rounded-xl hover:bg-gray-200">
                       Snooze 1hr
                     </button>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </motion.div>
@@ -703,14 +704,14 @@ const ProcessAutomationPage = ({ onOpenChatbot }) => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <HashLink 
-                      smooth 
-                      to="/#pricing"
-                      className="flex items-center justify-center gap-2 px-10 py-6 text-base font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800"
+                    <button
+                      type="button"
+                      onClick={handleTryDemo}
+                      className="flex items-center justify-center w-full gap-2 px-10 py-6 text-base font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800"
                     >
                       <Zap className="w-5 h-5" />
                          Automate the top 3 processes
-                    </HashLink>
+                    </button>
                   </motion.div>
                   <motion.div
                     whileHover={{ scale: 1.05 }}

@@ -99,7 +99,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ onOpenChatbot }) => (
       <Route path="/services/ai-chatbots" element={<ChatbotsPage onOpenChatbot={onOpenChatbot} />} />
       <Route path="/services/agentic-ai-workflows" element={<AgenticWorkflowsPage onOpenChatbot={onOpenChatbot} />} />
       <Route path="/services/smart-process-automation" element={<ProcessAutomationPage onOpenChatbot={onOpenChatbot} />} />
-      <Route path="/services/ai-apps-micro-saas" element={<AiAppsPage />} />
+      <Route path="/services/ai-apps-micro-saas" element={<AiAppsPage onOpenChatbot={onOpenChatbot} />} />
       <Route path="/services/claude-automation" element={<ClaudeAutomationsPage />} />
 
       {/* Catch-all */}

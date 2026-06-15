@@ -117,32 +117,6 @@ const Hero: React.FC<ChatbotOpenProps> = ({onOpenChatbot}) => {
               property outcomes
             </motion.p>
 
-            <motion.div 
-              className="flex flex-col gap-4 sm:flex-row"
-              variants={slideFromLeft}
-            >
-             
-                            <motion.div
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.98 }}
-                            >
-                              <HashLink 
-                                smooth 
-                                to="/#contact"
-                                className="flex items-center justify-center px-8 py-4 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-950 group"
-                              >
-                                Get Started
-                                <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-                              </HashLink>
-                            </motion.div>
-              
-              <button
-               onClick={handleTryDemo}
-              className="flex items-center justify-center px-8 py-4 font-semibold text-black transition-colors border-2 border-black rounded-lg hover:border-blue-900 hover:text-blue-900">
-                <MessageCircle className="w-5 h-5 mr-2" />
-                Talk with an AI Agent
-              </button>
-            </motion.div>
           </motion.div>
 
           {/* Right Visual Dashboard */}
@@ -410,37 +384,6 @@ const CleanMetrics = () => {
   );
 };
 
-// CTA Section - Ultra Responsive with Better Spacing
-const LightCTA = () => {
-  return (
-    <section className="py-6 bg-white sm:py-8 lg:py-10 xl:py-12">
-      <div className="max-w-5xl px-4 mx-auto text-center sm:px-6 lg:px-8">
-        <h2 className="mb-8 text-xl font-bold text-blue-900 sm:text-2xl md:text-3xl lg:text-3xl xl:text-4xl sm:mb-10">
-          Ready to Transform Real Estate?
-        </h2>
-        
-        <p className="mb-12 text-sm leading-relaxed text-black sm:text-base lg:text-base xl:text-lg sm:mb-16 xl:leading-relaxed">
-          Join the companies already using AI agents to engage clients and scale their practice with Teeny Tech Trek.
-        </p>
-
-     
-      <div className="flex justify-center">
-        <HashLink
-          smooth
-          to="/#contact"
-          className="flex items-center justify-center px-10 py-5 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg sm:px-12 sm:py-6 sm:text-xl hover:bg-blue-950 group w-96 sm:w-auto"
-        >
-          <span className="hidden sm:inline">Hire Your First AI Agent</span>
-          <span className="sm:hidden">Get Started</span>
-          <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1 sm:w-6 sm:h-6" />
-        </HashLink>
-      </div>
-
-      </div>
-    </section>
-  );
-};
-
 // Main Index - Ultra Responsive
 const RealEstateIndex: React.FC<ChatbotOpenProps> = ({onOpenChatbot}) => {
   return (
@@ -448,7 +391,6 @@ const RealEstateIndex: React.FC<ChatbotOpenProps> = ({onOpenChatbot}) => {
       <Hero onOpenChatbot={onOpenChatbot}/>
       <CleanSolutions />
       <CleanMetrics />
-      <LightCTA />
     </div>
   );
 };

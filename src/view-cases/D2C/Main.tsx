@@ -16,7 +16,6 @@ const MainD2C = ({onOpenChatbot}) => {
       <BenefitsSection />
       <GettingStartedSection />
       <StatsSection />
-      <FinalCTASection />
     </div>
   );
 };
