@@ -10,6 +10,7 @@ import {
   DollarSign,
   BarChart3
 } from 'lucide-react';
+import HashLink from '../../components/ui/SectionLink';
 
 const ChatbotSolutionsSection = ({onOpenChatbot}) => {
   
@@ -143,10 +144,10 @@ const ChatbotSolutionsSection = ({onOpenChatbot}) => {
               </div>
             </div>
 
-            <button onClick={handleTryDemo} className="flex items-center justify-center w-full px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800 group">
+            <HashLink smooth to="/#pricing" className="flex items-center justify-center w-full px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800 group">
               Boost Sales Now
               <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-            </button>
+            </HashLink>
           </div>
         </div>
       </div>

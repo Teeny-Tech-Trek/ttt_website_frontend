@@ -404,20 +404,20 @@ const ClaudeAutomationsPage = () => {
               <motion.div className="flex flex-col gap-4 sm:flex-row" variants={fadeInUp}>
                 <HashLink
                   smooth
-                  to="#see-it-work"
+                  to="/#pricing"
                   className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800"
                 >
                   <Play className="w-5 h-5" aria-hidden="true" />
                   See it in action
                 </HashLink>
-                <HashLink
-                  smooth
-                  to="#start-pilot"
+                <button
+                  type="button"
+                  onClick={handle4WeekPilotBtn}
                   className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold text-blue-900 transition-colors bg-white border-2 border-blue-900 rounded-lg hover:bg-blue-50"
                 >
                   <Calendar className="w-5 h-5" aria-hidden="true" />
                   See a 4-week setup plan
-                </HashLink>
+                </button>
               </motion.div>
 
               <motion.div

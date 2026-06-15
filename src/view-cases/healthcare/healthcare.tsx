@@ -891,14 +891,6 @@ const HeroSection = ({onOpenChatbot}) => {
 
 // Core Services Section (Voice Receptionist & Data Management)
 const CoreServicesSection = () => {
-
-    const [message, setMessage] = useState("");
-
-      const handleClick = () => {
-          setMessage("Thank you for your interest! Please proceed by clicking on 'Call with AI' to explore the live demo.");
-          setTimeout(() => setMessage(""), 5000); // Auto-hide after 5s
-        };
-
   return (
     <section className="py-20 bg-gray-50">
       <div className="px-6 mx-auto max-w-7xl">
@@ -976,35 +968,9 @@ const CoreServicesSection = () => {
               </div>
             </div>
 
-            
-
-             <div className="flex flex-col items-center w-full">
-                  {/* Wrap in relative container */}
-                  <div className="relative flex flex-col items-center w-full">
-                    <motion.button 
-                    className="flex items-center justify-center w-full px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800 group"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={handleClick}
-                    >
-                     Talk with Voice AI
-                      <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-                    </motion.button>
-
-                    {/* Absolutely positioned message */}
-                    {message && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.3 }}
-                        className="absolute max-w-md px-4 py-2 mt-20 text-sm text-center text-gray-700 bg-gray-200 rounded-lg shadow-md w-max"
-                      >
-                        {message}
-                      </motion.div>
-                    )}
-                  </div>
-                </div>
+            {/* "Talk with Agent" CTA intentionally hidden until the voice-agent
+                feature is live — keeps the card clean and matches the sibling
+                Data Management card (no dead/placeholder button). */}
           </motion.div>
 
           {/* Data Management */}

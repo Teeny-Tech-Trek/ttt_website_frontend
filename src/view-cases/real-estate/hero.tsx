@@ -256,10 +256,13 @@ const CleanSolutions = () => {
             </p>
 
             <div className="pt-4 sm:pt-6">
-              <button className="flex items-center justify-center w-full px-8 py-4 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg sm:w-auto sm:px-10 sm:py-5 hover:bg-blue-950 group">
+              <HashLink
+                to="/services/ai-chatbots"
+                className="inline-flex items-center justify-center w-full px-8 py-4 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg sm:w-auto sm:px-10 sm:py-5 hover:bg-blue-950 group"
+              >
                 Learn More
                 <ArrowRight className="w-5 h-5 ml-3 transition-transform sm:w-6 sm:h-6 group-hover:translate-x-1" />
-              </button>
+              </HashLink>
             </div>
           </div>
 
