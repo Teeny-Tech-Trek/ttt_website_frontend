@@ -234,7 +234,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
     if (
       labels.has('explore ai services') &&
       labels.has('industries we work with') &&
-      labels.has('pricing & consultation')
+      labels.has('book a consultation')
     ) {
       return true;
     }
