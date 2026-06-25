@@ -65,7 +65,7 @@ const taskSteps = [
 const TaskRunnerDemo = () => {
   const [statuses, setStatuses] = useState(taskSteps.map(() => 'hidden'));
   const containerRef = useRef(null);
-  const timeouts = useRef([]);
+  const timeouts = useRef<any[]>([]);
   const startedRef = useRef(false);
   const reducedMotion = useRef(false);
 
@@ -312,7 +312,7 @@ const ClaudeAutomationsPage = () => {
   // genuine quote — the "What Users Say" card renders ONLY when this has at least
   // one entry, so no placeholder is ever shipped to production.
   // Shape: { quote: '...', name: 'Jane Doe', role: 'Head of Ops, Acme Co.' }
-  const testimonials = [];
+  const testimonials: Array<{ quote: string; name: string; role: string }> = [];
 
   const integrations = [
     'Gmail',

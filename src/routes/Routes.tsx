@@ -91,6 +91,8 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ onOpenChatbot }) => (
 
       {/* Blog and event routes */}
       <Route path="/blog/:slug" element={<BlogSingleView />} />
+      <Route path="/blog-preview/:id" element={<BlogSingleView />} />
+      <Route path="/admin/blog-preview/:id" element={<BlogSingleView />} />
       <Route path="/event/:slug" element={<SingleEventPage />} />
 
       {/* Package details */}

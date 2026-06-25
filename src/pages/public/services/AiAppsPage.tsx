@@ -37,7 +37,11 @@ const scaleIn = {
   transition: { duration: 0.5, ease: "easeOut" }
 };
 
-const AiAppsPage = ({ onOpenChatbot }) => {
+interface AiAppsPageProps {
+  onOpenChatbot?: () => void;
+}
+
+const AiAppsPage: React.FC<AiAppsPageProps> = ({ onOpenChatbot }) => {
   const [currentModule, setCurrentModule] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   // 'idle' | 'approved' | 'cancelled' — drives the Action Preview demo state.
