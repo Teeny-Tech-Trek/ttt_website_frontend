@@ -7,6 +7,7 @@ const ConsultationsManager = () => {
   const [consultations, setConsultations] = useState<Consultation[]>([]);
   const [filteredConsultations, setFilteredConsultations] = useState<Consultation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedConsultation, setSelectedConsultation] = useState<Consultation | null>(null);
 
@@ -27,11 +28,13 @@ const ConsultationsManager = () => {
   const fetchConsultations = async () => {
     try {
       setLoading(true);
+      setError(null);
       const data = await listConsultations();
       setConsultations(data);
       setFilteredConsultations(data);
     } catch (err) {
       console.error('Failed to fetch consultations:', err);
+      setError('Failed to load consultations. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -41,6 +44,20 @@ const ConsultationsManager = () => {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="w-16 h-16 border-4 border-blue-200 rounded-full animate-spin border-t-blue-900"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-96 space-y-4">
+        <p className="text-red-600 font-semibold">{error}</p>
+        <button
+          onClick={fetchConsultations}
+          className="px-5 py-2.5 bg-blue-900 text-white rounded-xl hover:bg-blue-800 transition-all font-semibold shadow-md"
+        >
+          Try Again
+        </button>
       </div>
     );
   }

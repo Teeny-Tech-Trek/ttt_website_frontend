@@ -89,10 +89,7 @@ export default function CreatePackage() {
       setTimeout(() => navigate("/admin/packages"), 1000);
     } catch (err: any) {
       console.error(err);
-      setMessage(
-        err.response?.data?.error ||
-          "Error creating package. Please try again."
-      );
+      setMessage("Failed to create package. Please check your inputs and try again.");
     } finally {
       setLoading(false);
     }

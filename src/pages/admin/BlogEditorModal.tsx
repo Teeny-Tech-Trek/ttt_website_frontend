@@ -1,6 +1,7 @@
 // src/pages/admin/BlogEditorModal.tsx
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { toast as hotToast } from 'react-hot-toast';
 
 import { 
   X, Save, Eye, Edit, Trash2, Copy, ArrowUp, ArrowDown, ChevronDown, ChevronUp, Plus, 
@@ -255,7 +256,7 @@ export const BlogEditorModal: React.FC<BlogEditorModalProps> = ({ blogId, onClos
 
   const saveBlog = async (newStatus?: 'draft' | 'published') => {
     if (!title.trim()) {
-      alert('Blog title is required.');
+      showToast('Blog title is required.', 'error');
       return;
     }
     
@@ -286,7 +287,7 @@ export const BlogEditorModal: React.FC<BlogEditorModalProps> = ({ blogId, onClos
       }
     } catch (err: any) {
       console.error('Failed to save blog:', err);
-      showToast(err.response?.data?.error || 'Failed to save blog post.', 'error');
+      showToast('Failed to save blog post. Please try again.', 'error');
     } finally {
       setSaving(false);
     }
@@ -418,7 +419,7 @@ export const BlogEditorModal: React.FC<BlogEditorModalProps> = ({ blogId, onClos
 
   const deleteBlock = (index: number) => {
     if (blocks.length <= 1) {
-      alert('You must keep at least one block.');
+      showToast('You must keep at least one block.', 'error');
       return;
     }
     setBlocks(prev => prev.filter((_, idx) => idx !== index));
@@ -967,7 +968,7 @@ const BlockItem: React.FC<BlockItemProps> = ({
       onUpdate({ url: res.data.url });
     } catch (err) {
       console.error('Block image upload failed:', err);
-      alert('Failed to upload block image.');
+      hotToast.error('Failed to upload block image. Please try again.');
     } finally {
       setUploading(false);
     }

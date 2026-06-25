@@ -1,4 +1,5 @@
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const DEFAULT_API_BASE_URL = import.meta.env.DEV
   ? "http://localhost:5000"
@@ -18,5 +19,24 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      const { status } = error.response;
+      if (status === 401) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('adminUser');
+        if (!window.location.pathname.includes('/admin/login')) {
+          window.location.href = '/admin/login';
+        }
+      } else if (status === 403) {
+        toast.error("You don't have permission to perform this action.");
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default api;

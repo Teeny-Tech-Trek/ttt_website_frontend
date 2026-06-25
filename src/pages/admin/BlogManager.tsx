@@ -5,12 +5,14 @@ import {
   Trash2, RotateCcw, SlidersHorizontal, ArrowUpDown, Image as ImageIcon, Loader2,
   Archive
 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { getAllBlogs, archiveBlogs, reactivateBlog, deleteBlog } from '../../services/blogService';
 import { Blog } from '../../types/blog';
 import { BlogEditorModal } from './BlogEditorModal';
 
 const BlogManager = () => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -97,6 +99,7 @@ const BlogManager = () => {
   const fetchBlogs = async () => {
     try {
       setLoading(true);
+      setError(null);
       const token = localStorage.getItem('accessToken') || '';
       const data = await getAllBlogs(token);
       
@@ -112,6 +115,7 @@ const BlogManager = () => {
       });
     } catch (err) {
       console.error('Failed to fetch blogs:', err);
+      setError('Failed to load blogs. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -129,10 +133,11 @@ const BlogManager = () => {
         try {
           const token = localStorage.getItem('accessToken') || '';
           await archiveBlogs([blogId], token);
+          toast.success('Blog post archived successfully.');
           fetchBlogs();
         } catch (err) {
           console.error('Failed to archive blog:', err);
-          alert('Failed to archive blog post.');
+          toast.error('Failed to archive blog post.');
         }
       }
     });
@@ -142,10 +147,11 @@ const BlogManager = () => {
     try {
       const token = localStorage.getItem('accessToken') || '';
       await reactivateBlog(blogId, token);
+      toast.success('Blog post reactivated successfully.');
       fetchBlogs();
     } catch (err) {
       console.error('Failed to reactivate blog:', err);
-      alert('Failed to reactivate blog post.');
+      toast.error('Failed to reactivate blog post.');
     }
   };
 
@@ -161,10 +167,11 @@ const BlogManager = () => {
         try {
           const token = localStorage.getItem('accessToken') || '';
           await deleteBlog(blogId, token);
+          toast.success('Blog post deleted successfully.');
           fetchBlogs();
         } catch (err) {
           console.error('Failed to delete blog:', err);
-          alert('Failed to delete blog post.');
+          toast.error('Failed to delete blog post.');
         }
       }
     });
@@ -202,6 +209,20 @@ const BlogManager = () => {
       <div className="flex flex-col items-center justify-center py-32 text-gray-400">
         <Loader2 className="w-10 h-10 border-4 border-blue-200 rounded-full animate-spin border-t-blue-900" />
         <span className="mt-4 text-sm font-medium">Fetching blog list from MongoDB...</span>
+      </div>
+    );
+  }
+
+  if (error && blogs.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-32 text-slate-500">
+        <p className="text-base font-semibold text-red-600">{error}</p>
+        <button
+          onClick={fetchBlogs}
+          className="mt-4 px-5 py-2.5 font-semibold text-white bg-blue-900 hover:bg-blue-800 rounded-xl transition-all shadow-md"
+        >
+          Try Again
+        </button>
       </div>
     );
   }

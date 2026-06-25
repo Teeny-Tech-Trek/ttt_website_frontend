@@ -68,7 +68,7 @@ export default function CreateBlogPage() {
       setTimeout(() => navigate("/admin/blogs"), 1000);
     } catch (err: any) {
       console.error(err);
-      setMessage(err.response?.data?.error || "Error submitting blog.");
+      setMessage("Failed to submit the blog. Please try again.");
     } finally {
       setLoading(false);
     }

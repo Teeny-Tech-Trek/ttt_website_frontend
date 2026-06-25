@@ -78,8 +78,7 @@ export default function CreateEventPage() {
       navigate("/admin/events");
     } catch (err: any) {
       console.error(err);
-      // If the backend provided an error message, show it; otherwise a generic one
-      setMessage(err.response?.data?.error || "Error creating event.");
+      setMessage("Failed to create event. Please try again.");
     } finally {
       setLoading(false);
     }

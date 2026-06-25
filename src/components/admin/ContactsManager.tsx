@@ -7,6 +7,7 @@ export const ContactsManager = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [filteredContacts, setFilteredContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedContact, setSelectedContact] = useState<Contact | null>(null);
 
@@ -27,11 +28,13 @@ export const ContactsManager = () => {
   const fetchContacts = async () => {
     try {
       setLoading(true);
+      setError(null);
       const data = await listContacts();
       setContacts(data);
       setFilteredContacts(data);
     } catch (err) {
       console.error('Failed to fetch contacts:', err);
+      setError('Failed to load contact messages. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -41,6 +44,20 @@ export const ContactsManager = () => {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="w-16 h-16 border-4 border-blue-200 rounded-full animate-spin border-t-blue-900"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-96 space-y-4">
+        <p className="text-red-600 font-semibold">{error}</p>
+        <button
+          onClick={fetchContacts}
+          className="px-5 py-2.5 bg-blue-900 text-white rounded-xl hover:bg-blue-800 transition-all font-semibold shadow-md"
+        >
+          Try Again
+        </button>
       </div>
     );
   }
