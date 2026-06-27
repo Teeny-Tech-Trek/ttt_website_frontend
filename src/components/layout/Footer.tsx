@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import SectionLink from '../ui/SectionLink';
 import { ArrowUp, Mail, Phone, MapPin } from 'lucide-react';
@@ -18,6 +18,7 @@ const services: Service[] = [
   { title: 'Smart Process Automation', slug: 'smart-process-automation' },
   { title: 'Lightweight AI Apps', slug: 'ai-apps-micro-saas' },
   { title: 'Claude Automation', slug: 'claude-automation' },
+  { title: 'Custom AI Integrations', slug: 'custom-ai-integrations' },
 ];
 
 const Footer = () => {

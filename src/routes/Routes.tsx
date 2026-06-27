@@ -28,6 +28,7 @@ import ChatbotsPage from '../pages/public/services/ChatbotsPage';
 import AgenticWorkflowsPage from '../pages/public/services/AgenticWorkflowsPage';
 import ProcessAutomationPage from '../pages/public/services/ProcessAutomationPage';
 import AiAppsPage from '../pages/public/services/AiAppsPage';
+import CustomAiIntegrationsPage from '../pages/public/services/CustomAiIntegrationsPage';
 import Pilot from '../pages/Pilot';
 import { BlogSection } from '../components/home/BlogSection';
 import { blogPosts } from '../data/blogData';
@@ -108,6 +109,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ onOpenChatbot }) => (
       <Route path="/services/smart-process-automation" element={<ProcessAutomationPage onOpenChatbot={onOpenChatbot} />} />
       <Route path="/services/ai-apps-micro-saas" element={<AiAppsPage onOpenChatbot={onOpenChatbot} />} />
       <Route path="/services/claude-automation" element={<ClaudeAutomationsPage />} />
+      <Route path="/services/custom-ai-integrations" element={<CustomAiIntegrationsPage onOpenChatbot={onOpenChatbot} />} />
 
       {/* Catch-all */}
       <Route path="*" element={<div>404: Not Found</div>} />
