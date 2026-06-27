@@ -428,7 +428,7 @@ const ClaudeAutomationsPage = () => {
               <motion.div className="flex flex-col gap-4 sm:flex-row" variants={fadeInUp}>
                 <HashLink
                   smooth
-                  to="#see-it-work"
+                  to="/services/claude-automation#see-it-work"
                   className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800"
                 >
                   <Play className="w-5 h-5" aria-hidden="true" />
