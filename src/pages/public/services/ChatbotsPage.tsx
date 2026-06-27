@@ -42,9 +42,10 @@ const ChatbotsPage = ({ onOpenChatbot }) => {
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(false);
   const [activeDemo, setActiveDemo] = useState(0);
+  const [activePromptIndex, setActivePromptIndex] = useState(0);
+  const intervalRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
   const navigate = useNavigate();
 
-    // Add click handler for the demo button
   const handleTryDemo = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -53,37 +54,61 @@ const ChatbotsPage = ({ onOpenChatbot }) => {
     }
   };
 
-   const handle4WeekPilotBtn = () => {
+  const handle4WeekPilotBtn = () => {
     navigate("/pilot")
-  } 
+  };
 
-  const demoMessages = [
-    { type: 'bot', text: "Hi! I can help you with our return policy. What specific question do you have?" },
-    { type: 'user', text: "What's your return policy for electronics?" },
-    { type: 'bot', text: "Based on our policy documentation, electronics can be returned within 30 days of purchase with original receipt and packaging. Items must be in unused condition.\n\n**Source:** Return Policy v2.1, Section 3.2", citations: true },
-    { type: 'user', text: "I need to speak to a human about a warranty issue" },
-    { type: 'bot', text: "I'll escalate this warranty case to our support team with full context. You'll be connected within 2 minutes.", action: "escalate" }
+  const demoScenarios = [
+    [
+      { type: 'bot', text: "Hi! I can help you with our return policy. What specific question do you have?" },
+      { type: 'user', text: "What's your return policy for electronics?" },
+      { type: 'bot', text: "Based on our policy documentation, electronics can be returned within 30 days of purchase with original receipt and packaging. Items must be in unused condition.\n\nSource: Return Policy v2.1, Section 3.2", citations: true },
+    ],
+    [
+      { type: 'bot', text: "Hello! I'm here to help. What's the issue you're experiencing?" },
+      { type: 'user', text: "I need to escalate my warranty case — my product stopped working after 2 weeks." },
+      { type: 'bot', text: "I'll escalate this warranty case to our support team with full context. Your transcript and account history have been attached. You'll be connected within 2 minutes.", action: "escalate" },
+    ],
+    [
+      { type: 'bot', text: "Sure! Here's a quick 4-week chatbot pilot plan tailored for your team." },
+      { type: 'user', text: "What does the 4-week chatbot pilot include?" },
+      { type: 'bot', text: "Week 1: Ingest docs & define intents. Week 2: Build retrieval + tool-calling. Week 3: Human handoff & guardrails. Week 4: Launch, dashboard & tuning.", citations: true },
+    ],
   ];
 
   const demoPrompts = [
     "Summarize our return policy with citations",
-    "Escalate this warranty case to a human with context", 
+    "Escalate this warranty case to a human with context",
     "What's the 4-week plan for a chatbot pilot?"
   ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
+  const activeDemoMessages = demoScenarios[activePromptIndex];
+
+  const startAutoPlay = (messages, startIndex = 0) => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    setCurrentMessageIndex(startIndex);
+    intervalRef.current = setInterval(() => {
       setCurrentMessageIndex((prev) => {
-        if (prev < demoMessages.length - 1) {
+        if (prev < messages.length - 1) {
           setIsTyping(true);
           setTimeout(() => setIsTyping(false), 1000);
           return prev + 1;
         }
-        return 0;
+        if (intervalRef.current) clearInterval(intervalRef.current);
+        return prev;
       });
-    }, 4000);
+    }, 3500);
+  };
 
-    return () => clearInterval(interval);
+  const handlePromptClick = (index: number) => {
+    setActivePromptIndex(index);
+    setCurrentMessageIndex(0);
+    startAutoPlay(demoScenarios[index], 0);
+  };
+
+  useEffect(() => {
+    startAutoPlay(demoScenarios[0], 0);
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, []);
 
   const outcomes = [
@@ -266,7 +291,7 @@ const ChatbotsPage = ({ onOpenChatbot }) => {
         
         <div className="p-6 overflow-y-auto min-h-96 max-h-96 bg-gray-50">
           <div className="space-y-4">
-            {demoMessages.slice(0, currentMessageIndex + 1).map((message, index) => (
+            {activeDemoMessages.slice(0, currentMessageIndex + 1).map((message, index) => (
               <motion.div 
                 key={index} 
                 className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
@@ -348,15 +373,19 @@ const ChatbotsPage = ({ onOpenChatbot }) => {
           {demoPrompts.map((prompt, index) => (
             <motion.button
               key={index}
-              onClick={handleTryDemo}
-              className="w-full p-4 text-left transition-colors bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50"
+              onClick={() => handlePromptClick(index)}
+              className={`w-full p-4 text-left transition-colors border rounded-lg ${
+                activePromptIndex === index
+                  ? 'bg-blue-900 border-blue-900 text-white'
+                  : 'bg-white border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+              }`}
               variants={fadeInUp}
               whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
               whileTap={{ scale: 0.98 }}
             >
               <div className="flex items-start gap-3">
-                <MessageCircle className="w-5 h-5 text-blue-900 mt-0.5" />
-                <span className="text-black">"{prompt}"</span>
+                <MessageCircle className={`w-5 h-5 mt-0.5 ${activePromptIndex === index ? 'text-white' : 'text-blue-900'}`} />
+                <span className={activePromptIndex === index ? 'text-white' : 'text-black'}>"{prompt}"</span>
               </div>
             </motion.button>
           ))}

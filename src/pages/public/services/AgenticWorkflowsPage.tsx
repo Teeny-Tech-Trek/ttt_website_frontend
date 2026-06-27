@@ -42,9 +42,10 @@ const AgenticWorkflowsPage = ({onOpenChatbot}) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [activeDemo, setActiveDemo] = useState(0);
+  const [activePromptIndex, setActivePromptIndex] = useState(0);
+  const intervalRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
   const navigate = useNavigate();
 
-   // Add click handler for the demo button
   const handleTryDemo = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -52,14 +53,32 @@ const AgenticWorkflowsPage = ({onOpenChatbot}) => {
       onOpenChatbot();
     }
   };
-  
-  const workflowSteps = [
-    { step: "Retrieve", desc: "Lead data from CRM", icon: Search, status: "completed" },
-    { step: "Analyze", desc: "Score and qualify lead", icon: Brain, status: "completed" },
-    { step: "Generate", desc: "Draft personalized email", icon: FileText, status: "current" },
-    { step: "Preview", desc: "Human approval required", icon: Eye, status: "pending" },
-    { step: "Execute", desc: "Send & log to CRM", icon: Zap, status: "pending" }
+
+  const workflowScenarios = [
+    [
+      { step: "Retrieve", desc: "Lead data from CRM", icon: Search },
+      { step: "Analyze", desc: "Score and qualify lead", icon: Brain },
+      { step: "Generate", desc: "Draft personalized email", icon: FileText },
+      { step: "Preview", desc: "Human approval required", icon: Eye },
+      { step: "Execute", desc: "Send & log to HubSpot", icon: Zap },
+    ],
+    [
+      { step: "Retrieve", desc: "Read email thread", icon: Search },
+      { step: "Summarize", desc: "Extract key action items", icon: Brain },
+      { step: "Draft", desc: "Generate follow-up note", icon: FileText },
+      { step: "Log", desc: "Save to CRM with context", icon: Eye },
+      { step: "Notify", desc: "Slack alert to owner", icon: Zap },
+    ],
+    [
+      { step: "Ingest", desc: "Read uploaded CSV file", icon: Search },
+      { step: "Parse", desc: "Normalize column headers", icon: Brain },
+      { step: "Validate", desc: "Flag anomalies & blanks", icon: FileText },
+      { step: "Append", desc: "Write rows to Google Sheets", icon: Eye },
+      { step: "Confirm", desc: "Send digest to Slack", icon: Zap },
+    ],
   ];
+
+  const workflowSteps = workflowScenarios[activePromptIndex];
 
   const demoPrompts = [
     "Qualify this lead and create a HubSpot task for Friday",
@@ -67,19 +86,42 @@ const AgenticWorkflowsPage = ({onOpenChatbot}) => {
     "Parse this CSV and append normalized rows to our sheet"
   ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
+  const startWorkflowPlay = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    setCurrentStep(0);
+    intervalRef.current = setInterval(() => {
       setCurrentStep((prev) => {
-        if (prev < workflowSteps.length - 1) {
+        if (prev < workflowScenarios[0].length - 1) {
           setIsProcessing(true);
           setTimeout(() => setIsProcessing(false), 1200);
           return prev + 1;
         }
-        return 0;
+        if (intervalRef.current) clearInterval(intervalRef.current);
+        return prev;
       });
     }, 3000);
+  };
 
-    return () => clearInterval(interval);
+  const handlePromptClick = (index: number) => {
+    setActivePromptIndex(index);
+    setCurrentStep(0);
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(() => {
+      setCurrentStep((prev) => {
+        if (prev < workflowScenarios[index].length - 1) {
+          setIsProcessing(true);
+          setTimeout(() => setIsProcessing(false), 1200);
+          return prev + 1;
+        }
+        if (intervalRef.current) clearInterval(intervalRef.current);
+        return prev;
+      });
+    }, 3000);
+  };
+
+  useEffect(() => {
+    startWorkflowPlay();
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, []);
 
   const useCases = [
@@ -351,15 +393,19 @@ const AgenticWorkflowsPage = ({onOpenChatbot}) => {
                 {demoPrompts.map((prompt, index) => (
                   <motion.button
                     key={index}
-                    onClick={handleTryDemo}
-                    className="w-full p-4 text-left transition-colors bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50"
+                    onClick={() => handlePromptClick(index)}
+                    className={`w-full p-4 text-left transition-colors border rounded-lg ${
+                      activePromptIndex === index
+                        ? 'bg-blue-900 border-blue-900 text-white'
+                        : 'bg-white border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+                    }`}
                     variants={fadeInUp}
                     whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
                     whileTap={{ scale: 0.98 }}
                   >
                     <div className="flex items-start gap-3">
-                      <Workflow className="w-5 h-5 text-blue-900 mt-0.5" />
-                      <span className="text-black">"{prompt}"</span>
+                      <Workflow className={`w-5 h-5 mt-0.5 ${activePromptIndex === index ? 'text-white' : 'text-blue-900'}`} />
+                      <span className={activePromptIndex === index ? 'text-white' : 'text-black'}>"{prompt}"</span>
                     </div>
                   </motion.button>
                 ))}

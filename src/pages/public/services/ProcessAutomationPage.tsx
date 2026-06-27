@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database, GitBranch, Workflow, Search, CheckSquare, AlertTriangle, Activity, Layers, Mail, Upload, Bell, Slack, Filter, AlertCircle, RefreshCw, Lock, RotateCcw } from 'lucide-react';
 import ProcessAutomationRichCard from "../../../components/home/ProcessAutomationRichCard";
@@ -41,48 +42,82 @@ const ProcessAutomationPage = ({ onOpenChatbot }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   const [message, setMessage] = useState("");
+  const [activePromptIndex, setActivePromptIndex] = useState(0);
+  const intervalRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
+  const navigate = useNavigate();
 
-    const handleClick = () => {
+  const handleClick = () => {
     setMessage("Thank you for your interest! Please proceed by clicking on 'Call with AI' to explore the live demo.");
-    setTimeout(() => setMessage(""), 5000); // Auto-hide after 5s
+    setTimeout(() => setMessage(""), 5000);
   };
 
   const handleTryDemo = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (onOpenChatbot) {
-        onOpenChatbot();
-      }
-    };
+    e.preventDefault();
+    e.stopPropagation();
+    if (onOpenChatbot) {
+      onOpenChatbot();
+    }
+  };
 
-  const automationFlow = [
-    { step: "Email/CSV", icon: Mail, desc: "Incoming data", status: "completed" },
-    { step: "Parse & Normalize", icon: Filter, desc: "Clean & structure", status: "completed" },
-    { step: "Rules/Flags", icon: AlertCircle, desc: "Apply business logic", status: "current" },
-    { step: "Slack Alert", icon: Bell, desc: "Notify team", status: "pending" },
-    { step: "Customer Update", icon: MessageSquare, desc: "Send status", status: "pending" },
-    { step: "Daily Digest", icon: FileText, desc: "Summary report", status: "pending" }
+  const automationScenarios = [
+    [
+      { step: "Email/CSV", icon: Mail, desc: "Carrier CSV received" },
+      { step: "Parse & Normalize", icon: Filter, desc: "Extract shipment rows" },
+      { step: "Flag Late Shipments", icon: AlertCircle, desc: "Apply delay rules" },
+      { step: "Slack Alert", icon: Bell, desc: "Notify ops team" },
+      { step: "Customer Update", icon: MessageSquare, desc: "Send delay notice" },
+      { step: "Daily Digest", icon: FileText, desc: "Exception summary" },
+    ],
+    [
+      { step: "Trigger", icon: Mail, desc: "Delay flag detected" },
+      { step: "Lookup Customer", icon: Filter, desc: "Fetch order details" },
+      { step: "Draft Message", icon: AlertCircle, desc: "Friendly delay template" },
+      { step: "Personalise", icon: Bell, desc: "Insert name & ETA" },
+      { step: "Send Email", icon: MessageSquare, desc: "Deliver update" },
+      { step: "Log Sent", icon: FileText, desc: "Record in tracker" },
+    ],
+    [
+      { step: "Collect Data", icon: Mail, desc: "Gather today's flags" },
+      { step: "Aggregate", icon: Filter, desc: "Group by exception type" },
+      { step: "Summarise", icon: AlertCircle, desc: "Build digest body" },
+      { step: "Format Report", icon: Bell, desc: "Attach CSV export" },
+      { step: "Send Digest", icon: MessageSquare, desc: "Email to managers" },
+      { step: "Archive", icon: FileText, desc: "Save to Drive" },
+    ],
   ];
+
+  const automationFlow = automationScenarios[activePromptIndex];
 
   const demoPrompts = [
     "Parse this carrier CSV and flag late shipments",
-    "Send a friendly update to customers about delays", 
+    "Send a friendly update to customers about delays",
     "Show me today's exceptions digest"
   ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
+  const startAutoPlay = (scenarioIndex: number) => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    setCurrentStep(0);
+    intervalRef.current = setInterval(() => {
       setCurrentStep((prev) => {
-        if (prev < automationFlow.length - 1) {
+        if (prev < automationScenarios[scenarioIndex].length - 1) {
           setIsProcessing(true);
           setTimeout(() => setIsProcessing(false), 1200);
           return prev + 1;
         }
-        return 0;
+        if (intervalRef.current) clearInterval(intervalRef.current);
+        return prev;
       });
     }, 2800);
+  };
 
-    return () => clearInterval(interval);
+  const handlePromptClick = (index: number) => {
+    setActivePromptIndex(index);
+    startAutoPlay(index);
+  };
+
+  useEffect(() => {
+    startAutoPlay(0);
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
   }, []);
 
   const problems = [
@@ -362,8 +397,12 @@ const ProcessAutomationPage = ({ onOpenChatbot }) => {
                 {demoPrompts.map((prompt, index) => (
                   <motion.button
                     key={index}
-                    onClick={handleTryDemo}
-                    className="w-full p-8 text-left transition-all duration-300 border-2 border-gray-200 rounded-3xl hover:border-blue-300 hover:bg-blue-50 hover:shadow-lg"
+                    onClick={() => handlePromptClick(index)}
+                    className={`w-full p-8 text-left transition-all duration-300 border-2 rounded-3xl hover:shadow-lg ${
+                      activePromptIndex === index
+                        ? 'bg-blue-900 border-blue-900 shadow-lg'
+                        : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+                    }`}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -372,12 +411,14 @@ const ProcessAutomationPage = ({ onOpenChatbot }) => {
                     whileTap={{ scale: 0.98 }}
                   >
                     <div className="flex items-start gap-6">
-                      <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-2xl">
-                        <Activity className="w-6 h-6 text-blue-900" />
+                      <div className={`flex items-center justify-center w-12 h-12 rounded-2xl ${
+                        activePromptIndex === index ? 'bg-white/20' : 'bg-blue-100'
+                      }`}>
+                        <Activity className={`w-6 h-6 ${activePromptIndex === index ? 'text-white' : 'text-blue-900'}`} />
                       </div>
                       <div>
-                        <p className="text-xl font-medium text-black">"{prompt}"</p>
-                        <p className="mt-2 text-gray-700">Click to see automation in action</p>
+                        <p className={`text-xl font-medium ${activePromptIndex === index ? 'text-white' : 'text-black'}`}>"{prompt}"</p>
+                        <p className={`mt-2 ${activePromptIndex === index ? 'text-blue-100' : 'text-gray-700'}`}>Click to see automation in action</p>
                       </div>
                     </div>
                   </motion.button>

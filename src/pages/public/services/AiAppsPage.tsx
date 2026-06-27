@@ -48,6 +48,8 @@ const AiAppsPage: React.FC<AiAppsPageProps> = ({ onOpenChatbot }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   // 'idle' | 'approved' | 'cancelled' — drives the Action Preview demo state.
   const [actionState, setActionState] = useState("idle");
+  const [activePromptIndex, setActivePromptIndex] = useState(0);
+  const intervalRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
 
   const handle4WeekPilotBtn = () => {
     navigate("/pilot");
@@ -59,6 +61,12 @@ const AiAppsPage: React.FC<AiAppsPageProps> = ({ onOpenChatbot }) => {
     if (onOpenChatbot) {
       onOpenChatbot();
     }
+  };
+
+  const handlePromptClick = (index: number) => {
+    setActivePromptIndex(index);
+    setCurrentModule(index);
+    setActionState("idle");
   };
 
   const appModules = [
@@ -391,8 +399,12 @@ const AiAppsPage: React.FC<AiAppsPageProps> = ({ onOpenChatbot }) => {
                 {demoPrompts.map((prompt, index) => (
                   <motion.button
                     key={index}
-                    onClick={handleTryDemo}
-                    className="w-full p-8 text-left transition-all duration-300 border-2 border-gray-200 rounded-3xl hover:border-blue-300 hover:bg-blue-50 hover:shadow-lg"
+                    onClick={() => handlePromptClick(index)}
+                    className={`w-full p-8 text-left transition-all duration-300 border-2 rounded-3xl hover:shadow-lg ${
+                      activePromptIndex === index
+                        ? 'bg-blue-900 border-blue-900 shadow-lg'
+                        : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+                    }`}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -401,12 +413,14 @@ const AiAppsPage: React.FC<AiAppsPageProps> = ({ onOpenChatbot }) => {
                     whileTap={{ scale: 0.98 }}
                   >
                     <div className="flex items-start gap-6">
-                      <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-2xl">
-                        <Play className="w-6 h-6 text-blue-900" />
+                      <div className={`flex items-center justify-center w-12 h-12 rounded-2xl ${
+                        activePromptIndex === index ? 'bg-white/20' : 'bg-blue-100'
+                      }`}>
+                        <Play className={`w-6 h-6 ${activePromptIndex === index ? 'text-white' : 'text-blue-900'}`} />
                       </div>
                       <div>
-                        <p className="text-xl font-medium text-black">"{prompt}"</p>
-                        <p className="mt-2 text-gray-700">Click to see app workflow</p>
+                        <p className={`text-xl font-medium ${activePromptIndex === index ? 'text-white' : 'text-black'}`}>"{prompt}"</p>
+                        <p className={`mt-2 ${activePromptIndex === index ? 'text-blue-100' : 'text-gray-700'}`}>Click to see app workflow</p>
                       </div>
                     </div>
                   </motion.button>
@@ -437,17 +451,17 @@ const AiAppsPage: React.FC<AiAppsPageProps> = ({ onOpenChatbot }) => {
                   <div className="p-4 border rounded-2xl bg-gray-50">
                     <h4 className="mb-2 font-semibold text-black">Before</h4>
                     <div className="text-sm text-gray-700">
-                      Raw document text...<br/>
-                      Unstructured data...<br/>
-                      Multiple formats...
+                      {activePromptIndex === 0 && (<>Raw PDFs & docs...<br/>Unstructured text...<br/>Multiple formats...</>)}
+                      {activePromptIndex === 1 && (<>Unscored lead in CRM...<br/>No email drafted...<br/>No follow-up set...</>)}
+                      {activePromptIndex === 2 && (<>5 action items pending...<br/>Manual review needed...<br/>No export ready...</>)}
                     </div>
                   </div>
                   <div className="p-4 border border-blue-200 rounded-2xl bg-blue-50">
                     <h4 className="mb-2 font-semibold text-blue-900">After</h4>
                     <div className="text-sm text-black">
-                      • Summary: 3 key points<br/>
-                      • Tags: urgent, finance<br/>
-                      • Status: ready for review
+                      {activePromptIndex === 0 && (<>• 10-point brief extracted<br/>• Auto-tagged by topic<br/>• Ready for review</>)}
+                      {activePromptIndex === 1 && (<>• Personalized email drafted<br/>• CRM task created<br/>• Follow-up logged</>)}
+                      {activePromptIndex === 2 && (<>• 5 actions approved<br/>• CSV exported & ready<br/>• Audit log updated</>)}
                     </div>
                   </div>
                 </div>
