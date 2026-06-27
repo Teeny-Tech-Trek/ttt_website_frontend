@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { MessageSquare, CheckCircle2, Sparkles, Zap, Phone, Settings, Database, Search, Layers, Shield, BarChart3, Code, Monitor, Star, Upload } from 'lucide-react';
 import CustomAiIntegrationsRichCard from "../../../components/home/CustomAiIntegrationsRichCard";
@@ -30,7 +31,12 @@ interface CustomAiIntegrationsPageProps {
 }
 
 const CustomAiIntegrationsPage: React.FC<CustomAiIntegrationsPageProps> = ({ onOpenChatbot }) => {
+  const navigate = useNavigate();
   const [message, setMessage] = useState("");
+
+  const handle4WeekPilotBtn = () => {
+    navigate("/pilot");
+  };
 
   const handleTryDemo = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -445,7 +451,7 @@ const CustomAiIntegrationsPage: React.FC<CustomAiIntegrationsPageProps> = ({ onO
             >
               <button
                 type="button"
-                onClick={handleTryDemo}
+                onClick={handle4WeekPilotBtn}
                 className="flex items-center justify-center w-auto gap-3 px-10 py-5 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-2xl hover:bg-blue-800"
               >
                 <Zap className="w-5 h-5" />

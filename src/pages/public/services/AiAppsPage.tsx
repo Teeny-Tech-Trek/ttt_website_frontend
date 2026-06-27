@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database, GitBranch, Workflow, Search, CheckSquare, AlertTriangle, Activity, Layers, Mail, Upload, Bell, Slack, Filter, AlertCircle, RefreshCw, Lock, RotateCcw, Monitor, Code, Star, CreditCard } from 'lucide-react';
 import AiAppsRichCard from "../../../components/home/AiAppsRichCard";
@@ -42,10 +43,15 @@ interface AiAppsPageProps {
 }
 
 const AiAppsPage: React.FC<AiAppsPageProps> = ({ onOpenChatbot }) => {
+  const navigate = useNavigate();
   const [currentModule, setCurrentModule] = useState(0);
   const [isProcessing, setIsProcessing] = useState(false);
   // 'idle' | 'approved' | 'cancelled' — drives the Action Preview demo state.
   const [actionState, setActionState] = useState("idle");
+
+  const handle4WeekPilotBtn = () => {
+    navigate("/pilot");
+  };
 
   const handleTryDemo = (e) => {
     e?.preventDefault?.();
@@ -694,7 +700,7 @@ const AiAppsPage: React.FC<AiAppsPageProps> = ({ onOpenChatbot }) => {
               >
                 <button
                   type="button"
-                  onClick={handleTryDemo}
+                  onClick={handle4WeekPilotBtn}
                   className="flex items-center justify-center w-auto gap-3 px-10 py-5 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-2xl hover:bg-blue-800"
                 >
                   <Zap className="w-5 h-5" />
