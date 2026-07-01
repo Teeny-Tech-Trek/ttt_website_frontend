@@ -16,7 +16,7 @@ import {
   Calendar
 } from 'lucide-react';
 
-import imageOfAgo from "../../Images/Case Studies/AEO_GEO.png"
+// import imageOfAgo from "../../Images/Case Studies/AEO_GEO.png"
 import HashLink from '../../components/ui/SectionLink';
 
 // Animation variants
@@ -132,7 +132,7 @@ const Hero: React.FC<ChatbotOpenProps> = ({ onOpenChatbot }) => {
 
               <div className="relative overflow-hidden h-96">
                 <img 
-                  src={imageOfAgo}
+                  src="https://4hooltce8r54joof.public.blob.vercel-storage.com/UseCases-Assets/AEO_GEO.webp"
                   alt="Global supply chain"
                   className="object-cover w-full h-full"
                 />

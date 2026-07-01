@@ -87,7 +87,7 @@ const FinancialHeroSection = () => {
 
           {/* Right demo panel - Responsive */}
           <div className="relative">
-            <div className="p-4 bg-white border border-gray-200 shadow sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl">
+            <div className="p-4 bg-white border border-gray-200 shadow sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl mt-10">
               {/* Header - Responsive */}
               <div className="flex items-center gap-3 mb-6 sm:gap-4 sm:mb-8">
                 <div className="relative flex-shrink-0">
@@ -166,7 +166,7 @@ const FinancialHeroSection = () => {
             </div>
 
             {/* Floating badges - Responsive positioning */}
-            <div className="absolute px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold text-white bg-blue-900 shadow -top-2 sm:-top-4 -right-2 sm:-right-4 rounded-lg sm:rounded-xl">
+            <div className="absolute px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold text-white bg-blue-900 shadow top-2 sm:-top-4 -right-2 sm:-right-4 rounded-lg sm:rounded-xl mt-10">
               99.8% Accurate
             </div>
             <div className="absolute px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold text-white bg-blue-900 shadow -bottom-2 sm:-bottom-4 -left-2 sm:-left-4 rounded-lg sm:rounded-xl">

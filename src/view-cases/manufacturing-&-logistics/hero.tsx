@@ -220,7 +220,7 @@ import {
 } from 'lucide-react';
 import HashLink from '../../components/ui/SectionLink';
 
-import heroImage from "../../Images/Case Studies/Logistics_Manufacturing.png"
+// import heroImage from "../../Images/Case Studies/Logistics_Manufacturing.png"
 
 // Animation variants
 const slideFromLeft = { hidden: { x: -100, opacity: 0 }, visible: { x: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" } } };
@@ -252,7 +252,7 @@ const Hero: React.FC = () => (
         {/* Right */}
         <motion.div className="relative" initial="hidden" animate="visible" variants={slideFromRight}>
           <img 
-            src={heroImage}
+            src="https://4hooltce8r54joof.public.blob.vercel-storage.com/UseCases-Assets/Logistics_Manufacturing.webp"
             alt="Manufacturing and logistics facility"
             className="w-full h-[500px] object-cover rounded-2xl shadow-xl"
           />

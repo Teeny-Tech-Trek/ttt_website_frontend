@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import realEstateImg from "../../Images/real estate.png"
-import educationImg from "../../Images/education solutions.png"
-import ecommerceImg from "../../Images/d2c business chatbot.png"
+// import realEstateImg from "../../Images/real estate.png"
+// import educationImg from "../../Images/education solutions.png"
+// import ecommerceImg from "../../Images/d2c business chatbot.png"
 
 const AIServicesCards = () => {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ const AIServicesCards = () => {
       date: "September 15, 2025",
       title: "Your AI Workforce for Real Estate",
       description: "Intelligent systems capable of analyzing markets, empowering your sales team, and enhancing property outcomes",
-      image: realEstateImg,
+      image:  "https://4hooltce8r54joof.public.blob.vercel-storage.com/HomePage-UseCases-Assets/real%20estate.webp",
       category: "AI",
       route: "/real-estate"
     },
@@ -22,7 +22,7 @@ const AIServicesCards = () => {
       date: "September 15, 2025", 
       title: "Transform Your D2C Business with Intelligent AI Chatbots",
       description: "Teeny Tech Trek helps D2C brands automate support, boost sales, and scale with intelligent chatbots.",
-      image: ecommerceImg,
+      image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/HomePage-UseCases-Assets/d2c%20business%20chatbot.webp",
       category: "AI",
       route: "/ecommerce"
     },
@@ -31,7 +31,7 @@ const AIServicesCards = () => {
       date: "September 15, 2025",
       title: "AI-Powered Education Solutions", 
       description: "Transform educational institutions through intelligent collaboration platforms and comprehensive AI workshops that empower educators and students.",
-      image: educationImg,
+      image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/HomePage-UseCases-Assets/education%20solutions.webp",
       category: "AI",
       route: "/education"
     }
