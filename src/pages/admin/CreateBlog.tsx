@@ -53,8 +53,7 @@ export default function CreateBlogPage() {
         const cid = await uploadImageToIPFS(media, accessToken);
       }
 
-      // ADD/CHANGE: Build payload, append media_cid if present
-      const payload: BlogInput & { media_cid?: string } = {
+      const payload: any = {
         author_id: user.id,
         title: title.trim(),
         slug: slug.trim(),
@@ -69,7 +68,7 @@ export default function CreateBlogPage() {
       setTimeout(() => navigate("/admin/blogs"), 1000);
     } catch (err: any) {
       console.error(err);
-      setMessage(err.response?.data?.error || "Error submitting blog.");
+      setMessage("Failed to submit the blog. Please try again.");
     } finally {
       setLoading(false);
     }

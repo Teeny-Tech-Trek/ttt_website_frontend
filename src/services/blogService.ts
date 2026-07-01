@@ -150,3 +150,16 @@ export async function reactivateBlog(
   const resp = await api.put<Blog>(`/blogs/${id}/reactivate`, {}, config);
   return resp.data;
 }
+
+/**
+ * Admin only: permanently delete one blog
+ * DELETE /api/blogs/:id
+ */
+export async function deleteBlog(
+  id: string,
+  token: string
+): Promise<{ success: boolean; message: string }> {
+  const config = authHeaders(token);
+  const resp = await api.delete<{ success: boolean; message: string }>(`/blogs/${id}`, config);
+  return resp.data;
+}

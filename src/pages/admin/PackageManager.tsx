@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
+import toast from "react-hot-toast";
 import {
   getPackagesByField,
   deactivatePackage,
@@ -80,15 +81,17 @@ const PackageManager: React.FC = () => {
       if (pkg.is_active) {
         // deactivate
         await deactivatePackage(pkg.id, accessToken);
+        toast.success("Package deactivated successfully.");
       } else {
         // reactivate
         await reactivatePackage(pkg.id, accessToken);
+        toast.success("Package reactivated successfully.");
       }
       // re-fetch current filter
       fetchByFilter(filterType);
     } catch (err: any) {
       console.error(err);
-      alert("Failed to toggle package status.");
+      toast.error("Failed to toggle package status. Please try again.");
     }
   };
 

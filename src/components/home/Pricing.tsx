@@ -646,6 +646,7 @@ const SchedulingModal = ({
   const [form, setForm] = useState<BookingForm>({ name: "", email: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [hasServerError, setHasServerError] = useState(false);
   const [success, setSuccess] = useState<{ meetLink?: string } | null>(null);
 
   // Mon–Fri only, from the shared booking config. 10 business days ≈ 2 weeks.
@@ -659,6 +660,7 @@ const SchedulingModal = ({
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError("");
+    setHasServerError(false);
 
     if (!form.name.trim() || !form.email.trim()) {
       setError("Please enter your name and email to receive the invite.");
@@ -684,6 +686,10 @@ const SchedulingModal = ({
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok || !data.success) {
+        // 500-level or calendar config error — show a friendlier fallback
+        if (!response.ok && (response.status >= 500 || (data.message || '').toLowerCase().includes('calendar') || (data.message || '').toLowerCase().includes('configured'))) {
+          setHasServerError(true);
+        }
         throw new Error(data.message || "Could not book your meeting. Please try again.");
       }
 
@@ -901,11 +907,37 @@ const SchedulingModal = ({
                 />
               </label>
 
-              {error && (
+              {hasServerError ? (
+                <div className="mb-5 overflow-hidden border border-amber-200 rounded-xl bg-amber-50">
+                  <div className="flex items-start gap-3 px-4 py-3 bg-amber-100 border-b border-amber-200">
+                    <span className="text-xl">⚠️</span>
+                    <div>
+                      <p className="font-semibold text-amber-900">Our booking system is temporarily unavailable</p>
+                      <p className="mt-0.5 text-sm text-amber-800">Book directly via WhatsApp or email — we typically respond within 2 hours.</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-2 px-4 py-3 sm:flex-row">
+                    <a
+                      href="https://wa.me/919855806696?text=Hi%2C%20I'd%20like%20to%20book%20a%20consultation%20with%20Teeny%20Tech%20Trek"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
+                    >
+                      <span>💬</span> WhatsApp us
+                    </a>
+                    <a
+                      href="mailto:hello@teenytechtrek.com?subject=Book%20a%20consultation&body=Hi%2C%20I'd%20like%20to%20book%20a%20consultation."
+                      className="flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-blue-900 bg-white border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors"
+                    >
+                      <span>📧</span> Email us
+                    </a>
+                  </div>
+                </div>
+              ) : error ? (
                 <div className="px-4 py-3 mb-5 text-sm font-medium text-red-600 rounded-lg bg-red-50">
                   {error}
                 </div>
-              )}
+              ) : null}
 
               <button
                 type="submit"

@@ -2,11 +2,13 @@
 import { useState, useEffect } from 'react';
 import { listUsers, deleteUser, User } from '../../services/adminService';
 import { Trash2, Search, UserCheck, Shield, Calendar, Mail } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const UsersManager = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
@@ -26,11 +28,13 @@ const UsersManager = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
+      setError(null);
       const data = await listUsers();
       setUsers(data);
       setFilteredUsers(data);
     } catch (err) {
       console.error('Failed to fetch users:', err);
+      setError('Failed to load users. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -41,8 +45,10 @@ const UsersManager = () => {
       await deleteUser(userId);
       setUsers(users.filter((u) => u._id !== userId));
       setDeleteConfirm(null);
+      toast.success('User deleted successfully.');
     } catch (err) {
-      alert('Failed to delete user');
+      console.error(err);
+      toast.error('Failed to delete user. Please try again.');
     }
   };
 
@@ -50,6 +56,20 @@ const UsersManager = () => {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="w-16 h-16 border-4 border-blue-200 rounded-full animate-spin border-t-blue-900"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-96 space-y-4">
+        <p className="text-red-600 font-semibold">{error}</p>
+        <button
+          onClick={fetchUsers}
+          className="px-5 py-2.5 bg-blue-900 text-white rounded-xl hover:bg-blue-800 transition-all font-semibold shadow-md"
+        >
+          Try Again
+        </button>
       </div>
     );
   }

@@ -7,6 +7,7 @@ const BusinessesManager = () => {
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [filteredBusinesses, setFilteredBusinesses] = useState<Business[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedBusiness, setSelectedBusiness] = useState<Business | null>(null);
 
@@ -24,11 +25,13 @@ const BusinessesManager = () => {
   const fetchBusinesses = async () => {
     try {
       setLoading(true);
+      setError(null);
       const data = await listBusinesses();
       setBusinesses(data);
       setFilteredBusinesses(data);
     } catch (err) {
       console.error('Failed to fetch businesses:', err);
+      setError('Failed to load businesses. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -38,6 +41,20 @@ const BusinessesManager = () => {
     return (
       <div className="flex items-center justify-center h-96">
         <div className="w-16 h-16 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-96 space-y-4">
+        <p className="text-red-600 font-semibold">{error}</p>
+        <button
+          onClick={fetchBusinesses}
+          className="px-5 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-500 transition-all font-semibold shadow-md"
+        >
+          Try Again
+        </button>
       </div>
     );
   }

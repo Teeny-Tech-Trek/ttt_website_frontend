@@ -5,6 +5,7 @@ import AgenticWorkflowsPage from "../pages/public/services/AgenticWorkflowsPage"
 import ProcessAutomationPage from "../pages/public/services/ProcessAutomationPage";
 import AiAppsPage from "../pages/public/services/AiAppsPage";
 import ClaudeAutomationsPage from "../pages/public/services/Claudeautomationspage";
+import CustomAiIntegrationsPage from "../pages/public/services/CustomAiIntegrationsPage";
 
 type ServicesRoutesProps = {
   onOpenChatbot?: () => void;
@@ -17,6 +18,7 @@ const ServicesRoutes: React.FC<ServicesRoutesProps> = ({ onOpenChatbot }) => (
     <Route path="smart-process-automation" element={<ProcessAutomationPage onOpenChatbot={onOpenChatbot} />} />
     <Route path="ai-apps-micro-saas" element={<AiAppsPage />} />
     <Route path="claude-automation" element={<ClaudeAutomationsPage/>} />
+    <Route path="custom-ai-integrations" element={<CustomAiIntegrationsPage onOpenChatbot={onOpenChatbot} />} />
   </>
 );
 

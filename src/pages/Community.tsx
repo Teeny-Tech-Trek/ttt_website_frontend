@@ -9,6 +9,7 @@ import {
   CheckCircle, AlertCircle, Loader
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import toast from 'react-hot-toast';
 
 interface Discussion {
   id: string;
@@ -530,7 +531,7 @@ const Community = () => {
       });
       
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error('Request failed. Please try again.');
       }
       
       return await response.json();
@@ -746,6 +747,7 @@ const Community = () => {
         setDiscussions(data);
       } catch (error) {
         console.error('Error fetching discussions:', error);
+        toast.error('Failed to load discussions. Please try again.');
         setDiscussions([]);
       } finally {
         setIsLoadingDiscussions(false);
@@ -761,6 +763,7 @@ const Community = () => {
         setFeaturedStory(data);
       } catch (error) {
         console.error('Error fetching featured story:', error);
+        toast.error('Failed to load featured story. Please try again.');
         setFeaturedStory(null);
       }
     };
@@ -775,6 +778,7 @@ const Community = () => {
         setEvents(data);
       } catch (error) {
         console.error('Error fetching events:', error);
+        toast.error('Failed to load events. Please try again.');
         setEvents([]);
       } finally {
         setIsLoadingEvents(false);
@@ -791,6 +795,7 @@ const Community = () => {
         setResources(data);
       } catch (error) {
         console.error('Error fetching resources:', error);
+        toast.error('Failed to load resources. Please try again.');
         setResources([]);
       } finally {
         setIsLoadingResources(false);
@@ -807,6 +812,7 @@ const Community = () => {
         setStories(data);
       } catch (error) {
         console.error('Error fetching success stories:', error);
+        toast.error('Failed to load success stories. Please try again.');
         setStories([]);
       } finally {
         setIsLoadingStories(false);
@@ -823,6 +829,7 @@ const Community = () => {
         setMembers(data);
       } catch (error) {
         console.error('Error fetching members:', error);
+        toast.error('Failed to load members. Please try again.');
         setMembers([]);
       } finally {
         setIsLoadingMembers(false);
@@ -842,6 +849,7 @@ const Community = () => {
         setSearchResults(data);
       } catch (error) {
         console.error('Error fetching search results:', error);
+        toast.error('Failed to search members. Please try again.');
         setSearchResults([]);
       }
     };
@@ -858,6 +866,7 @@ const Community = () => {
         setBlogs(data);
       } catch (error) {
         console.error('Error fetching blogs:', error);
+        toast.error('Failed to load blogs. Please try again.');
         setBlogs([]);
       } finally {
         setIsLoadingBlogs(false);

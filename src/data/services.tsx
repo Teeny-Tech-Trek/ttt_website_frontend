@@ -258,30 +258,40 @@ export const services = [
     description: "Mock placeholder service — connect AI models into your existing products with tailored integrations, embeddings, and vector search. Replace this copy later.",
     features: ["Model Integration", "Embeddings & RAG", "Vector Search", "Custom Pipelines"],
     featureDescriptions: [
-      "Placeholder description — integrate large language models directly into your existing apps and services.",
-      "Placeholder description — build retrieval-augmented generation pipelines on top of your own data.",
-      "Placeholder description — add fast semantic search powered by vector databases.",
-      "Placeholder description — design custom data and inference pipelines tailored to your needs."
+      "Plumb OpenAI, Claude, or open-source models directly into your production databases and custom backend APIs.",
+      "Go beyond simple prompting. We build robust Retrieval-Augmented Generation (RAG) pipelines over your complex datasets.",
+      "Add lightning-fast semantic search across your product inventory, knowledge base, or customer profiles using vector databases.",
+      "Build custom ETL pipelines that clean, chunk, and embed structured or unstructured data for AI consumption in real-time."
     ],
     detailedContent: `
-      <h2>Custom AI Integrations (Mock)</h2>
-      <p>This is placeholder content for a sixth service. Replace it with real copy when ready.</p>
+      <h2>Plugging AI Directly Into Your Product</h2>
+      <p>AI is only as good as the context it can access. We design custom AI pipelines that connect large language models to your existing tech stack, databases, and APIs, ensuring secure and accurate responses.</p>
 
-      <h3>Placeholder Section</h3>
+      <h3>How We Integrate AI</h3>
+      <ol>
+        <li><strong>API Integration:</strong> We connect models with your backends via secure, scalable endpoints.</li>
+        <li><strong>Vector Storage:</strong> We set up databases like Pinecone, Pgvector, or Qdrant for semantic storage.</li>
+        <li><strong>Hybrid Search:</strong> We combine keyword and vector search to return the most relevant context.</li>
+        <li><strong>Security & Privacy:</strong> We ensure data is filtered and sanitized so sensitive information is never leaked.</li>
+      </ol>
+
+      <h3>Our Technology Focus</h3>
+      <p>We build integrations that are fast, cost-effective, and fully owned by you:</p>
       <ul>
-        <li>Mock bullet one</li>
-        <li>Mock bullet two</li>
-        <li>Mock bullet three</li>
+        <li><strong>Vector Databases:</strong> Pinecone, Qdrant, Milvus, and Pgvector</li>
+        <li><strong>Retrieval Frameworks:</strong> Custom LangChain, LlamaIndex, and raw API implementations</li>
+        <li><strong>Data Ingestion:</strong> Automated pipelines to parse, chunk, and embed files and DB records</li>
+        <li><strong>LLM Providers:</strong> Anthropic, OpenAI, DeepSeek, and local open-source models</li>
       </ul>
     `,
     caseStudies: [
       {
-        title: "Mock Case Study One",
-        description: "Placeholder case study description — replace with a real example later."
+        title: "Enterprise Semantic Search for SaaS Catalog",
+        description: "We integrated Pinecone and OpenAI embeddings to enable natural-language search across a catalog of 50,000+ items, boosting search conversions by 35%."
       },
       {
-        title: "Mock Case Study Two",
-        description: "Placeholder case study description — replace with a real example later."
+        title: "Legacy SQL Query Generator",
+        description: "We built a secure middleware that translates plain English queries into safe, structured SQL statements, allowing business teams to extract reports instantly."
       }
     ]
   },

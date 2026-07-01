@@ -193,6 +193,22 @@ const AI_APPS_SCHEMA_JSON = `{
   ]
 }`;
 
+const CUSTOM_INTEGRATIONS_SCHEMA_JSON = `{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": "https://www.teenytechtrek.com/services/custom-ai-integrations#service",
+  "serviceType": "Custom AI Integration Development",
+  "name": "Custom AI Integrations",
+  "url": "https://www.teenytechtrek.com/services/custom-ai-integrations",
+  "description": "Connect AI models directly into your software infrastructure, databases, and APIs. We build custom RAG pipelines and semantic search databases.",
+  "provider": { "@id": "https://www.teenytechtrek.com/#organization" },
+  "areaServed": [
+    { "@type": "Country", "name": "India" },
+    { "@type": "Country", "name": "Canada" },
+    { "@type": "Country", "name": "United States" }
+  ]
+}`;
+
 const getMetaForPath = (pathname: string, hash: string): MetaConfig => {
   if (pathname === '/aboutUs') {
     return {
@@ -241,6 +257,16 @@ const getMetaForPath = (pathname: string, hash: string): MetaConfig => {
         'Custom AI MVPs built fast with Streamlit, Chainlit, and FastAPI for internal tools, portals, and micro-SaaS experiences.',
       canonicalPath: '/services/ai-apps-micro-saas',
       schemaJson: AI_APPS_SCHEMA_JSON,
+    };
+  }
+
+  if (pathname === '/services/custom-ai-integrations') {
+    return {
+      title: 'Custom AI Integrations & API Pipelines | Teeny Tech Trek',
+      description:
+        'Connect AI models directly into your software infrastructure, databases, and APIs with custom RAG, semantic search, and secure middleware.',
+      canonicalPath: '/services/custom-ai-integrations',
+      schemaJson: CUSTOM_INTEGRATIONS_SCHEMA_JSON,
     };
   }
 

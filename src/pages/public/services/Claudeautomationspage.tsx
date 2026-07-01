@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import HashLink from '../../../components/ui/SectionLink';
 import { useNavigate } from 'react-router-dom';
+import { scrollToSection } from '../../../utils/scrollToSection';
 import ClaudeAutomationRichCard from '../../../components/home/ClaudeAutomationRichCard';
 
 // Animation variants (matched to the AI Chatbots page)
@@ -54,18 +55,34 @@ const scaleIn = {
 /*  NO storage. Starts on scroll-into-view, honors reduced-motion.     */
 /* ------------------------------------------------------------------ */
 
-const taskSteps = [
-  { type: 'user', text: "Sort this month's invoices and build an expense summary." },
-  { type: 'agent', text: 'Reading 23 files in /Invoices…', resolves: true },
-  { type: 'agent', text: 'Extracting vendor, date, amount…', resolves: true },
-  { type: 'agent', text: 'Building Expense-Summary-May.xlsx with totals…', resolves: true },
-  { type: 'final', text: 'Done. 1 file flagged for your review.', approve: true },
+const taskScenarios = [
+  [
+    { type: 'user', text: "Pull this week's metrics into the Friday report template." },
+    { type: 'agent', text: 'Reading metrics from Google Sheets…', resolves: true },
+    { type: 'agent', text: 'Populating Friday Report template…', resolves: true },
+    { type: 'agent', text: 'Adding charts and formatting…', resolves: true },
+    { type: 'final', text: 'Done. Friday-Report.docx is ready for your review.', approve: true },
+  ],
+  [
+    { type: 'user', text: "Reconcile these 40 receipts into one expense sheet." },
+    { type: 'agent', text: 'Reading 40 receipt images from /Expenses…', resolves: true },
+    { type: 'agent', text: 'Extracting vendor, date, and amount from each…', resolves: true },
+    { type: 'agent', text: 'Building Expense-Sheet-June.xlsx with totals…', resolves: true },
+    { type: 'final', text: 'Done. 2 receipts flagged for manual review.', approve: true },
+  ],
+  [
+    { type: 'user', text: "Draft replies to overnight support emails for my review." },
+    { type: 'agent', text: 'Reading 12 support emails from inbox…', resolves: true },
+    { type: 'agent', text: 'Classifying intent and urgency…', resolves: true },
+    { type: 'agent', text: 'Drafting personalised reply for each…', resolves: true },
+    { type: 'final', text: 'Done. 12 draft replies ready — 1 flagged as urgent.', approve: true },
+  ],
 ];
 
-const TaskRunnerDemo = () => {
-  const [statuses, setStatuses] = useState(taskSteps.map(() => 'hidden'));
+const TaskRunnerDemo = ({ scenario = taskScenarios[0] }: { scenario?: typeof taskScenarios[0] }) => {
+  const [statuses, setStatuses] = useState(scenario.map(() => 'hidden'));
   const containerRef = useRef(null);
-  const timeouts = useRef([]);
+  const timeouts = useRef<any[]>([]);
   const startedRef = useRef(false);
   const reducedMotion = useRef(false);
 
@@ -77,12 +94,12 @@ const TaskRunnerDemo = () => {
   const run = () => {
     clearTimers();
     if (reducedMotion.current) {
-      setStatuses(taskSteps.map(() => 'done'));
+      setStatuses(scenario.map(() => 'done'));
       return;
     }
-    setStatuses(taskSteps.map(() => 'hidden'));
+    setStatuses(scenario.map(() => 'hidden'));
     let delay = 350;
-    taskSteps.forEach((step, idx) => {
+    scenario.forEach((step, idx) => {
       timeouts.current.push(
         setTimeout(() => {
           setStatuses((prev) => {
@@ -130,9 +147,12 @@ const TaskRunnerDemo = () => {
       observer.disconnect();
       clearTimers();
     };
-  }, []);
+  }, [scenario]);
 
-  const replay = () => run();
+  const replay = () => {
+    startedRef.current = false;
+    run();
+  };
 
   return (
     <div
@@ -161,7 +181,7 @@ const TaskRunnerDemo = () => {
       {/* Step list */}
       <div className="p-6 min-h-[24rem] bg-gray-50" aria-live="polite">
         <div className="space-y-3">
-          {taskSteps.map((step, idx) => {
+          {scenario.map((step, idx) => {
             const status = statuses[idx];
             if (status === 'hidden') return null;
 
@@ -249,6 +269,7 @@ const TaskRunnerDemo = () => {
 
 const ClaudeAutomationsPage = () => {
   const navigate = useNavigate();
+  const [activeTaskIndex, setActiveTaskIndex] = useState(0);
 
   const handle4WeekPilotBtn = () => {
     navigate('/pilot');
@@ -308,11 +329,15 @@ const ClaudeAutomationsPage = () => {
     'Draft replies to overnight support emails for my review.',
   ];
 
+  const handleTaskClick = (index: number) => {
+    setActiveTaskIndex(index);
+  };
+
   // Real client testimonials only. Leave this empty until the client supplies a
   // genuine quote — the "What Users Say" card renders ONLY when this has at least
   // one entry, so no placeholder is ever shipped to production.
   // Shape: { quote: '...', name: 'Jane Doe', role: 'Head of Ops, Acme Co.' }
-  const testimonials = [];
+  const testimonials: Array<{ quote: string; name: string; role: string }> = [];
 
   const integrations = [
     'Gmail',
@@ -402,14 +427,14 @@ const ClaudeAutomationsPage = () => {
               </motion.p>
 
               <motion.div className="flex flex-col gap-4 sm:flex-row" variants={fadeInUp}>
-                <HashLink
-                  smooth
-                  to="/book-consultation"
+                <button
+                  type="button"
+                  onClick={() => scrollToSection('see-it-work')}
                   className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800"
                 >
                   <Play className="w-5 h-5" aria-hidden="true" />
                   See it in action
-                </HashLink>
+                </button>
                 <button
                   type="button"
                   onClick={handle4WeekPilotBtn}
@@ -590,7 +615,7 @@ const ClaudeAutomationsPage = () => {
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.8, ease: 'easeOut' }}
             >
-              <TaskRunnerDemo />
+              <TaskRunnerDemo scenario={taskScenarios[activeTaskIndex]} />
             </motion.div>
 
             {/* Tasks + testimonial */}
@@ -613,13 +638,21 @@ const ClaudeAutomationsPage = () => {
                 {demoTasks.map((task, index) => (
                   <motion.div
                     key={index}
-                    className="w-full p-4 text-left transition-colors bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50"
+                    onClick={() => handleTaskClick(index)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => e.key === 'Enter' && handleTaskClick(index)}
+                    className={`w-full p-4 text-left transition-colors cursor-pointer border rounded-lg ${
+                      activeTaskIndex === index
+                        ? 'bg-blue-900 border-blue-900'
+                        : 'bg-white border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+                    }`}
                     variants={fadeInUp}
                     whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
                   >
                     <div className="flex items-start gap-3">
-                      <MessageSquare className="w-5 h-5 text-blue-900 mt-0.5" aria-hidden="true" />
-                      <span className="text-black">"{task}"</span>
+                      <MessageSquare className={`w-5 h-5 mt-0.5 ${activeTaskIndex === index ? 'text-white' : 'text-blue-900'}`} aria-hidden="true" />
+                      <span className={activeTaskIndex === index ? 'text-white' : 'text-black'}>"{task}"</span>
                     </div>
                   </motion.div>
                 ))}

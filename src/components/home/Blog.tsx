@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { X, ChevronLeft, ChevronRight, Eye, Calendar, User, Sparkles } from "lucide-react";
 import type { Blog } from "../../types/blog";
 
-const sampleBlogs: Blog[] = [
+const sampleBlogs: any[] = [
   {
     id: "1",
     slug: "ai-driven-automation-future",
@@ -63,10 +63,10 @@ const sampleBlogs: Blog[] = [
 ];
 
 export default function BlogDisplayPage() {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [blogs, setBlogs] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
+  const [selectedBlog, setSelectedBlog] = useState<any | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);

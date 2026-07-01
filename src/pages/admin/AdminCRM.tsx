@@ -2,7 +2,7 @@
 // Single-page internal Admin CRM: consultation bookings + chatbot leads.
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, Calendar, MessageSquare, X, Loader2, RefreshCw } from 'lucide-react';
+import { LogOut, Calendar, MessageSquare, X, Loader2, RefreshCw, FileText } from 'lucide-react';
 import {
   getConsultations,
   getChatbotLeads,
@@ -12,6 +12,7 @@ import {
   type ConsultationBooking,
   type ChatbotLead,
 } from '../../services/adminCrmService';
+import BlogManager from './BlogManager';
 
 const formatDate = (value?: string) => {
   if (!value) return '—';
@@ -67,7 +68,14 @@ const AdminCRM: React.FC = () => {
   const navigate = useNavigate();
   const admin = getStoredAdmin();
 
-  const [tab, setTab] = useState<'consultations' | 'leads'>('consultations');
+  const [tab, setTab] = useState<'consultations' | 'leads' | 'blogs'>(() => {
+    const saved = localStorage.getItem('adminActiveTab');
+    return (saved === 'consultations' || saved === 'leads' || saved === 'blogs') ? saved : 'consultations';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('adminActiveTab', tab);
+  }, [tab]);
   const [consultations, setConsultations] = useState<ConsultationBooking[]>([]);
   const [leads, setLeads] = useState<ChatbotLead[]>([]);
   const [loading, setLoading] = useState(true);
@@ -120,7 +128,7 @@ const AdminCRM: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-100 sticky top-0 z-30">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <div>
             <h1 className="font-display text-xl font-bold text-primary">Teeny Tech Trek</h1>
             <p className="text-xs text-gray-500">Admin CRM Dashboard</p>
@@ -137,32 +145,47 @@ const AdminCRM: React.FC = () => {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-6">
-        {/* Tabs */}
-        <div className="flex items-center gap-2 mb-5">
+      <main className="max-w-7xl mx-auto px-4 py-6">
+        {/* Tabs - scrollable on mobile */}
+        <div className="flex items-center gap-2 mb-5 overflow-x-auto pb-1 scrollbar-hide">
           <button
             onClick={() => setTab('consultations')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               tab === 'consultations'
                 ? 'bg-primary text-white'
                 : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
             }`}
           >
-            <Calendar className="h-4 w-4" /> Consultation Bookings ({consultations.length})
+            <Calendar className="h-4 w-4" />
+            <span>Consultations</span>
+            <span className="text-xs opacity-70">({consultations.length})</span>
           </button>
           <button
             onClick={() => setTab('leads')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               tab === 'leads'
                 ? 'bg-primary text-white'
                 : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
             }`}
           >
-            <MessageSquare className="h-4 w-4" /> Chatbot Leads ({leads.length})
+            <MessageSquare className="h-4 w-4" />
+            <span>Chatbot Leads</span>
+            <span className="text-xs opacity-70">({leads.length})</span>
+          </button>
+          <button
+            onClick={() => setTab('blogs')}
+            className={`flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              tab === 'blogs'
+                ? 'bg-primary text-white'
+                : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'
+            }`}
+          >
+            <FileText className="h-4 w-4" />
+            <span>Blog CMS</span>
           </button>
           <button
             onClick={load}
-            className="ml-auto flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-600 border border-gray-200 hover:bg-gray-50"
+            className="ml-auto flex-shrink-0 flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-600 border border-gray-200 hover:bg-gray-50"
           >
             <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} /> Refresh
           </button>
@@ -179,89 +202,95 @@ const AdminCRM: React.FC = () => {
             <Loader2 className="h-6 w-6 animate-spin mr-2" /> Loading…
           </div>
         ) : (
-          <div className="bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden">
-            {/* SECTION 1: Consultation bookings */}
-            {tab === 'consultations' && (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead className="bg-gray-50 text-gray-500 text-left">
-                    <tr>
-                      <th className="px-4 py-3 font-medium">Name</th>
-                      <th className="px-4 py-3 font-medium">Email</th>
-                      <th className="px-4 py-3 font-medium">Date</th>
-                      <th className="px-4 py-3 font-medium">Time</th>
-                      <th className="px-4 py-3 font-medium">Meeting Link</th>
-                      <th className="px-4 py-3 font-medium">Created</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {consultations.length === 0 && (
-                      <tr>
-                        <td colSpan={6} className="px-4 py-10 text-center text-gray-400">
-                          No consultation bookings yet.
-                        </td>
-                      </tr>
-                    )}
-                    {consultations.map((c) => (
-                      <tr
-                        key={c._id}
-                        onClick={() => setSelectedConsultation(c)}
-                        className="hover:bg-primary-100/40 cursor-pointer transition-colors"
-                      >
-                        <td className="px-4 py-3 font-medium text-gray-900">{c.name}</td>
-                        <td className="px-4 py-3 text-gray-600">{c.email}</td>
-                        <td className="px-4 py-3 text-gray-600">{formatDate(c.startTime)}</td>
-                        <td className="px-4 py-3 text-gray-600">{formatTime(c.startTime)}</td>
-                        <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
-                          {meetLinkEl(c.googleMeetLink)}
-                        </td>
-                        <td className="px-4 py-3 text-gray-600">{formatDate(c.createdAt)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
+          <>
+            {tab === 'blogs' ? (
+              <BlogManager />
+            ) : (
+              <div className="bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden">
+                {/* SECTION 1: Consultation bookings */}
+                {tab === 'consultations' && (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead className="bg-gray-50 text-gray-500 text-left">
+                        <tr>
+                          <th className="px-4 py-3 font-medium">Name</th>
+                          <th className="px-4 py-3 font-medium">Email</th>
+                          <th className="px-4 py-3 font-medium">Date</th>
+                          <th className="px-4 py-3 font-medium">Time</th>
+                          <th className="px-4 py-3 font-medium">Meeting Link</th>
+                          <th className="px-4 py-3 font-medium">Created</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-100">
+                        {consultations.length === 0 && (
+                          <tr>
+                            <td colSpan={6} className="px-4 py-10 text-center text-gray-400">
+                              No consultation bookings yet.
+                            </td>
+                          </tr>
+                        )}
+                        {consultations.map((c) => (
+                          <tr
+                            key={c._id}
+                            onClick={() => setSelectedConsultation(c)}
+                            className="hover:bg-primary-100/40 cursor-pointer transition-colors"
+                          >
+                            <td className="px-4 py-3 font-medium text-gray-900">{c.name}</td>
+                            <td className="px-4 py-3 text-gray-600">{c.email}</td>
+                            <td className="px-4 py-3 text-gray-600">{formatDate(c.startTime)}</td>
+                            <td className="px-4 py-3 text-gray-600">{formatTime(c.startTime)}</td>
+                            <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
+                              {meetLinkEl(c.googleMeetLink)}
+                            </td>
+                            <td className="px-4 py-3 text-gray-600">{formatDate(c.createdAt)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
 
-            {/* SECTION 2: Chatbot leads */}
-            {tab === 'leads' && (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead className="bg-gray-50 text-gray-500 text-left">
-                    <tr>
-                      <th className="px-4 py-3 font-medium">Name</th>
-                      <th className="px-4 py-3 font-medium">Email</th>
-                      <th className="px-4 py-3 font-medium">Interested Service</th>
-                      <th className="px-4 py-3 font-medium">Message</th>
-                      <th className="px-4 py-3 font-medium">Created</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {leads.length === 0 && (
-                      <tr>
-                        <td colSpan={5} className="px-4 py-10 text-center text-gray-400">
-                          No chatbot leads yet.
-                        </td>
-                      </tr>
-                    )}
-                    {leads.map((l) => (
-                      <tr
-                        key={l._id}
-                        onClick={() => setSelectedLead(l)}
-                        className="hover:bg-primary-100/40 cursor-pointer transition-colors"
-                      >
-                        <td className="px-4 py-3 font-medium text-gray-900">{l.name}</td>
-                        <td className="px-4 py-3 text-gray-600">{l.email}</td>
-                        <td className="px-4 py-3 text-gray-600">{l.service || '—'}</td>
-                        <td className="px-4 py-3 text-gray-600 max-w-xs truncate">{l.message || '—'}</td>
-                        <td className="px-4 py-3 text-gray-600">{formatDate(l.created_at)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+                {/* SECTION 2: Chatbot leads */}
+                {tab === 'leads' && (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead className="bg-gray-50 text-gray-500 text-left">
+                        <tr>
+                          <th className="px-4 py-3 font-medium">Name</th>
+                          <th className="px-4 py-3 font-medium">Email</th>
+                          <th className="px-4 py-3 font-medium">Interested Service</th>
+                          <th className="px-4 py-3 font-medium">Message</th>
+                          <th className="px-4 py-3 font-medium">Created</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-100">
+                        {leads.length === 0 && (
+                          <tr>
+                            <td colSpan={5} className="px-4 py-10 text-center text-gray-400">
+                              No chatbot leads yet.
+                            </td>
+                          </tr>
+                        )}
+                        {leads.map((l) => (
+                          <tr
+                            key={l._id}
+                            onClick={() => setSelectedLead(l)}
+                            className="hover:bg-primary-100/40 cursor-pointer transition-colors"
+                          >
+                            <td className="px-4 py-3 font-medium text-gray-900">{l.name}</td>
+                            <td className="px-4 py-3 text-gray-600">{l.email}</td>
+                            <td className="px-4 py-3 text-gray-600">{l.service || '—'}</td>
+                            <td className="px-4 py-3 text-gray-600 max-w-xs truncate">{l.message || '—'}</td>
+                            <td className="px-4 py-3 text-gray-600">{formatDate(l.created_at)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             )}
-          </div>
+          </>
         )}
       </main>
 

@@ -1,4 +1,7 @@
-import { useState, type ReactNode, type SVGProps } from 'react';
+import { useState, useEffect, type ReactNode, type SVGProps } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getPublicBlogs } from '../../services/blogService';
+import { BlogRenderer } from '../../components/blog/BlogRenderer';
 import {
   Calendar,
   Clock,
@@ -13,7 +16,7 @@ import {
 } from 'lucide-react';
 
 interface BlogPost {
-  id: number;
+  id: number | string;
   title: string;
   excerpt: string;
   content?: string;
@@ -22,6 +25,10 @@ interface BlogPost {
   readTime: string;
   image: string;
   author?: string;
+  slug?: string;
+  isDb?: boolean;
+  featured_alt?: string;
+  featured_caption?: string;
 }
 
 interface BlogSectionProps {
@@ -326,6 +333,17 @@ function renderBlock(b: Block, key: string): ReactNode {
 }
 
 function ArticleContent({ content }: { content: string }) {
+  try {
+    if (content.trim().startsWith('[') || content.trim().startsWith('{')) {
+      const dbBlocks = JSON.parse(content);
+      if (Array.isArray(dbBlocks)) {
+        return <BlogRenderer blocks={dbBlocks} />;
+      }
+    }
+  } catch (e) {
+    // Fail-safe markdown fallback
+  }
+
   const blocks = parseMarkdown(content);
   const out: ReactNode[] = [];
   let i = 0;
@@ -406,21 +424,65 @@ const WhatsAppIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-export function BlogSection({ blogPosts }: BlogSectionProps) {
-  const [selectedPostId, setSelectedPostId] = useState<number | null>(null);
+export function BlogSection({ blogPosts: initialBlogPosts }: BlogSectionProps) {
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [selectedPostId, setSelectedPostId] = useState<number | string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [shareOpen, setShareOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    async function loadBlogs() {
+      try {
+        const dbBlogs = await getPublicBlogs();
+        if (dbBlogs && dbBlogs.length > 0) {
+          const mapped = dbBlogs.map((b: any) => ({
+            id: b.id || b._id,
+            title: b.title || '',
+            excerpt: b.summary || b.excerpt || '',
+            content: Array.isArray(b.content) ? JSON.stringify(b.content) : String(b.content || ''),
+            category: b.category || 'AI Solutions',
+            date: b.published_at 
+              ? new Date(b.published_at).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric'
+                })
+              : new Date(b.created_at || Date.now()).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric'
+                }),
+            readTime: b.readTime || '5 min read',
+            image: b.media_cid || '',
+            featured_alt: b.featured_alt || '',
+            featured_caption: b.featured_caption || '',
+            author: b.author || 'Admin',
+            slug: b.slug,
+            isDb: true
+          }));
+          setPosts(mapped);
+        } else {
+          setPosts(initialBlogPosts);
+        }
+      } catch (err) {
+        console.error("Failed to load public blogs from database, using static fallback", err);
+        setPosts(initialBlogPosts);
+      }
+    }
+    loadBlogs();
+  }, [initialBlogPosts]);
 
   // Get unique categories
   const categories = [
     'All Categories',
-    ...Array.from(new Set(blogPosts.map((post) => post.category))),
+    ...Array.from(new Set(posts.map((post) => post.category))),
   ];
 
   // Filter posts based on search and category
-  const filteredPosts = blogPosts.filter((post) => {
+  const filteredPosts = posts.filter((post) => {
     const matchesSearch =
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
@@ -430,7 +492,7 @@ export function BlogSection({ blogPosts }: BlogSectionProps) {
   });
 
   const selectedPost = selectedPostId
-    ? blogPosts.find((p) => p.id === selectedPostId)
+    ? posts.find((p) => p.id === selectedPostId)
     : null;
 
   // Blog Detail View
@@ -470,7 +532,7 @@ export function BlogSection({ blogPosts }: BlogSectionProps) {
       'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 transition-colors text-left';
 
     return (
-      <section className="min-h-screen bg-white pt-16 sm:pt-20">
+      <section className="min-h-screen bg-slate-50 pt-16 sm:pt-20">
         {/* Header with back button — offset below the fixed navbar so it is
             never clipped/partially hidden behind it. */}
         <div className="bg-white border-b border-gray-200">
@@ -485,66 +547,78 @@ export function BlogSection({ blogPosts }: BlogSectionProps) {
           </div>
         </div>
 
-        <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          {/* Article Header */}
-          <div className="mb-12">
-            <div className="inline-block bg-blue-600 text-white text-xs font-semibold px-4 py-2 rounded-full mb-6">
-              {selectedPost.category}
-            </div>
-
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+        {/* Card Centering Wrapper */}
+        <div className="max-w-7xl mx-auto px-2 py-8 sm:px-6 lg:px-8 flex flex-col items-center">
+          <article className="w-full max-w-[720px] bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.10)] overflow-hidden flex flex-col">
+            {/* Card Heading */}
+            <h1 className="text-[#1f528c] font-extrabold text-2xl sm:text-3xl md:text-4xl text-center leading-tight tracking-tight px-4 sm:px-8 pt-8 pb-4 sm:pt-10 sm:pb-5">
               {selectedPost.title}
             </h1>
 
-            <div className="flex flex-wrap items-center gap-6 text-gray-600 border-b border-gray-200 pb-6">
-              <div className="flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-blue-600" />
-                <span className="text-sm font-medium">{selectedPost.date}</span>
+            {/* Featured Image */}
+            {selectedPost.image && (
+              <div className="w-full bg-slate-50 flex flex-col items-center justify-center">
+                <img
+                  src={selectedPost.image}
+                  alt={selectedPost.featured_alt || selectedPost.title}
+                  className="w-full max-h-[450px] object-cover"
+                  loading="lazy"
+                />
+                {selectedPost.featured_caption && (
+                  <p className="text-center text-xs text-gray-500 mt-2 mb-2 italic px-2">
+                    {selectedPost.featured_caption}
+                  </p>
+                )}
               </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-5 h-5 text-blue-600" />
-                <span className="text-sm font-medium">{selectedPost.readTime}</span>
-              </div>
-              {selectedPost.author && (
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center text-white text-sm font-semibold">
-                    {selectedPost.author.charAt(0)}
-                  </div>
-                  <span className="font-semibold text-gray-900">
-                    {selectedPost.author}
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Featured Image */}
-          <div className="mb-12 rounded-2xl overflow-hidden shadow-lg">
-            <img
-              src={selectedPost.image}
-              alt={selectedPost.title}
-              className="w-full  object-cover"
-            />
-          </div>
-
-          {/* Article Content */}
-          <div className="mb-12">
-            {selectedPost.content ? (
-              <ArticleContent content={selectedPost.content} />
-            ) : (
-              <p className="text-gray-700 leading-relaxed mb-6 text-lg">
-                {selectedPost.excerpt}
-              </p>
             )}
-          </div>
 
-          {/* Share Section */}
-          <div className="flex items-center justify-between pt-8 border-t border-gray-200">
-            <span className="text-gray-700 font-medium">Share this article:</span>
+            {/* Content Section */}
+            <div className="p-6 sm:p-10 flex flex-col flex-1 bg-white">
+              {/* Summary (italic) */}
+              {selectedPost.excerpt && (
+                <p className="text-gray-600 text-base sm:text-lg italic text-center leading-relaxed mb-6">
+                  {selectedPost.excerpt}
+                </p>
+              )}
+
+              {/* Author + Date */}
+              <div className="flex flex-wrap items-center gap-3 justify-center mb-8">
+                <span className="text-[#3e6aa7] font-semibold text-sm sm:text-base">
+                  {selectedPost.author}
+                </span>
+                <span className="text-gray-400 text-xs sm:text-sm">
+                  {selectedPost.date}
+                </span>
+              </div>
+
+              {/* Article Content */}
+              <div className="text-gray-850 text-sm sm:text-base md:text-lg leading-relaxed flex-1">
+                {selectedPost.content ? (
+                  <ArticleContent content={selectedPost.content} />
+                ) : (
+                  <p className="text-gray-700 leading-relaxed mb-6">
+                    {selectedPost.excerpt}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Bottom accent gradient bar */}
+            <div
+              className="h-1.5 w-full"
+              style={{
+                background: 'linear-gradient(90deg, #1f528c, #3e6aa7)',
+              }}
+            />
+          </article>
+
+          {/* Share Section (centered, below the card) */}
+          <div className="w-full max-w-[720px] mt-6 flex items-center justify-between p-4 sm:p-6 bg-white border border-gray-200 rounded-2xl shadow-sm">
+            <span className="text-gray-700 font-medium text-sm sm:text-base">Share this article:</span>
             <div className="relative">
               <button
                 onClick={() => setShareOpen((o) => !o)}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all duration-300 hover:scale-105 font-semibold"
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all duration-300 hover:scale-105 font-semibold text-sm sm:text-base"
               >
                 <Share2 className="w-4 h-4" />
                 Share
@@ -598,14 +672,14 @@ export function BlogSection({ blogPosts }: BlogSectionProps) {
               )}
             </div>
           </div>
-        </article>
+        </div>
       </section>
     );
   }
 
   // Blog Listing View
   return (
-    <section className="py-20 bg-gradient-to-b from-white via-gray-50 to-white">
+    <section className="min-h-screen py-24 bg-gradient-to-b from-slate-50 via-white to-slate-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
@@ -648,15 +722,22 @@ export function BlogSection({ blogPosts }: BlogSectionProps) {
           {filteredPosts.map((post) => (
             <article
               key={post.id}
-              onClick={() => setSelectedPostId(post.id)}
+              onClick={() => {
+                if (post.isDb && post.slug) {
+                  navigate(`/blog/${post.slug}`);
+                } else {
+                  setSelectedPostId(post.id);
+                }
+              }}
               className="group cursor-pointer bg-white rounded-2xl overflow-hidden border border-gray-200 hover:border-blue-300 transition-all duration-300 hover:shadow-xl"
             >
               {/* Image */}
-              <div className="relative  overflow-hidden bg-gray-100">
+              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-blue-50 to-slate-100">
                 <img
                   src={post.image}
                   alt={post.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                 />
                 <div className="absolute top-4 left-4">
                   <span className="bg-blue-600 text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-md">
