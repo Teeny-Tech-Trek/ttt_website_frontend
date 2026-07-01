@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { motion } from "framer-motion";
 
-import realStateImg from "../../Images/Case Studies/RealEstate.png"
+// import realStateImg from "../../Images/Case Studies/RealEstate.png"
 import HashLink from '../../components/ui/SectionLink';
 
 // Animation variants with responsive considerations
@@ -135,7 +135,7 @@ const Hero: React.FC<ChatbotOpenProps> = ({onOpenChatbot}) => {
 
               <div className="relative overflow-hidden h-80">
                 <img 
-                  src={realStateImg}
+                  src="https://4hooltce8r54joof.public.blob.vercel-storage.com/UseCases-Assets/RealEstate.webp"
                   className="object-cover w-full h-full"
                 />
                 <div className="absolute inset-0 bg-black/20"></div>

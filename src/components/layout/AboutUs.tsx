@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight, Users, Zap, Shield, Code, Star, ArrowRight, Phone, MessageCircle } from 'lucide-react';
-import heroImage from "../../Images/Extra Resources - Hero Page/FounderPage-removebg-preview.png"
-import characterImage from "../../Images/Extra Resources - Hero Page/Oisha_Character-removebg-preview.png"
+// import heroImage from "../../Images/Extra Resources - Hero Page/FounderPage-removebg-preview.png"
+// import characterImage from "../../Images/Extra Resources - Hero Page/Oisha_Character-removebg-preview.png"
 import Services from '../home/ServicesList';
 import HashLink from '../ui/SectionLink';
 
@@ -163,7 +163,7 @@ const AboutUs = () => {
             >
               <div className="p-2 rounded-2xl">
                 <img 
-                  src={heroImage}
+                  src="https://4hooltce8r54joof.public.blob.vercel-storage.com/Extra-Assets/FounderPage-Image.webp"
                   alt="Team collaboration and AI technology"
                   className="object-cover w-full aspect-square rounded-xl"
                 />
@@ -229,7 +229,7 @@ const AboutUs = () => {
               <div className="p-8 text-center rounded-2xl">
                 <div className="w-full max-w-md mx-auto">
                   <img 
-                    src={characterImage}
+                    src="https://4hooltce8r54joof.public.blob.vercel-storage.com/Extra-Assets/Oisha_Character-Image.webp"
                     alt="Founder profile"
                     className="object-cover h-full mx-auto mb-6 rounded-xl"
                   />

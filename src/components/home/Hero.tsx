@@ -2,8 +2,8 @@ import React, { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { StatItem } from '../../types/hero.types';
-import heroImg from '../../assets/AiHeroImage.png';
-import heroImg2 from '../../assets/HeroImageForMobile.png';
+// import heroImg from '../../assets/AiHeroImage.png';
+// import heroImg2 from '../../assets/HeroImageForMobile.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -37,7 +37,7 @@ const CARDS: HeroCard[] = [
   {
     title: 'AI Agents',
     desc: 'Intelligent agents that automate & assist.',
-    img: './HeroPageCardsImages/Ai-Agents-Image.png',
+    img: 'https://4hooltce8r54joof.public.blob.vercel-storage.com/HeroPage-Assets/Ai-Agents-Image.webp',
     pos: 'left-[1%] top-[2%] lg:top-[-10%]',
     tilt: 'lg:[transform:perspective(750px)_rotateY(20deg)] lg:hover:[transform:perspective(750px)_rotateY(0deg)_translateY(-8px)_scale(1.04)]',
     side: 'left',
@@ -45,7 +45,7 @@ const CARDS: HeroCard[] = [
   {
     title: 'Automation',
     desc: 'Streamline workflows and boost efficiency.',
-    img: './HeroPageCardsImages/Dasboard-Image.png',
+    img: 'https://4hooltce8r54joof.public.blob.vercel-storage.com/HeroPage-Assets/Dasboard-Image.webp',
     pos: 'left-[1%] top-1/2 -translate-y-1/2 lg:top-[calc(50%_-_108px)] lg:translate-y-0',
     tilt: 'lg:[transform:perspective(750px)_rotateY(20deg)] lg:hover:[transform:perspective(750px)_rotateY(0deg)_translateY(-8px)_scale(1.04)]',
     side: 'left',
@@ -53,7 +53,7 @@ const CARDS: HeroCard[] = [
   {
     title: 'Analytics',
     desc: 'Turn data into real-time insights.',
-    img: './HeroPageCardsImages/Analytics-Image.png',
+    img: 'https://4hooltce8r54joof.public.blob.vercel-storage.com/HeroPage-Assets/Analytics-Image.webp',
     pos: 'left-[1%] bottom-[2%] lg:bottom-[10%]',
     tilt: 'lg:[transform:perspective(750px)_rotateY(20deg)] lg:hover:[transform:perspective(750px)_rotateY(0deg)_translateY(-8px)_scale(1.04)]',
     side: 'left',
@@ -561,7 +561,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenChatbot }) => {
                 }}
               />
               <img
-                src={heroImg2}
+                src="https://4hooltce8r54joof.public.blob.vercel-storage.com/HeroPage-Assets/HeroImageForMobile.webp"
                 alt="AI Brain Visualization"
                 className="relative block h-auto w-[38vw] max-w-[170px] sm:w-[32vw] sm:max-w-[270px] md:w-[34vw] md:max-w-[320px] lg:w-[36vw] lg:max-w-[380px]"
               />
@@ -598,7 +598,7 @@ const Hero: React.FC<HeroProps> = ({ onOpenChatbot }) => {
               />
               <img
                 ref={imageRef}
-                src={heroImg}
+                src="https://4hooltce8r54joof.public.blob.vercel-storage.com/HeroPage-Assets/AiHeroImage.webp"
                 alt="AI Brain Visualization"
                 className="relative block h-auto w-[min(48vw,670px)] max-w-full will-change-transform"
               />
