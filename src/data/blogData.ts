@@ -111,7 +111,7 @@ Future-proofing development requires moving beyond treating AI as a simple autom
 
 *Build small. Launch fast. Scale smart.*`,
     category: "AI Engineering",
-    date: "Feb 24, 2026",
+    date: "Aug 24, 2026",
     readTime: "7 min read",
     image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
     author: "Anisha Singla"
@@ -217,7 +217,7 @@ We didn't ban the AI afterward. **We banned the skim.**
 
 **Audit your automated workers today.** If you are deploying LLM-generated code to production, check every loop for an explicit ceiling before midnight traffic finds it for you.`,
     category: "AI Engineering",
-    date: "Feb 24, 2026",
+    date: "Aug 24, 2026",
     readTime: "5 min read",
     image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80",
     author: "Anisha Singla"
