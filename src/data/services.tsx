@@ -1,4 +1,4 @@
-import { Bot, Puzzle as PuzzlePiece, Cog, Sparkles, Rocket, Boxes } from 'lucide-react';
+import { Bot, Puzzle as PuzzlePiece, Cog, Sparkles, Rocket, Boxes, Workflow } from 'lucide-react';
 import React from 'react';
 
 export const services = [
@@ -292,6 +292,43 @@ export const services = [
       {
         title: "Legacy SQL Query Generator",
         description: "We built a secure middleware that translates plain English queries into safe, structured SQL statements, allowing business teams to extract reports instantly."
+      }
+    ]
+  },
+  {
+    icon: <Workflow size={32} className="text-primary" />,
+    title: "n8n Automations",
+    slug: "n8n-automations",
+    // 👇 PLACEHOLDER — reusing an existing asset until the real n8n image is uploaded
+    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Ai-Service-Assets/SmartProcess-Image.webp",
+    description: "Build powerful, self-hosted automation workflows that connect your apps, APIs, AI models, and business processes.",
+    features: ["Self-Hosted Workflows", "API & App Connectors", "AI Model Integrations", "Business Process Automation"],
+    featureDescriptions: [
+      "Run your automations on infrastructure you control, with no per-task pricing or vendor lock-in.",
+      "Connect n8n to hundreds of apps and any REST API, so data flows automatically between the tools you already use.",
+      "Wire AI models directly into your workflows to classify, summarize, or generate content as part of an automated pipeline.",
+      "Automate multi-step business processes end-to-end — approvals, notifications, data sync, and reporting."
+    ],
+    detailedContent: `
+      <h2>Self-Hosted Automation with n8n</h2>
+      <p>n8n gives you the flexibility of a visual workflow builder with the control of self-hosted infrastructure. We design and deploy n8n workflows that connect your apps, APIs, and AI models into a single automated pipeline.</p>
+
+      <h3>What We Build</h3>
+      <ul>
+        <li>Custom workflows connecting your CRM, email, and internal tools</li>
+        <li>AI-powered steps for classification, summarization, and generation</li>
+        <li>Scheduled and event-triggered automations</li>
+        <li>Self-hosted deployments you fully own and control</li>
+      </ul>
+    `,
+    caseStudies: [
+      {
+        title: "Lead Routing Automation",
+        description: "We built an n8n workflow that enriches inbound leads, scores them with an AI model, and routes them to the right sales rep automatically."
+      },
+      {
+        title: "Cross-Platform Data Sync",
+        description: "An n8n pipeline kept a client's CRM, billing system, and support desk in sync in real time, eliminating manual data entry."
       }
     ]
   },

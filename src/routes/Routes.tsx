@@ -33,6 +33,7 @@ import Pilot from '../pages/Pilot';
 import { BlogSection } from '../components/home/BlogSection';
 import { blogPosts } from '../data/blogData';
 import ClaudeAutomationsPage from '../pages/public/services/Claudeautomationspage';
+import N8nAutomationsPage from '../pages/public/services/N8nAutomationsPage';
 import AdminLogin from '../pages/admin/AdminLogin';
 import AdminCRM from '../pages/admin/AdminCRM';
 import MediumBlogPreview from '../pages/dev/MediumBlogPreview';
@@ -111,6 +112,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ onOpenChatbot }) => (
       <Route path="/services/smart-process-automation" element={<ProcessAutomationPage onOpenChatbot={onOpenChatbot} />} />
       <Route path="/services/ai-apps-micro-saas" element={<AiAppsPage onOpenChatbot={onOpenChatbot} />} />
       <Route path="/services/claude-automation" element={<ClaudeAutomationsPage />} />
+      <Route path="/services/n8n-automations" element={<N8nAutomationsPage />} />
       <Route path="/services/custom-ai-integrations" element={<CustomAiIntegrationsPage onOpenChatbot={onOpenChatbot} />} />
 
       {/* Catch-all */}

@@ -133,7 +133,6 @@ const FAQ_DATA: FaqItem[] = [
 ];
 
 const CATEGORIES = [
-  { id: "All", label: "All Questions" },
   { id: "General", label: "General" },
   { id: "Services", label: "AI Services" },
   { id: "Pilots", label: "Pilots & Process" },
@@ -144,19 +143,21 @@ const CATEGORIES = [
 type CategoryType = (typeof CATEGORIES)[number]["id"];
 
 const FAQ: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState<CategoryType>("All");
-  const [openIds, setOpenIds] = useState<number[]>([1]); // First question open by default
+  // Only one category open at a time — keeps the list short instead of
+  // dumping every question on screen at once.
+  const [openCategory, setOpenCategory] = useState<CategoryType | null>(
+    CATEGORIES[0].id
+  );
+  const [openQuestionId, setOpenQuestionId] = useState<number | null>(null);
 
-  const toggleFaq = (id: number) => {
-    setOpenIds((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
+  const toggleCategory = (id: CategoryType) => {
+    setOpenCategory((prev) => (prev === id ? null : id));
+    setOpenQuestionId(null);
   };
 
-  const filteredFaqs =
-    activeCategory === "All"
-      ? FAQ_DATA
-      : FAQ_DATA.filter((faq) => faq.category === activeCategory);
+  const toggleQuestion = (id: number) => {
+    setOpenQuestionId((prev) => (prev === id ? null : id));
+  };
 
   return (
     <section className="relative py-24 bg-gradient-to-b from-slate-50/60 via-white to-slate-50/80 overflow-hidden">
@@ -179,71 +180,100 @@ const FAQ: React.FC = () => {
             Clear, transparent answers about our enterprise AI implementations, 4-week pilot sprints, data security standards, and ROI.
           </p>
 
-          {/* Category Tabs (360Labs Inspired Minimal Navigation) */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-8">
-            {CATEGORIES.map((cat) => {
-              const isActive = activeCategory === cat.id;
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`px-4 py-2 text-xs sm:text-sm font-medium rounded-full transition-all duration-200 cursor-pointer ${
-                    isActive
-                      ? "bg-blue-600 text-white shadow-sm shadow-blue-500/20 scale-[1.02]"
-                      : "bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 border border-slate-200/80"
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              );
-            })}
-          </div>
         </div>
 
-        {/* 360Labs Clean Accordion List */}
-        <div className="border-t border-slate-200 divide-y divide-slate-200">
-          {filteredFaqs.map((faq) => {
-            const isOpen = openIds.includes(faq.id);
+        {/* Foldable Category Index */}
+        <div className="border-t border-b border-slate-200 divide-y divide-slate-200">
+          {CATEGORIES.map((cat, index) => {
+            const questions = FAQ_DATA.filter((faq) => faq.category === cat.id);
+            const isCatOpen = openCategory === cat.id;
 
             return (
-              <div
-                key={faq.id}
-                className="transition-colors duration-200 group"
-              >
+              <div key={cat.id}>
                 <button
-                  onClick={() => toggleFaq(faq.id)}
-                  aria-expanded={isOpen}
-                  className="w-full py-6 sm:py-7 flex items-center justify-between text-left gap-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg"
+                  onClick={() => toggleCategory(cat.id)}
+                  aria-expanded={isCatOpen}
+                  className="w-full py-6 sm:py-7 flex items-center justify-between text-left gap-4 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg"
                 >
-                  <span className="text-lg sm:text-xl font-semibold text-slate-900 group-hover:text-blue-600 transition-colors duration-200">
-                    {faq.question}
-                  </span>
+                  <div>
+                    <span className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors duration-200">
+                      {cat.label}
+                    </span>
+                  </div>
 
-                  {/* Minimalist 360Labs + sign that rotates smoothly */}
                   <span
-                    className={`flex-shrink-0 w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-300 ${
-                      isOpen
+                    className={`flex-shrink-0 w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                      isCatOpen
                         ? "border-blue-600 bg-blue-600 text-white rotate-45"
                         : "border-slate-300 text-slate-400 group-hover:border-blue-500 group-hover:text-blue-600 bg-white"
                     }`}
                   >
-                    <Plus className="w-4 h-4 transition-transform duration-300" />
+                    <Plus className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300" />
                   </span>
                 </button>
 
-                {/* Animated Accordion Content */}
+                {/* Category's question list — only rendered while the category is open */}
                 <AnimatePresence initial={false}>
-                  {isOpen && (
+                  {isCatOpen && (
                     <motion.div
-                      key="content"
+                      key="category-content"
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.25, ease: [0.04, 0.62, 0.23, 0.98] }}
                       className="overflow-hidden"
                     >
-                      <div className="pb-6 sm:pb-7 pr-4 sm:pr-12 text-slate-600 text-base sm:text-lg leading-relaxed whitespace-pre-line">
-                        {faq.answer}
+                      <div className="pb-4 sm:pb-6 divide-y divide-slate-100">
+                        {questions.map((faq) => {
+                          const isQOpen = openQuestionId === faq.id;
+
+                          return (
+                            <div key={faq.id}>
+                              <button
+                                onClick={() => toggleQuestion(faq.id)}
+                                aria-expanded={isQOpen}
+                                className="w-full py-4 sm:py-5 pl-4 sm:pl-8 flex items-center justify-between text-left gap-4 group/question focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg"
+                              >
+                                <span
+                                  className={`text-sm sm:text-base md:text-lg font-medium transition-colors duration-200 ${
+                                    isQOpen
+                                      ? "text-blue-600"
+                                      : "text-slate-800 group-hover/question:text-blue-600"
+                                  }`}
+                                >
+                                  {faq.question}
+                                </span>
+
+                                <span
+                                  className={`flex-shrink-0 w-7 h-7 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                                    isQOpen
+                                      ? "border-blue-600 text-blue-600 rotate-45"
+                                      : "border-slate-300 text-slate-400 group-hover/question:border-blue-500 group-hover/question:text-blue-600 bg-white"
+                                  }`}
+                                >
+                                  <Plus className="w-3.5 h-3.5 transition-transform duration-300" />
+                                </span>
+                              </button>
+
+                              <AnimatePresence initial={false}>
+                                {isQOpen && (
+                                  <motion.div
+                                    key="question-content"
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: "auto", opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{ duration: 0.2, ease: [0.04, 0.62, 0.23, 0.98] }}
+                                    className="overflow-hidden"
+                                  >
+                                    <div className="pb-4 sm:pb-5 pl-4 sm:pl-8 pr-4 sm:pr-10 text-slate-600 text-sm sm:text-base leading-relaxed whitespace-pre-line">
+                                      {faq.answer}
+                                    </div>
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
+                            </div>
+                          );
+                        })}
                       </div>
                     </motion.div>
                   )}
