@@ -11,77 +11,77 @@ interface Question {
 const questions: Question[] = [
   {
     id: 1,
-    text: "Do we have 1–2 measurable outcomes for AI in the next 90 days (e.g., \"deflect 40% FAQs\", \"reduce touches/shipment 30%\")?",
+    text: "Does your organisation have a clearly defined AI strategy that is aligned with its current business priorities?",
     icon: <Target className="w-5 h-5" />
   },
   {
     id: 2,
-    text: "Have we identified our top repetitive processes (volume/month, SLA impact, handle time)?",
+    text: "Have you identified the business processes where AI could create the greatest measurable impact?",
     icon: <BarChart3 className="w-5 h-5" />
   },
   {
     id: 3,
-    text: "Is there a single high-impact process we're willing to pilot in 4 weeks?",
+    text: "Do you have a clear understanding of how much time your teams currently spend on repetitive or manual tasks?",
     icon: <Rocket className="w-5 h-5" />
   },
   {
     id: 4,
-    text: "Are policies/FAQs/docs centralized and current, and exportable (PDF/text/Notion/Drive)?",
+    text: "Have you identified at least one high-impact workflow that could realistically be improved with AI within the next 90 days?",
     icon: <FileText className="w-5 h-5" />
   },
   {
     id: 5,
-    text: "Do we know where sensitive/PII data lives and the rules for handling/redaction?",
+    text: "Does your organisation have access to the data required to support its planned AI initiatives?",
     icon: <Shield className="w-5 h-5" />
   },
   {
     id: 6,
-    text: "Can we access core tools via API or service accounts (e.g., HubSpot/Zendesk/Gmail/Sheets)?",
+    text: "Is your business data organised, accurate, and consistent enough to be reliably used by AI systems?",
     icon: <Code className="w-5 h-5" />
   },
   {
     id: 7,
-    text: "Do we have sample data and test accounts for safe development/UAT?",
+    text: "Do your employees have access to approved AI tools for their day-to-day work?",
     icon: <Database className="w-5 h-5" />
   },
   {
     id: 8,
-    text: "Are refusal rules (no medical/legal/financial advice, risky actions) and escalation paths defined?",
+    text: "Does your organisation have visibility into which AI tools and platforms employees are currently using?",
     icon: <AlertTriangle className="w-5 h-5" />
   },
   {
     id: 9,
-    text: "Can we log every agent/tool action with inputs/outputs (audit trail)?",
+    text: "Does your organisation have clear guidelines defining what company or customer information can and cannot be shared with AI tools?",
     icon: <FileText className="w-5 h-5" />
   },
   {
     id: 10,
-    text: "Is an internal owner assigned (with time for reviews during both sprints)?",
+    text: "Do you have a defined process for reviewing and approving new AI tools before they are introduced into your organisation?",
     icon: <Users className="w-5 h-5" />
   },
   {
     id: 11,
-    text: "Are success metrics agreed and easy to track (e.g., deflection %, first-response time, touches/shipment, speed-to-lead)?",
+    text: "Is there a clearly identified person or team responsible for leading and managing your AI initiatives?",
     icon: <BarChart3 className="w-5 h-5" />
   },
   {
     id: 12,
-    text: "Have we selected 8–10 intents/actions to automate in Sprint 1?",
+    text: "Do your teams have the skills and training required to use AI effectively and responsibly?",
     icon: <Settings className="w-5 h-5" />
   },
   {
     id: 13,
-    text: "Do we have a go-live comms & training plan for affected teams?",
+    text: "Are your existing business systems and software capable of integrating with AI tools or automation platforms?",
     icon: <MessageSquare className="w-5 h-5" />
   },
   {
     id: 14,
-    text: "Have we estimated LLM/voice costs and set quotas/rate limits to control spend?",
+    text: "Does your organisation have a way to measure the business impact and ROI of its current or planned AI initiatives?",
     icon: <Calculator className="w-5 h-5" />
   },
   {
     id: 15,
-    text: "Are we comfortable with least-privilege access in vendor cloud, or do we prefer deployment in our cloud/VPC?",
+    text: "Is your organisation ready to move from experimenting with AI to implementing a real AI-powered workflow or solution?",
     icon: <Cloud className="w-5 h-5" />
   }
 ];

@@ -35,6 +35,7 @@ import { blogPosts } from '../data/blogData';
 import ClaudeAutomationsPage from '../pages/public/services/Claudeautomationspage';
 import AdminLogin from '../pages/admin/AdminLogin';
 import AdminCRM from '../pages/admin/AdminCRM';
+import MediumBlogPreview from '../pages/dev/MediumBlogPreview';
 
 const ScrollToTop = () => {
   const { pathname, hash, state } = useLocation();
@@ -94,6 +95,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ onOpenChatbot }) => (
       <Route path="/blog/:slug" element={<BlogSingleView />} />
       <Route path="/blog-preview/:id" element={<BlogSingleView />} />
       <Route path="/admin/blog-preview/:id" element={<BlogSingleView />} />
+      <Route path="/dev/medium-preview" element={<MediumBlogPreview />} />
       <Route path="/event/:slug" element={<SingleEventPage />} />
 
       {/* Package details */}

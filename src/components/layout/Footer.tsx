@@ -1,10 +1,9 @@
-import { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import SectionLink from '../ui/SectionLink';
-import { ArrowUp, Mail, Phone, MapPin } from 'lucide-react';
+import { ArrowUp, Mail, Phone } from 'lucide-react';
 import { FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import Container from '../ui/Container';
-import { subscribeNewsletter } from '../../services/newsletterService';
+// import { subscribeNewsletter } from '../../services/newsletterService';
 import logo from '../../assets/teeny-logo.svg';
 
 interface Service {
@@ -23,9 +22,10 @@ const services: Service[] = [
 
 const Footer = () => {
   const location = useLocation();
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  // Newsletter subscription commented out per request
+  // const [email, setEmail] = useState('');
+  // const [message, setMessage] = useState('');
+  // const [isLoading, setIsLoading] = useState(false);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -34,28 +34,29 @@ const Footer = () => {
     });
   };
 
+  /*
   const handleSubscribe = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setIsLoading(true);
-  setMessage('');
+    e.preventDefault();
+    setIsLoading(true);
+    setMessage('');
 
-  try {
-    await subscribeNewsletter(email); // pass email here
-
-    setMessage('Successfully subscribed!');
-    setEmail('');
-  } catch (error: any) {
-    if (error.response?.status === 409) {
-      setMessage('This email is already subscribed.');
-    } else if (error.response?.data?.message) {
-      setMessage(error.response.data.message);
-    } else {
-      setMessage('An error occurred. Please try again later.');
+    try {
+      await subscribeNewsletter(email);
+      setMessage('Successfully subscribed!');
+      setEmail('');
+    } catch (error: any) {
+      if (error.response?.status === 409) {
+        setMessage('This email is already subscribed.');
+      } else if (error.response?.data?.message) {
+        setMessage(error.response.data.message);
+      } else {
+        setMessage('An error occurred. Please try again later.');
+      }
+    } finally {
+      setIsLoading(false);
     }
-  } finally {
-    setIsLoading(false);
-  }
-};
+  };
+  */
 
 
   if (location.pathname.startsWith('/admin') || location.pathname.startsWith('/login')) {
@@ -177,10 +178,10 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <Mail size={18} className="text-[#3b82f6] mt-1 flex-shrink-0" />
                 <a
-                  href="mailto:anisha.singla@teenytechtrek.com"
+                  href="mailto:anishasingla@teenytechtrek.com"
                   className="text-[#93c5fd] hover:text-white text-sm transition-colors duration-300"
                 >
-                  anisha.singla@teenytechtrek.com
+                  anishasingla@teenytechtrek.com
                 </a>
               </li>
               <li className="flex items-start gap-3">
@@ -194,17 +195,13 @@ const Footer = () => {
                   </a>
                 </div>
               </li>
-              <li className="flex items-start gap-3">
-                <MapPin size={18} className="text-[#3b82f6] mt-1 flex-shrink-0" />
-                <span className="text-[#93c5fd] text-sm">
-                 2nd Floor, Kalkat Bhawan, Sector 66B, Block C, Gmada Aerocity, Sahibzada Ajit Singh Nagar, Chachu Majra, Punjab 140306
-                </span>
-              </li>
             </ul>
           </div>
         </div>
 
-         <div className="max-w-3xl mx-auto mb-16 text-center bg-[#3b82f6]/10 p-8 rounded-xl backdrop-blur-sm border border-[#3b82f6]/20">
+        {/* Newsletter Section - Commented out */}
+        {/*
+        <div className="max-w-3xl mx-auto mb-16 text-center bg-[#3b82f6]/10 p-8 rounded-xl backdrop-blur-sm border border-[#3b82f6]/20">
           <h3 className="mb-3 text-2xl font-bold">Stay Updated</h3>
           <p className="text-[#93c5fd] mb-6">
             Subscribe to our newsletter for the latest AI trends and company updates
@@ -233,6 +230,7 @@ const Footer = () => {
             </p>
           )}
         </div>
+        */}
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-[#93c5fd]/20 flex flex-col md:flex-row justify-between items-center gap-6">

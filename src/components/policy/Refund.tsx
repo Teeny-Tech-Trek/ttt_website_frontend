@@ -57,8 +57,8 @@ const Refund: React.FC = () => {
           <h2 className="text-2xl font-semibold mt-6 mb-4">4. Process for Requesting a Refund</h2>
           <p className="mb-4">
             To request a refund, please email{' '}
-            <a href="mailto:anisha.singla@teenytechtrek.com" className="text-blue-600 underline hover:text-blue-800 transition-colors">
-              anisha.singla@teenytechtrek.com
+            <a href="mailto:anishasingla@teenytechtrek.com" className="text-blue-600 underline hover:text-blue-800 transition-colors">
+              anishasingla@teenytechtrek.com
             </a>{' '}
             with:
           </p>
@@ -90,8 +90,8 @@ const Refund: React.FC = () => {
             <strong>Teeny Tech Trek</strong>
             <br />
             📧{' '}
-            <a href="mailto:anisha.singla@teenytechtrek.com" className="text-blue-600 underline hover:text-blue-800 transition-colors">
-              anisha.singla@teenytechtrek.com
+            <a href="mailto:anishasingla@teenytechtrek.com" className="text-blue-600 underline hover:text-blue-800 transition-colors">
+              anishasingla@teenytechtrek.com
             </a>
             <br />
             🌐{' '}

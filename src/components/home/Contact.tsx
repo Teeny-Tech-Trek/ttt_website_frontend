@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { CheckCircle2, Send, Mail, Phone, MapPin } from 'lucide-react';
@@ -96,8 +96,8 @@ const Contact = () => {
     {
       icon: <Mail size={20} className="text-[#3b82f6]" />,
       title: 'Email',
-      value: 'anisha.singla@teenytechtrek.com',
-      href: 'mailto:anisha.singla@teenytechtrek.com',
+      value: 'anishasingla@teenytechtrek.com',
+      href: 'mailto:anishasingla@teenytechtrek.com',
     },
     {
       icon: <Phone size={20} className="text-[#3b82f6]" />,
@@ -304,10 +304,10 @@ const Contact = () => {
                         Thanks for reaching out — we'll be in touch shortly. If you need to add to your message,
                         email{' '}
                         <a
-                          href="mailto:anisha.singla@teenytechtrek.com"
+                          href="mailto:anishasingla@teenytechtrek.com"
                           className="font-medium text-[#3b82f6] hover:underline"
                         >
-                          anisha.singla@teenytechtrek.com
+                          anishasingla@teenytechtrek.com
                         </a>
                         .
                       </p>

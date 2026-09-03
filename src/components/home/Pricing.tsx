@@ -522,10 +522,10 @@
 //           <p className="mt-6 text-lg text-gray-600">
 //             Can't use the scheduler? Email us at{" "}
 //             <a
-//               href="mailto:anisha.singla@teenytechtrek.com"
-//               className="font-medium text-blue-900 hover:underline"
+//               href="mailto:anishasingla@teenytechtrek.com"
+//               className="font-medium text-[#3b82f6] hover:underline"
 //             >
-//               anisha.singla@teenytechtrek.com
+//               anishasingla@teenytechtrek.com
 //             </a>
 //           </p>
 //         </motion.div>

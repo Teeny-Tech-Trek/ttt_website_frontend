@@ -38,7 +38,7 @@ const HOME_SCHEMA_JSON = `{
         {
           "@type": "ContactPoint",
           "contactType": "customer support",
-          "email": "anisha.singla@teenytechtrek.com",
+          "email": "anishasingla@teenytechtrek.com",
           "telephone": "+91-98558-06696",
           "areaServed": "IN",
           "availableLanguage": ["English", "Hindi", "Punjabi"]
@@ -46,7 +46,7 @@ const HOME_SCHEMA_JSON = `{
         {
           "@type": "ContactPoint",
           "contactType": "sales",
-          "email": "anisha.singla@teenytechtrek.com",
+          "email": "anishasingla@teenytechtrek.com",
           "telephone": "+1-647-864-5465",
           "areaServed": ["CA", "US"],
           "availableLanguage": "English"
@@ -77,7 +77,7 @@ const HOME_SCHEMA_JSON = `{
       "image": "https://www.teenytechtrek.com/assets/teeny-logo-O8OlOmsa.svg",
       "url": "https://www.teenytechtrek.com/",
       "telephone": "+91-98558-06696",
-      "email": "anisha.singla@teenytechtrek.com",
+      "email": "anishasingla@teenytechtrek.com",
       "priceRange": "₹₹",
       "address": {
         "@type": "PostalAddress",

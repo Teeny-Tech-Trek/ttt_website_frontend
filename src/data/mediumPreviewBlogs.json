@@ -1,0 +1,1608 @@
+[
+  {
+    "title": "Three Years of Prompting",
+    "slug": "three-years-of-prompting",
+    "summary": "What Got Easy, and What Got DangerousThree years ago we couldn’t reliably get a model to write a working function without three rounds of copy-paste and swearing. Today, a four-word prompt — “handl...",
+    "category": "AI Insights",
+    "author": "Anisha Singla",
+    "readTime": "4 min read",
+    "media_cid": "https://cdn-images-1.medium.com/max/1024/1*PDFp9breyoFoLGGQmXzZ-Q.png",
+    "featured_alt": "Three Years of Prompting",
+    "featured_caption": "",
+    "status": "published",
+    "tags": [],
+    "content": [
+      {
+        "id": "blk-1788434299734-1",
+        "type": "paragraph",
+        "text": "**What Got Easy, and What Got Dangerous**Three years ago we couldn’t reliably get a model to write a working function without three rounds of copy-paste and swearing. Today, a four-word prompt — “handle failed jobs, retry them” — is enough to get a clean, idiomatic, repo-matching file in under a minute. That’s the whole prompting story, and it’s a genuinely good one."
+      },
+      {
+        "id": "blk-1788434299735-2",
+        "type": "paragraph",
+        "text": "It’s also not the whole story. Somewhere in year three, that same four-word prompt generated a retry loop with no ceiling, and it took eleven quiet days and a midnight traffic tick for a twelvefold spike in database connections to prove it. Prompting had gotten good. Review hadn’t caught up."
+      },
+      {
+        "id": "blk-1788434299735-3",
+        "type": "heading",
+        "level": 2,
+        "text": "Year One: Prompting as a Magic Trick"
+      },
+      {
+        "id": "blk-1788434299735-4",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*y9oyBgkhPGd1uBKKOUFq9g.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299735-5",
+        "type": "paragraph",
+        "text": "Getting a model to produce anything usable felt like winning a small argument. We rewrote the same prompt five different ways to coax out a working solution. Review was easy by necessity — the output was rough enough that everyone read it carefully, because it was obviously unfinished. Skepticism was free."
+      },
+      {
+        "id": "blk-1788434299735-6",
+        "type": "heading",
+        "level": 2,
+        "text": "Year Two: Prompting as Muscle Memory"
+      },
+      {
+        "id": "blk-1788434299735-7",
+        "type": "paragraph",
+        "text": "We learned the shapes that worked: describe the pattern already in the repo, name the function, state the constraint. The model started returning code that looked like ours. Review got faster because the code got better — and for a while that felt like nothing but a win. What we didn’t notice: review was getting faster for the wrong reason. It wasn’t that we’d gotten better at reviewing. The code had just gotten good enough to stop triggering our suspicion."
+      },
+      {
+        "id": "blk-1788434299735-8",
+        "type": "heading",
+        "level": 2,
+        "text": "Year Three: The Skill We Never Practiced"
+      },
+      {
+        "id": "blk-1788434299735-9",
+        "type": "paragraph",
+        "text": "“Handle failed jobs, retry them” produced a 38-line file, retry-worker.ts, that read cleanly and matched repo patterns. Review took four minutes. Two approvals, zero questions — a Friday afternoon, a small diff, and small diffs get waved through."
+      },
+      {
+        "id": "blk-1788434299735-10",
+        "type": "paragraph",
+        "text": "It merged. It deployed on a Tuesday. For eleven days, nothing happened — every dashboard stayed green. Then it was midnight, traffic ticked up only slightly, and database connections spiked to roughly twelve times normal. The cause: one missing line. A retry loop with no ceiling."
+      },
+      {
+        "id": "blk-1788434299735-11",
+        "type": "paragraph",
+        "text": "The prompt hadn’t failed. It was a reasonable ask, and the model did exactly what was asked. It never stopped to ask what would stop the loop. That’s not a prompting failure — it’s a judgment failure, and judgment was the skill three years of good prompting never taught us to practice."
+      },
+      {
+        "id": "blk-1788434299735-12",
+        "type": "heading",
+        "level": 2,
+        "text": "Four Ways Three Years of Good Prompting Broke Our Review Habits"
+      },
+      {
+        "id": "blk-1788434299735-13",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*G9ZEG-RBqZ2RvDOrIYGAmA.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299736-14",
+        "type": "paragraph",
+        "text": "**1. Fluent code invites skimming** — clean output reads like it was written by someone careful, so we stopped reading it like it might not be."
+      },
+      {
+        "id": "blk-1788434299736-15",
+        "type": "paragraph",
+        "text": "**2. Green checks stopped meaning what we thought** — CI went green in ninety seconds, on an empty database, with nothing to load-test the one thing that broke."
+      },
+      {
+        "id": "blk-1788434299736-16",
+        "type": "paragraph",
+        "text": "**3. Small diffs got waved through** — 38 lines, four minutes, zero questions. Accepting generated code is a shallower act than authoring it."
+      },
+      {
+        "id": "blk-1788434299736-17",
+        "type": "paragraph",
+        "text": "**4. Quiet stopped meaning safe** — eleven calm days was eleven days where the retry branch never had a reason to fire, not eleven days of proof."
+      },
+      {
+        "id": "blk-1788434299736-18",
+        "type": "heading",
+        "level": 2,
+        "text": "The Three Questions Good Prompting Never Taught Us to Ask"
+      },
+      {
+        "id": "blk-1788434299736-19",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*I-NGMWKHPSzy4oapApQWBg.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299737-20",
+        "type": "paragraph",
+        "text": "• **Read it slower when it reads well.** Fluency is not evidence."
+      },
+      {
+        "id": "blk-1788434299737-21",
+        "type": "paragraph",
+        "text": "• **Ask what stops this loop, out loud.** Every retry needs an explicit ceiling, not an assumed one."
+      },
+      {
+        "id": "blk-1788434299737-22",
+        "type": "paragraph",
+        "text": "• **Test it under load before you trust it.** Test the worker, not the endpoint."
+      },
+      {
+        "id": "blk-1788434299737-23",
+        "type": "heading",
+        "level": 2,
+        "text": "How We Build Now"
+      },
+      {
+        "id": "blk-1788434299737-24",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*wYj3ZNlGUfuI9UXaVa3wFA.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299737-25",
+        "type": "paragraph",
+        "text": "• Load-test the worker, not just the endpoint, before merge."
+      },
+      {
+        "id": "blk-1788434299737-26",
+        "type": "paragraph",
+        "text": "• Every loop gets a ceiling before approval — capped retries, a dead-letter queue, an idempotency key."
+      },
+      {
+        "id": "blk-1788434299737-27",
+        "type": "paragraph",
+        "text": "• Make the author explain it, even when the author is the model."
+      },
+      {
+        "id": "blk-1788434299737-28",
+        "type": "paragraph",
+        "text": "• Alert on saturation, not just errors."
+      },
+      {
+        "id": "blk-1788434299737-29",
+        "type": "paragraph",
+        "text": "• Keep the incident-born test permanently in the suite."
+      },
+      {
+        "id": "blk-1788434299737-30",
+        "type": "paragraph",
+        "text": "• Classify what the assistant can even see — four zones: open, scrub-first, sealed, logged. Unclassified defaults to sealed."
+      },
+      {
+        "id": "blk-1788434299737-31",
+        "type": "heading",
+        "level": 2,
+        "text": "The Honest Part"
+      },
+      {
+        "id": "blk-1788434299737-32",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*1XNwbq6VZyDgzg_ONL1ahA.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299738-33",
+        "type": "paragraph",
+        "text": "Three years of prompting made us fast. It did not make us careful — those turned out to be two different skills. We had a review process on paper, and we still approved that retry loop in four minutes, because “review” had quietly turned into “skim.”"
+      },
+      {
+        "id": "blk-1788434299738-34",
+        "type": "paragraph",
+        "text": "We didn’t ban the AI afterward. We banned the skim."
+      },
+      {
+        "id": "blk-1788434299738-35",
+        "type": "paragraph",
+        "text": "**Practical over perfect. Build small. Launch fast. Scale smart.**"
+      },
+      {
+        "id": "blk-1788434299738-36",
+        "type": "paragraph",
+        "text": "What’s the retry loop in your stack that three years of good prompting never taught you to look for?"
+      }
+    ],
+    "metaTitle": "Three Years of Prompting | Teeny Tech Trek",
+    "metaDescription": "What Got Easy, and What Got DangerousThree years ago we couldn’t reliably get a model to write a working function without three rounds of copy-paste and swearing. Today, a four-word prompt — “handl...",
+    "canonicalUrl": "https://medium.com/@teenytechtrek/three-years-of-prompting-5b09d75f93c1?source=rss-288e3d814685------2",
+    "views_count": 0,
+    "published_at": "2026-09-01T14:26:01.000Z",
+    "medium_guid": "https://medium.com/p/5b09d75f93c1",
+    "medium_url": "https://medium.com/@teenytechtrek/three-years-of-prompting-5b09d75f93c1?source=rss-288e3d814685------2",
+    "medium_updated_at": "2026-09-01T14:26:01.086Z",
+    "id": "medium-1"
+  },
+  {
+    "title": "A Million-Token Context Window Is Not a Million Tokens of Memory",
+    "slug": "a-million-token-context-window-is-not-a-million-tokens-of-memory",
+    "summary": "Bigger windows were sold as the end of retrieval. Here is what actually degrades when you stuff the prompt — and what to do instead.",
+    "category": "context-engineering",
+    "author": "Anisha Singla",
+    "readTime": "5 min read",
+    "media_cid": "https://cdn-images-1.medium.com/max/1024/1*UVKDeWTq7eod_lQiPEVrRw.png",
+    "featured_alt": "A Million-Token Context Window Is Not a Million Tokens of Memory",
+    "featured_caption": "",
+    "status": "published",
+    "tags": [
+      "context-engineering",
+      "ai-agent",
+      "ai-engineering",
+      "teeny-tech-trek",
+      "llm"
+    ],
+    "content": [
+      {
+        "id": "blk-1788434299749-1",
+        "type": "paragraph",
+        "text": "Bigger windows were sold as the end of retrieval. Here is what actually degrades when you stuff the prompt — and what to do instead."
+      },
+      {
+        "id": "blk-1788434299749-2",
+        "type": "paragraph",
+        "text": "The pitch was irresistible."
+      },
+      {
+        "id": "blk-1788434299749-3",
+        "type": "paragraph",
+        "text": "“Context windows are huge now. Stop building retrieval pipelines. Just paste everything in and let the model figure it out.”"
+      },
+      {
+        "id": "blk-1788434299749-4",
+        "type": "paragraph",
+        "text": "I understand why people believed it. For a lean team, it sounds like an entire layer of engineering you get to skip."
+      },
+      {
+        "id": "blk-1788434299749-5",
+        "type": "paragraph",
+        "text": "We tested it properly last year, on a support agent for a client — long sessions, lots of tool calls, documents flowing in and out. What we watched happen has shaped how we design every system since."
+      },
+      {
+        "id": "blk-1788434299750-6",
+        "type": "paragraph",
+        "text": "The agent got worse the longer a session ran."
+      },
+      {
+        "id": "blk-1788434299750-7",
+        "type": "paragraph",
+        "text": "Not broken. Worse. By turn 30 it was contradicting a decision it had made at turn 12 — a decision sitting right there, inside its own context. The information was not missing. The model just wasn’t using it."
+      },
+      {
+        "id": "blk-1788434299750-8",
+        "type": "heading",
+        "level": 2,
+        "text": "The window is not the memory"
+      },
+      {
+        "id": "blk-1788434299750-9",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*kI5YO_38ogI34fASTHs1oA.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299750-10",
+        "type": "paragraph",
+        "text": "A context window is what the model can see. Memory implies it uses all of it, equally well. It does not — and the gap between those two things is where products quietly rot."
+      },
+      {
+        "id": "blk-1788434299750-11",
+        "type": "paragraph",
+        "text": "Four mechanisms, all measurable:"
+      },
+      {
+        "id": "blk-1788434299750-12",
+        "type": "paragraph",
+        "text": "**Attention cost grows quadratically.** Double the input and the work roughly quadruples. You feel it as latency, and then as a bill. Long before quality becomes a question, cost and speed already are."
+      },
+      {
+        "id": "blk-1788434299750-13",
+        "type": "paragraph",
+        "text": "**Models lose the middle.** Accuracy on facts placed mid-context sags while the beginning and the end stay sharp — the “lost in the middle” effect, reproduced again and again since 2023. Which means the position of a fact in your prompt changes whether the model uses it. Read that again: where you paste something affects whether your system gets it right."
+      },
+      {
+        "id": "blk-1788434299750-14",
+        "type": "paragraph",
+        "text": "**Conflicts do not get resolved. They get averaged.** Put an old policy and a new policy in the same window and the model does not reliably pick the right one — it produces an answer somewhere between them. Stale context is not ignored. It is blended in."
+      },
+      {
+        "id": "blk-1788434299750-15",
+        "type": "paragraph",
+        "text": "**Agent loops accumulate noise.** Every turn appends tool outputs, previous reasoning, half-relevant retrievals. Signal-to-noise falls with every step. That is why our agent contradicted itself: the decision from turn 12 was drowning under twenty turns of accumulated debris."
+      },
+      {
+        "id": "blk-1788434299750-16",
+        "type": "paragraph",
+        "text": "And there is a fifth cost — the one users feel first. **Time-to-first-token is dominated by prefill.** Every token you paste gets processed before the model says a word. A bloated prompt is latency, on every single call."
+      },
+      {
+        "id": "blk-1788434299750-17",
+        "type": "heading",
+        "level": 2,
+        "text": "Context is a budget, not a bucket"
+      },
+      {
+        "id": "blk-1788434299750-18",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*4Rm-Jx9zbj5s4OPiDB2oSw.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299750-19",
+        "type": "paragraph",
+        "text": "The shift that fixed it for us: treat context as something you spend, deliberately, on every call — not a place you dump things."
+      },
+      {
+        "id": "blk-1788434299751-20",
+        "type": "paragraph",
+        "text": "**Retrieve, then filter. Don’t retrieve more.** Wide first-stage retrieval, aggressive reranking, and only the survivors enter the window. The goal is not maximum information. It is maximum signal."
+      },
+      {
+        "id": "blk-1788434299751-21",
+        "type": "paragraph",
+        "text": "**Instructions after the documents.** The end of the prompt is prime real estate — models attend to it best. We place the question and the instructions after the reference material, not before. Small change. Repeatable gain."
+      },
+      {
+        "id": "blk-1788434299751-22",
+        "type": "paragraph",
+        "text": "**Compact history into state.** We stopped replaying transcripts. After each turn, the loop updates a small structured state — decisions made, facts confirmed, what is still open — and that is what future turns see. Turn 31 reads a summary of thirty turns, not the turns themselves. The self-contradictions stopped."
+      },
+      {
+        "id": "blk-1788434299751-23",
+        "type": "paragraph",
+        "text": "**Prefix caching for the stable half.** System prompt, tool definitions, standing documents — put them first, keep them byte-stable, and you stop re-paying for them on every call. Providers price cached tokens at a fraction of fresh ones. This is free money most teams leave on the table."
+      },
+      {
+        "id": "blk-1788434299751-24",
+        "type": "paragraph",
+        "text": "**Hard budgets per stage.** Retrieval gets X tokens, history gets Y, tool outputs get Z. Exceed the budget and something must be evicted or compressed — visibly, in code. Degradation becomes an error you can see, instead of a vibe you cannot debug."
+      },
+      {
+        "id": "blk-1788434299751-25",
+        "type": "heading",
+        "level": 2,
+        "text": "The counterintuitive part"
+      },
+      {
+        "id": "blk-1788434299751-26",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*9yfpz09HVAWlYsBeuaR7Hg.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299751-27",
+        "type": "paragraph",
+        "text": "The fix for our degrading agent was not a bigger window. It was not a better model."
+      },
+      {
+        "id": "blk-1788434299751-28",
+        "type": "paragraph",
+        "text": "We gave it less. Roughly 70% less context per call, all of it curated. Quality went up. Latency dropped by half. The bill fell far enough that the client asked whether we had switched providers."
+      },
+      {
+        "id": "blk-1788434299751-29",
+        "type": "paragraph",
+        "text": "More is not the same as better. Not for people. Not for models."
+      },
+      {
+        "id": "blk-1788434299751-30",
+        "type": "heading",
+        "level": 2,
+        "text": "The honest part"
+      },
+      {
+        "id": "blk-1788434299751-31",
+        "type": "paragraph",
+        "text": "Long context is genuinely brilliant for some jobs — whole-codebase questions, single-document deep reads, a contract you truly need end-to-end. When the task needs everything, the window is the right tool, and I am glad it exists."
+      },
+      {
+        "id": "blk-1788434299751-32",
+        "type": "paragraph",
+        "text": "The skill is knowing which regime you are in. “This task needs all of it” is an engineering judgement. “Paste everything, the window is big” is the absence of one."
+      },
+      {
+        "id": "blk-1788434299751-33",
+        "type": "heading",
+        "level": 2,
+        "text": "Where that leaves you"
+      },
+      {
+        "id": "blk-1788434299751-34",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*lLkat4hZ5kV8dhWuTzG2qA.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299751-35",
+        "type": "paragraph",
+        "text": "If your assistant gets dumber as sessions get longer, you do not have a model problem. You have a context problem."
+      },
+      {
+        "id": "blk-1788434299751-36",
+        "type": "paragraph",
+        "text": "Curate what goes in. Put instructions at the end. Turn history into state. Cache the stable half. Budget the rest."
+      },
+      {
+        "id": "blk-1788434299752-37",
+        "type": "paragraph",
+        "text": "**Build small. Launch fast. Scale smart.** — and spend your tokens like they are your money. Because they are. ✨"
+      },
+      {
+        "id": "blk-1788434299752-38",
+        "type": "paragraph",
+        "text": "What is the longest-running session your system handles well — honestly? Go check before you answer. Then tell me what you found."
+      },
+      {
+        "id": "blk-1788434299752-39",
+        "type": "paragraph",
+        "text": "*Written by Anisha Singla, founder of Teeny Tech Trek. She builds practical AI systems for lean teams, with the responsibility layer designed in from the start.*"
+      }
+    ],
+    "metaTitle": "A Million-Token Context Window Is Not a Million Tokens of Memory | Teeny Tech Trek",
+    "metaDescription": "Bigger windows were sold as the end of retrieval. Here is what actually degrades when you stuff the prompt — and what to do instead.",
+    "canonicalUrl": "https://medium.com/@teenytechtrek/a-million-token-context-window-is-not-a-million-tokens-of-memory-669739517305?source=rss-288e3d814685------2",
+    "views_count": 0,
+    "published_at": "2026-08-31T14:21:01.000Z",
+    "medium_guid": "https://medium.com/p/669739517305",
+    "medium_url": "https://medium.com/@teenytechtrek/a-million-token-context-window-is-not-a-million-tokens-of-memory-669739517305?source=rss-288e3d814685------2",
+    "medium_updated_at": "2026-08-31T14:21:01.719Z",
+    "id": "medium-2"
+  },
+  {
+    "title": "You Changed One Line of the Prompt. What Else Broke?",
+    "slug": "you-changed-one-line-of-the-prompt-what-else-broke",
+    "summary": "LLM products without regression tests are not tested. They are hoped for. Here is the eval setup that lets a lean team ship on a Friday.",
+    "category": "testing",
+    "author": "Anisha Singla",
+    "readTime": "5 min read",
+    "media_cid": "https://cdn-images-1.medium.com/max/1024/1*oL3toPsryG0Gha8QR17j-A.png",
+    "featured_alt": "You Changed One Line of the Prompt. What Else Broke?",
+    "featured_caption": "",
+    "status": "published",
+    "tags": [
+      "testing",
+      "llmeval",
+      "ai-engineering",
+      "prompt-engineering",
+      "teeny-tech-trek"
+    ],
+    "content": [
+      {
+        "id": "blk-1788434299756-1",
+        "type": "paragraph",
+        "text": "*LLM products without regression tests are not tested. They are hoped for. Here is the eval setup that lets a lean team ship on a Friday.*"
+      },
+      {
+        "id": "blk-1788434299756-2",
+        "type": "paragraph",
+        "text": "It was supposed to be a small improvement."
+      },
+      {
+        "id": "blk-1788434299756-3",
+        "type": "paragraph",
+        "text": "One line in a system prompt, for one client, to make refusals sound less robotic. We tested it on the three cases that had annoyed them. All three read beautifully. We shipped it. Friday evening."
+      },
+      {
+        "id": "blk-1788434299756-4",
+        "type": "paragraph",
+        "text": "Monday morning: three complaints — on queries that had nothing to do with refusals. The bot had started adding warm little disclaimers to answers that needed to be exact. Somewhere in making it friendlier, we had made it softer everywhere."
+      },
+      {
+        "id": "blk-1788434299756-5",
+        "type": "paragraph",
+        "text": "We spent that weekend reconstructing which change caused what, like archaeologists of our own repo."
+      },
+      {
+        "id": "blk-1788434299756-6",
+        "type": "paragraph",
+        "text": "The embarrassing part? We would never ship code this way. Every codebase we run has tests that scream when a change breaks something far away. Our prompts had… vibes."
+      },
+      {
+        "id": "blk-1788434299756-7",
+        "type": "heading",
+        "level": 2,
+        "text": "Why your testing instincts don’t transfer"
+      },
+      {
+        "id": "blk-1788434299756-8",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*6ZYtMZ-JogA0W6BoB4EXAA.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299756-9",
+        "type": "paragraph",
+        "text": "Every engineering habit you have quietly assumes three things. The same input gives the same output. Correctness can be checked with equality. And failures throw errors."
+      },
+      {
+        "id": "blk-1788434299756-10",
+        "type": "paragraph",
+        "text": "LLMs break all three. Outputs vary run to run. “Correct” is a judgement, not a string match. And a worse answer does not throw an exception — it just goes out to a customer, politely."
+      },
+      {
+        "id": "blk-1788434299756-11",
+        "type": "paragraph",
+        "text": "So teams fall back on the only tool left: someone senior eyeballs three examples before shipping. That is not testing. That is hoping, with extra steps."
+      },
+      {
+        "id": "blk-1788434299756-12",
+        "type": "heading",
+        "level": 2,
+        "text": "The golden set: your real safety net"
+      },
+      {
+        "id": "blk-1788434299756-13",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*vufxdZV18afs6TAxfL-5FA.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299757-14",
+        "type": "paragraph",
+        "text": "The fix is not clever. It is a dataset."
+      },
+      {
+        "id": "blk-1788434299757-15",
+        "type": "paragraph",
+        "text": "50 to 200 real cases, with the expected behaviour written down. And the word real is doing all the work here — pull them from actual tickets, chats, and failures, not from your imagination. Your imagination is where the easy cases live. Production is where the weird ones do."
+      },
+      {
+        "id": "blk-1788434299757-16",
+        "type": "paragraph",
+        "text": "Every time the system fails in the wild, that case goes into the set. Your test suite becomes a fossil record of every way the product has ever embarrassed you. That is the point. It can only embarrass you the same way once."
+      },
+      {
+        "id": "blk-1788434299757-17",
+        "type": "heading",
+        "level": 2,
+        "text": "Assert properties, not strings"
+      },
+      {
+        "id": "blk-1788434299757-18",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*D8O0xlMW7JCzIdQn5mZSRQ.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299757-19",
+        "type": "paragraph",
+        "text": "You cannot check exact wording. You also don’t need to. Almost everything worth checking is a property:"
+      },
+      {
+        "id": "blk-1788434299757-20",
+        "type": "paragraph",
+        "text": "• Did it cite a source? (existence)"
+      },
+      {
+        "id": "blk-1788434299757-21",
+        "type": "paragraph",
+        "text": "• Did it refuse when it should — and not when it shouldn’t? (behaviour)"
+      },
+      {
+        "id": "blk-1788434299757-22",
+        "type": "paragraph",
+        "text": "• Is the output valid against the schema? (structure)"
+      },
+      {
+        "id": "blk-1788434299757-23",
+        "type": "paragraph",
+        "text": "• Did it hand off to a human at the right moment? (routing)"
+      },
+      {
+        "id": "blk-1788434299757-24",
+        "type": "paragraph",
+        "text": "• Does every number in the answer appear in the retrieved context? (grounding)"
+      },
+      {
+        "id": "blk-1788434299757-25",
+        "type": "paragraph",
+        "text": "All of these are plain code. Deterministic, cheap, brutal. In our suites, property checks catch most regressions before any AI judge gets involved."
+      },
+      {
+        "id": "blk-1788434299757-26",
+        "type": "heading",
+        "level": 2,
+        "text": "LLM-as-judge — with handcuffs"
+      },
+      {
+        "id": "blk-1788434299757-27",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*GKgeo388R0Mm7H2hr49mRw.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299757-28",
+        "type": "paragraph",
+        "text": "For the subjective dimensions — tone, helpfulness — use a model to grade outputs. But two rules, or you have just added a second unmeasured system on top of the first:"
+      },
+      {
+        "id": "blk-1788434299757-29",
+        "type": "paragraph",
+        "text": "**Pin the judge.** Fixed model version, fixed rubric, temperature zero. A drifting judge is a moving goalpost."
+      },
+      {
+        "id": "blk-1788434299757-30",
+        "type": "paragraph",
+        "text": "**Validate it against humans first.** Grade fifty outputs yourself, then check that the judge agrees with you most of the time. If it does not, fix the rubric before you trust a single score."
+      },
+      {
+        "id": "blk-1788434299757-31",
+        "type": "paragraph",
+        "text": "Judge scores are alarms, not verdicts. When one drops, a human looks."
+      },
+      {
+        "id": "blk-1788434299757-32",
+        "type": "heading",
+        "level": 2,
+        "text": "Run it like a lab, not a lottery"
+      },
+      {
+        "id": "blk-1788434299758-33",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*sfonO6UIWMxr3_DfBgvOYg.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299758-34",
+        "type": "paragraph",
+        "text": "**Temperature zero for regression runs** — so a diff means your change caused it. A separate, smaller run at production temperature — so you know your variance. Two numbers, two different questions."
+      },
+      {
+        "id": "blk-1788434299758-35",
+        "type": "paragraph",
+        "text": "**Version prompts like code.** In git. Reviewed. Diffable. A prompt is production logic that happens to be written in English."
+      },
+      {
+        "id": "blk-1788434299758-36",
+        "type": "paragraph",
+        "text": "**Pin model versions.** The pinned snapshot, not the moving alias — because a provider updating the model underneath you is an untracked deploy to your product. When you upgrade, it is deliberate: run the suite, read the diffs, then switch."
+      },
+      {
+        "id": "blk-1788434299758-37",
+        "type": "paragraph",
+        "text": "**Wire it into CI.** A prompt change opens a pull request, the suite runs, regressions block the merge. The Friday change that opened this article would have been stopped by a gate we could have built in a week."
+      },
+      {
+        "id": "blk-1788434299758-38",
+        "type": "heading",
+        "level": 2,
+        "text": "The honest part"
+      },
+      {
+        "id": "blk-1788434299758-39",
+        "type": "paragraph",
+        "text": "Building the golden set is the least fun day of the project. It is slow, it is manual, and it produces nothing a client can see."
+      },
+      {
+        "id": "blk-1788434299758-40",
+        "type": "paragraph",
+        "text": "Skipping it does not remove the testing. It moves it — onto your users, in production, with your name attached."
+      },
+      {
+        "id": "blk-1788434299758-41",
+        "type": "paragraph",
+        "text": "Every system we have run long enough tells the same story. Month two is slow because you are writing evals. Month six is fast because you did."
+      },
+      {
+        "id": "blk-1788434299758-42",
+        "type": "heading",
+        "level": 2,
+        "text": "Where that leaves you"
+      },
+      {
+        "id": "blk-1788434299758-43",
+        "type": "paragraph",
+        "text": "You would not merge code without tests. Your prompts are code that happens to speak English. Give them the same respect."
+      },
+      {
+        "id": "blk-1788434299758-44",
+        "type": "paragraph",
+        "text": "Golden set from real failures. Properties over strings. A pinned judge you have checked. Zero-temperature regressions. Versions in git. A gate in CI."
+      },
+      {
+        "id": "blk-1788434299758-45",
+        "type": "paragraph",
+        "text": "**Build small. Launch fast. Scale smart.** — but let a test suite say it is ready, not a good feeling on a Friday. ✨"
+      },
+      {
+        "id": "blk-1788434299759-46",
+        "type": "paragraph",
+        "text": "When did you last change a prompt in production — and what told you nothing else broke? If the answer is “nothing told me,” start your golden set today. Case number one is whatever broke last week."
+      },
+      {
+        "id": "blk-1788434299759-47",
+        "type": "paragraph",
+        "text": "*Written by Anisha Singla, founder of Teeny Tech Trek. She builds practical AI systems for lean teams, with the responsibility layer designed in from the start.*"
+      }
+    ],
+    "metaTitle": "You Changed One Line of the Prompt. What Else Broke? | Teeny Tech Trek",
+    "metaDescription": "LLM products without regression tests are not tested. They are hoped for. Here is the eval setup that lets a lean team ship on a Friday.",
+    "canonicalUrl": "https://medium.com/@teenytechtrek/you-changed-one-line-of-the-prompt-what-else-broke-4ca7e95474bd?source=rss-288e3d814685------2",
+    "views_count": 0,
+    "published_at": "2026-08-28T13:56:01.000Z",
+    "medium_guid": "https://medium.com/p/4ca7e95474bd",
+    "medium_url": "https://medium.com/@teenytechtrek/you-changed-one-line-of-the-prompt-what-else-broke-4ca7e95474bd?source=rss-288e3d814685------2",
+    "medium_updated_at": "2026-08-28T13:56:01.275Z",
+    "id": "medium-3"
+  },
+  {
+    "title": "Your RAG System Isn’t Hallucinating. It’s Retrieving the Wrong Chunk.",
+    "slug": "your-rag-system-isnt-hallucinating-its-retrieving-the-wrong-chunk",
+    "summary": "The most expensive misdiagnosis in AI right now — and the ten-second test that catches it.",
+    "category": "teeny-tech-trek",
+    "author": "Anisha Singla",
+    "readTime": "5 min read",
+    "media_cid": "https://cdn-images-1.medium.com/max/938/1*O_GHUdv4veqRoSYfYsjqZg.png",
+    "featured_alt": "Your RAG System Isn’t Hallucinating. It’s Retrieving the Wrong Chunk.",
+    "featured_caption": "",
+    "status": "published",
+    "tags": [
+      "teeny-tech-trek",
+      "vector-search",
+      "ai-engineering",
+      "retrieval-augmented-gen",
+      "rags"
+    ],
+    "content": [
+      {
+        "id": "blk-1788434299762-1",
+        "type": "paragraph",
+        "text": "*The most expensive misdiagnosis in AI right now — and the ten-second test that catches it.*"
+      },
+      {
+        "id": "blk-1788434299762-2",
+        "type": "paragraph",
+        "text": "“Your AI is making things up.”"
+      },
+      {
+        "id": "blk-1788434299762-3",
+        "type": "paragraph",
+        "text": "A client said this to me on a call, and honestly, they had every reason to. Their knowledge assistant — built on their own documents, answering from their own policies — had just told a customer something their policy explicitly did not allow. Confidently. With a citation."
+      },
+      {
+        "id": "blk-1788434299762-4",
+        "type": "paragraph",
+        "text": "Hallucination, right? That is what everyone calls it. That is what we called it too, for about a week."
+      },
+      {
+        "id": "blk-1788434299762-5",
+        "type": "paragraph",
+        "text": "We tuned prompts. We added “only answer from the provided context” in four different phrasings. We politely threatened the model. The wrong answers kept coming."
+      },
+      {
+        "id": "blk-1788434299762-6",
+        "type": "paragraph",
+        "text": "Then we did the thing we should have done on day one. We stopped reading the answers and started printing the chunks — the actual text the retrieval step was handing the model before it wrote a single word."
+      },
+      {
+        "id": "blk-1788434299762-7",
+        "type": "paragraph",
+        "text": "The bug was visible in about ten seconds."
+      },
+      {
+        "id": "blk-1788434299763-8",
+        "type": "paragraph",
+        "text": "The model was never inventing anything. It was faithfully summarising the wrong four paragraphs."
+      },
+      {
+        "id": "blk-1788434299763-9",
+        "type": "heading",
+        "level": 2,
+        "text": "A RAG pipeline is two systems. Stop testing it as one."
+      },
+      {
+        "id": "blk-1788434299763-10",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*CLcoDo_p_vVtjASigXzeyg.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299763-11",
+        "type": "paragraph",
+        "text": "Retrieval finds the text. Generation writes from it. Almost everyone evaluates the pipeline end-to-end and blames the half they can see."
+      },
+      {
+        "id": "blk-1788434299763-12",
+        "type": "paragraph",
+        "text": "But if the retriever hands the model the wrong context, the best model in the world will give you a fluent, confident, wrong answer. That is not a hallucination. That is garbage in, eloquence out."
+      },
+      {
+        "id": "blk-1788434299763-13",
+        "type": "paragraph",
+        "text": "And here is the uncomfortable pattern from the broken RAG systems we have been called in to fix: the generation step was usually fine. The failure lived upstream, in the unglamorous parts nobody demos."
+      },
+      {
+        "id": "blk-1788434299763-14",
+        "type": "heading",
+        "level": 2,
+        "text": "Where retrieval actually breaks"
+      },
+      {
+        "id": "blk-1788434299763-15",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*5ifC4daVASB-LCUKX2kc9w.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299763-16",
+        "type": "paragraph",
+        "text": "Four places. Over and over."
+      },
+      {
+        "id": "blk-1788434299763-17",
+        "type": "paragraph",
+        "text": "**1. Chunking cuts meaning in half.** Fixed-size chunking — slice every 500 tokens, next — does not respect document structure. It separates a table from its header, a clause from its condition, an exception from the rule it modifies. The chunk that gets embedded no longer means what it meant in the document. Your retrieval can be “working” and still wrong."
+      },
+      {
+        "id": "blk-1788434299763-18",
+        "type": "paragraph",
+        "text": "**2. Your embedding model has never seen your vocabulary.** General-purpose embeddings measure topical similarity. “Cases covered under this policy” and “cases excluded from this policy” are topically identical and semantically opposite — so they sit close together in vector space. If your domain runs on distinctions like that (insurance, legal, healthcare, finance — so, most domains), pure semantic search will happily fetch the exact wrong paragraph."
+      },
+      {
+        "id": "blk-1788434299763-19",
+        "type": "paragraph",
+        "text": "**3. Dense retrieval loses exact matches.** Invoice numbers. SKUs. Section 4.2(b). Error codes. Embeddings are terrible at these — and keyword search (BM25) was always good at them. Which is why hybrid retrieval, dense plus keyword merged, is not an advanced technique. It is the baseline."
+      },
+      {
+        "id": "blk-1788434299763-20",
+        "type": "paragraph",
+        "text": "**4. Nobody reranks.** Your top-k comes out of an approximate search that was never trained to answer your questions. A cross-encoder rerank pass — retrieve 50 candidates, rerank down to 5 — is cheap, and it is routinely the single biggest quality jump in the whole pipeline."
+      },
+      {
+        "id": "blk-1788434299763-21",
+        "type": "heading",
+        "level": 2,
+        "text": "The ten-second test"
+      },
+      {
+        "id": "blk-1788434299764-22",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*ovsWKb8hPXlD4tjYlGTWkQ.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299764-23",
+        "type": "paragraph",
+        "text": "Before you touch a prompt, print the chunks."
+      },
+      {
+        "id": "blk-1788434299764-24",
+        "type": "paragraph",
+        "text": "Take ten real questions. For each one, look at what retrieval returned before generation ran. Ask exactly one thing: is the answer actually in this text?"
+      },
+      {
+        "id": "blk-1788434299764-25",
+        "type": "paragraph",
+        "text": "If it is not there — no prompt will save you."
+      },
+      {
+        "id": "blk-1788434299764-26",
+        "type": "paragraph",
+        "text": "If it is there, buried under noise — your ranking is broken."
+      },
+      {
+        "id": "blk-1788434299764-27",
+        "type": "paragraph",
+        "text": "If it is there and clean — only now do you have a generation problem."
+      },
+      {
+        "id": "blk-1788434299764-28",
+        "type": "paragraph",
+        "text": "We run this on every system we take over. It has changed the diagnosis more than half the time."
+      },
+      {
+        "id": "blk-1788434299764-29",
+        "type": "heading",
+        "level": 2,
+        "text": "How we build it now"
+      },
+      {
+        "id": "blk-1788434299764-30",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*i0mDKdprarTbNPo62Y0i5Q.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299764-31",
+        "type": "paragraph",
+        "text": "**A golden set before a vector database.** 50 to 100 real questions, mapped to the passages that answer them. Not invented questions — pulled from real tickets, chats, and emails. Your imagination is where the easy cases live. Production is where the weird ones do."
+      },
+      {
+        "id": "blk-1788434299764-32",
+        "type": "paragraph",
+        "text": "**Recall@k as its own number.** “Did the right passage show up in the top k?” — tracked separately from answer quality. When that number is low, we do not open the prompt file. There is no point."
+      },
+      {
+        "id": "blk-1788434299764-33",
+        "type": "paragraph",
+        "text": "**Chunk on structure, not character count.** Headings, sections, list boundaries, tables kept whole with their headers. The document already told you where meaning starts and ends. Listen to it."
+      },
+      {
+        "id": "blk-1788434299764-34",
+        "type": "paragraph",
+        "text": "**Metadata into the index.** Document type, date, product, region. Filter first, then search. Half of “bad retrieval” is searching the entire haystack when you already knew which corner the needle was in."
+      },
+      {
+        "id": "blk-1788434299766-35",
+        "type": "paragraph",
+        "text": "**Hybrid plus rerank, from day one.** Not after things break. As the default."
+      },
+      {
+        "id": "blk-1788434299766-36",
+        "type": "heading",
+        "level": 2,
+        "text": "The honest part"
+      },
+      {
+        "id": "blk-1788434299766-37",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*-ovowHza25tiEXLUWvwHOw.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299766-38",
+        "type": "paragraph",
+        "text": "None of this demos well."
+      },
+      {
+        "id": "blk-1788434299766-39",
+        "type": "paragraph",
+        "text": "A model upgrade is a press release. A chunking fix is a diff nobody claps for. But we have watched a retrieval overhaul do more for answer quality than a jump between model generations — at a fraction of the cost — more than once."
+      },
+      {
+        "id": "blk-1788434299766-40",
+        "type": "paragraph",
+        "text": "Better retrieval is boring data work. It is also, nine times out of ten, the actual fix."
+      },
+      {
+        "id": "blk-1788434299766-41",
+        "type": "paragraph",
+        "text": "Seedhi baat: the model did its job. The pipeline didn’t."
+      },
+      {
+        "id": "blk-1788434299766-42",
+        "type": "heading",
+        "level": 2,
+        "text": "Where that leaves you"
+      },
+      {
+        "id": "blk-1788434299766-43",
+        "type": "paragraph",
+        "text": "If your RAG system is “hallucinating,” do not open the prompt file. Print the chunks first."
+      },
+      {
+        "id": "blk-1788434299766-44",
+        "type": "paragraph",
+        "text": "You will either find the bug in ten seconds — or you will have earned the right to blame the model."
+      },
+      {
+        "id": "blk-1788434299766-45",
+        "type": "paragraph",
+        "text": "**Build small. Launch fast. Scale smart.** — and debug the stage that is actually broken. ✨"
+      },
+      {
+        "id": "blk-1788434299766-46",
+        "type": "paragraph",
+        "text": "When was the last time you looked at your retrieved chunks — actually looked? Go run the ten-second test and tell me what you found. I want to know."
+      },
+      {
+        "id": "blk-1788434299766-47",
+        "type": "paragraph",
+        "text": "*Written by Anisha Singla, founder of Teeny Tech Trek. She builds practical AI systems for lean teams, with the responsibility layer designed in from the start.*"
+      }
+    ],
+    "metaTitle": "Your RAG System Isn’t Hallucinating. It’s Retrieving the Wrong Chunk. | Teeny Tech Trek",
+    "metaDescription": "The most expensive misdiagnosis in AI right now — and the ten-second test that catches it.",
+    "canonicalUrl": "https://medium.com/@teenytechtrek/your-rag-system-isnt-hallucinating-it-s-retrieving-the-wrong-chunk-ecb29fe20cb4?source=rss-288e3d814685------2",
+    "views_count": 0,
+    "published_at": "2026-08-26T12:37:55.000Z",
+    "medium_guid": "https://medium.com/p/ecb29fe20cb4",
+    "medium_url": "https://medium.com/@teenytechtrek/your-rag-system-isnt-hallucinating-it-s-retrieving-the-wrong-chunk-ecb29fe20cb4?source=rss-288e3d814685------2",
+    "medium_updated_at": "2026-08-26T12:37:55.790Z",
+    "id": "medium-4"
+  },
+  {
+    "title": "The Agentic AI Foundation: The Open Standards Layer for Agents",
+    "slug": "the-agentic-ai-foundation-the-open-standards-layer-for-agents",
+    "summary": "Agentic AI has crossed a threshold.",
+    "category": "linux-foundation",
+    "author": "Anisha Singla",
+    "readTime": "6 min read",
+    "media_cid": "https://cdn-images-1.medium.com/max/1024/1*hwmyO4CmCv2V1vfmwTBKFQ.png",
+    "featured_alt": "The Agentic AI Foundation: The Open Standards Layer for Agents",
+    "featured_caption": "",
+    "status": "published",
+    "tags": [
+      "linux-foundation",
+      "agentic-ai",
+      "aaif",
+      "open-source",
+      "ai-agent"
+    ],
+    "content": [
+      {
+        "id": "blk-1788434299771-1",
+        "type": "paragraph",
+        "text": "Agentic AI has crossed a threshold."
+      },
+      {
+        "id": "blk-1788434299771-2",
+        "type": "paragraph",
+        "text": "Systems no longer just answer. They reason, plan, call tools, and execute multi-step work with limited human input. The models are ready. The infrastructure beneath them is not."
+      },
+      {
+        "id": "blk-1788434299771-3",
+        "type": "paragraph",
+        "text": "The Agentic AI Foundation (AAIF) exists to fix that : a neutral home under the Linux Foundation for the protocols, runtimes, and governance every agent stack depends on. Co-founded by Anthropic, Block, and OpenAI in December 2025, it now spans 180 member organizations and four hosted projects."
+      },
+      {
+        "id": "blk-1788434299771-4",
+        "type": "paragraph",
+        "text": "Not another framework. A base layer."
+      },
+      {
+        "id": "blk-1788434299771-5",
+        "type": "heading",
+        "level": 2,
+        "text": "Coordination Is the Bottleneck, Not Capability"
+      },
+      {
+        "id": "blk-1788434299771-6",
+        "type": "heading",
+        "level": 3,
+        "text": "Agent capability is not the constraint. Coordination is."
+      },
+      {
+        "id": "blk-1788434299771-7",
+        "type": "paragraph",
+        "text": "Frameworks, runtimes, orchestration layers, tool-calling abstractions, and memory systems are multiplying. Each works alone. Few work together. Tool schemas differ, execution semantics diverge, and observability and failure modes vary by stack. An agent built on one cannot easily interoperate with another."
+      },
+      {
+        "id": "blk-1788434299771-8",
+        "type": "paragraph",
+        "text": "The result is friction: bespoke integrations, unpredictable behavior, infrastructure rebuilt from scratch. Moving from prototype to production exposes weak reproducibility, safety, and control."
+      },
+      {
+        "id": "blk-1788434299771-9",
+        "type": "paragraph",
+        "text": "This is early distributed systems again : powerful, promising, structurally unstable. AAIF targets the base layer, not the agents on top."
+      },
+      {
+        "id": "blk-1788434299771-10",
+        "type": "heading",
+        "level": 2,
+        "text": "What AAIF Is : and Isn’t"
+      },
+      {
+        "id": "blk-1788434299771-11",
+        "type": "paragraph",
+        "text": "AAIF is a directed fund under the Linux Foundation. Its mandate is narrow: define, steward, and govern the core standards agentic systems need to run reliably in production."
+      },
+      {
+        "id": "blk-1788434299771-12",
+        "type": "paragraph",
+        "text": "It does not ship commercial tooling, compete with agent frameworks, or prescribe one way to build agents."
+      },
+      {
+        "id": "blk-1788434299771-13",
+        "type": "paragraph",
+        "text": "It does provide:"
+      },
+      {
+        "id": "blk-1788434299772-14",
+        "type": "bulletList",
+        "items": [
+          "Neutral governance for foundational protocols",
+          "Long-term stewardship of shared specifications",
+          "A coordination layer for interoperability and safety"
+        ]
+      },
+      {
+        "id": "blk-1788434299772-15",
+        "type": "paragraph",
+        "text": "The “directed fund” model skips a separate legal entity. Members pool funding inside the Linux Foundation’s existing nonprofit infrastructure, allocated to engineering, events, and community programs."
+      },
+      {
+        "id": "blk-1788434299772-16",
+        "type": "heading",
+        "level": 2,
+        "text": "Why It Formed When It Did"
+      },
+      {
+        "id": "blk-1788434299772-17",
+        "type": "paragraph",
+        "text": "Three pressures converged."
+      },
+      {
+        "id": "blk-1788434299772-18",
+        "type": "paragraph",
+        "text": "**Interoperability broke down.** Agents increasingly call tools, data sources, and other agents. Without shared protocols, every integration is bespoke. That does not scale."
+      },
+      {
+        "id": "blk-1788434299772-19",
+        "type": "paragraph",
+        "text": "**Production exposed fragility.** Demo behavior turns erratic in real systems. Model versions, prompt tweaks, and tool definitions shift outcomes. Without standardized execution models, diagnosis is hard."
+      },
+      {
+        "id": "blk-1788434299772-20",
+        "type": "paragraph",
+        "text": "**Governance lagged capability.** Agents execute actions, not just text. That raises the bar for oversight, versioning, and behavioral boundaries : and few shared guidelines existed."
+      },
+      {
+        "id": "blk-1788434299772-21",
+        "type": "paragraph",
+        "text": "AAIF formed to address these before fragmentation hardened into long-term technical debt."
+      },
+      {
+        "id": "blk-1788434299772-22",
+        "type": "heading",
+        "level": 2,
+        "text": "The Founding Stack: MCP, goose, AGENTS.md"
+      },
+      {
+        "id": "blk-1788434299772-23",
+        "type": "paragraph",
+        "text": "Three founding projects, three layers of the stack."
+      },
+      {
+        "id": "blk-1788434299772-24",
+        "type": "paragraph",
+        "text": "**Model Context Protocol (MCP) : communication.** Anthropic’s open standard for connecting models to tools, data, and services. Explicit interfaces, consistent request/response semantics, built-in security controls. Over 10,000 published servers and 110M+ monthly SDK downloads across Python and TypeScript, plus an official community-driven registry."
+      },
+      {
+        "id": "blk-1788434299772-25",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*f-i2b0AnLy1rm4dkLY4cAA.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299772-26",
+        "type": "paragraph",
+        "text": "**goose : execution.** Block’s open-source, local-first agent runtime. Makes steps explicit: how tools are invoked, how workflows progress, how failures surface. Built on MCP. Predictability over cleverness."
+      },
+      {
+        "id": "blk-1788434299772-27",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*mgXndpuF6gGZM-OmuJt1eA.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299772-28",
+        "type": "paragraph",
+        "text": "**AGENTS.md : context.** OpenAI’s markdown convention for project-specific rules, tooling expectations, and workflow constraints that agents read inside a repo. Lightweight, framework-agnostic, adopted by 60,000+ projects (Codex, Cursor, Gemini CLI, GitHub Copilot, VS Code, and more)."
+      },
+      {
+        "id": "blk-1788434299772-29",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*bh2NSj-v4tsj6-OZn8ZiiA.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299772-30",
+        "type": "paragraph",
+        "text": "MCP handles communication. goose defines execution. AGENTS.md supplies context. Together they cut ambiguity at the lowest layers : without imposing a single way to build."
+      },
+      {
+        "id": "blk-1788434299772-31",
+        "type": "heading",
+        "level": 2,
+        "text": "The Fourth Project: agentgateway"
+      },
+      {
+        "id": "blk-1788434299773-32",
+        "type": "paragraph",
+        "text": "agentgateway joined in 2026 as AAIF’s fourth hosted project : the operational layer the first three lacked."
+      },
+      {
+        "id": "blk-1788434299773-33",
+        "type": "paragraph",
+        "text": "Contributed by Solo.io and built in Rust under Apache 2.0, it unifies MCP traffic, agent-to-agent (A2A) communication, LLM inference, REST, and gRPC behind one control plane."
+      },
+      {
+        "id": "blk-1788434299773-34",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/1024/1*5vDGr7hqPPmzgC6UwZuKtA.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299773-35",
+        "type": "paragraph",
+        "text": "Technical surface:"
+      },
+      {
+        "id": "blk-1788434299773-36",
+        "type": "bulletList",
+        "items": [
+          "MCP + A2A routing, federation, and traffic management",
+          "MCP virtualization : federate multiple tool servers into a single access point with per-tool access policy",
+          "Model independence : switch LLM providers, with native support for open-weights models",
+          "Declarative policy via CEL; dynamic config via xDS without downtime",
+          "Governance primitives : rate limiting, budget controls, prompt guards, content-based routing, model aliasing",
+          "Built-in observability and Gateway API conformance across bare metal, VMs, containers, and Kubernetes"
+        ]
+      },
+      {
+        "id": "blk-1788434299773-37",
+        "type": "paragraph",
+        "text": "Agents now behave like distributed systems. agentgateway lets platform teams govern agent traffic with the same security, routing, and observability controls they already run : no separate AI-only stack. 300+ contributors across 60+ organizations."
+      },
+      {
+        "id": "blk-1788434299773-38",
+        "type": "heading",
+        "level": 2,
+        "text": "Governance and Leadership"
+      },
+      {
+        "id": "blk-1788434299773-39",
+        "type": "paragraph",
+        "text": "AAIF runs on formal, neutral governance rather than founder control."
+      },
+      {
+        "id": "blk-1788434299773-40",
+        "type": "bulletList",
+        "items": [
+          "**Mazin Gilbert** : Executive Director (ex-Google, ex-AT&T; IEEE Fellow).",
+          "**David Nalley** (AWS) : governing board chair, setting strategic priorities.",
+          "**David Soria Parra** : chair of the Technical Committee, the technical governing body."
+        ]
+      },
+      {
+        "id": "blk-1788434299773-41",
+        "type": "paragraph",
+        "text": "A project lifecycle policy : **Growth → Impact → Emeritus** : now gives external projects a formal path in. MCP’s own governance stays unchanged: maintainers keep community-driven decision-making."
+      },
+      {
+        "id": "blk-1788434299773-42",
+        "type": "heading",
+        "level": 2,
+        "text": "Membership and Adoption"
+      },
+      {
+        "id": "blk-1788434299773-43",
+        "type": "paragraph",
+        "text": "Adoption is the signal, not the marketing."
+      },
+      {
+        "id": "blk-1788434299774-44",
+        "type": "bulletList",
+        "items": [
+          "**180 member organizations** as of mid-2026, up from ~146 in February : growth outpacing CNCF at the equivalent stage.",
+          "**Platinum tier:** AWS, Anthropic, Block, Bloomberg, Cloudflare, Google, Microsoft, OpenAI. Gold, Silver, and Associate tiers span enterprise, finance, security, robotics, academia, and government.",
+          "Eight active working groups (including Skills Over MCP), with a roadmap to double them and scale to 10–15 hosted projects."
+        ]
+      },
+      {
+        "id": "blk-1788434299774-45",
+        "type": "paragraph",
+        "text": "The mix of cloud providers, financial institutions, and public-sector bodies signals production intent, not experimentation."
+      },
+      {
+        "id": "blk-1788434299774-46",
+        "type": "heading",
+        "level": 2,
+        "text": "What Gets Standardized Next"
+      },
+      {
+        "id": "blk-1788434299774-47",
+        "type": "paragraph",
+        "text": "AAIF’s scope runs past its current projects."
+      },
+      {
+        "id": "blk-1788434299774-48",
+        "type": "bulletList",
+        "items": [
+          "**Agent communication** : shared message formats, tool schemas, result handling.",
+          "**Agent–tool protocols** : memory, retrieval, orchestration, coordination.",
+          "**Reference runtimes** : execution models implementable consistently across environments.",
+          "**Lifecycle and safety** : versioning guarantees, compatibility expectations, testing norms, behavioral boundaries."
+        ]
+      },
+      {
+        "id": "blk-1788434299774-49",
+        "type": "paragraph",
+        "text": "Gilbert frames the target as the full agentic stack : hardware, AI-native infrastructure, models and inference, and the agent application layer : with the next phase populating layer four."
+      },
+      {
+        "id": "blk-1788434299774-50",
+        "type": "paragraph",
+        "text": "The point is not to limit innovation. It’s to make it composable."
+      },
+      {
+        "id": "blk-1788434299774-51",
+        "type": "heading",
+        "level": 2,
+        "text": "The Cloud-Native Parallel"
+      },
+      {
+        "id": "blk-1788434299774-52",
+        "type": "paragraph",
+        "text": "The closest analogy is the early cloud-native era."
+      },
+      {
+        "id": "blk-1788434299774-53",
+        "type": "paragraph",
+        "text": "Before the CNCF, container tooling was fragmented and fragile. Shared standards made Kubernetes viable at scale. AAIF is the same inflection point for agents : the shift from isolated experiments to coordinated infrastructure, where alignment beats short-term differentiation."
+      },
+      {
+        "id": "blk-1788434299774-54",
+        "type": "heading",
+        "level": 2,
+        "text": "What This Unlocks"
+      },
+      {
+        "id": "blk-1788434299774-55",
+        "type": "paragraph",
+        "text": "Once the base layer stabilizes:"
+      },
+      {
+        "id": "blk-1788434299775-56",
+        "type": "bulletList",
+        "items": [
+          "**Interchangeable components** : agents, tools, and runtimes move between systems without bespoke glue.",
+          "**Clearer production paths** : execution becomes testable, observable, securable.",
+          "**Shared safety expectations** : behavioral boundaries and evals become default design.",
+          "**Focused innovation** : less infrastructure rebuilding, more domain work."
+        ]
+      },
+      {
+        "id": "blk-1788434299775-57",
+        "type": "paragraph",
+        "text": "This is how agentic AI moves from novelty to capability."
+      },
+      {
+        "id": "blk-1788434299775-58",
+        "type": "heading",
+        "level": 2,
+        "text": "Bottom Line"
+      },
+      {
+        "id": "blk-1788434299775-59",
+        "type": "paragraph",
+        "text": "AAIF does not promise transformation. It provides structure."
+      },
+      {
+        "id": "blk-1788434299775-60",
+        "type": "paragraph",
+        "text": "By anchoring agents under open governance, it sets the reference point for how they communicate, execute, and get managed. The projects : MCP, goose, AGENTS.md, and now agentgateway : are infrastructural, not flashy. That is the point."
+      },
+      {
+        "id": "blk-1788434299775-61",
+        "type": "paragraph",
+        "text": "Agentic AI is moving from experimentation to responsibility. AAIF marks the moment the industry chose to build the ground before scaling what runs on top."
+      }
+    ],
+    "metaTitle": "The Agentic AI Foundation: The Open Standards Layer for Agents | Teeny Tech Trek",
+    "metaDescription": "Agentic AI has crossed a threshold.",
+    "canonicalUrl": "https://medium.com/@teenytechtrek/the-agentic-ai-foundation-the-open-standards-layer-for-agents-b5affd1fbf6d?source=rss-288e3d814685------2",
+    "views_count": 0,
+    "published_at": "2026-06-25T19:10:12.000Z",
+    "medium_guid": "https://medium.com/p/b5affd1fbf6d",
+    "medium_url": "https://medium.com/@teenytechtrek/the-agentic-ai-foundation-the-open-standards-layer-for-agents-b5affd1fbf6d?source=rss-288e3d814685------2",
+    "medium_updated_at": "2026-06-25T19:10:12.857Z",
+    "id": "medium-5"
+  },
+  {
+    "title": "What Makes a Business Chatbot Actually Work?",
+    "slug": "what-makes-a-business-chatbot-actually-work",
+    "summary": "Short answer : a business chatbot works when it answers from your real information, knows when to hand off to a human, and does one job well, not when it sounds clever. Most chatbots disappoint bec...",
+    "category": "lead-management",
+    "author": "Anisha Singla",
+    "readTime": "6 min read",
+    "media_cid": "https://cdn-images-1.medium.com/max/1024/1*lrtfQZjpOKC7E84PSvA8Ww.png",
+    "featured_alt": "What Makes a Business Chatbot Actually Work?",
+    "featured_caption": "",
+    "status": "published",
+    "tags": [
+      "lead-management",
+      "chatbots",
+      "agents",
+      "teeny-tech-trek",
+      "chatbots-for-business"
+    ],
+    "content": [
+      {
+        "id": "blk-1788434299782-1",
+        "type": "paragraph",
+        "text": "Short answer : a business chatbot works when it answers from your real information, knows when to hand off to a human, and does one job well, not when it sounds clever. Most chatbots disappoint because they’re built to talk, not to be useful. TechTrekkers builds AI agents like NexEstate, NetTwin, and NeoScript on the opposite principle: narrow, source- grounded, and ready for daily use."
+      },
+      {
+        "id": "blk-1788434299782-2",
+        "type": "paragraph",
+        "text": "If you’re considering a chatbot for your business, the question isn’t “can AI hold a conversation?” It can. The question is whether the thing you deploy actually moves work forward or just adds another box customers have to argue with."
+      },
+      {
+        "id": "blk-1788434299782-3",
+        "type": "heading",
+        "level": 2,
+        "text": "Chatbots vs AI agents: what’s the difference?"
+      },
+      {
+        "id": "blk-1788434299782-4",
+        "type": "paragraph",
+        "text": "The words get used as if they mean the same thing. They don’t, and the difference decides what you should buy."
+      },
+      {
+        "id": "blk-1788434299782-5",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/948/1*t0AHp8HuiK1SBdBUQ7zFxw.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299782-6",
+        "type": "quote",
+        "text": "A chatbot talks. An AI agent does. Most businesses want something in between: a chat surface that also gets things done capturing a lead, answering from a real knowledge base, booking a slot without making decisions it shouldn’t."
+      },
+      {
+        "id": "blk-1788434299782-7",
+        "type": "heading",
+        "level": 2,
+        "text": "Why most business chatbots disappoint"
+      },
+      {
+        "id": "blk-1788434299782-8",
+        "type": "paragraph",
+        "text": "The common failures have nothing to do with how advanced the model is:"
+      },
+      {
+        "id": "blk-1788434299782-9",
+        "type": "paragraph",
+        "text": "➡️ It makes things up. When a chatbot answers from the model’s guesswork instead of your actual information, it invents details that sound right and aren’t. ➡️ It can’t hand off. A customer with a real problem gets stuck in a loop with no route to a person. ➡️ It does too much. A single bot tries to handle sales, support, and scheduling, and does all three poorly. ➡️ It can’t be checked. Nobody can see why it said what it said, so wrong answers go unnoticed."
+      },
+      {
+        "id": "blk-1788434299782-10",
+        "type": "paragraph",
+        "text": "A chatbot that invents answers in front of a customer isn’t a feature. It’s a reputation risk with a chat window."
+      },
+      {
+        "id": "blk-1788434299782-11",
+        "type": "heading",
+        "level": 2,
+        "text": "What a chatbot actually needs to be useful"
+      },
+      {
+        "id": "blk-1788434299782-12",
+        "type": "paragraph",
+        "text": "The useful ones share a short list of build choices:"
+      },
+      {
+        "id": "blk-1788434299783-13",
+        "type": "paragraph",
+        "text": "➡️ Source-grounded answers. Responses come from your documents, listings, or knowledge base not the open model so they can be traced and trusted. ➡️ A clear handoff. When the bot reaches the edge of what it knows, it routes to WhatsApp, a booking flow, or a human, instead of guessing. ➡️ A narrow job. One bot, one purpose, done reliably. Narrow is what makes it dependable. ➡️ Visible logs. Your team can see what it did and correct it, without depending on whoever built it."
+      },
+      {
+        "id": "blk-1788434299783-14",
+        "type": "paragraph",
+        "text": "This is the same standard TechTrekkers applies to every AI agent it ships: scoped, source-grounded, and operator-ready not a black-box demo."
+      },
+      {
+        "id": "blk-1788434299783-15",
+        "type": "heading",
+        "level": 2,
+        "text": "How TechTrekkers builds chatbots and AI agents"
+      },
+      {
+        "id": "blk-1788434299783-16",
+        "type": "quote",
+        "text": "TechTrekkers is a set of AI agent products built for small teams. Each one is a working example of the principles above, aimed at a specific job rather than a generic “AI assistant.” : https://www.techtrekkers.ai/ (https://www.techtrekkers.ai/)"
+      },
+      {
+        "id": "blk-1788434299783-17",
+        "type": "paragraph",
+        "text": "NexEstate for real estate teams. Agents lose leads when buyers ask the same questions and replies come hours late. NexEstate is a chat experience, often opened by a QR code or website link, that answers property questions, captures buyer intent, recommends listings, and books visits without the agent typing the same answer for the hundredth time. It hands off to a person when a query goes beyond what it should decide."
+      },
+      {
+        "id": "blk-1788434299783-18",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/964/1*9YpOtUpYElD7xjK9CR-s5A.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299783-19",
+        "type": "paragraph",
+        "text": "NetTwin for founders, consultants, and speakers. A static profile can’t explain you. NetTwin is an interactive AI profile : someone scans a link, asks who you are, what you do, and how to work with you, and gets answers grounded in what you’ve actually said and built. It’s a chatbot whose only job is to represent one person clearly."
+      },
+      {
+        "id": "blk-1788434299783-20",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/868/1*i0wVsC1jZqFBZPu1mX26ig.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299783-21",
+        "type": "paragraph",
+        "text": "NeoScript for content teams. Not a chatbot, and worth being honest about that. NeoScript is a multi-agent content system: research, planning, writing, and optimization run as steps, with citation-backed output by default. It’s the clearest example of agents doing work rather than holding a conversation."
+      },
+      {
+        "id": "blk-1788434299783-22",
+        "type": "image",
+        "url": "https://cdn-images-1.medium.com/max/876/1*oQhzltFguJ4LDUy6kZt0tg.png",
+        "alt": "Blog inline image",
+        "caption": ""
+      },
+      {
+        "id": "blk-1788434299783-23",
+        "type": "paragraph",
+        "text": "The through-line: each product is narrow, grounded in real information, and built so a non-technical operator can run it."
+      },
+      {
+        "id": "blk-1788434299783-24",
+        "type": "heading",
+        "level": 2,
+        "text": "How to choose a chatbot for your business"
+      },
+      {
+        "id": "blk-1788434299783-25",
+        "type": "paragraph",
+        "text": "If you’re evaluating any chatbot or AI agent from TechTrekkers or anyone else ask these before you commit: 1. Where does it get its answers, and can you trace them to a source ? 2. What does it do when it doesn’t know guess, or hand off ? 3. What is its one job, and does it do that job well ? 4. Can your team see and correct what it did ? 5. What is it never allowed to decide on its own ?"
+      },
+      {
+        "id": "blk-1788434299783-26",
+        "type": "paragraph",
+        "text": "A vendor who can answer all five is selling you a system. A vendor who can’t is selling you a demo."
+      },
+      {
+        "id": "blk-1788434299783-27",
+        "type": "heading",
+        "level": 2,
+        "text": "FAQ"
+      },
+      {
+        "id": "blk-1788434299784-28",
+        "type": "paragraph",
+        "text": "**What’s the difference between a chatbot and an AI agent?** A chatbot answers questions and holds a conversation. An AI agent takes actions to reach a goal, like qualifying a lead or booking a meeting. Many business needs sit between the two : a chat surface that also completes a task. **Why do business chatbots give wrong answers?** Because they answer from the model’s general knowledge instead of your real information. A source-grounded chatbot pulls from your documents or listings, so its answers can be checked. **What is TechTrekkers?** TechTrekkers is a set of AI agent products for small teams, including NexEstate for real estate lead handling, NetTwin for interactive professional profiles, and NeoScript for multi-agent content creation. **Is a chatbot worth it for a small business?** Yes, when it has a narrow job, answers from your real information, and hands off to a human at the right moment. A broad, ungrounded bot usually creates more support work than it removes."
+      },
+      {
+        "id": "blk-1788434299784-29",
+        "type": "heading",
+        "level": 2,
+        "text": "Key takeaways"
+      },
+      {
+        "id": "blk-1788434299784-30",
+        "type": "paragraph",
+        "text": "➡️ A chatbot talks; an AI agent acts. Most businesses want a chat surface that also gets one job done. ➡️ Chatbots disappoint when they invent answers, can’t hand off, or try to do everything. ➡️ Useful chatbots are source-grounded, narrow, and built with a clear handoff and visible logs. ➡️ TechTrekkers builds AI agents : NexEstate, NetTwin, NeoScript on that standard : scoped, grounded, operator-ready."
+      },
+      {
+        "id": "blk-1788434299784-31",
+        "type": "quote",
+        "text": "Written by Anisha Singla, founder of Teeny Tech Trek, the team behind TechTrekkers. She builds practical AI systems for small teams with the responsibility layer designed in from the start."
+      }
+    ],
+    "metaTitle": "What Makes a Business Chatbot Actually Work? | Teeny Tech Trek",
+    "metaDescription": "Short answer : a business chatbot works when it answers from your real information, knows when to hand off to a human, and does one job well, not when it sounds clever. Most chatbots disappoint bec...",
+    "canonicalUrl": "https://medium.com/@teenytechtrek/what-makes-a-business-chatbot-actually-work-9c177eea459d?source=rss-288e3d814685------2",
+    "views_count": 0,
+    "published_at": "2026-06-11T08:09:00.000Z",
+    "medium_guid": "https://medium.com/p/9c177eea459d",
+    "medium_url": "https://medium.com/@teenytechtrek/what-makes-a-business-chatbot-actually-work-9c177eea459d?source=rss-288e3d814685------2",
+    "medium_updated_at": "2026-06-11T08:09:00.502Z",
+    "id": "medium-6"
+  }
+]
