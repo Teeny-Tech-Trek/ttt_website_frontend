@@ -80,7 +80,8 @@ export const renderBlock = (b: BlogBlock, key: string): ReactNode => {
         ? "text-3xl font-bold text-gray-900 mt-10 mb-4" 
         : "text-2xl md:text-3xl font-bold text-gray-900 leading-tight";
       
-      const headingId = b.id || (b.text ? b.text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : key);
+      const cleanText = (b.text || '').replace(/\*\*/g, '').replace(/\*/g, '').trim();
+      const headingId = b.id || (cleanText ? cleanText.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : key);
 
       if (level === 1) {
         return (
@@ -91,7 +92,7 @@ export const renderBlock = (b: BlogBlock, key: string): ReactNode => {
       }
 
       // H2 question check
-      const isQ = (b.text || '').trim().endsWith('?');
+      const isQ = cleanText.endsWith('?');
       return (
         <div key={key} id={headingId} className="flex items-start gap-3 mt-12 mb-5 scroll-mt-28">
           {isQ ? (
@@ -109,7 +110,8 @@ export const renderBlock = (b: BlogBlock, key: string): ReactNode => {
     }
 
     case 'subheading': {
-      const headingId = b.id || (b.text ? b.text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : key);
+      const cleanSub = (b.text || '').replace(/\*\*/g, '').replace(/\*/g, '').trim();
+      const headingId = b.id || (cleanSub ? cleanSub.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : key);
       return (
         <h3 key={key} id={headingId} className="text-xl font-bold text-gray-900 mt-8 mb-3 scroll-mt-28">
           {renderInline(b.text, key)}

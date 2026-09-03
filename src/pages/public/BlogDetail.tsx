@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, type SVGProps } from "react";
+import { useState, useEffect, useMemo, useRef, type SVGProps } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { searchBlogs, getBlogById } from "../../services/blogService"; 
 import { Blog } from "../../types/blog";                  
@@ -74,6 +74,10 @@ export default function BlogSingleView() {
   const [copied, setCopied] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeHeadingId, setActiveHeadingId] = useState<string>('');
+
+  // Refs for TOC auto-scroll
+  const tocNavRef = useRef<HTMLElement>(null);
+  const activeItemRef = useRef<HTMLButtonElement | null>(null);
 
   const getShareUrl = () =>
     typeof window !== 'undefined' ? window.location.href : '';
@@ -165,33 +169,63 @@ export default function BlogSingleView() {
       });
   }, [blog]);
 
-  // ScrollSpy: observe which heading is currently in viewport
+  // ScrollSpy: observe which heading is currently in viewport in real-time
   useEffect(() => {
     if (headings.length === 0) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveHeadingId(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: '-100px 0px -65% 0px' }
-    );
+    const handleScrollSpy = () => {
+      const topOffset = 180;
+      const elements = headings
+        .map((h) => ({ id: h.id, el: document.getElementById(h.id) }))
+        .filter((item): item is { id: string; el: HTMLElement } => item.el !== null);
 
-    headings.forEach((h) => {
-      const el = document.getElementById(h.id);
-      if (el) observer.observe(el);
-    });
+      if (elements.length === 0) return;
 
-    return () => observer.disconnect();
+      let currentActive = elements[0].id;
+      for (const item of elements) {
+        const rect = item.el.getBoundingClientRect();
+        if (rect.top <= topOffset) {
+          currentActive = item.id;
+        } else {
+          break;
+        }
+      }
+
+      setActiveHeadingId(currentActive);
+    };
+
+    window.addEventListener('scroll', handleScrollSpy, { passive: true });
+    handleScrollSpy();
+
+    return () => window.removeEventListener('scroll', handleScrollSpy);
   }, [headings]);
+
+  // Auto-scroll TOC nav to keep active item visible
+  useEffect(() => {
+    if (!activeHeadingId || !tocNavRef.current || !activeItemRef.current) return;
+    const nav = tocNavRef.current;
+    const item = activeItemRef.current;
+    const navRect = nav.getBoundingClientRect();
+    const itemRect = item.getBoundingClientRect();
+    // Scroll item into view within the nav container with smooth animation
+    if (itemRect.top < navRect.top + 20 || itemRect.bottom > navRect.bottom - 20) {
+      nav.scrollTo({
+        top: nav.scrollTop + (itemRect.top - navRect.top) - navRect.height / 2 + itemRect.height / 2,
+        behavior: 'smooth'
+      });
+    }
+  }, [activeHeadingId]);
 
   const scrollToHeading = (targetId: string) => {
     const el = document.getElementById(targetId);
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      const topOffset = 130;
+      const elementPosition = el.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - topOffset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
       setActiveHeadingId(targetId);
     }
   };
@@ -220,7 +254,7 @@ export default function BlogSingleView() {
 
   return (
     <section 
-      className="min-h-screen bg-[#f8fafc] relative font-sans overflow-x-hidden pt-16 sm:pt-20"
+      className="min-h-screen bg-[#f8fafc] relative font-sans overflow-x-clip pt-16 sm:pt-20"
       style={{ fontFamily: FONT_FAMILY }}
     >
       {/* 1. Global Reading Progress Indicator Bar */}
@@ -263,7 +297,7 @@ export default function BlogSingleView() {
         {/* ============================================================ */}
         {/* LEFT COLUMN: Sticky Floating Quick Action Pill               */}
         {/* ============================================================ */}
-        <aside className="hidden xl:flex sticky top-32 flex-col items-center gap-3 w-14 shrink-0">
+        <aside className="hidden xl:flex sticky top-28 flex-col items-center gap-3 w-14 shrink-0">
           <div className="bg-white p-2.5 rounded-2xl shadow-md border border-slate-200 flex flex-col items-center gap-3 w-full">
             
             {/* Back button */}
@@ -499,34 +533,53 @@ export default function BlogSingleView() {
         {/* ============================================================ */}
         {/* RIGHT COLUMN: Sticky Table of Contents & Professional CTA     */}
         {/* ============================================================ */}
-        <aside className="hidden lg:block w-72 xl:w-80 shrink-0 sticky top-32 space-y-5">
+        <aside className="hidden lg:block w-72 xl:w-80 shrink-0 sticky top-28 self-start space-y-4">
           
           {/* Widget 1: Interactive Table of Contents */}
           {headings.length > 0 && (
-            <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-600 mb-3.5 pb-2.5 border-b border-slate-100">
-                <AlignLeft className="w-4 h-4 text-blue-900" />
-                <span>On this page</span>
+            <div className="bg-white/95 backdrop-blur-md rounded-2xl p-5 border border-slate-200/90 shadow-sm transition-all duration-300 hover:shadow-md">
+              
+              {/* Header with Reading Progress */}
+              <div className="flex items-center justify-between gap-2 mb-2.5">
+                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-800">
+                  <AlignLeft className="w-4 h-4 text-blue-900" />
+                  <span>On this page</span>
+                </div>
+                <span className="text-[11px] font-bold text-blue-900 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100/80 tabular-nums">
+                  {Math.round(scrollProgress)}% read
+                </span>
               </div>
 
-              <nav className="max-h-[360px] overflow-y-auto space-y-1 pr-1 custom-scrollbar">
+              {/* Progress mini-bar */}
+              <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden mb-3.5">
+                <div
+                  className="h-full bg-gradient-to-r from-blue-900 to-blue-600 rounded-full transition-all duration-150 ease-out"
+                  style={{ width: `${scrollProgress}%` }}
+                />
+              </div>
+
+              {/* Headings Nav List — scrolls independently, synced to active heading */}
+              <nav ref={tocNavRef} className="space-y-1 max-h-[320px] overflow-y-auto pr-1 custom-scrollbar">
                 {headings.map((h, i) => {
                   const isActive = activeHeadingId === h.id;
                   return (
                     <button
                       key={i}
+                      ref={isActive ? activeItemRef : null}
                       onClick={() => scrollToHeading(h.id)}
-                      className={`w-full text-left text-xs sm:text-[13px] py-1.5 px-2.5 rounded-lg transition-all leading-snug flex items-start gap-2 ${
+                      className={`w-full text-left text-xs sm:text-[13px] py-2 px-2.5 rounded-lg transition-all duration-200 leading-snug flex items-start gap-2.5 group ${
                         h.level === 3 ? 'pl-5 font-normal' : 'font-medium'
                       } ${
                         isActive
-                          ? 'bg-blue-50 text-blue-900 font-semibold border-l-2 border-blue-900'
+                          ? 'bg-blue-50/90 text-blue-900 font-semibold border-l-[3px] border-blue-900 shadow-xs'
                           : 'text-slate-600 hover:text-blue-900 hover:bg-slate-50'
                       }`}
                     >
-                      <ChevronRight className={`w-3.5 h-3.5 shrink-0 mt-0.5 transition-transform ${
-                        isActive ? 'text-blue-900 translate-x-0.5' : 'text-slate-300'
-                      }`} />
+                      {isActive ? (
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-900 shrink-0 mt-1.5 animate-pulse" />
+                      ) : (
+                        <ChevronRight className="w-3.5 h-3.5 shrink-0 mt-0.5 text-slate-300 group-hover:text-blue-700 group-hover:translate-x-0.5 transition-all duration-200" />
+                      )}
                       <span className="line-clamp-2">{h.text}</span>
                     </button>
                   );
@@ -535,34 +588,34 @@ export default function BlogSingleView() {
             </div>
           )}
 
-          {/* Widget 2: Professional Clean TTT CTA Card (Theme Coloured, No flashy gradients) */}
-          <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm relative">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-blue-50 text-blue-900 border border-blue-100 mb-3">
+          {/* Widget 2: Professional Clean TTT CTA Card */}
+          <div className="bg-gradient-to-br from-white to-blue-50/30 rounded-2xl p-5 border border-slate-200/90 shadow-sm relative overflow-hidden group hover:border-blue-200 transition-all duration-300">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider bg-blue-50 text-blue-900 border border-blue-100 mb-3">
               <Sparkles className="w-3.5 h-3.5 text-blue-900" />
               <span>AI Implementation</span>
             </div>
 
-            <h4 className="text-base font-bold text-slate-900 leading-snug mb-2">
+            <h4 className="text-base font-bold text-slate-900 leading-snug mb-1.5">
               Deploy AI in Your Business
             </h4>
 
-            <p className="text-xs text-slate-600 leading-relaxed mb-5">
+            <p className="text-xs text-slate-600 leading-relaxed mb-4">
               We build intelligent AI agents, custom chatbots, and automated workflows tailored for your team.
             </p>
 
             <button
               onClick={() => navigate('/book-consultation')}
-              className="w-full py-2.5 px-4 bg-blue-900 hover:bg-blue-800 text-white font-medium text-xs sm:text-sm rounded-xl shadow-xs transition-all flex items-center justify-center gap-2"
+              className="w-full py-2.5 px-4 bg-blue-900 hover:bg-blue-800 text-white font-medium text-xs sm:text-sm rounded-xl shadow-xs transition-all duration-200 flex items-center justify-center gap-2 group-hover:shadow-md"
             >
               <span>Book Free Consultation</span>
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
             </button>
           </div>
 
-          {/* Widget 3: Medium Source / External Attribution */}
+          {/* Widget 3: Medium Source Attribution (if applicable) */}
           {blog.medium_url && (
-            <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs flex items-center justify-between gap-3 text-xs text-slate-500">
-              <span>Originally published on Medium</span>
+            <div className="bg-white rounded-2xl p-3.5 border border-slate-200/90 shadow-xs flex items-center justify-between gap-3 text-xs text-slate-500">
+              <span>Originally on Medium</span>
               <a
                 href={blog.medium_url}
                 target="_blank"
