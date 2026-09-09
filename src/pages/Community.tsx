@@ -2678,7 +2678,7 @@ const Community = () => {
           </motion.div>
 
           <motion.h1 
-            className="mb-8 text-5xl font-extrabold leading-tight sm:text-6xl md:text-7xl"
+            className="mb-6 sm:mb-8 text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}

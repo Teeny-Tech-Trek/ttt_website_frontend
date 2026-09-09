@@ -85,8 +85,8 @@ const IntegrationsSection: React.FC = () => {
 
           {/* Two-Column Grid: Left Feature Cards & Deployment, Right Visual */}
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-16">
-            {/* Left Column (5 Cols) */}
-            <div className="lg:col-span-5 space-y-5">
+            {/* Left Column (6 Cols) */}
+            <div className="lg:col-span-6 space-y-5">
               {/* Feature 1: Core Banking Systems */}
               <div className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:border-blue-200 transition-all">
                 <div className="flex items-center gap-3.5 mb-2">
@@ -153,16 +153,14 @@ const IntegrationsSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Column: Visual enterprise grade integration.png (7 Cols) */}
-            <div className="lg:col-span-7">
-              <div className="rounded-3xl overflow-hidden bg-white border border-blue-100/80 shadow-[0_20px_50px_rgba(30,58,138,0.08)] p-3 sm:p-5">
-                <div className="rounded-2xl overflow-hidden aspect-[16/9] flex items-center justify-center bg-slate-50">
-                  <img
-                    src="/images/finance/enterprise grade integration.png"
-                    alt="Enterprise Grade Integrations circular hub connecting core banking, ERP, and messaging networks"
-                    className="w-full h-full object-contain rounded-xl hover:scale-[1.01] transition-transform duration-500"
-                  />
-                </div>
+            {/* Right Column: Visual enterprise grade integration.png (6 Cols) */}
+            <div className="lg:col-span-6 flex items-center justify-center">
+              <div className="relative w-full max-w-[460px] rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-slate-200/90 shadow-[0_20px_50px_rgba(30,58,138,0.08)] group">
+                <img
+                  src="/images/finance/enterprise grade integration.png"
+                  alt="Enterprise Grade Integrations circular hub connecting core banking, ERP, and messaging networks"
+                  className="w-full h-auto block object-contain transform group-hover:scale-[1.01] transition-transform duration-500 select-none"
+                />
               </div>
             </div>
           </div>
@@ -242,21 +240,19 @@ const IntegrationsSection: React.FC = () => {
 
           {/* Two-Column Grid: Left Visual, Right API Feature Pillars */}
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-12">
-            {/* Left Column: Visual developer friendly api.png (7 Cols) */}
-            <div className="lg:col-span-7">
-              <div className="rounded-3xl overflow-hidden bg-white border border-blue-100/80 shadow-[0_20px_50px_rgba(30,58,138,0.08)] p-3 sm:p-5">
-                <div className="rounded-2xl overflow-hidden aspect-[16/9] flex items-center justify-center bg-slate-50">
-                  <img
-                    src="/images/finance/developer friendly api.png"
-                    alt="Developer friendly API explorer, code editor, and live sandbox"
-                    className="w-full h-full object-contain rounded-xl hover:scale-[1.01] transition-transform duration-500"
-                  />
-                </div>
+            {/* Left Column: Visual developer friendly api.png (6 Cols) */}
+            <div className="lg:col-span-6 flex items-center justify-center">
+              <div className="relative w-full max-w-[500px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(15,23,42,0.16)] border border-slate-200/80 bg-[#071330] group">
+                <img
+                  src="/images/finance/developer friendly api.png"
+                  alt="Developer friendly API explorer, code editor, and live sandbox"
+                  className="w-full h-auto block object-contain transform group-hover:scale-[1.01] transition-transform duration-500 select-none"
+                />
               </div>
             </div>
 
-            {/* Right Column: 3 Feature Cards & Actions (5 Cols) */}
-            <div className="lg:col-span-5 space-y-5">
+            {/* Right Column: 3 Feature Cards & Actions (6 Cols) */}
+            <div className="lg:col-span-6 space-y-5">
               {apiFeatures.map((feat) => {
                 const Icon = feat.icon;
                 return (

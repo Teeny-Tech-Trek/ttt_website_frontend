@@ -227,7 +227,7 @@ const PortfolioSnapshot = () => (
       </motion.div>
 
       <motion.div
-        className="grid max-w-3xl grid-cols-3 gap-4 mx-auto sm:gap-8"
+        className="grid max-w-3xl grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 mx-auto"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}

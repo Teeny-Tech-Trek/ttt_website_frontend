@@ -122,8 +122,8 @@ const SecuritySection: React.FC = () => {
 
           {/* Two-Column: Left Infrastructure Info, Right Visual Dashboard */}
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-16">
-            {/* Left Column: Infrastructure Breakdown (5 Cols) */}
-            <div className="lg:col-span-5 space-y-5">
+            {/* Left Column: Infrastructure Breakdown (6 Cols) */}
+            <div className="lg:col-span-6 space-y-5">
               <div>
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-[#0f172a] tracking-tight mb-2">
                   Enterprise Security Infrastructure
@@ -154,16 +154,14 @@ const SecuritySection: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Column: Visual bank grade - security dashboard.png (7 Cols) */}
-            <div className="lg:col-span-7">
-              <div className="rounded-3xl overflow-hidden bg-white border border-blue-100/80 shadow-[0_20px_50px_rgba(30,58,138,0.08)] p-3 sm:p-5">
-                <div className="rounded-2xl overflow-hidden aspect-[16/9] flex items-center justify-center bg-slate-50">
-                  <img
-                    src="/images/finance/bank grade - security dashboard.png"
-                    alt="Bank Grade Security Dashboard showing live encryption status, SOC telemetry, and access logs"
-                    className="w-full h-full object-contain rounded-xl hover:scale-[1.01] transition-transform duration-500"
-                  />
-                </div>
+            {/* Right Column: Visual bank grade - security dashboard.png (6 Cols) */}
+            <div className="lg:col-span-6 flex items-center justify-center">
+              <div className="relative w-full max-w-[500px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(15,23,42,0.16)] border border-slate-200/80 bg-[#071330] group">
+                <img
+                  src="/images/finance/bank grade - security dashboard.png"
+                  alt="Bank Grade Security Dashboard showing live encryption status, SOC telemetry, and access logs"
+                  className="w-full h-auto block object-contain transform group-hover:scale-[1.01] transition-transform duration-500 select-none"
+                />
               </div>
             </div>
           </div>
@@ -216,14 +214,12 @@ const SecuritySection: React.FC = () => {
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-12">
             {/* Left Column: Visual compliance and certificates.png (7 Cols) */}
             <div className="lg:col-span-7">
-              <div className="rounded-3xl overflow-hidden bg-white border border-blue-100/80 shadow-[0_20px_50px_rgba(30,58,138,0.08)] p-3 sm:p-5">
-                <div className="rounded-2xl overflow-hidden aspect-[16/9] flex items-center justify-center bg-slate-50">
-                  <img
-                    src="/images/finance/compliance and certificates.png"
-                    alt="Compliance & Certifications badges showing SOC 2, ISO 27001, PCI DSS, GDPR, HIPAA, and FedRAMP"
-                    className="w-full h-full object-contain rounded-xl hover:scale-[1.01] transition-transform duration-500"
-                  />
-                </div>
+              <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-slate-200/90 shadow-[0_20px_50px_rgba(30,58,138,0.08)] group">
+                <img
+                  src="/images/finance/compliance and certificates.png"
+                  alt="Compliance & Certifications badges showing SOC 2, ISO 27001, PCI DSS, GDPR, HIPAA, and FedRAMP"
+                  className="w-full h-auto block object-contain transform group-hover:scale-[1.01] transition-transform duration-500 select-none"
+                />
               </div>
             </div>
 

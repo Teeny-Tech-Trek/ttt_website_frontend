@@ -22,11 +22,11 @@ const HeroSection = ({onOpenChatbot}) => {
         {/* Left content */}
         <div className="space-y-8">
           <div className="space-y-6">
-            <h1 className="text-5xl font-bold leading-tight text-black lg:text-6xl">
-              Transform Your <span className="text-blue-900">D2C Business</span> with 
-              <br />Intelligent <span className="text-blue-900">AI Chatbots</span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-black">
+              Transform Your <span className="text-blue-900">D2C Business</span> with{' '}
+              <br className="hidden sm:inline" />Intelligent <span className="text-blue-900">AI Chatbots</span>
             </h1>
-            <p className="text-xl leading-relaxed text-black">
+            <p className="text-base sm:text-xl leading-relaxed text-black">
               Teeny Tech Trek empowers D2C brands with cutting-edge chatbot solutions. Automate customer support, boost sales conversions, and scale your operations with our intelligent chatbots designed specifically for direct-to-consumer businesses.
             </p>
           </div>

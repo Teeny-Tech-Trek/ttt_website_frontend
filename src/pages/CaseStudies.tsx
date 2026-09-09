@@ -180,33 +180,6 @@ const CaseStudies: React.FC<CaseStudiesProps> = ({ id = 'case-studies', classNam
 
           {/* Right Column: Hero Visual with Modern Glass Towers & Floating Analytics Cards */}
           <div className="relative w-full max-w-[480px] lg:w-[480px] h-[320px] sm:h-[350px] shrink-0 select-none">
-            {/* Handwritten Script Accent at top-right */}
-            <div className="absolute -top-6 right-2 text-right z-20 pointer-events-none">
-              <span className="font-serif italic text-xl sm:text-2xl text-[#2563eb] tracking-wide block drop-shadow-2xs">
-                Different Industries
-              </span>
-              <span className="font-serif italic text-xl sm:text-2xl text-[#2563eb] tracking-wide block -mt-1 drop-shadow-2xs">
-                A Smarter Tomorrow
-              </span>
-              {/* Hand-drawn curved arrow */}
-              <svg className="w-12 h-8 ml-auto text-[#3b82f6] -rotate-12" viewBox="0 0 50 30" fill="none">
-                <path
-                  d="M 5 10 C 20 2, 35 15, 42 22"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeDasharray="3 3"
-                />
-                <path
-                  d="M 36 24 L 44 23 L 42 15"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-
             {/* Main Hero Visual Card with Building Architecture */}
             <div className="w-full h-full rounded-3xl overflow-hidden shadow-[0_12px_35px_rgba(30,58,138,0.08)] border border-blue-50/80 relative bg-white">
               <img
@@ -350,21 +323,22 @@ const CaseStudies: React.FC<CaseStudiesProps> = ({ id = 'case-studies', classNam
         {/* ======================================================== */}
         {/* 3. READY TO SEE WHAT'S POSSIBLE? BOTTOM CTA BANNER       */}
         {/* ======================================================== */}
-        <div className="relative mt-16 sm:mt-24 rounded-2xl overflow-hidden bg-gradient-to-r from-[#1d4ed8] via-[#2563eb] to-[#1e40af] p-7 sm:p-10 shadow-xl text-white">
+        <div className="relative mt-16 sm:mt-24 rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-slate-200/90 shadow-[0_15px_35px_rgba(15,23,42,0.06)] p-7 sm:p-10">
           {/* Subtle Ambient Glow */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
+          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-50 to-indigo-50/60 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-slate-50/80 rounded-full blur-2xl pointer-events-none -ml-10 -mb-10" />
 
           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 text-center md:text-left">
             {/* Left Content with BarChart Icon */}
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5">
-              <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-md border border-white/25 flex items-center justify-center shrink-0 text-white shadow-xs">
-                <BarChart3 className="w-7 h-7" />
+              <div className="w-14 h-14 rounded-2xl bg-[#eff6ff] text-[#2563eb] border border-blue-100/80 flex items-center justify-center shrink-0 shadow-xs">
+                <BarChart3 className="w-7 h-7 text-[#2563eb]" />
               </div>
               <div>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-[#0f172a] tracking-tight">
                   Ready to See What's Possible?
                 </h3>
-                <p className="text-blue-100 text-xs sm:text-sm md:text-base mt-1.5 max-w-xl">
+                <p className="text-slate-600 text-xs sm:text-sm md:text-base mt-1.5 max-w-xl">
                   Let's discuss how our AI solutions can create similar results for your organization.
                 </p>
               </div>
@@ -377,10 +351,10 @@ const CaseStudies: React.FC<CaseStudiesProps> = ({ id = 'case-studies', classNam
                   navigate('/book-consultation');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
-                className="px-6 py-3.5 rounded-xl bg-white text-slate-900 hover:bg-blue-50 font-bold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2 group cursor-pointer"
+                className="px-6 py-3.5 rounded-xl bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold text-xs sm:text-sm shadow-md hover:shadow-lg hover:shadow-blue-500/20 transition-all duration-200 flex items-center gap-2 group cursor-pointer"
               >
                 <span>Book a Consultation</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform text-slate-900" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform text-white" />
               </button>
 
               <button
@@ -388,10 +362,10 @@ const CaseStudies: React.FC<CaseStudiesProps> = ({ id = 'case-studies', classNam
                   const el = document.getElementById('choose-industry');
                   if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="text-xs sm:text-sm text-blue-100 hover:text-white font-medium flex items-center gap-1.5 transition-colors cursor-pointer py-1"
+                className="text-xs sm:text-sm text-slate-600 hover:text-[#2563eb] font-semibold flex items-center gap-1.5 transition-colors cursor-pointer py-1 group"
               >
                 <span>View All Case Studies</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#2563eb] group-hover:translate-x-0.5 transition-all" />
               </button>
             </div>
           </div>
