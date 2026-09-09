@@ -189,14 +189,14 @@ const ProcessAutomationPage = ({ onOpenChatbot }) => {
               </motion.div>
               
               <motion.h1 
-                className="text-5xl font-bold leading-tight text-black lg:text-6xl"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-black"
                 variants={fadeInUp}
               >
                 Kill the busywork. <span className="text-blue-900 ">Keep control.</span>
               </motion.h1>
               
               <motion.p 
-                className="text-2xl leading-relaxed text-gray-700"
+                className="text-lg sm:text-xl lg:text-2xl leading-relaxed text-gray-700"
                 variants={fadeInUp}
               >
                 Turn emails/CSVs/sheets into clean data, rules, and alerts—so your team handles exceptions, not drudgery.

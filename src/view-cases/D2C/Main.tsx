@@ -13,6 +13,8 @@ import {
   Users,
   Zap,
   Star,
+  Brain,
+  Target,
   ShieldCheck,
   Globe,
   Database,
@@ -242,175 +244,187 @@ const HeroSection: React.FC<MainD2CProps> = ({ onOpenChatbot }) => {
 
 const D2CChatbotSolutionsSection: React.FC<MainD2CProps> = ({ onOpenChatbot }) => {
   return (
-    <section className="py-20 lg:py-24 bg-slate-50/60 border-t border-slate-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-12 sm:py-16 bg-[#f8fafc] relative overflow-hidden border-t border-slate-100">
+      {/* Subtle Background Dots Pattern */}
+      <div className="absolute top-6 left-6 w-40 h-40 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:14px_14px] opacity-20 pointer-events-none" />
+      <div className="absolute top-6 right-6 w-40 h-40 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:14px_14px] opacity-20 pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <motion.div
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center max-w-3xl mx-auto mb-8 sm:mb-10"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.25 }}
           variants={slideFromTop}
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/80 border border-blue-200 text-blue-900 text-xs font-bold tracking-wider uppercase mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-bold tracking-wider uppercase mb-2.5 shadow-2xs">
+            <ShoppingCart className="w-3.5 h-3.5 text-blue-600" />
             <span>Built for D2C Brands</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight">
-            D2C Chatbot <span className="text-blue-600">Solutions</span>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
+            D2C <span className="text-blue-600">Chatbot Solutions</span>
           </h2>
-          <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed">
-            Intelligent chatbot systems designed specifically for direct-to-consumer e-commerce businesses.
+          <p className="mt-2.5 text-xs sm:text-sm lg:text-base text-slate-600 leading-relaxed max-w-xl mx-auto">
+            Intelligent chatbot systems designed specifically for direct-to-consumer e-commerce businesses
           </p>
         </motion.div>
 
-        {/* 2 Feature Cards Grid */}
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-10">
+        {/* 2 Feature Cards Grid (Side-by-Side on LG/XL) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-8 items-stretch">
           {/* Card 1: Customer Support Chatbot */}
           <motion.div
-            className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-md hover:shadow-xl transition-all flex flex-col justify-between"
+            className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-6 xl:p-7 border border-slate-100 shadow-[0_4px_25px_rgba(0,0,0,0.04)] hover:shadow-lg transition-all duration-300 flex flex-col sm:flex-row items-center justify-between gap-5 sm:gap-6"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             variants={slideFromLeft}
           >
-            <div>
-              <div className="flex items-center justify-between mb-6">
-                <div className="w-14 h-14 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shadow-2xs">
-                  <MessageSquare className="w-7 h-7" />
+            {/* Left Content Column */}
+            <div className="flex-1 w-full flex flex-col justify-between self-stretch">
+              <div>
+                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-sm shadow-blue-500/20 mb-3">
+                  <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
-                <span className="px-3.5 py-1 rounded-full bg-blue-100 text-blue-800 border border-blue-200 text-xs font-bold">
-                  24/7 Support
-                </span>
+
+                <h3 className="text-lg sm:text-xl xl:text-2xl font-bold text-slate-900 mb-1.5 tracking-tight">
+                  Customer Support Chatbot
+                </h3>
+                <p className="text-slate-500 text-xs sm:text-[13px] leading-relaxed mb-4">
+                  AI-powered chatbot that handles customer inquiries, order tracking, returns, and support tickets with instant, accurate responses.
+                </p>
+
+                {/* 3 Compact Feature Pill Rows */}
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center gap-3 p-2 sm:p-2.5 rounded-xl bg-[#f8fafc] border border-slate-100/90 shadow-2xs">
+                    <div className="w-8 h-8 rounded-lg bg-white border border-slate-200/70 shadow-2xs flex items-center justify-center text-blue-600 shrink-0">
+                      <Clock className="w-4 h-4" />
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="font-bold text-slate-900 text-xs sm:text-[13px] leading-tight">24/7 Availability</h4>
+                      <p className="text-[11px] text-slate-500 truncate">Round-the-clock customer support</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 p-2 sm:p-2.5 rounded-xl bg-[#f8fafc] border border-slate-100/90 shadow-2xs">
+                    <div className="w-8 h-8 rounded-lg bg-white border border-slate-200/70 shadow-2xs flex items-center justify-center text-blue-600 shrink-0">
+                      <Zap className="w-4 h-4" />
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="font-bold text-slate-900 text-xs sm:text-[13px] leading-tight">Instant Responses</h4>
+                      <p className="text-[11px] text-slate-500 truncate">Sub-5 second response times</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 p-2 sm:p-2.5 rounded-xl bg-[#f8fafc] border border-slate-100/90 shadow-2xs">
+                    <div className="w-8 h-8 rounded-lg bg-white border border-slate-200/70 shadow-2xs flex items-center justify-center text-blue-600 shrink-0">
+                      <Brain className="w-4 h-4" />
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="font-bold text-slate-900 text-xs sm:text-[13px] leading-tight">Smart Learning</h4>
+                      <p className="text-[11px] text-slate-500 truncate">Continuously improves responses</p>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-3">
-                Customer Support Chatbot
-              </h3>
-              <p className="text-slate-600 text-base leading-relaxed mb-6">
-                AI-powered chatbot that handles customer inquiries, order tracking, returns, and support tickets with instant, accurate responses.
-              </p>
-
-              {/* Bullet Highlights */}
-              <div className="space-y-3 mb-8">
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-slate-900 font-semibold text-sm sm:text-base">24/7 Availability</strong>
-                    <span className="text-slate-600 text-sm block">Round-the-clock customer support</span>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-slate-900 font-semibold text-sm sm:text-base">Instant Responses</strong>
-                    <span className="text-slate-600 text-sm block">Sub-5-second response times</span>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-slate-900 font-semibold text-sm sm:text-base">Smart Learning</strong>
-                    <span className="text-slate-600 text-sm block">Continuously improves responses</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Visual Showcase: Support Chatbot Mockup */}
-              <div className="rounded-2xl overflow-hidden border border-slate-100 bg-slate-50 mb-6">
-                <img
-                  src={customerSupportImg}
-                  alt="Customer Support Chatbot tracking Order #12345: Placed, Shipped, Out for Delivery"
-                  className="w-full h-auto object-cover max-h-80 mx-auto"
-                />
+              {/* Action Button */}
+              <div className="pt-1">
+                <button
+                  onClick={onOpenChatbot}
+                  className="w-fit inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm shadow-sm transition-all hover:gap-2.5 cursor-pointer"
+                >
+                  <span>Learn More</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
               </div>
             </div>
 
-            {/* Action CTA */}
-            <div>
-              <button
-                onClick={onOpenChatbot}
-                className="w-full inline-flex items-center justify-center px-6 py-3.5 rounded-xl bg-blue-600 text-white font-bold text-base hover:bg-blue-700 transition-all shadow-md group cursor-pointer"
-              >
-                <span>Try Support Chatbot</span>
-                <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-              </button>
+            {/* Right Mockup Column */}
+            <div className="w-full sm:w-[46%] lg:w-[48%] shrink-0 flex items-center justify-center relative">
+              <img
+                src={customerSupportImg}
+                alt="Customer Support Chatbot tracking Order #12345: Placed, Shipped, Out for Delivery"
+                className="w-full h-auto max-h-[350px] sm:max-h-[380px] lg:max-h-[360px] xl:max-h-[390px] object-contain drop-shadow-md mx-auto"
+              />
             </div>
           </motion.div>
 
           {/* Card 2: Sales Conversion Chatbot */}
           <motion.div
-            className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-md hover:shadow-xl transition-all flex flex-col justify-between"
+            className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-6 xl:p-7 border border-slate-100 shadow-[0_4px_25px_rgba(0,0,0,0.04)] hover:shadow-lg transition-all duration-300 flex flex-col sm:flex-row items-center justify-between gap-5 sm:gap-6"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             variants={slideFromRight}
           >
-            <div>
-              <div className="flex items-center justify-between mb-6">
-                <div className="w-14 h-14 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shadow-2xs">
-                  <TrendingUp className="w-7 h-7" />
+            {/* Left Content Column */}
+            <div className="flex-1 w-full flex flex-col justify-between self-stretch">
+              <div>
+                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-sm shadow-blue-500/20 mb-3">
+                  <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
-                <span className="px-3.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold">
-                  +28% Sales Lift
-                </span>
+
+                <h3 className="text-lg sm:text-xl xl:text-2xl font-bold text-slate-900 mb-1.5 tracking-tight">
+                  Sales Conversion Chatbot
+                </h3>
+                <p className="text-slate-500 text-xs sm:text-[13px] leading-relaxed mb-4">
+                  Intelligent sales assistant that provides personalized product recommendations, handles objections, and guides customers to purchase.
+                </p>
+
+                {/* 3 Compact Feature Pill Rows */}
+                <div className="space-y-2 mb-4">
+                  <div className="flex items-center gap-3 p-2 sm:p-2.5 rounded-xl bg-[#f8fafc] border border-slate-100/90 shadow-2xs">
+                    <div className="w-8 h-8 rounded-lg bg-white border border-slate-200/70 shadow-2xs flex items-center justify-center text-blue-600 shrink-0">
+                      <Target className="w-4 h-4" />
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="font-bold text-slate-900 text-xs sm:text-[13px] leading-tight">Personalized Recommendations</h4>
+                      <p className="text-[11px] text-slate-500 truncate">AI-driven product suggestions</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 p-2 sm:p-2.5 rounded-xl bg-[#f8fafc] border border-slate-100/90 shadow-2xs">
+                    <div className="w-8 h-8 rounded-lg bg-white border border-slate-200/70 shadow-2xs flex items-center justify-center text-blue-600 shrink-0">
+                      <DollarSign className="w-4 h-4" />
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="font-bold text-slate-900 text-xs sm:text-[13px] leading-tight">Upselling & Cross-selling</h4>
+                      <p className="text-[11px] text-slate-500 truncate">Intelligent product bundling</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 p-2 sm:p-2.5 rounded-xl bg-[#f8fafc] border border-slate-100/90 shadow-2xs">
+                    <div className="w-8 h-8 rounded-lg bg-white border border-slate-200/70 shadow-2xs flex items-center justify-center text-blue-600 shrink-0">
+                      <BarChart3 className="w-4 h-4" />
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="font-bold text-slate-900 text-xs sm:text-[13px] leading-tight">Conversion Analytics</h4>
+                      <p className="text-[11px] text-slate-500 truncate">Real-time sales insights</p>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-3">
-                Sales Conversion Chatbot
-              </h3>
-              <p className="text-slate-600 text-base leading-relaxed mb-6">
-                Intelligent sales assistant that delivers personalized product recommendations, handles objections, and guides customers to purchase.
-              </p>
-
-              {/* Bullet Highlights */}
-              <div className="space-y-3 mb-8">
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-slate-900 font-semibold text-sm sm:text-base">Personalized Recommendations</strong>
-                    <span className="text-slate-600 text-sm block">AI-driven product suggestions</span>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-slate-900 font-semibold text-sm sm:text-base">Upselling & Cross-Selling</strong>
-                    <span className="text-slate-600 text-sm block">Intelligent product bundling</span>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-slate-900 font-semibold text-sm sm:text-base">Conversion Analytics</strong>
-                    <span className="text-slate-600 text-sm block">Real-time sales insights</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Visual Showcase: Sales Conversion Mockup */}
-              <div className="rounded-2xl overflow-hidden border border-slate-100 bg-slate-50 mb-6">
-                <img
-                  src={salesConversionImg}
-                  alt="Sales Conversion Chatbot recommending Performance Runner shoes for $89.99 with Add to Cart button"
-                  className="w-full h-auto object-cover max-h-80 mx-auto"
-                />
+              {/* Action Button */}
+              <div className="pt-1">
+                <HashLink
+                  to="/book-consultation"
+                  className="w-fit inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm shadow-sm transition-all hover:gap-2.5 cursor-pointer"
+                >
+                  <span>Learn More</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </HashLink>
               </div>
             </div>
 
-            {/* Action CTA */}
-            <div>
-              <HashLink
-                to="/book-consultation"
-                className="w-full inline-flex items-center justify-center px-6 py-3.5 rounded-xl bg-blue-600 text-white font-bold text-base hover:bg-blue-700 transition-all shadow-md group"
-              >
-                <span>Boost Sales Now</span>
-                <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-              </HashLink>
+            {/* Right Mockup Column */}
+            <div className="w-full sm:w-[46%] lg:w-[48%] shrink-0 flex items-center justify-center relative">
+              <img
+                src={salesConversionImg}
+                alt="Sales Conversion Chatbot recommending Performance Runner shoes for $89.99 with Add to Cart button"
+                className="w-full h-auto max-h-[350px] sm:max-h-[380px] lg:max-h-[360px] xl:max-h-[390px] object-contain drop-shadow-md mx-auto"
+              />
             </div>
           </motion.div>
         </div>

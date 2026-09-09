@@ -201,14 +201,14 @@ const AiAppsPage: React.FC<AiAppsPageProps> = ({ onOpenChatbot }) => {
               
               <motion.h1 
              
-             className="text-6xl font-bold leading-tight text-black lg:text-7xl"
+             className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight text-black lg:text-7xl"
                 variants={fadeInUp}
               >
                 Small apps. <span className="text-blue-900">Real impact.</span>
               </motion.h1>
               
               <motion.p 
-                className="text-2xl leading-relaxed text-gray-700"
+                className="text-lg sm:text-xl lg:text-2xl leading-relaxed text-gray-700"
                 variants={fadeInUp}
               >
                 Internal tools and micro-SaaS that ship in weeks—with the exact actions your team needs and nothing you don't.
@@ -438,7 +438,7 @@ const AiAppsPage: React.FC<AiAppsPageProps> = ({ onOpenChatbot }) => {
               <h2 className="mb-10 text-4xl font-bold text-black">
                 Preview <span className="text-blue-900">Actions</span>
               </h2>
-              <div className="p-8 bg-white border-2 border-gray-200 shadow-xl rounded-3xl">
+              <div className="p-4 sm:p-8 bg-white border-2 border-gray-200 shadow-xl rounded-2xl sm:rounded-3xl">
                 <div className="mb-8">
                   <div className="flex items-center gap-3 mb-4">
                     <Eye className="w-6 h-6 text-blue-900" />
@@ -447,7 +447,7 @@ const AiAppsPage: React.FC<AiAppsPageProps> = ({ onOpenChatbot }) => {
                   <p className="text-black">Review before executing</p>
                 </div>
                 
-                <div className="grid grid-cols-2 gap-6 mb-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-8">
                   <div className="p-4 border rounded-2xl bg-gray-50">
                     <h4 className="mb-2 font-semibold text-black">Before</h4>
                     <div className="text-sm text-gray-700">

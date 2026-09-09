@@ -235,7 +235,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-[#93c5fd]/20 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-[#93c5fd] text-xs">
-            Â© {new Date().getFullYear()} Teeny Tech Trek. All rights reserved.
+            © {new Date().getFullYear()} Teeny Tech Trek. All rights reserved.
           </p>
           <div className="flex gap-6 text-xs text-[#93c5fd]">
             <Link to="/privacy" className="transition-colors duration-300 hover:text-white">

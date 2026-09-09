@@ -148,13 +148,12 @@ const Services = () => {
                 </AnimatePresence>
               </motion.div>
 
-              {/* Cycle to next featured service — a sibling of the visual card,
-                   so it's never clipped by the card's rounded overflow-hidden edge */}
+              {/* Cycle to next featured service — safely inside on mobile to prevent overflow, overhanging on sm+ desktop */}
               <button
                 type="button"
                 onClick={showNextFeatured}
                 aria-label="Show next featured service"
-                className="absolute right-0 top-1/2 z-40 flex h-11 w-11 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 text-white shadow-[0_8px_24px_rgba(34,211,238,0.45)] ring-4 ring-blue-900 transition-all duration-300 hover:scale-110 hover:shadow-[0_10px_30px_rgba(34,211,238,0.65)]"
+                className="absolute right-2 sm:right-0 top-1/2 z-40 flex h-10 w-10 sm:h-11 sm:w-11 -translate-y-1/2 sm:translate-x-1/2 items-center justify-center rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 text-white shadow-[0_8px_24px_rgba(34,211,238,0.45)] ring-4 ring-blue-900 transition-all duration-300 hover:scale-110 hover:shadow-[0_10px_30px_rgba(34,211,238,0.65)]"
               >
                 <ChevronRight className="h-5 w-5" strokeWidth={2.75} />
               </button>

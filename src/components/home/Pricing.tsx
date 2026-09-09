@@ -815,7 +815,7 @@ const SchedulingModal = ({
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 mb-7 sm:grid-cols-4 lg:grid-cols-7">
+              <div className="flex overflow-x-auto gap-2.5 pb-2 mb-7 sm:grid sm:grid-cols-4 lg:grid-cols-7 sm:gap-3">
                 {days.map((day) => {
                   const isSelected = day.value === selectedDate;
                   return (
@@ -823,7 +823,7 @@ const SchedulingModal = ({
                       type="button"
                       key={day.value}
                       onClick={() => setSelectedDate(day.value)}
-                      className={`rounded-xl border p-3 text-center transition-all ${
+                      className={`w-[76px] shrink-0 sm:w-auto rounded-xl border p-3 text-center transition-all ${
                         isSelected
                           ? "border-blue-900 bg-blue-900 text-white shadow-lg shadow-blue-900/20"
                           : "border-gray-200 bg-gray-50 text-gray-700 hover:border-blue-200 hover:bg-blue-50"

@@ -292,7 +292,7 @@ export default function BlogSingleView() {
       </div>
 
       {/* 4. OPTION 1: 3-COLUMN EDITORIAL LAYOUT */}
-      <div className="max-w-[1400px] mx-auto px-3 sm:px-6 lg:px-8 py-8 lg:py-10 flex justify-center items-start gap-8 xl:gap-10">
+      <div className="max-w-[1400px] mx-auto px-3 sm:px-6 lg:px-8 py-8 lg:py-10 flex justify-center items-start gap-6 xl:gap-10">
         
         {/* ============================================================ */}
         {/* LEFT COLUMN: Sticky Floating Quick Action Pill               */}
@@ -391,7 +391,7 @@ export default function BlogSingleView() {
           <article className="w-full bg-white rounded-2xl shadow-[0_4px_25px_rgba(0,0,0,0.06)] border border-slate-200 overflow-hidden flex flex-col">
             
             {/* Card Header */}
-            <div className="px-6 sm:px-12 pt-8 sm:pt-10 pb-6 flex flex-col items-center text-center">
+            <div className="px-5 sm:px-8 xl:px-12 pt-8 sm:pt-10 pb-6 flex flex-col items-center text-center">
               
               {/* Category Pill */}
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-900 border border-blue-100 mb-4">
@@ -441,11 +441,11 @@ export default function BlogSingleView() {
 
             {/* Featured Image */}
             {blog.media_cid && (
-              <div className="w-full bg-slate-50 flex flex-col items-center justify-center border-t border-b border-slate-100">
+              <div className="w-full bg-white flex flex-col items-center justify-center border-t border-b border-slate-100 p-4 sm:p-6">
                 {isVideo(blog.media_cid) ? (
                   <video
                     src={blog.media_cid.startsWith('http') ? blog.media_cid : `https://w3s.link/ipfs/${blog.media_cid}`}
-                    className="w-full h-[320px] sm:h-[400px] object-cover"
+                    className="w-full max-h-[440px] rounded-xl object-contain shadow-xs"
                     controls
                     preload="none"
                   />
@@ -453,7 +453,7 @@ export default function BlogSingleView() {
                   <img
                     src={blog.media_cid.startsWith('http') ? blog.media_cid : `https://w3s.link/ipfs/${blog.media_cid}`}
                     alt={blog.featured_alt || blog.title}
-                    className="w-full max-h-[480px] object-cover"
+                    className="w-full max-h-[520px] object-contain rounded-xl shadow-xs"
                     loading="eager"
                   />
                 )}
@@ -466,7 +466,7 @@ export default function BlogSingleView() {
             )}
 
             {/* Content Body */}
-            <div className="p-6 sm:p-12 flex flex-col flex-1 bg-white">
+            <div className="p-5 sm:p-8 xl:p-12 flex flex-col flex-1 bg-white">
               
               {/* Summary Lead */}
               {blog.summary && (
@@ -533,7 +533,7 @@ export default function BlogSingleView() {
         {/* ============================================================ */}
         {/* RIGHT COLUMN: Sticky Table of Contents & Professional CTA     */}
         {/* ============================================================ */}
-        <aside className="hidden lg:block w-72 xl:w-80 shrink-0 sticky top-28 self-start space-y-4">
+        <aside className="hidden lg:block w-64 xl:w-80 shrink-0 sticky top-28 self-start space-y-4">
           
           {/* Widget 1: Interactive Table of Contents */}
           {headings.length > 0 && (

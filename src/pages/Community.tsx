@@ -2592,15 +2592,15 @@ const Community = () => {
       className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40"
     >
       {/* Enhanced Background Elements */}
-      <div className="fixed inset-0 z-0">
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
         <motion.div 
           style={{ y, opacity }}
           className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=%2260%22 height=%2260%22 viewBox=%220 0 60 60%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg fill=%22none%22 fill-rule=%22evenodd%22%3E%3Cg fill=%22%23e0e7ff%22 fill-opacity=%220.3%22%3E%3Ccircle cx=%223%22 cy=%223%22 r=%222%22/%3E%3Ccircle cx=%2213%22 cy=%2213%22 r=%221%22/%3E%3Ccircle cx=%2233%22 cy=%225%22 r=%221%22/%3E%3Ccircle cx=%223%22 cy=%2233%22 r=%221%22/%3E%3Ccircle cx=%2233%22 cy=%2233%22 r=%222%22/%3E%3Ccircle cx=%2243%22 cy=%2213%22 r=%221%22/%3E%3Ccircle cx=%2213%22 cy=%2243%22 r=%221%22/%3E%3Ccircle cx=%2243%22 cy=%2243%22 r=%221%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-40" 
         />
         
-        <div className="absolute rounded-full opacity-50 bg-shape top-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-blue-200/30 to-indigo-200/20 blur-3xl"></div>
-        <div className="bg-shape absolute bottom-1/3 right-1/4 w-[600px] h-[600px] rounded-full bg-gradient-to-tl from-indigo-100/25 to-purple-100/30 blur-3xl opacity-40"></div>
-        <div className="bg-shape absolute top-2/3 left-1/3 w-[500px] h-[500px] rounded-full bg-gradient-to-r from-cyan-100/20 to-blue-100/20 blur-3xl opacity-30"></div>
+        <div className="absolute rounded-full opacity-50 bg-shape top-1/4 left-1/4 w-72 h-72 sm:w-96 sm:h-96 bg-gradient-to-br from-blue-200/30 to-indigo-200/20 blur-3xl"></div>
+        <div className="bg-shape absolute bottom-1/3 right-1/4 w-[300px] h-[300px] sm:w-[600px] sm:h-[600px] rounded-full bg-gradient-to-tl from-indigo-100/25 to-purple-100/30 blur-3xl opacity-40"></div>
+        <div className="bg-shape absolute top-2/3 left-1/3 w-[280px] h-[280px] sm:w-[500px] sm:h-[500px] rounded-full bg-gradient-to-r from-cyan-100/20 to-blue-100/20 blur-3xl opacity-30"></div>
         
         {Array.from({ length: 20 }).map((_, i) => (
           <motion.div

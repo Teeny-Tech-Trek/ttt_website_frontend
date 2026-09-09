@@ -201,14 +201,14 @@ const navigate = useNavigate();
       </div>
 
       {/* Score Display */}
-      <div className="bg-gradient-to-r from-blue-50 to-teal-50 rounded-2xl p-8 border border-blue-100">
+      <div className="bg-gradient-to-r from-blue-50 to-teal-50 rounded-2xl p-5 sm:p-8 border border-blue-100">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Your AI Readiness Score</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Your AI Readiness Score</h2>
           <div className="flex items-center justify-center mb-6">
-            <div className="text-6xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">{score.toFixed(1)}</div>
-            <div className="text-2xl text-gray-400 ml-2">/15</div>
+            <div className="text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">{score.toFixed(1)}</div>
+            <div className="text-xl sm:text-2xl text-gray-400 ml-2">/15</div>
           </div>
-          <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${scoreBadge.bgColor} ${scoreBadge.textColor} font-semibold mb-4`}>
+          <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${scoreBadge.bgColor} ${scoreBadge.textColor} text-xs sm:text-sm font-semibold mb-4`}>
             {scoreBadge.icon} <span>{getScoreMessage(score)}</span>
           </div>
         </div>

@@ -167,13 +167,13 @@ const Hero: React.FC<ChatbotOpenProps> = ({ onOpenChatbot }) => {
 
             {/* Stat row */}
             <motion.div
-              className="grid grid-cols-3 gap-4 pt-6 border-t border-gray-100"
+              className="grid grid-cols-3 gap-2 sm:gap-4 pt-6 border-t border-gray-100"
               variants={staggerContainer}
             >
               {heroStats.map((s) => (
                 <motion.div key={s.label} variants={fadeInUp}>
-                  <div className="text-2xl font-bold text-blue-900">{s.value}</div>
-                  <div className="text-sm font-semibold text-black">{s.label}</div>
+                  <div className="text-xl sm:text-2xl font-bold text-blue-900">{s.value}</div>
+                  <div className="text-xs sm:text-sm font-semibold text-black">{s.label}</div>
                 </motion.div>
               ))}
             </motion.div>

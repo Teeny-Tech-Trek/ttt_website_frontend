@@ -19,7 +19,6 @@ import {
   Plus,
   HelpCircle,
   Smile,
-  Star,
   Database,
   Volume2,
   CreditCard,
@@ -98,7 +97,7 @@ const HeroSection: React.FC = () => {
 
             {/* Headline */}
             <motion.div className="space-y-3" variants={slideFromLeft}>
-              <h1 className="text-4xl sm:text-5xl lg:text-[56px] font-black tracking-tight text-slate-900 leading-[1.14]">
+              <h1 className="text-3xl sm:text-5xl lg:text-[56px] font-black tracking-tight text-slate-900 leading-[1.14]">
                 Never Miss a <br />
                 <span className="text-blue-600">Guest Call</span> Again
               </h1>
@@ -117,31 +116,31 @@ const HeroSection: React.FC = () => {
             </motion.div>
 
             {/* Stat Strip Cards */}
-            <motion.div className="grid grid-cols-3 gap-3 sm:gap-4 pt-2" variants={slideFromLeft}>
-              <div className="p-3.5 sm:p-4 rounded-xl bg-white border border-blue-100/90 shadow-xs hover:border-blue-300 transition-colors">
-                <div className="flex items-center gap-1.5 text-blue-600 mb-1">
-                  <Clock className="w-4 h-4" />
-                  <span className="text-lg sm:text-xl font-black text-slate-900">24/7</span>
+            <motion.div className="grid grid-cols-3 gap-2 sm:gap-4 pt-2" variants={slideFromLeft}>
+              <div className="p-2.5 sm:p-4 rounded-xl bg-white border border-blue-100/90 shadow-xs hover:border-blue-300 transition-colors">
+                <div className="flex items-center gap-1 sm:gap-1.5 text-blue-600 mb-1">
+                  <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                  <span className="text-base sm:text-xl font-black text-slate-900">24/7</span>
                 </div>
-                <div className="text-xs font-semibold text-slate-700">Always Available</div>
+                <div className="text-[11px] sm:text-xs font-semibold text-slate-700 leading-tight">Always Available</div>
                 <div className="text-[11px] text-slate-500 hidden sm:block">No hold music, no voicemail</div>
               </div>
 
-              <div className="p-3.5 sm:p-4 rounded-xl bg-white border border-blue-100/90 shadow-xs hover:border-blue-300 transition-colors">
-                <div className="flex items-center gap-1.5 text-blue-600 mb-1">
-                  <Globe className="w-4 h-4" />
-                  <span className="text-lg sm:text-xl font-black text-slate-900">50+</span>
+              <div className="p-2.5 sm:p-4 rounded-xl bg-white border border-blue-100/90 shadow-xs hover:border-blue-300 transition-colors">
+                <div className="flex items-center gap-1 sm:gap-1.5 text-blue-600 mb-1">
+                  <Globe className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                  <span className="text-base sm:text-xl font-black text-slate-900">50+</span>
                 </div>
-                <div className="text-xs font-semibold text-slate-700">Languages</div>
+                <div className="text-[11px] sm:text-xs font-semibold text-slate-700 leading-tight">Languages</div>
                 <div className="text-[11px] text-slate-500 hidden sm:block">Spoken fluently</div>
               </div>
 
-              <div className="p-3.5 sm:p-4 rounded-xl bg-white border border-blue-100/90 shadow-xs hover:border-blue-300 transition-colors">
-                <div className="flex items-center gap-1.5 text-blue-600 mb-1">
-                  <Zap className="w-4 h-4" />
-                  <span className="text-lg sm:text-xl font-black text-slate-900">&lt;24s</span>
+              <div className="p-2.5 sm:p-4 rounded-xl bg-white border border-blue-100/90 shadow-xs hover:border-blue-300 transition-colors">
+                <div className="flex items-center gap-1 sm:gap-1.5 text-blue-600 mb-1">
+                  <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                  <span className="text-base sm:text-xl font-black text-slate-900">&lt;24s</span>
                 </div>
-                <div className="text-xs font-semibold text-slate-700">Response Time</div>
+                <div className="text-[11px] sm:text-xs font-semibold text-slate-700 leading-tight">Response Time</div>
                 <div className="text-[11px] text-slate-500 hidden sm:block">Instant pick-up</div>
               </div>
             </motion.div>
@@ -611,132 +610,51 @@ const RealResultsSection: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* 3 Stat Cards Grid (Matching Reference Screenshot) */}
+        {/* 3 Stat Cards Grid */}
         <div className="grid md:grid-cols-3 gap-6 sm:gap-8 mb-16">
           {/* Card 1: Guest Satisfaction */}
           <motion.div
-            className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-lg hover:shadow-xl transition-all flex flex-col justify-between"
+            className="group relative bg-white rounded-3xl overflow-hidden border border-slate-200/90 shadow-[0_4px_25px_rgba(0,0,0,0.06)] hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 flex items-center justify-center"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             variants={slideFromBottom}
           >
-            <div>
-              {/* Header Icon + Delta Badge */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600">
-                  <Star className="w-6 h-6 fill-blue-600/20 text-blue-600" />
-                </div>
-                <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold flex items-center gap-1">
-                  ↑ +28%
-                </span>
-              </div>
-
-              {/* Big Stat & Title */}
-              <div className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight mb-2">
-                80%
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">Guest Satisfaction</h3>
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
-                Higher guest experience ratings, driven by faster, more consistent service around the clock.
-              </p>
-            </div>
-
-            {/* Visual Curve Card */}
-            <div className="pt-4 border-t border-slate-100">
-              <img
-                src={guestSatisfactionImg}
-                alt="Guest Satisfaction rating curve visual"
-                className="w-full h-auto rounded-xl object-contain max-h-36 mx-auto"
-              />
-              <div className="text-center text-xs text-slate-500 font-medium mt-3">
-                Higher guest happiness
-              </div>
-            </div>
+            <img
+              src={guestSatisfactionImg}
+              alt="Guest Satisfaction: 80% (+28%) — Improved guest experience ratings with AI assistance"
+              className="w-full h-auto block object-contain transform group-hover:scale-[1.02] transition-transform duration-500 select-none"
+            />
           </motion.div>
 
           {/* Card 2: Response Time */}
           <motion.div
-            className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-lg hover:shadow-xl transition-all flex flex-col justify-between"
+            className="group relative bg-white rounded-3xl overflow-hidden border border-slate-200/90 shadow-[0_4px_25px_rgba(0,0,0,0.06)] hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 flex items-center justify-center"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             variants={slideFromBottom}
           >
-            <div>
-              {/* Header Icon + Delta Badge */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600">
-                  <Zap className="w-6 h-6 fill-blue-600/20 text-blue-600" />
-                </div>
-                <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold flex items-center gap-1">
-                  ↓ 62% faster
-                </span>
-              </div>
-
-              {/* Big Stat & Title */}
-              <div className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight mb-2">
-                24s
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">Response Time</h3>
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
-                The average time a guest waits for an answer — down sharply since adding AI voice support.
-              </p>
-            </div>
-
-            {/* Visual Bar Chart */}
-            <div className="pt-4 border-t border-slate-100">
-              <img
-                src={responseTimeImg}
-                alt="Response Time bar chart showing 62% faster assistance"
-                className="w-full h-auto rounded-xl object-contain max-h-36 mx-auto"
-              />
-              <div className="text-center text-xs text-slate-500 font-medium mt-3">
-                Faster answers, happier guests
-              </div>
-            </div>
+            <img
+              src={responseTimeImg}
+              alt="Response Time: 24s (↓ 62% faster) — Lightning-fast guest assistance and support"
+              className="w-full h-auto block object-contain transform group-hover:scale-[1.02] transition-transform duration-500 select-none"
+            />
           </motion.div>
 
           {/* Card 3: Efficiency Boost */}
           <motion.div
-            className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-lg hover:shadow-xl transition-all flex flex-col justify-between"
+            className="group relative bg-white rounded-3xl overflow-hidden border border-slate-200/90 shadow-[0_4px_25px_rgba(0,0,0,0.06)] hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 flex items-center justify-center"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             variants={slideFromBottom}
           >
-            <div>
-              {/* Header Icon + Delta Badge */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600">
-                  <TrendingUp className="w-6 h-6 text-blue-600" />
-                </div>
-                <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold flex items-center gap-1">
-                  ↑ +73%
-                </span>
-              </div>
-
-              {/* Big Stat & Title */}
-              <div className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight mb-2">
-                73%
-              </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">Efficiency Boost</h3>
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
-                More done with the same team — freeing staff for the high-value, face-to-face guest moments.
-              </p>
-            </div>
-
-            {/* Visual Efficiency Chart */}
-            <div className="pt-4 border-t border-slate-100">
-              <img
-                src={efficiencyBoostImg}
-                alt="Efficiency Boost upward trend line visual"
-                className="w-full h-auto rounded-xl object-contain max-h-36 mx-auto"
-              />
-              <div className="text-center text-xs text-slate-500 font-medium mt-3">
-                Do more with less effort
-              </div>
-            </div>
+            <img
+              src={efficiencyBoostImg}
+              alt="Efficiency Boost: 73% (↑ +73%) — Increase in overall operational productivity"
+              className="w-full h-auto block object-contain transform group-hover:scale-[1.02] transition-transform duration-500 select-none"
+            />
           </motion.div>
         </div>
 

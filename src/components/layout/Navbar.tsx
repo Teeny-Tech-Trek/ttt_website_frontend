@@ -298,7 +298,7 @@ const Navbar = () => {
           <MotionLink
             to="/#home"
             smooth
-            className="z-50 flex items-center flex-shrink-0 min-w-0 gap-2 mr-6 sm:gap-3 lg:mr-8 xl:mr-10"
+            className="z-50 flex items-center flex-shrink-0 min-w-0 gap-2 mr-3 sm:gap-3 lg:mr-4 xl:mr-10"
             style={{ scale: logoScale }}
             whileHover={{ scale: 1.1 }}
             transition={{ type: 'spring', stiffness: 300 }}
@@ -321,8 +321,8 @@ const Navbar = () => {
           </MotionLink>
 
           {/* Desktop Navigation - Multiple breakpoints with proper spacing */}
-          <div className="items-center justify-center hidden lg:flex lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2">
-            <ul className="flex items-center gap-3 xl:gap-6">
+          <div className="items-center justify-center hidden lg:flex lg:static lg:mx-auto xl:absolute xl:left-1/2 xl:top-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2 xl:mx-0">
+            <ul className="flex items-center gap-2.5 lg:gap-3 xl:gap-6">
               {topNavLinks.map((link, index) => (
                 <motion.li
                   key={link.key}
@@ -404,7 +404,9 @@ const Navbar = () => {
                     <AnimatePresence>
                       {link.subLinks && openDropdown === link.key && (
                         <motion.div
-                          className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl py-2 z-50 border border-gray-100 min-w-[180px] xl:min-w-[240px]"
+                          className={`absolute top-full mt-2 bg-white rounded-lg shadow-xl py-2 z-50 border border-gray-100 min-w-[180px] xl:min-w-[240px] ${
+                            link.key === 'resources' ? 'right-0 left-auto' : 'left-0'
+                          }`}
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
@@ -434,9 +436,9 @@ const Navbar = () => {
                               </div>
                               {'products' in sub && sub.products && (
                                 <>
-                                  <span className="absolute top-0 left-full hidden w-3 h-full group-hover/item:block" />
+                                  <span className="absolute top-0 left-full lg:max-xl:left-auto lg:max-xl:right-full hidden w-3 h-full group-hover/item:block" />
                                   <div
-                                    className="absolute top-0 left-[calc(100%+0.75rem)] z-50 hidden min-w-[180px] overflow-hidden bg-white border border-gray-100 rounded-lg shadow-xl group-hover/item:block"
+                                    className="absolute top-0 left-[calc(100%+0.75rem)] lg:max-xl:left-auto lg:max-xl:right-[calc(100%+0.75rem)] z-50 hidden min-w-[180px] overflow-hidden bg-white border border-gray-100 rounded-lg shadow-xl group-hover/item:block"
                                     onClick={(event) => event.stopPropagation()}
                                   >
                                     {sub.products.map((product) => (

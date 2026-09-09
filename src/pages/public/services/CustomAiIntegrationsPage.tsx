@@ -113,14 +113,14 @@ const CustomAiIntegrationsPage: React.FC<CustomAiIntegrationsPageProps> = ({ onO
               </motion.div>
               
               <motion.h1 
-                className="text-6xl font-bold leading-tight text-black lg:text-7xl"
+                className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight text-black lg:text-7xl"
                 variants={fadeInUp}
               >
                 AI in your apps. <span className="text-blue-900">Secure & Seamless.</span>
               </motion.h1>
               
               <motion.p 
-                className="text-2xl leading-relaxed text-gray-700"
+                className="text-lg sm:text-xl lg:text-2xl leading-relaxed text-gray-700"
                 variants={fadeInUp}
               >
                 Connect LLMs directly to your software infrastructure, APIs, and databases. We build custom RAG pipelines and semantic engines tailored to your data.
@@ -284,7 +284,7 @@ const CustomAiIntegrationsPage: React.FC<CustomAiIntegrationsPageProps> = ({ onO
               <span className="inline-block px-4 py-2 mb-6 text-sm font-bold text-blue-900 bg-blue-100 rounded-full w-fit">
                 What We Deliver
               </span>
-              <h2 className="mb-6 text-5xl font-bold leading-tight text-black">
+              <h2 className="mb-6 text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-black">
                 Production-ready <span className="text-blue-900">AI pipes.</span>
               </h2>
               <p className="text-xl leading-relaxed text-gray-700">

@@ -531,9 +531,9 @@ const Hero: React.FC<HeroProps> = ({ onOpenChatbot }) => {
         {/* ── Scene: brain + floating cards (3 left, 2-card stack right) ── */}
         <div className="relative z-20 mx-auto w-full max-w-[1000px]">
           {/* ─── MOBILE, TABLET & iPad LAYOUT (uses heroImg2): flex row [left cards | brain | rich stack] ─── */}
-          <div className="flex items-center justify-center gap-1.5 sm:gap-3 md:gap-5 lg:gap-7 mt-4 sm:mt-6 px-2 sm:px-4 lg:px-6 xl:hidden">
+          <div className="flex items-center justify-center gap-1 sm:gap-3 md:gap-5 lg:gap-7 mt-4 sm:mt-6 px-1 sm:px-4 lg:px-6 xl:hidden">
             {/* Left column - 3 simple cards stacked */}
-            <div className="flex flex-shrink-0 flex-col gap-1.5 sm:gap-2.5 lg:gap-3 w-[24vw] max-w-[105px] sm:w-[140px] sm:max-w-none md:w-[175px] lg:w-[215px]">
+            <div className="flex flex-shrink-0 flex-col gap-1.5 sm:gap-2.5 lg:gap-3 w-[23vw] max-w-[105px] sm:w-[140px] sm:max-w-none md:w-[175px] lg:w-[215px]">
               {CARDS.slice(0, 3).map((card, i) => (
                 <div
                   key={card.title}
@@ -563,13 +563,13 @@ const Hero: React.FC<HeroProps> = ({ onOpenChatbot }) => {
               <img
                 src="https://4hooltce8r54joof.public.blob.vercel-storage.com/HeroPage-Assets/HeroImageForMobile.webp"
                 alt="AI Brain Visualization"
-                className="relative block h-auto w-[38vw] max-w-[170px] sm:w-[32vw] sm:max-w-[270px] md:w-[34vw] md:max-w-[320px] lg:w-[36vw] lg:max-w-[380px]"
+                className="relative block h-auto w-[36vw] max-w-[160px] sm:w-[32vw] sm:max-w-[270px] md:w-[34vw] md:max-w-[320px] lg:w-[36vw] lg:max-w-[380px]"
               />
             </div>
 
             {/* Right column - rich stack (chatbot + claude automation) */}
             <div
-              className="flex-shrink-0 w-[32vw] max-w-[140px] sm:w-[180px] sm:max-w-none md:w-[220px] lg:w-[270px]"
+              className="flex-shrink-0 w-[30vw] max-w-[135px] sm:w-[180px] sm:max-w-none md:w-[220px] lg:w-[270px]"
               ref={(el) => {
                 cardRefs.current[3] = el;
               }}

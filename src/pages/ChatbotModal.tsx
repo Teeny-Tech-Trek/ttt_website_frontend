@@ -907,8 +907,8 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
         fixed z-[9999] flex flex-col overflow-hidden bg-white border border-blue-100
         shadow-[0_25px_60px_rgba(0,0,0,0.15),0_8px_20px_rgba(0,0,0,0.08)]
         inset-0 rounded-none
-        md:inset-auto md:bottom-24 md:right-6 md:left-auto md:top-auto
-        md:h-[560px] md:max-h-[560px] md:w-[400px] md:min-w-[390px] md:rounded-[18px]
+        md:inset-auto md:bottom-6 lg:bottom-24 md:right-6 md:left-auto md:top-auto
+        md:h-[min(560px,calc(100dvh-5rem))] md:max-h-[calc(100dvh-5rem)] md:w-[400px] md:max-w-[calc(100vw-3rem)] md:rounded-[18px]
         transform-gpu origin-bottom-right transition-all duration-300 ease-in-out
         ${isOpen ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto' : 'opacity-0 translate-y-10 scale-95 pointer-events-none'}
       `}

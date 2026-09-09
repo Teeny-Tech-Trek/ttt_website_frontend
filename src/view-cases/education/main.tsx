@@ -254,31 +254,24 @@ const EducationSolutionsSection: React.FC = () => {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-10">
           {/* Card 1: Institutional Collaboration */}
           <motion.div
-            className="bg-white border border-slate-200/90 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-10 shadow-lg shadow-blue-500/5 hover:shadow-xl hover:border-blue-300 transition-all flex flex-col justify-between"
+            className="bg-white border border-slate-200/90 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 lg:p-9 xl:p-10 shadow-lg shadow-blue-500/5 hover:shadow-xl hover:border-blue-300 transition-all flex flex-col justify-between"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             variants={slideFromLeft}
           >
             <div>
-              {/* Header: Icon Squircle + Top-Right Arrow Circle */}
-              <div className="flex items-center justify-between mb-6">
+              {/* Header: Icon Squircle */}
+              <div className="mb-6">
                 <div className="w-14 h-14 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-600/25">
                   <School className="w-7 h-7" />
                 </div>
-                <HashLink
-                  to="/book-consultation"
-                  className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors shadow-xs"
-                  aria-label="Explore Institutional Collaboration"
-                >
-                  <ArrowRight className="w-5 h-5" />
-                </HashLink>
               </div>
 
               {/* Title & Description with Right Floating 3D Globe Graphic */}
-              <div className="grid sm:grid-cols-12 gap-4 items-center mb-8">
-                <div className="sm:col-span-7">
-                  <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mb-3">
+              <div className="grid sm:grid-cols-12 gap-5 lg:gap-6 items-center mb-8">
+                <div className="sm:col-span-6">
+                  <h3 className="text-2xl sm:text-2xl lg:text-3xl font-bold text-slate-900 tracking-tight mb-3">
                     Institutional Collaboration
                   </h3>
                   <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
@@ -286,11 +279,11 @@ const EducationSolutionsSection: React.FC = () => {
                     that enhance learning and research.
                   </p>
                 </div>
-                <div className="sm:col-span-5 flex justify-center">
+                <div className="sm:col-span-6 flex justify-center items-center">
                   <img
                     src={institutionCollabImg}
                     alt="Institutional Collaboration Global Network"
-                    className="w-40 sm:w-full max-w-[200px] h-auto object-contain drop-shadow-md"
+                    className="w-full max-w-[260px] sm:max-w-[280px] lg:max-w-[320px] h-auto object-contain drop-shadow-md hover:scale-105 transition-transform duration-300"
                   />
                 </div>
               </div>
@@ -347,31 +340,24 @@ const EducationSolutionsSection: React.FC = () => {
 
           {/* Card 2: AI Workshops */}
           <motion.div
-            className="bg-white border border-slate-200/90 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-10 shadow-lg shadow-blue-500/5 hover:shadow-xl hover:border-blue-300 transition-all flex flex-col justify-between"
+            className="bg-white border border-slate-200/90 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 lg:p-9 xl:p-10 shadow-lg shadow-blue-500/5 hover:shadow-xl hover:border-blue-300 transition-all flex flex-col justify-between"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             variants={slideFromRight}
           >
             <div>
-              {/* Header: Icon Squircle + Top-Right Arrow Circle */}
-              <div className="flex items-center justify-between mb-6">
+              {/* Header: Icon Squircle */}
+              <div className="mb-6">
                 <div className="w-14 h-14 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-600/25">
                   <Presentation className="w-7 h-7" />
                 </div>
-                <HashLink
-                  to="/pilot"
-                  className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors shadow-xs"
-                  aria-label="Explore AI Workshops"
-                >
-                  <ArrowRight className="w-5 h-5" />
-                </HashLink>
               </div>
 
               {/* Title & Description with Right Floating Graphic */}
-              <div className="grid sm:grid-cols-12 gap-4 items-center mb-8">
-                <div className="sm:col-span-7">
-                  <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mb-3">
+              <div className="grid sm:grid-cols-12 gap-5 lg:gap-6 items-center mb-8">
+                <div className="sm:col-span-6">
+                  <h3 className="text-2xl sm:text-2xl lg:text-3xl font-bold text-slate-900 tracking-tight mb-3">
                     AI Workshops
                   </h3>
                   <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
@@ -379,11 +365,11 @@ const EducationSolutionsSection: React.FC = () => {
                     knowledge and practical skills.
                   </p>
                 </div>
-                <div className="sm:col-span-5 flex justify-center">
+                <div className="sm:col-span-6 flex justify-center items-center">
                   <img
                     src={aiWorkshopsImg}
                     alt="AI Workshops Skills, Books, Laptop"
-                    className="w-44 sm:w-full max-w-[210px] h-auto object-contain drop-shadow-md"
+                    className="w-full max-w-[280px] sm:max-w-[300px] lg:max-w-[340px] h-auto object-contain drop-shadow-md hover:scale-105 transition-transform duration-300"
                   />
                 </div>
               </div>
@@ -707,49 +693,49 @@ const GlobalImpactSection: React.FC = () => {
 
         {/* Bottom Benefit Row (Full-width divider bar matching UI Image 2) */}
         <motion.div
-          className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-xs grid grid-cols-2 md:grid-cols-4 gap-4 divide-y md:divide-y-0 md:divide-x divide-slate-100"
+          className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs grid grid-cols-2 md:grid-cols-4 gap-x-3 gap-y-3 sm:gap-4"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
           variants={staggerContainer}
         >
-          <div className="flex items-center gap-3 pt-3 md:pt-0 md:px-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-100/70 text-blue-700 flex items-center justify-center flex-shrink-0">
-              <BookOpen className="w-5 h-5" />
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-100/70 text-blue-700 flex items-center justify-center flex-shrink-0">
+              <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
               <div className="text-xs sm:text-sm font-bold text-slate-900">Stronger</div>
-              <div className="text-xs text-slate-500">Global Collaboration</div>
+              <div className="text-[11px] sm:text-xs text-slate-500 leading-tight">Global Collaboration</div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 pt-3 md:pt-0 md:px-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-100/70 text-blue-700 flex items-center justify-center flex-shrink-0">
-              <Users className="w-5 h-5" />
+          <div className="flex items-center gap-2.5 sm:gap-3 border-l border-slate-100 pl-3 md:pl-4 lg:pl-6">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-100/70 text-blue-700 flex items-center justify-center flex-shrink-0">
+              <Users className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
               <div className="text-xs sm:text-sm font-bold text-slate-900">More</div>
-              <div className="text-xs text-slate-500">Learning Opportunities</div>
+              <div className="text-[11px] sm:text-xs text-slate-500 leading-tight">Learning Opportunities</div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 pt-3 md:pt-0 md:px-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-100/70 text-blue-700 flex items-center justify-center flex-shrink-0">
-              <BarChart2 className="w-5 h-5" />
+          <div className="flex items-center gap-2.5 sm:gap-3 border-t border-slate-100 pt-3 md:border-t-0 md:pt-0 md:border-l md:pl-4 lg:pl-6">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-100/70 text-blue-700 flex items-center justify-center flex-shrink-0">
+              <BarChart2 className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
               <div className="text-xs sm:text-sm font-bold text-slate-900">Greater</div>
-              <div className="text-xs text-slate-500">Institutional Impact</div>
+              <div className="text-[11px] sm:text-xs text-slate-500 leading-tight">Institutional Impact</div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 pt-3 md:pt-0 md:px-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-100/70 text-blue-700 flex items-center justify-center flex-shrink-0">
-              <Globe className="w-5 h-5" />
+          <div className="flex items-center gap-2.5 sm:gap-3 border-t border-l border-slate-100 pt-3 pl-3 md:border-t-0 md:pt-0 md:pl-4 lg:pl-6">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-100/70 text-blue-700 flex items-center justify-center flex-shrink-0">
+              <Globe className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
               <div className="text-xs sm:text-sm font-bold text-slate-900">A More Inclusive</div>
-              <div className="text-xs text-slate-500">Education Ecosystem</div>
+              <div className="text-[11px] sm:text-xs text-slate-500 leading-tight">Education Ecosystem</div>
             </div>
           </div>
         </motion.div>

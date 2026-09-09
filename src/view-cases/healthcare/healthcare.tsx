@@ -409,123 +409,159 @@ const deliveryPoints = [
 ];
 
 const BenefitsSection = () => (
-  <section className="py-20 bg-gray-50">
-    <div className="px-6 mx-auto max-w-7xl">
+  <section className="py-14 sm:py-20 bg-slate-50/60 relative overflow-hidden border-t border-slate-100">
+    {/* Subtle Background Pattern */}
+    <div className="absolute top-8 left-8 w-48 h-48 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px] opacity-20 pointer-events-none" />
+    <div className="absolute top-8 right-8 w-48 h-48 bg-[radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px] opacity-20 pointer-events-none" />
+
+    <div className="px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl relative z-10">
       <motion.div
-        className="mb-16 text-center"
+        className="mb-12 sm:mb-14 text-center max-w-3xl mx-auto"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
         variants={slideFromTop}
       >
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 text-xs font-semibold tracking-wide text-blue-900 uppercase bg-blue-50 rounded-full">
-          <BarChart3 className="w-3.5 h-3.5" aria-hidden="true" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 mb-3 text-xs font-bold tracking-wider text-blue-900 uppercase bg-blue-50 border border-blue-100/80 rounded-full shadow-2xs">
+          <BarChart3 className="w-3.5 h-3.5 text-blue-600" aria-hidden="true" />
           Real Impact. Lasting Growth.
         </div>
-        <h2 className="mb-4 text-2xl sm:text-3xl md:text-4xl font-bold text-blue-900">How We Help Scale Your Practice</h2>
-        <p className="max-w-3xl mx-auto text-base sm:text-lg leading-relaxed text-gray-700">
+        <h2 className="mb-3 text-2xl sm:text-3xl md:text-4xl font-extrabold text-blue-900 tracking-tight">
+          How We Help Scale Your Practice
+        </h2>
+        <p className="text-sm sm:text-base leading-relaxed text-gray-600 max-w-2xl mx-auto">
           AI voice, data management, and analytics tools that enhance your patient interactions and
           streamline your operations
         </p>
       </motion.div>
 
-      <div className="grid gap-8 lg:grid-cols-2">
-        {/* Benefits to You */}
+      <div className="grid gap-6 lg:gap-8 lg:grid-cols-2 items-stretch">
+        {/* Card 1: Benefits to You */}
         <motion.div
-          className="relative p-6 sm:p-8 overflow-hidden bg-white border border-gray-200 rounded-2xl"
+          className="relative p-6 sm:p-7 xl:p-8 bg-white border border-slate-200/80 rounded-3xl shadow-[0_4px_25px_rgba(0,0,0,0.04)] hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.2 }}
           variants={slideFromLeft}
         >
-          <div className="absolute w-40 h-40 rounded-full -top-16 -left-16 bg-blue-50" aria-hidden="true" />
-
-          <div className="relative flex items-center gap-3 mb-3">
-            <div className="flex items-center justify-center w-11 h-11 bg-blue-50 rounded-xl">
-              <Users className="w-5 h-5 text-blue-900" aria-hidden="true" />
-            </div>
-            <h3 className="text-2xl font-bold text-blue-900">Benefits to You</h3>
-          </div>
-          <p className="relative mb-8 leading-relaxed text-gray-700">
-            We design, customize, and deploy digital workers to transform your practice.
-          </p>
-
-          <div className="relative space-y-5">
-            {benefits.map((b) => (
-              <div key={b.title} className="flex items-start gap-3">
-                <div className="flex items-center justify-center flex-shrink-0 w-9 h-9 bg-blue-50 rounded-lg">
-                  <b.icon className="w-4.5 h-4.5 text-blue-900" aria-hidden="true" />
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 h-full">
+            {/* Left Content Column */}
+            <div className="flex-1 w-full min-w-0 flex flex-col justify-between self-stretch">
+              <div>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="flex items-center justify-center w-11 h-11 bg-blue-50 border border-blue-100/80 rounded-xl text-blue-900 shrink-0">
+                    <Users className="w-5 h-5 text-blue-900" aria-hidden="true" />
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-blue-900 tracking-tight">Benefits to You</h3>
                 </div>
-                <div>
-                  <div className="font-semibold text-black">{b.title}</div>
-                  <div className="text-sm text-gray-600">{b.desc}</div>
+                <p className="mb-4 text-xs sm:text-sm leading-relaxed text-gray-600">
+                  We design, customize, and deploy digital workers to transform your practice.
+                </p>
+
+                <div className="space-y-2.5 mb-6">
+                  {benefits.map((b) => (
+                    <div key={b.title} className="flex items-start gap-2.5 group">
+                      <div className="flex items-center justify-center flex-shrink-0 w-7 h-7 bg-blue-50 border border-blue-100/80 rounded-lg text-blue-900 mt-0.5 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                        <b.icon className="w-3.5 h-3.5" aria-hidden="true" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="font-semibold text-xs sm:text-sm text-slate-900 leading-snug">{b.title}</div>
+                        <div className="text-[11px] sm:text-xs text-gray-500 leading-tight mt-0.5">{b.desc}</div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            ))}
+
+              {/* Action Button */}
+              <div className="pt-1">
+                <HashLink
+                  to="/pilot"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white bg-blue-900 hover:bg-blue-800 rounded-xl shadow-xs transition-all w-fit cursor-pointer hover:gap-2.5"
+                >
+                  <span>See the Impact</span>
+                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                </HashLink>
+              </div>
+            </div>
+
+            {/* Right Image Column: Framed Showcase Container */}
+            <div className="w-full sm:w-[48%] lg:w-[48%] shrink-0 flex items-center justify-center self-stretch">
+              <div className="relative w-full h-full min-h-[260px] sm:min-h-[300px] lg:min-h-[320px] flex items-center justify-center p-3 sm:p-5 rounded-2xl bg-gradient-to-br from-blue-50/70 via-indigo-50/30 to-slate-50/50 border border-blue-100/70 shadow-inner group overflow-hidden">
+                <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-200/40 rounded-full blur-2xl pointer-events-none group-hover:bg-blue-300/50 transition-all duration-500" />
+                <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-indigo-200/30 rounded-full blur-2xl pointer-events-none group-hover:bg-indigo-300/40 transition-all duration-500" />
+                <img
+                  src={benefitsToYouImg}
+                  alt="Better Outcomes — a rising trend line over growth bars"
+                  className="relative z-10 w-full h-auto max-h-[290px] sm:max-h-[330px] lg:max-h-[320px] xl:max-h-[360px] object-contain drop-shadow-xl transform group-hover:scale-105 transition-transform duration-500 mx-auto"
+                />
+              </div>
+            </div>
           </div>
-
-          <HashLink
-            to="/pilot"
-            className="relative inline-flex items-center gap-2 px-5 py-2.5 mt-8 text-sm font-semibold text-blue-900 bg-blue-50 rounded-full hover:bg-blue-100"
-          >
-            See the Impact
-            <ArrowRight className="w-4 h-4" aria-hidden="true" />
-          </HashLink>
-
-          <img
-            src={benefitsToYouImg}
-            alt="Better Outcomes — a rising trend line over growth bars"
-            className="absolute bottom-0 right-0 hidden w-40 h-40 translate-x-6 translate-y-6 pointer-events-none sm:block opacity-90"
-          />
         </motion.div>
 
-        {/* How We Deliver Them */}
+        {/* Card 2: How We Deliver Them */}
         <motion.div
-          className="relative p-6 sm:p-8 overflow-hidden bg-white border border-gray-200 rounded-2xl"
+          className="relative p-6 sm:p-7 xl:p-8 bg-white border border-slate-200/80 rounded-3xl shadow-[0_4px_25px_rgba(0,0,0,0.04)] hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          viewport={{ once: true, amount: 0.2 }}
           variants={slideFromRight}
         >
-          <div className="absolute w-40 h-40 rounded-full -bottom-16 -right-16 bg-blue-50" aria-hidden="true" />
-
-          <div className="relative flex items-center gap-3 mb-3">
-            <div className="flex items-center justify-center w-11 h-11 bg-blue-50 rounded-xl">
-              <Settings className="w-5 h-5 text-blue-900" aria-hidden="true" />
-            </div>
-            <h3 className="text-2xl font-bold text-blue-900">How We Deliver Them</h3>
-          </div>
-          <p className="relative mb-8 leading-relaxed text-gray-700">
-            Machine learning, natural language processing, and scalable automation.
-          </p>
-
-          <div className="relative space-y-5">
-            {deliveryPoints.map((d) => (
-              <div key={d.title} className="flex items-start gap-3">
-                <div className="flex items-center justify-center flex-shrink-0 w-9 h-9 bg-blue-50 rounded-lg">
-                  <d.icon className="w-4.5 h-4.5 text-blue-900" aria-hidden="true" />
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 h-full">
+            {/* Left Content Column */}
+            <div className="flex-1 w-full min-w-0 flex flex-col justify-between self-stretch">
+              <div>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="flex items-center justify-center w-11 h-11 bg-blue-50 border border-blue-100/80 rounded-xl text-blue-900 shrink-0">
+                    <Settings className="w-5 h-5 text-blue-900" aria-hidden="true" />
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-blue-900 tracking-tight">How We Deliver Them</h3>
                 </div>
-                <div>
-                  <div className="font-semibold text-black">{d.title}</div>
-                  <div className="text-sm text-gray-600">{d.desc}</div>
+                <p className="mb-4 text-xs sm:text-sm leading-relaxed text-gray-600">
+                  Machine learning, natural language processing, and scalable automation.
+                </p>
+
+                <div className="space-y-2.5 mb-6">
+                  {deliveryPoints.map((d) => (
+                    <div key={d.title} className="flex items-start gap-2.5 group">
+                      <div className="flex items-center justify-center flex-shrink-0 w-7 h-7 bg-blue-50 border border-blue-100/80 rounded-lg text-blue-900 mt-0.5 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                        <d.icon className="w-3.5 h-3.5" aria-hidden="true" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="font-semibold text-xs sm:text-sm text-slate-900 leading-snug">{d.title}</div>
+                        <div className="text-[11px] sm:text-xs text-gray-500 leading-tight mt-0.5">{d.desc}</div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            ))}
+
+              {/* Action Button */}
+              <div className="pt-1">
+                <HashLink
+                  to="/pilot"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 text-xs sm:text-sm font-semibold text-white bg-blue-900 hover:bg-blue-800 rounded-xl shadow-xs transition-all w-fit cursor-pointer hover:gap-2.5"
+                >
+                  <span>Learn How It Works</span>
+                  <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                </HashLink>
+              </div>
+            </div>
+
+            {/* Right Image Column: Framed Showcase Container */}
+            <div className="w-full sm:w-[48%] lg:w-[48%] shrink-0 flex items-center justify-center self-stretch">
+              <div className="relative w-full h-full min-h-[260px] sm:min-h-[300px] lg:min-h-[320px] flex items-center justify-center p-3 sm:p-5 rounded-2xl bg-gradient-to-br from-blue-50/70 via-indigo-50/30 to-slate-50/50 border border-blue-100/70 shadow-inner group overflow-hidden">
+                <div className="absolute -top-10 -right-10 w-32 h-32 bg-blue-200/40 rounded-full blur-2xl pointer-events-none group-hover:bg-blue-300/50 transition-all duration-500" />
+                <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-indigo-200/30 rounded-full blur-2xl pointer-events-none group-hover:bg-indigo-300/40 transition-all duration-500" />
+                <img
+                  src={howWeDeliverThemImg}
+                  alt="An AI processor connected to document, security, and database icons"
+                  className="relative z-10 w-full h-auto max-h-[290px] sm:max-h-[330px] lg:max-h-[320px] xl:max-h-[360px] object-contain drop-shadow-xl transform group-hover:scale-105 transition-transform duration-500 mx-auto"
+                />
+              </div>
+            </div>
           </div>
-
-          <HashLink
-            to="/pilot"
-            className="relative inline-flex items-center gap-2 px-5 py-2.5 mt-8 text-sm font-semibold text-blue-900 bg-blue-50 rounded-full hover:bg-blue-100"
-          >
-            Learn How It Works
-            <ArrowRight className="w-4 h-4" aria-hidden="true" />
-          </HashLink>
-
-          <img
-            src={howWeDeliverThemImg}
-            alt="An AI processor connected to document, security, and database icons"
-            className="absolute bottom-0 right-0 hidden w-32 h-40 translate-x-4 translate-y-4 pointer-events-none sm:block opacity-90"
-          />
         </motion.div>
       </div>
     </div>

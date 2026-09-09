@@ -172,7 +172,7 @@ const ChatbotsPage = ({ onOpenChatbot }) => {
             </motion.div>
               
               <motion.h1 
-                className="text-5xl font-bold leading-tight text-black lg:text-6xl"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-black"
                 variants={fadeInUp}
               >
                 AI chat that actually <span className="text-blue-900">helps</span>—on web, WhatsApp, and helpdesk
