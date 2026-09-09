@@ -98,8 +98,8 @@ const HeroSection: React.FC<ChatbotOpenProps> = ({ onOpenChatbot }) => {
         <div className="absolute bg-gray-100 rounded-full -bottom-40 -left-40 w-80 h-80 opacity-20" />
       </div>
 
-      <div className="relative px-6 pt-16 pb-20 mx-auto max-w-7xl sm:pt-20">
-        <div className="grid items-center gap-16 lg:grid-cols-2">
+      <div className="relative px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-12 sm:pb-16 mx-auto max-w-7xl">
+        <div className="grid items-center gap-10 lg:gap-16 lg:grid-cols-2">
           {/* Left content */}
           <motion.div className="space-y-8" initial="hidden" animate="visible" variants={staggerContainer}>
             <motion.div
@@ -111,7 +111,7 @@ const HeroSection: React.FC<ChatbotOpenProps> = ({ onOpenChatbot }) => {
             </motion.div>
 
             <motion.div variants={slideFromLeft}>
-              <h1 className="text-5xl font-bold leading-tight text-black md:text-6xl">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-black">
                 Your AI Workforce
                 <br />
                 <span className="text-blue-900">for Healthcare</span>
@@ -119,7 +119,7 @@ const HeroSection: React.FC<ChatbotOpenProps> = ({ onOpenChatbot }) => {
               <div className="w-24 h-1 mt-4 bg-blue-600" />
             </motion.div>
 
-            <motion.p className="max-w-lg text-xl leading-relaxed text-gray-700" variants={slideFromLeft}>
+            <motion.p className="max-w-lg text-base sm:text-lg leading-relaxed text-gray-700" variants={slideFromLeft}>
               Digital care teammates that engage your patients, extend the capacity of your clinical
               staff, and help you deliver better health outcomes — around the clock.
             </motion.p>
@@ -183,8 +183,8 @@ const CoreServicesSection = () => (
         viewport={{ once: true, amount: 0.3 }}
         variants={slideFromTop}
       >
-        <h2 className="mb-4 text-4xl font-bold text-blue-900">Healthcare Solutions</h2>
-        <p className="max-w-3xl mx-auto text-xl leading-relaxed text-gray-700">
+        <h2 className="mb-4 text-2xl sm:text-3xl md:text-4xl font-bold text-blue-900">Healthcare Solutions</h2>
+        <p className="max-w-3xl mx-auto text-base sm:text-lg leading-relaxed text-gray-700">
           AI-powered tools designed specifically for healthcare providers
         </p>
       </motion.div>
@@ -192,7 +192,7 @@ const CoreServicesSection = () => (
       <div className="grid gap-8 lg:grid-cols-2">
         {/* Voice Receptionist */}
         <motion.div
-          className="p-10 bg-white border border-gray-200 rounded-3xl"
+          className="p-6 sm:p-10 bg-white border border-gray-200 rounded-3xl"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
@@ -230,7 +230,7 @@ const CoreServicesSection = () => (
 
         {/* Data Management */}
         <motion.div
-          className="p-10 bg-white border border-gray-200 rounded-3xl"
+          className="p-6 sm:p-10 bg-white border border-gray-200 rounded-3xl"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
@@ -422,8 +422,8 @@ const BenefitsSection = () => (
           <BarChart3 className="w-3.5 h-3.5" aria-hidden="true" />
           Real Impact. Lasting Growth.
         </div>
-        <h2 className="mb-4 text-4xl font-bold text-blue-900">How We Help Scale Your Practice</h2>
-        <p className="max-w-3xl mx-auto text-xl leading-relaxed text-gray-700">
+        <h2 className="mb-4 text-2xl sm:text-3xl md:text-4xl font-bold text-blue-900">How We Help Scale Your Practice</h2>
+        <p className="max-w-3xl mx-auto text-base sm:text-lg leading-relaxed text-gray-700">
           AI voice, data management, and analytics tools that enhance your patient interactions and
           streamline your operations
         </p>
@@ -432,7 +432,7 @@ const BenefitsSection = () => (
       <div className="grid gap-8 lg:grid-cols-2">
         {/* Benefits to You */}
         <motion.div
-          className="relative p-8 overflow-hidden bg-white border border-gray-200 rounded-2xl"
+          className="relative p-6 sm:p-8 overflow-hidden bg-white border border-gray-200 rounded-2xl"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
@@ -481,7 +481,7 @@ const BenefitsSection = () => (
 
         {/* How We Deliver Them */}
         <motion.div
-          className="relative p-8 overflow-hidden bg-white border border-gray-200 rounded-2xl"
+          className="relative p-6 sm:p-8 overflow-hidden bg-white border border-gray-200 rounded-2xl"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}

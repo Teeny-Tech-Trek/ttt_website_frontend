@@ -1,241 +1,326 @@
 import React from 'react';
-import { CheckCircle, ArrowRight, Globe, Database, Shield, Zap } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import {
+  Database,
+  Shield,
+  Zap,
+  Code2,
+  Cpu,
+  ArrowRight,
+  Sparkles,
+  CheckCircle2,
+  Terminal,
+  Globe,
+  Layers,
+  FileCode,
+  Lock,
+} from 'lucide-react';
 
-const IntegrationsSection = () => {
-  const coreIntegrations = [
-    { name: 'Temenos', logo: '🏦', category: 'Core Banking' },
-    { name: 'FIS', logo: '💳', category: 'Banking Platform' },
-    { name: 'Oracle FSS', logo: '⚡', category: 'Financial Software' },
-    { name: 'SAP Banking', logo: '🔷', category: 'ERP System' },
-    { name: 'Salesforce FSC', logo: '☁️', category: 'CRM Platform' },
-    { name: 'Microsoft Dynamics', logo: '🔧', category: 'Business Apps' },
-    { name: 'Workday', logo: '👥', category: 'HR & Finance' },
-    { name: 'Murex', logo: '📊', category: 'Trading Platform' },
-    { name: 'SWIFT', logo: '🌐', category: 'Messaging' },
-    { name: 'Reuters Eikon', logo: '📈', category: 'Market Data' },
-    { name: 'Bloomberg Terminal', logo: '📺', category: 'Financial Data' },
-    { name: "Moody's Analytics", logo: '📋', category: 'Risk Management' }
+const IntegrationsSection: React.FC = () => {
+  const navigate = useNavigate();
+
+  const corePlatforms = [
+    { name: 'Temenos', category: 'Core Banking' },
+    { name: 'FIS', category: 'Banking Platform' },
+    { name: 'Oracle FSS', category: 'Financial Software' },
+    { name: 'SAP Banking', category: 'ERP System' },
+    { name: 'Salesforce FSC', category: 'CRM' },
+    { name: 'Microsoft Dynamics', category: 'ERP & CRM' },
+    { name: 'Workday', category: 'Financial Mgmt' },
+    { name: 'Murex', category: 'Trading & Capital' },
+    { name: 'SWIFT', category: 'Interbank Messaging' },
+    { name: 'Reuters Eikon', category: 'Market Data' },
+    { name: 'Bloomberg', category: 'Financial Telemetry' },
+    { name: "Moody's Analytics", category: 'Risk & Credit' },
+  ];
+
+  const deploymentSteps = [
+    { step: '01', title: 'Connect', duration: '1–3 Days', desc: 'Securely link to core banking nodes and data repositories via pre-built micro-connectors.' },
+    { step: '02', title: 'Configure', duration: '3–7 Days', desc: 'Define institutional risk tolerance thresholds, OCR models, and compliance rules.' },
+    { step: '03', title: 'Test', duration: '1–2 Days', desc: 'Perform sandbox validation, end-to-end stress testing, and mock regulatory audits.' },
+    { step: '04', title: 'Go Live', duration: '2–4 Weeks Total', desc: 'Seamless production transition with zero downtime and real-time shadow monitoring.' },
+  ];
+
+  const apiFeatures = [
+    {
+      icon: FileCode,
+      title: 'RESTful APIs',
+      desc: 'OpenAPI 3.0 compliant endpoints, OAuth 2.0 authentication, and granular webhook triggers for real-time lifecycle event handling.',
+    },
+    {
+      icon: Terminal,
+      title: 'Production SDKs',
+      desc: 'Native client libraries for Python, Java, .NET, Node.js, and Go with typed interfaces and automatic retry backoff.',
+    },
+    {
+      icon: Cpu,
+      title: '24/7 Developer Support',
+      desc: 'Interactive sandbox environments, comprehensive Postman collections, and dedicated engineering Slack channels.',
+    },
   ];
 
   return (
-    <div className="py-8 bg-white sm:py-12 md:py-16 lg:py-20 xl:py-24">
-      <div className="px-4 mx-auto sm:px-6 lg:px-8 xl:px-12 max-w-7xl">
-        
-        {/* Header Section */}
-        <div className="mb-8 text-center sm:mb-12 md:mb-16">
-          <h2 className="mb-4 text-2xl font-bold leading-tight text-black sm:mb-6 sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl">
-            <span className="text-blue-900">Enterprise-Grade Integrations</span>
-            <span className="block sm:inline"> for Financial Systems</span>
-          </h2>
-          <p className="max-w-xs px-2 mx-auto text-sm leading-relaxed text-black sm:max-w-md md:max-w-2xl lg:max-w-3xl xl:max-w-4xl sm:text-base md:text-lg lg:text-xl xl:text-2xl">
-            Seamlessly connect with your existing financial infrastructure and regulatory systems
-          </p>
-        </div>
-        
-        {/* Main Integration Details */}
-        <div className="grid gap-8 mb-8 sm:gap-10 md:gap-12 lg:gap-16 xl:gap-20 lg:grid-cols-2 lg:items-start sm:mb-12 md:mb-16">
-          
-          {/* Left Column - Feature Cards */}
-          <div className="order-2 space-y-4 lg:order-1 sm:space-y-6 md:space-y-8">
-            
-            {/* Core Banking Systems Card */}
-            <div className="p-4 transition-all duration-300 bg-white border border-blue-200 rounded-lg sm:p-5 md:p-6 lg:p-7 xl:p-8 sm:rounded-xl hover:shadow-lg hover:border-blue-300">
-              <div className="flex flex-col gap-3 mb-3 sm:flex-row sm:items-center sm:justify-between sm:mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-white border border-blue-100 rounded-lg shadow-sm sm:p-3">
-                    <Database className="w-5 h-5 text-blue-900 sm:w-6 md:w-7 sm:h-6 md:h-7" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-black sm:text-xl md:text-2xl">Core Banking Systems</h3>
-                </div>
-                <CheckCircle className="flex-shrink-0 w-5 h-5 text-blue-900 sm:w-6 md:w-7 sm:h-6 md:h-7" />
-              </div>
-              <p className="text-sm leading-relaxed text-black sm:text-base md:text-lg">
-                Direct integration with major core banking platforms including Temenos, FIS, Oracle FSS, and SAP Banking for real-time data synchronization.
-              </p>
-            </div>
-            
-            {/* Regulatory & Compliance Card */}
-            <div className="p-4 transition-all duration-300 bg-white border border-blue-200 rounded-lg sm:p-5 md:p-6 lg:p-7 xl:p-8 sm:rounded-xl hover:shadow-lg hover:border-blue-300">
-              <div className="flex flex-col gap-3 mb-3 sm:flex-row sm:items-center sm:justify-between sm:mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-white border border-blue-100 rounded-lg shadow-sm sm:p-3">
-                    <Shield className="w-5 h-5 text-blue-900 sm:w-6 md:w-7 sm:h-6 md:h-7" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-black sm:text-xl md:text-2xl">Regulatory & Compliance</h3>
-                </div>
-                <CheckCircle className="flex-shrink-0 w-5 h-5 text-blue-900 sm:w-6 md:w-7 sm:h-6 md:h-7" />
-              </div>
-              <p className="text-sm leading-relaxed text-black sm:text-base md:text-lg">
-                Automated compliance reporting to regulatory bodies with built-in templates for FFIEC, OCC, FDIC, and international regulatory frameworks.
-              </p>
-            </div>
-            
-            {/* Real-Time Processing Card */}
-            <div className="p-4 transition-all duration-300 bg-white border border-blue-200 rounded-lg sm:p-5 md:p-6 lg:p-7 xl:p-8 sm:rounded-xl hover:shadow-lg hover:border-blue-300">
-              <div className="flex flex-col gap-3 mb-3 sm:flex-row sm:items-center sm:justify-between sm:mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-white border border-blue-100 rounded-lg shadow-sm sm:p-3">
-                    <Zap className="w-5 h-5 text-blue-900 sm:w-6 md:w-7 sm:h-6 md:h-7" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-black sm:text-xl md:text-2xl">Real-Time Processing</h3>
-                </div>
-                <CheckCircle className="flex-shrink-0 w-5 h-5 text-blue-900 sm:w-6 md:w-7 sm:h-6 md:h-7" />
-              </div>
-              <p className="text-sm leading-relaxed text-black sm:text-base md:text-lg">
-                High-frequency transaction processing with sub-second latency for fraud detection, risk assessment, and compliance monitoring.
-              </p>
-            </div>
-          </div>
-          
-          {/* Right Column - Ecosystem Display */}
-          <div className="relative order-1 lg:order-2">
-            <div className="p-4 bg-white border border-blue-200 shadow-lg sm:p-6 md:p-8 lg:p-10 rounded-xl sm:rounded-2xl">
-              
-              {/* Header */}
-              <div className="mb-6 text-center sm:mb-8">
-                <div className="flex items-center justify-center w-12 h-12 mx-auto mb-3 bg-white border border-blue-200 rounded-full shadow-lg sm:w-14 md:w-16 lg:w-18 xl:w-20 sm:h-14 md:h-16 lg:h-18 xl:h-20 sm:mb-4">
-                  <Globe className="w-6 h-6 text-blue-900 sm:w-7 md:w-8 lg:w-9 xl:w-10 sm:h-7 md:h-8 lg:h-9 xl:h-10" />
-                </div>
-                <h3 className="mb-2 text-lg font-semibold text-black sm:text-xl md:text-2xl lg:text-3xl">
-                  Financial Platform Ecosystem
-                </h3>
-                <p className="text-xs text-black sm:text-sm md:text-base">
-                  Connect with 100+ financial systems and platforms
-                </p>
-              </div>
-              
-              {/* Integration Grid */}
-              <div className="grid grid-cols-2 gap-2 mb-4 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 sm:gap-3 md:gap-4 sm:mb-6">
-                {coreIntegrations.map((integration, index) => (
-                  <div 
-                    key={index} 
-                    className="p-2 text-center transition-all duration-300 bg-white border border-blue-200 rounded-lg sm:p-3 md:p-4 hover:shadow-md hover:border-blue-300 hover:scale-105"
-                  >
-                    <div className="mb-1 text-lg sm:mb-2 sm:text-xl md:text-2xl">{integration.logo}</div>
-                    <div className="mb-1 text-xs font-medium leading-tight text-black sm:text-sm md:text-base">
-                      {integration.name}
-                    </div>
-                    <div className="text-xs leading-tight text-black opacity-75">
-                      {integration.category}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              
-              {/* Stats */}
-              <div className="p-3 bg-white border border-blue-200 rounded-lg sm:p-4 md:p-5">
-                <div className="grid grid-cols-3 gap-2 text-center sm:gap-4">
-                  <div>
-                    <div className="mb-1 text-xl font-bold text-blue-900 sm:text-2xl md:text-3xl lg:text-4xl">100+</div>
-                    <div className="text-xs text-black sm:text-sm md:text-base">Integrations</div>
-                  </div>
-                  <div>
-                    <div className="mb-1 text-xl font-bold text-blue-900 sm:text-2xl md:text-3xl lg:text-4xl">99.9%</div>
-                    <div className="text-xs text-black sm:text-sm md:text-base">Uptime SLA</div>
-                  </div>
-                  <div>
-                    <div className="mb-1 text-xl font-bold text-blue-900 sm:text-2xl md:text-3xl lg:text-4xl">&lt;100ms</div>
-                    <div className="text-xs text-black sm:text-sm md:text-base">API Response</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* API & Developer Tools Section */}
-        <div className="p-4 bg-white border border-blue-200 shadow-lg sm:p-6 md:p-8 lg:p-10 xl:p-12 rounded-xl sm:rounded-2xl">
-          
+    <div className="bg-[#f8fafc] text-slate-900 overflow-hidden">
+      {/* ========================================================================= */}
+      {/* SECTION 6: ENTERPRISE-GRADE INTEGRATIONS                                  */}
+      {/* ========================================================================= */}
+      <section className="py-16 sm:py-20 lg:py-24 border-b border-slate-200/80 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
-          <div className="mb-6 text-center sm:mb-8 md:mb-10">
-            <h3 className="mb-3 text-xl font-bold text-black sm:mb-4 sm:text-2xl md:text-3xl lg:text-4xl">
-              Developer-Friendly APIs
-            </h3>
-            <p className="max-w-2xl mx-auto text-sm leading-relaxed text-black sm:text-base md:text-lg lg:text-xl">
-              RESTful APIs, SDKs, and comprehensive documentation for seamless integration
+          <div className="text-center max-w-3xl mx-auto space-y-4 mb-14 sm:mb-18">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase bg-[#eff6ff] text-[#2563eb] border border-blue-100/80 shadow-2xs">
+              <Layers className="w-3.5 h-3.5 text-[#2563eb]" />
+              <span>Open. Secure. Built for Enterprise.</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0f172a] tracking-tight">
+              Enterprise-Grade Integrations for{' '}
+              <span className="text-[#1d4ed8]">Financial Systems</span>
+            </h2>
+
+            <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
+              Seamlessly connect with your existing financial infrastructure and regulatory systems to accelerate value, without disrupting your day-to-day operations.
             </p>
           </div>
 
-          {/* API Cards Grid */}
-          <div className="grid gap-4 sm:gap-6 md:gap-8 md:grid-cols-2 lg:grid-cols-3">
-            
-            {/* RESTful APIs */}
-            <div className="p-4 transition-all duration-300 bg-white border border-blue-200 rounded-lg sm:p-5 md:p-6 lg:p-7 sm:rounded-xl hover:shadow-lg hover:border-blue-300">
-              <div className="flex items-center justify-center w-10 h-10 mb-3 bg-white border border-blue-200 rounded-lg shadow-sm sm:w-12 md:w-14 sm:h-12 md:h-14 sm:mb-4">
-                <span className="text-sm font-bold text-blue-900 sm:text-base md:text-lg">REST</span>
-              </div>
-              <h4 className="mb-2 text-lg font-semibold text-black sm:mb-3 sm:text-xl md:text-2xl">RESTful APIs</h4>
-              <p className="mb-3 text-sm leading-relaxed text-black sm:mb-4 md:mb-5 sm:text-base md:text-lg">
-                Standard HTTP endpoints with JSON responses for easy integration
-              </p>
-              <div className="space-y-2 sm:space-y-3">
-                <div className="flex items-start gap-2">
-                  <CheckCircle className="w-3 sm:w-4 md:w-5 h-3 sm:h-4 md:h-5 text-blue-900 flex-shrink-0 mt-0.5" />
-                  <span className="text-xs leading-relaxed text-black sm:text-sm md:text-base">
-                    OpenAPI 3.0 specification
-                  </span>
+          {/* Two-Column Grid: Left Feature Cards & Deployment, Right Visual */}
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-16">
+            {/* Left Column (5 Cols) */}
+            <div className="lg:col-span-5 space-y-5">
+              {/* Feature 1: Core Banking Systems */}
+              <div className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:border-blue-200 transition-all">
+                <div className="flex items-center gap-3.5 mb-2">
+                  <div className="w-10 h-10 rounded-xl bg-[#eff6ff] text-[#2563eb] flex items-center justify-center shrink-0">
+                    <Database className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-[#0f172a]">Core Banking Systems</h3>
+                    <p className="text-xs text-slate-400">Plug-and-play synchronization</p>
+                  </div>
                 </div>
-                <div className="flex items-start gap-2">
-                  <CheckCircle className="w-3 sm:w-4 md:w-5 h-3 sm:h-4 md:h-5 text-blue-900 flex-shrink-0 mt-0.5" />
-                  <span className="text-xs leading-relaxed text-black sm:text-sm md:text-base">
-                    Rate limiting & authentication
-                  </span>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  Direct bidirectional sync with Temenos, FIS, Oracle FSS, and SAP Banking for real-time document and ledger updates.
+                </p>
+              </div>
+
+              {/* Feature 2: Regulatory & Compliance Connectors */}
+              <div className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:border-blue-200 transition-all">
+                <div className="flex items-center gap-3.5 mb-2">
+                  <div className="w-10 h-10 rounded-xl bg-[#eff6ff] text-[#2563eb] flex items-center justify-center shrink-0">
+                    <Shield className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-[#0f172a]">Regulatory & Compliance</h3>
+                    <p className="text-xs text-slate-400">Automated agency submission</p>
+                  </div>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  Pre-configured reporting pipes for US FFIEC, OCC, FDIC, UK FCA, Canada FINTRAC, and EU supervisory registries.
+                </p>
+              </div>
+
+              {/* Feature 3: Real-Time High-Frequency Processing */}
+              <div className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:border-blue-200 transition-all">
+                <div className="flex items-center gap-3.5 mb-2">
+                  <div className="w-10 h-10 rounded-xl bg-[#eff6ff] text-[#2563eb] flex items-center justify-center shrink-0">
+                    <Zap className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-[#0f172a]">Real-Time Processing</h3>
+                    <p className="text-xs text-slate-400">Sub-second event streaming</p>
+                  </div>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  High-throughput transactional queue processing with sub-100ms latency for real-time fraud alerts and risk scoring.
+                </p>
+              </div>
+
+              {/* Ecosystem Micro-Badges */}
+              <div className="p-4 rounded-2xl bg-white/70 border border-slate-200/80">
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">
+                  Supported Ecosystem Partners
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {corePlatforms.map((p) => (
+                    <span
+                      key={p.name}
+                      className="px-2.5 py-1 rounded-lg bg-slate-100/80 text-slate-700 text-xs font-semibold hover:bg-[#eff6ff] hover:text-[#2563eb] transition-colors cursor-default"
+                    >
+                      {p.name}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
 
-            {/* Multiple SDKs */}
-            <div className="p-4 transition-all duration-300 bg-white border border-blue-200 rounded-lg sm:p-5 md:p-6 lg:p-7 sm:rounded-xl hover:shadow-lg hover:border-blue-300">
-              <div className="flex items-center justify-center w-10 h-10 mb-3 bg-white border border-blue-200 rounded-lg shadow-sm sm:w-12 md:w-14 sm:h-12 md:h-14 sm:mb-4">
-                <span className="text-sm font-bold text-blue-900 sm:text-base md:text-lg">SDK</span>
-              </div>
-              <h4 className="mb-2 text-lg font-semibold text-black sm:mb-3 sm:text-xl md:text-2xl">Multiple SDKs</h4>
-              <p className="mb-3 text-sm leading-relaxed text-black sm:mb-4 md:mb-5 sm:text-base md:text-lg">
-                Native libraries for popular programming languages
-              </p>
-              <div className="space-y-2 sm:space-y-3">
-                <div className="flex items-start gap-2">
-                  <CheckCircle className="w-3 sm:w-4 md:w-5 h-3 sm:h-4 md:h-5 text-blue-900 flex-shrink-0 mt-0.5" />
-                  <span className="text-xs leading-relaxed text-black sm:text-sm md:text-base">
-                    Python, Java, .NET, Node.js
-                  </span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <CheckCircle className="w-3 sm:w-4 md:w-5 h-3 sm:h-4 md:h-5 text-blue-900 flex-shrink-0 mt-0.5" />
-                  <span className="text-xs leading-relaxed text-black sm:text-sm md:text-base">
-                    Code samples & tutorials
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Developer Support */}
-            <div className="p-4 transition-all duration-300 bg-white border border-blue-200 rounded-lg sm:p-5 md:p-6 lg:p-7 sm:rounded-xl hover:shadow-lg hover:border-blue-300 md:col-span-2 lg:col-span-1">
-              <div className="flex items-center justify-center w-10 h-10 mb-3 bg-white border border-blue-200 rounded-lg shadow-sm sm:w-12 md:w-14 sm:h-12 md:h-14 sm:mb-4">
-                <span className="text-sm font-bold text-blue-900 sm:text-base md:text-lg">24/7</span>
-              </div>
-              <h4 className="mb-2 text-lg font-semibold text-black sm:mb-3 sm:text-xl md:text-2xl">Developer Support</h4>
-              <p className="mb-3 text-sm leading-relaxed text-black sm:mb-4 md:mb-5 sm:text-base md:text-lg">
-                Round-the-clock technical support for integration teams
-              </p>
-              <div className="space-y-2 sm:space-y-3">
-                <div className="flex items-start gap-2">
-                  <CheckCircle className="w-3 sm:w-4 md:w-5 h-3 sm:h-4 md:h-5 text-blue-900 flex-shrink-0 mt-0.5" />
-                  <span className="text-xs leading-relaxed text-black sm:text-sm md:text-base">
-                    Dedicated technical team
-                  </span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <CheckCircle className="w-3 sm:w-4 md:w-5 h-3 sm:h-4 md:h-5 text-blue-900 flex-shrink-0 mt-0.5" />
-                  <span className="text-xs leading-relaxed text-black sm:text-sm md:text-base">
-                    Integration assistance
-                  </span>
+            {/* Right Column: Visual enterprise grade integration.png (7 Cols) */}
+            <div className="lg:col-span-7">
+              <div className="rounded-3xl overflow-hidden bg-white border border-blue-100/80 shadow-[0_20px_50px_rgba(30,58,138,0.08)] p-3 sm:p-5">
+                <div className="rounded-2xl overflow-hidden aspect-[16/9] flex items-center justify-center bg-slate-50">
+                  <img
+                    src="/images/finance/enterprise grade integration.png"
+                    alt="Enterprise Grade Integrations circular hub connecting core banking, ERP, and messaging networks"
+                    className="w-full h-full object-contain rounded-xl hover:scale-[1.01] transition-transform duration-500"
+                  />
                 </div>
               </div>
             </div>
           </div>
+
+          {/* Deployment Journey Timeline (4 Steps) */}
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm mb-10">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+              <div>
+                <h3 className="text-lg sm:text-xl font-bold text-[#0f172a]">
+                  Streamlined Deployment Journey
+                </h3>
+                <p className="text-xs text-slate-500">From zero to full production in 2 to 4 weeks</p>
+              </div>
+              <span className="text-xs font-bold text-[#2563eb] bg-[#eff6ff] px-3 py-1 rounded-full border border-blue-100 self-start sm:self-auto">
+                Total Time: 2–4 Weeks
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {deploymentSteps.map((s) => (
+                <div
+                  key={s.step}
+                  className="p-4 rounded-2xl bg-[#f8fafc] border border-slate-100 flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-2xl font-extrabold text-[#1d4ed8]">{s.step}</span>
+                      <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-blue-50 text-[#1d4ed8] border border-blue-100">
+                        {s.duration}
+                      </span>
+                    </div>
+                    <h4 className="text-sm font-bold text-[#0f172a] mb-1">{s.title}</h4>
+                    <p className="text-xs text-slate-500 leading-relaxed">{s.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Integration Stats Strip */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="p-4 rounded-2xl bg-white border border-blue-50/80 shadow-2xs text-center">
+              <div className="text-2xl font-extrabold text-[#0f172a]">100+</div>
+              <div className="text-xs text-slate-500 mt-0.5">Pre-Built Connectors</div>
+            </div>
+            <div className="p-4 rounded-2xl bg-white border border-blue-50/80 shadow-2xs text-center">
+              <div className="text-2xl font-extrabold text-[#1d4ed8]">99.9%</div>
+              <div className="text-xs text-slate-500 mt-0.5">Uptime SLA Guaranteed</div>
+            </div>
+            <div className="p-4 rounded-2xl bg-white border border-blue-50/80 shadow-2xs text-center">
+              <div className="text-2xl font-extrabold text-[#0f172a]">&lt; 100ms</div>
+              <div className="text-xs text-slate-500 mt-0.5">Average API Latency</div>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 7: DEVELOPER-FRIENDLY APIS                                        */}
+      {/* ========================================================================= */}
+      <section className="py-16 sm:py-20 lg:py-24 bg-white border-b border-slate-200/80 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto space-y-4 mb-14 sm:mb-18">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase bg-[#eff6ff] text-[#2563eb] border border-blue-100/80 shadow-2xs">
+              <Code2 className="w-3.5 h-3.5 text-[#2563eb]" />
+              <span>Build. Integrate. Innovate.</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0f172a] tracking-tight">
+              Developer-Friendly <span className="text-[#1d4ed8]">APIs</span>
+            </h2>
+
+            <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
+              RESTful APIs, idiomatic SDKs, and comprehensive interactive documentation engineered for swift, friction-free institutional integration.
+            </p>
+          </div>
+
+          {/* Two-Column Grid: Left Visual, Right API Feature Pillars */}
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-12">
+            {/* Left Column: Visual developer friendly api.png (7 Cols) */}
+            <div className="lg:col-span-7">
+              <div className="rounded-3xl overflow-hidden bg-white border border-blue-100/80 shadow-[0_20px_50px_rgba(30,58,138,0.08)] p-3 sm:p-5">
+                <div className="rounded-2xl overflow-hidden aspect-[16/9] flex items-center justify-center bg-slate-50">
+                  <img
+                    src="/images/finance/developer friendly api.png"
+                    alt="Developer friendly API explorer, code editor, and live sandbox"
+                    className="w-full h-full object-contain rounded-xl hover:scale-[1.01] transition-transform duration-500"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: 3 Feature Cards & Actions (5 Cols) */}
+            <div className="lg:col-span-5 space-y-5">
+              {apiFeatures.map((feat) => {
+                const Icon = feat.icon;
+                return (
+                  <div
+                    key={feat.title}
+                    className="p-5 rounded-2xl bg-[#f8fafc] border border-slate-200/80 hover:bg-white hover:border-blue-200 hover:shadow-sm transition-all"
+                  >
+                    <div className="flex items-center gap-3.5 mb-2">
+                      <div className="w-10 h-10 rounded-xl bg-[#eff6ff] text-[#2563eb] flex items-center justify-center shrink-0">
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <h3 className="text-base font-bold text-[#0f172a]">{feat.title}</h3>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                      {feat.desc}
+                    </p>
+                  </div>
+                );
+              })}
+
+              {/* Developer Actions */}
+              <div className="pt-2 flex flex-wrap items-center gap-3.5">
+                <button
+                  onClick={() => navigate('/book-consultation')}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm text-white bg-[#1d4ed8] hover:bg-[#1e40af] shadow-[0_4px_14px_rgba(29,78,216,0.3)] transition-all cursor-pointer"
+                >
+                  <span>View API Documentation</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+
+                <button
+                  onClick={() => navigate('/book-consultation')}
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-bold text-sm text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 shadow-2xs transition-all cursor-pointer"
+                >
+                  <Terminal className="w-4 h-4 text-[#2563eb]" />
+                  <span>Try in API Explorer</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* API Stat Strip */}
+          <div className="bg-[#f8fafc] rounded-2xl border border-slate-200/80 p-5">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+              <div>
+                <div className="text-xl sm:text-2xl font-extrabold text-[#0f172a]">OpenAPI 3.0</div>
+                <div className="text-xs text-slate-500 mt-0.5">Standard Specification</div>
+              </div>
+              <div>
+                <div className="text-xl sm:text-2xl font-extrabold text-[#1d4ed8]">99.9%</div>
+                <div className="text-xs text-slate-500 mt-0.5">API Uptime SLA</div>
+              </div>
+              <div>
+                <div className="text-xl sm:text-2xl font-extrabold text-[#0f172a]">&lt; 100ms</div>
+                <div className="text-xs text-slate-500 mt-0.5">Average Response Time</div>
+              </div>
+              <div>
+                <div className="text-xl sm:text-2xl font-extrabold text-[#1d4ed8]">Global</div>
+                <div className="text-xs text-slate-500 mt-0.5">Multi-Region Endpoints</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

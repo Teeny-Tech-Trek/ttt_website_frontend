@@ -1,4 +1,4 @@
-import { useState, useEffect, type ReactNode, type SVGProps } from 'react';
+import { useState, useEffect, useMemo, type ReactNode, type SVGProps } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getPublicBlogs } from '../../services/blogService';
 import { BlogRenderer } from '../../components/blog/BlogRenderer';
@@ -13,6 +13,18 @@ import {
   HelpCircle,
   Check,
   Link2,
+  BookOpen,
+  ChevronDown,
+  Star,
+  Layers,
+  Flame,
+  Settings,
+  BarChart3,
+  Users,
+  CheckCircle2,
+  Cpu,
+  Bookmark,
+  Lightbulb,
 } from 'lucide-react';
 
 interface BlogPost {
@@ -424,6 +436,19 @@ const WhatsAppIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+// Dynamic Icon helper for real categories
+const getCategoryIcon = (categoryName: string) => {
+  const cat = (categoryName || '').toLowerCase();
+  if (cat.includes('ai') || cat.includes('solution') || cat.includes('insight')) return Sparkles;
+  if (cat.includes('auto') || cat.includes('process') || cat.includes('workflow')) return Settings;
+  if (cat.includes('trend') || cat.includes('industry') || cat.includes('market')) return BarChart3;
+  if (cat.includes('customer') || cat.includes('client') || cat.includes('communit') || cat.includes('retail')) return Users;
+  if (cat.includes('productiv') || cat.includes('efficiency') || cat.includes('financ')) return CheckCircle2;
+  if (cat.includes('engin') || cat.includes('tech') || cat.includes('code') || cat.includes('dev') || cat.includes('manuf')) return Cpu;
+  if (cat.includes('guide') || cat.includes('tip') || cat.includes('learn') || cat.includes('start') || cat.includes('medic')) return Bookmark;
+  return BookOpen;
+};
+
 export function BlogSection({ blogPosts: initialBlogPosts }: BlogSectionProps) {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [selectedPostId, setSelectedPostId] = useState<number | string | null>(null);
@@ -475,19 +500,63 @@ export function BlogSection({ blogPosts: initialBlogPosts }: BlogSectionProps) {
     loadBlogs();
   }, [initialBlogPosts]);
 
-  // Get unique categories
-  const categories = [
-    'All Categories',
-    ...Array.from(new Set(posts.map((post) => post.category))),
-  ];
+  // Unique real categories extracted directly from posts
+  const realCategories = useMemo(() => {
+    return Array.from(
+      new Set(
+        posts
+          .map((p) => p.category?.trim())
+          .filter((cat): cat is string => Boolean(cat && cat.length > 0))
+      )
+    );
+  }, [posts]);
+
+  // Real category counts computed directly from posts
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    posts.forEach((p) => {
+      if (p.category) {
+        const key = p.category.trim();
+        counts[key] = (counts[key] || 0) + 1;
+      }
+    });
+    return counts;
+  }, [posts]);
+
+  // Category Chips dynamically based on real categories
+  const chipCategories = useMemo(() => ['All', ...realCategories], [realCategories]);
+
+  // Sidebar Categories dynamically based on real categories
+  const sidebarCategories = useMemo(() => {
+    return realCategories.map((cat) => ({
+      name: cat,
+      count: categoryCounts[cat] || 0,
+      icon: getCategoryIcon(cat),
+    }));
+  }, [realCategories, categoryCounts]);
+
+  // Combined categories for the dropdown selector
+  const categoryOptions = useMemo(() => ['All Categories', ...realCategories], [realCategories]);
 
   // Filter posts based on search and category
   const filteredPosts = posts.filter((post) => {
+    const q = searchQuery.trim().toLowerCase();
     const matchesSearch =
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory =
-      selectedCategory === 'All Categories' || post.category === selectedCategory;
+      !q ||
+      post.title.toLowerCase().includes(q) ||
+      post.excerpt.toLowerCase().includes(q) ||
+      post.category.toLowerCase().includes(q);
+
+    let matchesCategory = true;
+    if (selectedCategory !== 'All Categories' && selectedCategory !== 'All') {
+      const sel = selectedCategory.toLowerCase();
+      const postCat = post.category.toLowerCase();
+      if (sel === 'ai') {
+        matchesCategory = postCat.includes('ai');
+      } else {
+        matchesCategory = postCat.includes(sel) || sel.includes(postCat);
+      }
+    }
     return matchesSearch && matchesCategory;
   });
 
@@ -495,7 +564,18 @@ export function BlogSection({ blogPosts: initialBlogPosts }: BlogSectionProps) {
     ? posts.find((p) => p.id === selectedPostId)
     : null;
 
-  // Blog Detail View
+  const handlePostClick = (post: BlogPost | { id?: number | string; slug?: string; isDb?: boolean }) => {
+    if (post.slug) {
+      navigate(`/blog/${post.slug}`);
+      return;
+    }
+    if (post.id) {
+      setSelectedPostId(post.id);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  // Blog Detail View (for items viewed internally)
   if (selectedPost) {
     const getShareUrl = () =>
       typeof window !== 'undefined' ? window.location.href : '';
@@ -532,9 +612,7 @@ export function BlogSection({ blogPosts: initialBlogPosts }: BlogSectionProps) {
       'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 transition-colors text-left';
 
     return (
-      <section className="min-h-screen bg-slate-50 pt-16 sm:pt-20">
-        {/* Header with back button — offset below the fixed navbar so it is
-            never clipped/partially hidden behind it. */}
+      <section className="min-h-screen bg-slate-50 pt-24 sm:pt-28 pb-16">
         <div className="bg-white border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <button
@@ -547,91 +625,78 @@ export function BlogSection({ blogPosts: initialBlogPosts }: BlogSectionProps) {
           </div>
         </div>
 
-        {/* Card Centering Wrapper */}
         <div className="max-w-7xl mx-auto px-2 py-8 sm:px-6 lg:px-8 flex flex-col items-center">
           <article className="w-full max-w-[720px] bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.10)] overflow-hidden flex flex-col">
-            {/* Card Heading */}
             <h1 className="text-[#1f528c] font-extrabold text-2xl sm:text-3xl md:text-4xl text-center leading-tight tracking-tight px-4 sm:px-8 pt-8 pb-4 sm:pt-10 sm:pb-5">
               {selectedPost.title}
             </h1>
 
-            {/* Featured Image */}
             {selectedPost.image && (
               <div className="w-full bg-slate-50 flex flex-col items-center justify-center">
                 <img
                   src={selectedPost.image}
-                  alt={selectedPost.featured_alt || selectedPost.title}
-                  className="w-full max-h-[450px] object-cover"
-                  loading="lazy"
+                  alt={selectedPost.title}
+                  className="w-full max-h-[420px] object-cover"
                 />
                 {selectedPost.featured_caption && (
-                  <p className="text-center text-xs text-gray-500 mt-2 mb-2 italic px-2">
+                  <p className="text-center text-xs text-gray-500 mt-2 mb-4 italic px-4">
                     {selectedPost.featured_caption}
                   </p>
                 )}
               </div>
             )}
 
-            {/* Content Section */}
-            <div className="p-6 sm:p-10 flex flex-col flex-1 bg-white">
-              {/* Summary (italic) */}
-              {selectedPost.excerpt && (
-                <p className="text-gray-600 text-base sm:text-lg italic text-center leading-relaxed mb-6">
-                  {selectedPost.excerpt}
-                </p>
-              )}
-
-              {/* Author + Date */}
-              <div className="flex flex-wrap items-center gap-3 justify-center mb-8">
-                <span className="text-[#3e6aa7] font-semibold text-sm sm:text-base">
-                  {selectedPost.author}
-                </span>
-                <span className="text-gray-400 text-xs sm:text-sm">
-                  {selectedPost.date}
-                </span>
+            <div className="p-6 sm:p-8 flex flex-col flex-1">
+              <div className="flex items-center justify-center gap-4 text-sm text-gray-500 mb-6 pb-6 border-b border-gray-100">
+                <div className="flex items-center gap-1.5">
+                  <Calendar className="w-4 h-4 text-gray-400" />
+                  <span>{selectedPost.date}</span>
+                </div>
+                <span>•</span>
+                <div className="flex items-center gap-1.5">
+                  <Clock className="w-4 h-4 text-gray-400" />
+                  <span>{selectedPost.readTime}</span>
+                </div>
+                <span>•</span>
+                <span className="text-blue-600 font-medium">{selectedPost.category}</span>
               </div>
 
-              {/* Article Content */}
-              <div className="text-gray-850 text-sm sm:text-base md:text-lg leading-relaxed flex-1">
-                {selectedPost.content ? (
-                  <ArticleContent content={selectedPost.content} />
+              <div className="text-gray-800 text-base leading-relaxed flex-1 space-y-4">
+                {selectedPost.content?.startsWith('[') ? (
+                  (() => {
+                    try {
+                      const parsed = JSON.parse(selectedPost.content);
+                      return <BlogRenderer blocks={parsed} />;
+                    } catch {
+                      return <ArticleContent content={selectedPost.content || ''} />;
+                    }
+                  })()
                 ) : (
-                  <p className="text-gray-700 leading-relaxed mb-6">
-                    {selectedPost.excerpt}
-                  </p>
+                  <ArticleContent content={selectedPost.content || selectedPost.excerpt} />
                 )}
               </div>
             </div>
 
-            {/* Bottom accent gradient bar */}
-            <div
-              className="h-1.5 w-full"
-              style={{
-                background: 'linear-gradient(90deg, #1f528c, #3e6aa7)',
-              }}
-            />
+            <div className="h-1.5 w-full bg-[#1f528c]" />
           </article>
 
-          {/* Share Section (centered, below the card) */}
-          <div className="w-full max-w-[720px] mt-6 flex items-center justify-between p-4 sm:p-6 bg-white border border-gray-200 rounded-2xl shadow-sm">
-            <span className="text-gray-700 font-medium text-sm sm:text-base">Share this article:</span>
+          <div className="w-full max-w-[720px] mt-6 flex justify-end">
             <div className="relative">
               <button
                 onClick={() => setShareOpen((o) => !o)}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all duration-300 hover:scale-105 font-semibold text-sm sm:text-base"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 text-sm font-medium shadow-xs transition-colors"
               >
                 <Share2 className="w-4 h-4" />
-                Share
+                <span>Share this article</span>
               </button>
 
               {shareOpen && (
                 <>
-                  {/* click-away overlay */}
                   <div
                     className="fixed inset-0 z-40"
                     onClick={() => setShareOpen(false)}
                   />
-                  <div className="absolute bottom-full right-0 mb-3 w-60 z-50 bg-white rounded-2xl shadow-xl border border-gray-200 p-2">
+                  <div className="absolute right-0 bottom-full mb-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 p-1.5 z-50 animate-in fade-in zoom-in-95 duration-150">
                     <button onClick={handleCopy} className={shareMenuItem}>
                       {copied ? (
                         <Check className="w-5 h-5 text-green-600" />
@@ -646,24 +711,15 @@ export function BlogSection({ blogPosts: initialBlogPosts }: BlogSectionProps) {
                       <XBrandIcon className="w-5 h-5 text-gray-900" />
                       <span className="font-medium text-gray-800">Share on X</span>
                     </button>
-                    <button
-                      onClick={() => shareTo('linkedin')}
-                      className={shareMenuItem}
-                    >
+                    <button onClick={() => shareTo('linkedin')} className={shareMenuItem}>
                       <LinkedInIcon className="w-5 h-5" style={{ color: '#0A66C2' }} />
                       <span className="font-medium text-gray-800">LinkedIn</span>
                     </button>
-                    <button
-                      onClick={() => shareTo('facebook')}
-                      className={shareMenuItem}
-                    >
+                    <button onClick={() => shareTo('facebook')} className={shareMenuItem}>
                       <FacebookIcon className="w-5 h-5" style={{ color: '#1877F2' }} />
                       <span className="font-medium text-gray-800">Facebook</span>
                     </button>
-                    <button
-                      onClick={() => shareTo('whatsapp')}
-                      className={shareMenuItem}
-                    >
+                    <button onClick={() => shareTo('whatsapp')} className={shareMenuItem}>
                       <WhatsAppIcon className="w-5 h-5" style={{ color: '#25D366' }} />
                       <span className="font-medium text-gray-800">WhatsApp</span>
                     </button>
@@ -677,115 +733,503 @@ export function BlogSection({ blogPosts: initialBlogPosts }: BlogSectionProps) {
     );
   }
 
-  // Blog Listing View
+  // Active category / search filtering state
+  const isFiltered =
+    searchQuery.trim() !== '' ||
+    (selectedCategory !== 'All Categories' && selectedCategory !== 'All');
+
+  // Real featured post is either a post marked isFeatured or the newest/first real post
+  const featuredPost = posts.length > 0 ? (posts.find((p: any) => p.isFeatured) || posts[0]) : null;
+  
+  // Articles to show in the "Latest Articles" section
+  const latestArticles = isFiltered
+    ? filteredPosts
+    : featuredPost
+      ? posts.filter((p) => p.id !== featuredPost.id).slice(0, 3)
+      : posts.slice(0, 3);
+
+  const remainingArticles = isFiltered
+    ? []
+    : featuredPost
+      ? posts.filter((p) => p.id !== featuredPost.id).slice(3)
+      : posts.slice(3);
+
+  // Popular articles are the top real blogs from posts
+  const popularArticles = useMemo(() => {
+    return posts.slice(0, 3);
+  }, [posts]);
+
+  const handlePopularClick = (item: BlogPost) => {
+    handlePostClick(item);
+  };
+
   return (
-    <section className="min-h-screen py-24 bg-gradient-to-b from-slate-50 via-white to-slate-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Insights & Innovation
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Explore the latest trends in AI, automation, and technology solutions for
-            small teams
-          </p>
-        </div>
+    <section className="min-h-screen pt-24 sm:pt-28 pb-20 bg-[#f8fafc] relative overflow-x-clip font-sans">
+      {/* Subtle Ambient Radial Glows */}
+      <div className="absolute top-0 left-0 w-[550px] h-[550px] bg-blue-100/40 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-40 right-0 w-[450px] h-[450px] bg-indigo-50/40 rounded-full blur-3xl pointer-events-none -z-10" />
 
-        {/* Search and Filter */}
-        <div className="flex flex-col md:flex-row gap-4 mb-12 max-w-3xl mx-auto">
-          <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Search articles..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 rounded-xl bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-400 shadow-sm"
-            />
-          </div>
-          <select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="px-6 py-3 rounded-xl bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 font-medium shadow-sm cursor-pointer"
-          >
-            {categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Blog Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredPosts.map((post) => (
-            <article
-              key={post.id}
-              onClick={() => {
-                if (post.isDb && post.slug) {
-                  navigate(`/blog/${post.slug}`);
-                } else {
-                  setSelectedPostId(post.id);
-                }
-              }}
-              className="group cursor-pointer bg-white rounded-2xl overflow-hidden border border-gray-200 hover:border-blue-300 transition-all duration-300 hover:shadow-xl"
-            >
-              {/* Image */}
-              <div className="relative h-48 overflow-hidden bg-gradient-to-br from-blue-50 to-slate-100">
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                />
-                <div className="absolute top-4 left-4">
-                  <span className="bg-blue-600 text-white text-xs font-semibold px-3 py-1.5 rounded-full shadow-md">
-                    {post.category}
-                  </span>
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-6">
-                <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
-                  <div className="flex items-center gap-1.5">
-                    <Calendar className="w-4 h-4" />
-                    <span>{post.date}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <Clock className="w-4 h-4" />
-                    <span>{post.readTime}</span>
-                  </div>
-                </div>
-
-                <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors leading-snug">
-                  {post.title}
-                </h3>
-
-                <p className="text-gray-600 mb-4 line-clamp-3 leading-relaxed">
-                  {post.excerpt}
-                </p>
-
-                <div className="flex items-center gap-2 text-blue-600 font-semibold group-hover:gap-3 transition-all duration-300">
-                  Read More
-                  <ArrowRight className="w-4 h-4" />
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        {/* No Results */}
-        {filteredPosts.length === 0 && (
-          <div className="text-center py-16">
-            <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Search className="w-10 h-10 text-gray-400" />
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* ======================================================== */}
+        {/* 1. HERO SECTION WITH 3D FLOATING CARDS & HEADLINE        */}
+        {/* ======================================================== */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-10 pt-2 sm:pt-4">
+          
+          {/* Left Hero Content */}
+          <div className="max-w-2xl">
+            {/* Category Badge */}
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-bold uppercase tracking-wider bg-blue-100/70 text-blue-700 border border-blue-200/60 mb-5 shadow-2xs">
+              <BookOpen className="w-3.5 h-3.5 text-blue-600" />
+              <span>INSIGHTS &amp; INNOVATION</span>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">No articles found</h3>
-            <p className="text-gray-600">Try adjusting your search or filter criteria</p>
+
+            {/* Main Headline */}
+            <h1 className="text-4xl sm:text-5xl lg:text-[3.6rem] font-extrabold tracking-tight text-slate-900 leading-[1.12] mb-4">
+              Ideas Today.
+              <br />
+              <span className="text-[#1d4ed8]">Smarter Tomorrow.</span>
+            </h1>
+
+            {/* Subtitle */}
+            <p className="text-base sm:text-lg text-slate-600 max-w-xl leading-relaxed">
+              Explore the latest trends in AI, automation, and technology solutions for modern teams.
+            </p>
           </div>
-        )}
+
+          {/* Right Hero Decorative Graphic (Floating 3D cards) */}
+          <div className="relative hidden lg:block w-[420px] h-[210px] select-none shrink-0">
+            {/* Handwritten Script Accent */}
+            <div className="absolute top-0 right-3 text-right z-10 pointer-events-none">
+              <span className="font-serif italic text-2xl text-blue-300 tracking-wide block drop-shadow-xs">
+                Real Ideas
+              </span>
+              <span className="font-serif italic text-2xl text-blue-300 tracking-wide block -mt-1.5 drop-shadow-xs">
+                Real Impact
+              </span>
+            </div>
+
+            {/* Curved Dotted Connecting Lines */}
+            <svg
+              className="absolute inset-0 w-full h-full pointer-events-none"
+              viewBox="0 0 420 210"
+              fill="none"
+            >
+              <path
+                d="M 120 65 C 200 45, 230 130, 290 145"
+                stroke="#93c5fd"
+                strokeWidth="2"
+                strokeDasharray="5 5"
+              />
+              <path
+                d="M 270 65 C 330 40, 360 100, 350 145"
+                stroke="#bfdbfe"
+                strokeWidth="2"
+                strokeDasharray="5 5"
+              />
+            </svg>
+
+            {/* Floating Card 1: Ideas */}
+            <div className="absolute top-2 left-2 bg-white/95 backdrop-blur-md rounded-2xl p-3 shadow-[0_10px_25px_rgba(30,58,138,0.08)] border border-blue-50/80 -rotate-3 hover:rotate-0 transition-transform duration-300 flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shadow-xs">
+                <Lightbulb className="w-4 h-4 fill-blue-500/20" />
+              </div>
+              <span className="font-bold text-slate-800 text-sm tracking-tight">Ideas</span>
+            </div>
+
+            {/* Floating Card 2: Insights */}
+            <div className="absolute top-16 left-32 bg-white/95 backdrop-blur-md rounded-2xl p-3 shadow-[0_14px_32px_rgba(30,58,138,0.1)] border border-blue-50/80 rotate-3 hover:rotate-0 transition-transform duration-300 flex items-center gap-2.5 z-10">
+              <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shadow-xs">
+                <BarChart3 className="w-4 h-4" />
+              </div>
+              <span className="font-bold text-slate-800 text-sm tracking-tight">Insights</span>
+            </div>
+
+            {/* Floating Card 3: Innovation */}
+            <div className="absolute bottom-2 right-4 bg-white/95 backdrop-blur-md rounded-2xl p-3 shadow-[0_10px_25px_rgba(30,58,138,0.08)] border border-blue-50/80 -rotate-1 hover:rotate-0 transition-transform duration-300 flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shadow-xs">
+                <Settings className="w-4 h-4" />
+              </div>
+              <span className="font-bold text-slate-800 text-sm tracking-tight">Innovation</span>
+            </div>
+          </div>
+        </div>
+
+        {/* ======================================================== */}
+        {/* 2. SEARCH & FILTER BAR WITH CATEGORY CHIPS               */}
+        {/* ======================================================== */}
+        <div className="mb-10">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4">
+            {/* Search Input */}
+            <div className="relative flex-1">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Search articles, topics, or keywords..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white border border-slate-200/90 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-800 placeholder-slate-400 shadow-xs text-sm transition-all"
+              />
+            </div>
+
+            {/* Category Dropdown */}
+            <div className="relative w-full sm:w-56 shrink-0">
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="w-full appearance-none px-4 py-3.5 rounded-2xl bg-white border border-slate-200/90 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700 font-medium shadow-xs text-sm cursor-pointer pr-10 transition-all"
+              >
+                <option value="All Categories">All Categories</option>
+                {categoryOptions
+                  .filter((cat) => cat !== 'All Categories')
+                  .map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+              </select>
+              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
+            </div>
+          </div>
+
+          {/* Horizontal Category Chips */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+            {chipCategories.map((chip) => {
+              const isSelected =
+                (chip === 'All' && (selectedCategory === 'All Categories' || selectedCategory === 'All')) ||
+                selectedCategory.toLowerCase() === chip.toLowerCase();
+
+              return (
+                <button
+                  key={chip}
+                  onClick={() => {
+                    if (chip === 'All') {
+                      setSelectedCategory('All Categories');
+                    } else {
+                      setSelectedCategory(chip);
+                    }
+                  }}
+                  className={`px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                    isSelected
+                      ? 'bg-blue-600 text-white shadow-xs font-semibold'
+                      : 'bg-white hover:bg-slate-100 text-slate-600 border border-slate-200/80 shadow-2xs'
+                  }`}
+                >
+                  {chip}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ======================================================== */}
+        {/* 3. MAIN CONTENT: 2-COLUMN LAYOUT (LEFT 8 / RIGHT 4)      */}
+        {/* ======================================================== */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          {/* ------------------------------------------------------ */}
+          {/* LEFT MAIN AREA (8 COLS)                                */}
+          {/* ------------------------------------------------------ */}
+          <div className="lg:col-span-8 space-y-10">
+            
+            {/* A. FEATURED ARTICLE CARD (Shown when not filtering or when category matches AI) */}
+            {!isFiltered && featuredPost && (
+              <div
+                onClick={() => handlePostClick(featuredPost)}
+                className="group bg-white rounded-2xl border border-slate-200/90 shadow-sm hover:shadow-lg hover:border-blue-200 transition-all duration-300 p-6 sm:p-7 flex flex-col md:flex-row gap-6 sm:gap-7 items-center cursor-pointer"
+              >
+                {/* Left Media Container with Featured Badge */}
+                <div className="w-full md:w-[44%] aspect-[16/10] sm:aspect-[16/11] rounded-xl overflow-hidden relative shrink-0 bg-slate-900 shadow-xs">
+                  <img
+                    src={featuredPost.image}
+                    alt={featuredPost.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md text-blue-900 text-[11px] font-extrabold px-3 py-1 rounded-full shadow-xs flex items-center gap-1.5 uppercase tracking-wider">
+                    <Star className="w-3.5 h-3.5 fill-blue-600 text-blue-600" />
+                    <span>FEATURED</span>
+                  </div>
+                </div>
+
+                {/* Right Article Details */}
+                <div className="flex flex-col justify-between flex-1 space-y-3 w-full">
+                  <span className="inline-block text-[11px] font-bold tracking-wider uppercase text-blue-700 bg-blue-50 px-2.5 py-1 rounded-md self-start border border-blue-100/80">
+                    {featuredPost.category || 'AI INSIGHTS'}
+                  </span>
+
+                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-snug group-hover:text-blue-600 transition-colors">
+                    {featuredPost.title}
+                  </h2>
+
+                  <p className="text-slate-600 text-sm leading-relaxed line-clamp-3">
+                    {featuredPost.excerpt}
+                  </p>
+
+                  <div className="pt-3 flex items-center justify-between border-t border-slate-100 text-xs text-slate-500">
+                    <div className="flex items-center gap-3">
+                      <span className="flex items-center gap-1.5">
+                        <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                        {featuredPost.date}
+                      </span>
+                      <span className="flex items-center gap-1.5">
+                        <Clock className="w-3.5 h-3.5 text-slate-400" />
+                        {featuredPost.readTime}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-1 font-semibold text-blue-600 group-hover:gap-2 transition-all">
+                      <span>Read Article</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* B. LATEST ARTICLES / FILTERED RESULTS SECTION */}
+            <div className="space-y-6">
+              <div className="flex items-end justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold text-slate-900">
+                    {isFiltered ? 'Matching Articles' : 'Latest Articles'}
+                  </h2>
+                  <p className="text-sm text-slate-500 mt-1">
+                    {isFiltered
+                      ? `Showing ${filteredPosts.length} article${filteredPosts.length === 1 ? '' : 's'}`
+                      : 'Fresh perspectives, practical advice, and real-world stories from our team and community.'}
+                  </p>
+                </div>
+
+                {isFiltered ? (
+                  <button
+                    onClick={() => {
+                      setSelectedCategory('All Categories');
+                      setSearchQuery('');
+                    }}
+                    className="text-xs sm:text-sm font-semibold text-blue-600 hover:text-blue-700 underline shrink-0"
+                  >
+                    Clear Filter
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setSelectedCategory('All Categories');
+                      setSearchQuery('');
+                    }}
+                    className="text-xs sm:text-sm font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1 shrink-0"
+                  >
+                    <span>View All Articles</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+
+              {/* Articles 3-Column Card Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                {latestArticles.map((post) => (
+                  <article
+                    key={post.id}
+                    onClick={() => handlePostClick(post)}
+                    className="group bg-white rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-md hover:border-blue-200 transition-all duration-300 overflow-hidden flex flex-col cursor-pointer"
+                  >
+                    <div className="h-44 overflow-hidden relative bg-slate-100">
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src =
+                            'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80';
+                        }}
+                      />
+                    </div>
+
+                    <div className="p-5 flex flex-col flex-1 justify-between">
+                      <div>
+                        <span className="text-[10px] font-bold tracking-wider uppercase text-blue-700 block mb-2">
+                          {post.category}
+                        </span>
+                        <h3 className="text-base font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug mb-2">
+                          {post.title}
+                        </h3>
+                        <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-4">
+                          {post.excerpt}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-3 text-[11px] text-slate-400 pt-3 border-t border-slate-100">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                          {post.date}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-3.5 h-3.5 text-slate-400" />
+                          {post.readTime}
+                        </span>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+
+              {/* Additional Remaining Articles when more than 3 exist */}
+              {remainingArticles.length > 0 && (
+                <div className="pt-6 border-t border-slate-200/80">
+                  <h3 className="text-lg font-bold text-slate-900 mb-4">More Stories</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    {remainingArticles.map((post) => (
+                      <article
+                        key={post.id}
+                        onClick={() => handlePostClick(post)}
+                        className="group bg-white rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-md hover:border-blue-200 transition-all duration-300 overflow-hidden flex flex-col cursor-pointer"
+                      >
+                        <div className="h-40 overflow-hidden relative bg-slate-100">
+                          <img
+                            src={post.image}
+                            alt={post.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src =
+                                'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80';
+                            }}
+                          />
+                        </div>
+                        <div className="p-5 flex flex-col flex-1 justify-between">
+                          <div>
+                            <span className="text-[10px] font-bold tracking-wider uppercase text-blue-700 block mb-1.5">
+                              {post.category}
+                            </span>
+                            <h4 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors line-clamp-2 leading-snug mb-2">
+                              {post.title}
+                            </h4>
+                            <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-3">
+                              {post.excerpt}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-3 text-[11px] text-slate-400 pt-2.5 border-t border-slate-100">
+                            <span className="flex items-center gap-1">
+                              <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                              {post.date}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-3.5 h-3.5 text-slate-400" />
+                              {post.readTime}
+                            </span>
+                          </div>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* No Results Fallback */}
+              {latestArticles.length === 0 && (
+                <div className="text-center py-16 bg-white rounded-2xl border border-slate-200/80 p-8 shadow-xs">
+                  <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Search className="w-7 h-7" />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">No articles found</h3>
+                  <p className="text-slate-500 text-sm max-w-sm mx-auto mb-5">
+                    We couldn't find any articles matching your search query or category filter.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setSearchQuery('');
+                      setSelectedCategory('All Categories');
+                    }}
+                    className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl transition-all shadow-xs"
+                  >
+                    Reset Filters
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* ------------------------------------------------------ */}
+          {/* RIGHT SIDEBAR (4 COLS)                                 */}
+          {/* ------------------------------------------------------ */}
+          <aside className="lg:col-span-4 space-y-6">
+            
+            {/* Widget 1: Categories List with Counts */}
+            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs p-5 sm:p-6">
+              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+                <div className="flex items-center gap-2 text-slate-900 font-bold text-base">
+                  <Layers className="w-4 h-4 text-blue-600" />
+                  <span>Categories</span>
+                </div>
+                <button
+                  onClick={() => setSelectedCategory('All Categories')}
+                  className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1 transition-colors"
+                >
+                  <span>View All</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              <div className="mt-3 space-y-1">
+                {sidebarCategories.map((cat) => {
+                  const isSelected = selectedCategory.toLowerCase() === cat.name.toLowerCase();
+                  const Icon = cat.icon;
+
+                  return (
+                    <button
+                      key={cat.name}
+                      onClick={() => setSelectedCategory(cat.name)}
+                      className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs sm:text-sm transition-all duration-200 ${
+                        isSelected
+                          ? 'bg-blue-50 text-blue-700 font-semibold shadow-2xs'
+                          : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <Icon className="w-4 h-4 text-blue-600 shrink-0" />
+                        <span>{cat.name}</span>
+                      </div>
+                      <span className="text-slate-400 text-xs font-medium tabular-nums">
+                        ({cat.count})
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Widget 2: Popular Articles */}
+            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs p-5 sm:p-6">
+              <div className="flex items-center gap-2 pb-4 border-b border-slate-100 text-slate-900 font-bold text-base">
+                <Flame className="w-4 h-4 text-orange-500 fill-orange-500" />
+                <span>Popular Articles</span>
+              </div>
+
+              <div className="mt-4 space-y-4">
+                {popularArticles.map((article, idx) => (
+                  <div
+                    key={article.id}
+                    onClick={() => handlePopularClick(article)}
+                    className="flex items-start gap-3 group cursor-pointer"
+                  >
+                    <span className="w-6 h-6 rounded-full bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                      {idx + 1}
+                    </span>
+                    <div className="flex-1">
+                      <h4 className="text-xs sm:text-sm font-semibold text-slate-800 group-hover:text-blue-600 transition-colors leading-snug line-clamp-2">
+                        {article.title}
+                      </h4>
+                      <span className="text-[11px] text-slate-400 mt-1 block">
+                        {article.readTime}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </aside>
+
+        </div>
+
       </div>
     </section>
   );

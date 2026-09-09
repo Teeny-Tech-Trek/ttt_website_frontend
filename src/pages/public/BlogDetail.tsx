@@ -613,11 +613,11 @@ export default function BlogSingleView() {
           </div>
 
           {/* Widget 3: Medium Source Attribution (if applicable) */}
-          {blog.medium_url && (
+          {(blog as any)?.medium_url && (
             <div className="bg-white rounded-2xl p-3.5 border border-slate-200/90 shadow-xs flex items-center justify-between gap-3 text-xs text-slate-500">
               <span>Originally on Medium</span>
               <a
-                href={blog.medium_url}
+                href={(blog as any).medium_url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 text-blue-900 font-semibold hover:underline"

@@ -1,151 +1,205 @@
 import React from 'react';
-import { CheckCircle, ArrowRight, DollarSign, Clock, Users, TrendingUp, Database, Shield, FileText, Zap } from 'lucide-react';
-import SectionLink from '../../components/ui/SectionLink';
+import { useNavigate } from 'react-router-dom';
+import {
+  TrendingDown,
+  Clock,
+  Users,
+  TrendingUp,
+  ArrowRight,
+  Sparkles,
+  CheckCircle2,
+  DollarSign,
+  Shield,
+  Zap,
+  Target,
+  Quote,
+} from 'lucide-react';
 
-const BenefitsSection = () => {
+const BenefitsSection: React.FC = () => {
+  const navigate = useNavigate();
+
   const benefits = [
     {
       icon: DollarSign,
       title: 'Cost Reduction',
-      description: 'Reduce operational costs by up to 80% through intelligent automation of manual processes.',
+      description:
+        'Reduce operational costs by up to 80% through intelligent automation of manual document reviews.',
+      badge: 'Up to 80%',
     },
     {
       icon: Clock,
       title: 'Processing Speed',
-      description: 'Process KYC documents in seconds instead of days with 99.8% accuracy.',
+      description:
+        'Process complex KYC and onboarding dossiers in seconds instead of days with 99.8% audit accuracy.',
+      badge: 'Seconds, not days',
     },
     {
       icon: Users,
-      title: 'Enhanced Customer Experience',
-      description: 'Faster onboarding and instant responses improve customer satisfaction scores.',
+      title: 'Enhanced Experience',
+      description:
+        'Frictionless customer onboarding and real-time approvals dramatically elevate client retention.',
+      badge: '98% Satisfaction',
     },
     {
       icon: TrendingUp,
-      title: 'Scalability',
-      description: 'Handle 10x more transactions without proportional staff increases.',
-    }
+      title: 'Enterprise Scalability',
+      description:
+        'Scale from 10,000 to 10M+ documents without adding headcount or sacrificing risk controls.',
+      badge: '10x Volume',
+    },
   ];
 
-  const metrics = [
-    { label: 'Cost Reduction', value: '80%', description: 'Average operational cost savings' },
-    { label: 'Processing Speed', value: '95%', description: 'Faster document processing' },
-    { label: 'Accuracy Rate', value: '99.8%', description: 'AI verification accuracy' },
-    { label: 'ROI Timeline', value: '3 months', description: 'Time to see positive ROI' }
+  const roiStats = [
+    { value: '80%', label: 'Cost Reduction', detail: '↑32% vs industry average' },
+    { value: '95%', label: 'Processing Speed', detail: '↑28% turnaround improvement' },
+    { value: '99.8%', label: 'Accuracy Rate', detail: '↑0.3% error reduction' },
+    { value: '3 months', label: 'ROI Timeline', detail: '↓50% faster payback period' },
+  ];
+
+  const roadmap = [
+    { week: 'Week 1', title: 'Seamless Integration', desc: 'Connect core banking & KYC pipelines via pre-built connectors.' },
+    { week: 'Week 2', title: 'Enterprise Security', desc: 'Enforce AES-256 encryption, HSM key vaulting, and role isolation.' },
+    { week: 'Week 3', title: 'Rapid Deployment', desc: 'Deploy tailored models configured to institutional risk appetite.' },
+    { week: 'Week 4', title: 'Regulatory Compliance', desc: 'Full audit validation across US, UK, Canada, and EU standards.' },
   ];
 
   return (
-    <div className="py-12 bg-white sm:py-16 lg:py-20">
-      <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-        {/* Header */}
-        <div className="mb-12 text-center sm:mb-16">
-          <h2 className="mb-4 text-3xl font-bold leading-tight text-black sm:mb-6 sm:text-4xl lg:text-5xl">
-            Transform Your <span className="text-blue-900">Financial Operations</span> with AI
+    <section className="py-16 sm:py-20 lg:py-24 bg-white border-b border-slate-200/80 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto space-y-4 mb-14 sm:mb-18">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase bg-[#eff6ff] text-[#2563eb] border border-blue-100/80 shadow-2xs">
+            <Sparkles className="w-3.5 h-3.5 text-[#2563eb]" />
+            <span>Real Results. Smarter Finance.</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0f172a] tracking-tight">
+            Transform Your <span className="text-[#1d4ed8]">Financial Operations</span> with AI
           </h2>
-          <p className="max-w-3xl px-4 mx-auto text-base text-black sm:text-lg lg:text-xl">
-            Deliver measurable results with intelligent automation that streamlines processes and reduces costs
+
+          <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
+            Deliver measurable results with intelligent automation that streamlines processes and reduces costs without compromising risk posture.
           </p>
         </div>
 
-        {/* Key Benefits - Responsive Grid */}
-        <div className="grid grid-cols-1 gap-4 mb-12 sm:gap-6 lg:gap-8 sm:mb-16 sm:grid-cols-2 lg:grid-cols-4">
-          {benefits.map((benefit, index) => {
-            const IconComponent = benefit.icon;
+        {/* 4 Key Benefit Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-16">
+          {benefits.map((benefit, idx) => {
+            const Icon = benefit.icon;
             return (
-              <div key={index} className="p-5 text-center transition-shadow bg-white border border-gray-200 shadow-sm sm:p-6 rounded-xl hover:shadow-md">
-                <div className="flex items-center justify-center mx-auto mb-3 text-blue-900 bg-blue-100 w-14 h-14 sm:w-16 sm:h-16 sm:mb-4 rounded-xl">
-                  <IconComponent className="w-7 h-7 sm:w-8 sm:h-8" />
+              <div
+                key={idx}
+                className="p-6 rounded-2xl bg-[#f8fafc] border border-slate-200/80 hover:bg-white hover:border-blue-200 hover:shadow-[0_10px_30px_rgba(30,58,138,0.06)] transition-all duration-300 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-[#eff6ff] text-[#2563eb] flex items-center justify-center shadow-2xs">
+                      <Icon className="w-6 h-6" />
+                    </div>
+                    <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-[#1d4ed8] border border-blue-100">
+                      {benefit.badge}
+                    </span>
+                  </div>
+
+                  <h3 className="text-lg font-bold text-[#0f172a] mb-2">{benefit.title}</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    {benefit.description}
+                  </p>
                 </div>
-                <h3 className="mb-2 text-base font-semibold text-black sm:text-lg">{benefit.title}</h3>
-                <p className="text-sm leading-relaxed text-black">{benefit.description}</p>
               </div>
             );
           })}
         </div>
 
-        {/* Main Content Grid - Responsive Layout */}
-        <div className="grid items-start gap-8 sm:gap-10 lg:gap-12 lg:grid-cols-2">
-          {/* ROI Metrics */}
-          <div className="space-y-6 sm:space-y-8">
+        {/* Two-Column Grid: Left Analytics & Testimonial, Right Visual */}
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+          {/* Left Column: Metrics & Implementation Roadmap (5 Cols) */}
+          <div className="lg:col-span-5 space-y-6">
             <div>
-              <h3 className="mb-3 text-xl font-bold text-black sm:mb-4 sm:text-2xl">Proven ROI & Performance</h3>
-              <p className="mb-6 text-sm leading-relaxed text-black sm:mb-8 sm:text-base">
-                Financial institutions using our AI automation see immediate improvements in efficiency and cost reduction
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#0f172a] tracking-tight mb-2">
+                Proven ROI & Performance
+              </h3>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Financial institutions using our AI automation suite report immediate improvements in turnaround efficiency and quantifiable cost reductions.
               </p>
             </div>
 
-            {/* Metrics Grid - Responsive */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
-              {metrics.map((metric, index) => (
-                <div key={index} className="p-4 transition-shadow bg-white border border-gray-200 rounded-lg sm:p-6 hover:shadow-md">
-                  <div className="mb-2 text-2xl font-bold text-blue-900 sm:text-3xl">{metric.value}</div>
-                  <div className="mb-1 text-sm font-semibold text-black sm:text-base">{metric.label}</div>
-                  <div className="text-xs leading-relaxed text-black sm:text-sm">{metric.description}</div>
+            {/* 4 ROI Stat Cards */}
+            <div className="grid grid-cols-2 gap-3.5">
+              {roiStats.map((st) => (
+                <div
+                  key={st.label}
+                  className="p-4 rounded-2xl bg-[#f8fafc] border border-blue-100/80 shadow-2xs"
+                >
+                  <div className="text-2xl sm:text-3xl font-extrabold text-[#1d4ed8]">
+                    {st.value}
+                  </div>
+                  <div className="text-xs font-bold text-[#0f172a] mt-1">{st.label}</div>
+                  <div className="text-[11px] text-emerald-600 font-semibold mt-0.5">
+                    {st.detail}
+                  </div>
                 </div>
               ))}
             </div>
 
-          </div>
-
-          {/* Implementation Benefits Card - Responsive */}
-          <div className="p-6 bg-white border border-gray-200 shadow-lg sm:p-8 rounded-2xl">
-            <h3 className="mb-5 text-lg font-semibold text-black sm:mb-6 sm:text-xl">Implementation Benefits</h3>
-            
-            <div className="space-y-5 sm:space-y-6">
-              <div className="flex gap-3 sm:gap-4">
-                <div className="flex-shrink-0 p-2 text-blue-900 bg-blue-100 rounded-lg">
-                  <Database className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
-                <div>
-                  <h4 className="mb-1 text-sm font-semibold text-black sm:text-base">Seamless Integration</h4>
-                  <p className="text-xs leading-relaxed text-black sm:text-sm">Connect with existing core banking systems, CRM platforms, and regulatory databases</p>
-                </div>
+            {/* 4-Week Implementation Roadmap Preview */}
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-sm space-y-3">
+              <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                4-Week Accelerated Deployment
               </div>
-
-              <div className="flex gap-3 sm:gap-4">
-                <div className="flex-shrink-0 p-2 text-blue-900 bg-blue-100 rounded-lg">
-                  <Shield className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
-                <div>
-                  <h4 className="mb-1 text-sm font-semibold text-black sm:text-base">Enterprise Security</h4>
-                  <p className="text-xs leading-relaxed text-black sm:text-sm">Bank-grade encryption, SOC 2 compliance, and audit trails for all transactions</p>
-                </div>
-              </div>
-
-              <div className="flex gap-3 sm:gap-4">
-                <div className="flex-shrink-0 p-2 text-blue-900 bg-blue-100 rounded-lg">
-                  <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
-                <div>
-                  <h4 className="mb-1 text-sm font-semibold text-black sm:text-base">Rapid Deployment</h4>
-                  <p className="text-xs leading-relaxed text-black sm:text-sm">Go live in 2-4 weeks with pre-trained models and configuration templates</p>
-                </div>
-              </div>
-
-              <div className="flex gap-3 sm:gap-4">
-                <div className="flex-shrink-0 p-2 text-blue-900 bg-blue-100 rounded-lg">
-                  <FileText className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
-                <div>
-                  <h4 className="mb-1 text-sm font-semibold text-black sm:text-base">Regulatory Compliance</h4>
-                  <p className="text-xs leading-relaxed text-black sm:text-sm">Built-in compliance for SOX, GDPR, AML, KYC, and other financial regulations</p>
-                </div>
+              <div className="space-y-2.5">
+                {roadmap.map((step) => (
+                  <div key={step.week} className="flex items-start gap-3 text-xs">
+                    <span className="font-extrabold text-[#2563eb] bg-[#eff6ff] px-2 py-0.5 rounded border border-blue-100 shrink-0">
+                      {step.week}
+                    </span>
+                    <div>
+                      <span className="font-bold text-[#0f172a]">{step.title} — </span>
+                      <span className="text-slate-500">{step.desc}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Success Guarantee Box - Responsive */}
-            <div className="p-4 mt-6 border border-blue-200 rounded-lg sm:mt-8 bg-blue-50">
-              <div className="flex items-start gap-2 mb-2 sm:items-center">
-                <CheckCircle className="w-5 h-5 text-blue-900 flex-shrink-0 mt-0.5 sm:mt-0" />
-                <span className="text-sm font-semibold text-blue-900 sm:text-base">Success Guarantee</span>
-              </div>
-              <p className="text-xs leading-relaxed text-black sm:text-sm pl-7">
-                We guarantee positive ROI within 6 months or we'll refund your implementation costs
+            {/* Verified Testimonial Card */}
+            <div className="p-5 rounded-2xl bg-[#eff6ff]/70 border border-blue-100 relative">
+              <Quote className="w-8 h-8 text-blue-200 absolute top-4 right-4" />
+              <p className="text-xs sm:text-sm text-slate-700 italic leading-relaxed mb-3 relative z-10">
+                &ldquo;The AI automation suite reduced our operational costs by 70% and cut onboarding time from days to minutes. The ROI was visible within 3 months.&rdquo;
               </p>
+              <div className="text-xs font-bold text-[#0f172a]">
+                Head of Operations, Global Financial Bank
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div>
+              <button
+                onClick={() => navigate('/book-consultation')}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm text-white bg-[#1d4ed8] hover:bg-[#1e40af] shadow-[0_4px_14px_rgba(29,78,216,0.3)] transition-all cursor-pointer"
+              >
+                <span>Schedule a Demo</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Right Column: Visual proven roi and performance.png (7 Cols) */}
+          <div className="lg:col-span-7">
+            <div className="rounded-3xl overflow-hidden bg-white border border-blue-100/80 shadow-[0_20px_50px_rgba(30,58,138,0.08)] p-3 sm:p-5">
+              <div className="rounded-2xl overflow-hidden aspect-[16/9] flex items-center justify-center bg-slate-50">
+                <img
+                  src="/images/finance/proven roi and performance.png"
+                  alt="Proven ROI and Performance Metrics chart"
+                  className="w-full h-full object-contain rounded-xl hover:scale-[1.01] transition-transform duration-500"
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

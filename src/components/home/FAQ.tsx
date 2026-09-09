@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, HelpCircle, ArrowRight } from "lucide-react";
+import { Plus, HelpCircle } from "lucide-react";
 import Container from "../ui/Container";
 
 interface FaqItem {
@@ -281,39 +281,6 @@ const FAQ: React.FC = () => {
               </div>
             );
           })}
-        </div>
-
-        {/* Bottom Call to Action Card */}
-        <div className="mt-16 sm:mt-20 bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#2563eb] rounded-2xl p-8 sm:p-10 text-white shadow-xl shadow-blue-900/10 border border-blue-400/20 relative overflow-hidden">
-          {/* Subtle glow accent */}
-          <div className="absolute top-0 right-0 w-80 h-80 bg-blue-400/10 rounded-full blur-3xl pointer-events-none" />
-
-          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-            <div className="max-w-xl">
-              <h3 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">
-                Still have questions?
-              </h3>
-              <p className="text-blue-100 text-sm sm:text-base leading-relaxed">
-                Can't find the exact answer you're looking for? Talk directly with our AI implementation engineers or schedule a free 30-minute scoping consultation.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-              <a
-                href="#book-consultation"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white text-blue-800 font-semibold text-sm hover:bg-blue-50 transition-all duration-200 shadow-md hover:shadow-lg w-full sm:w-auto text-center"
-              >
-                <span>Book Free Consultation</span>
-                <ArrowRight className="w-4 h-4" />
-              </a>
-              <a
-                href="#contact"
-                className="inline-flex items-center justify-center px-6 py-3.5 rounded-xl bg-blue-700/50 hover:bg-blue-700/70 text-white border border-blue-400/30 font-medium text-sm transition-all duration-200 w-full sm:w-auto text-center"
-              >
-                Contact Us
-              </a>
-            </div>
-          </div>
         </div>
       </Container>
     </section>

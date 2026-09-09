@@ -61,18 +61,18 @@ const Hero: React.FC<ChatbotOpenProps> = ({ onOpenChatbot }) => {
 };
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-white">
-      <div className="px-6 py-20 mx-auto max-w-7xl">
-        <div className="grid items-center gap-16 lg:grid-cols-2">
+    <section className="relative overflow-hidden bg-white">
+      <div className="px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-12 sm:pb-16 mx-auto max-w-7xl">
+        <div className="grid items-center gap-10 lg:gap-16 lg:grid-cols-2">
           {/* Left Content */}
           <motion.div 
-            className="space-y-8"
+            className="space-y-6 sm:space-y-8"
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
           >
             <motion.h1 
-              className="text-5xl font-black leading-tight text-black md:text-6xl lg:text-7xl"
+              className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-tight text-black"
               variants={slideFromLeft}
             >
               AI-Powered Compliance  
@@ -81,7 +81,7 @@ const Hero: React.FC<ChatbotOpenProps> = ({ onOpenChatbot }) => {
             </motion.h1>
             
             <motion.p 
-              className="max-w-lg text-xl leading-relaxed text-black"
+              className="max-w-lg text-base sm:text-lg leading-relaxed text-black"
               variants={slideFromLeft}
             >
               Secure, reliable, and globally recognized AI systems  
@@ -189,26 +189,26 @@ const Solutions: React.FC = () => {
     <section className="py-20 bg-white">
       <div className="px-6 mx-auto max-w-7xl">
         <motion.div 
-          className="mb-16 text-center"
+          className="mb-12 sm:mb-16 text-center"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
           variants={slideFromTop}
         >
-          <h2 className="mb-6 text-4xl font-bold text-blue-900 md:text-5xl">
+          <h2 className="mb-4 sm:mb-6 text-2xl sm:text-4xl md:text-5xl font-bold text-blue-900">
             AEO/GEO Solutions
           </h2>
-          <p className="max-w-3xl mx-auto text-xl text-black">
+          <p className="max-w-3xl mx-auto text-base sm:text-xl text-black">
             Accelerate global trade compliance and secure supply chains.
           </p>
         </motion.div>
 
         {/* Tabs */}
-        <div className="flex justify-center mb-16">
+        <div className="flex justify-center mb-12 sm:mb-16">
           <div className="p-1 bg-gray-100 rounded-lg">
             <button
               onClick={() => setActiveTab('compliance')}
-              className={`px-8 py-3 rounded-md font-semibold transition-all duration-300 ${
+              className={`px-5 sm:px-8 py-2.5 sm:py-3 rounded-md text-sm sm:text-base font-semibold transition-all duration-300 ${
                 activeTab === 'compliance' ? 'bg-white text-blue-900 shadow-sm' : 'text-black hover:text-blue-900'
               }`}
             >
@@ -216,7 +216,7 @@ const Solutions: React.FC = () => {
             </button>
             <button
               onClick={() => setActiveTab('operations')}
-              className={`px-8 py-3 rounded-md font-semibold transition-all duration-300 ${
+              className={`px-5 sm:px-8 py-2.5 sm:py-3 rounded-md text-sm sm:text-base font-semibold transition-all duration-300 ${
                 activeTab === 'operations' ? 'bg-white text-blue-900 shadow-sm' : 'text-black hover:text-blue-900'
               }`}
             >
@@ -335,21 +335,13 @@ const CTA: React.FC = () => {
     <section className="py-20 bg-white">
       <div className="max-w-4xl px-6 mx-auto text-center">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} variants={staggerContainer}>
-          <motion.h2 className="mb-6 text-4xl font-bold text-blue-900 md:text-5xl" variants={slideFromTop}>
+          <motion.h2 className="mb-4 sm:mb-6 text-2xl sm:text-4xl md:text-5xl font-bold text-blue-900" variants={slideFromTop}>
             Ready for AEO/GEO Compliance?
           </motion.h2>
           
-          <motion.p className="mb-12 text-xl leading-relaxed text-black" variants={slideFromBottom}>
+          <motion.p className="mb-8 sm:mb-12 text-base sm:text-xl leading-relaxed text-black" variants={slideFromBottom}>
             Let AI streamline your certification process and strengthen global trust in your supply chain.
           </motion.p>
-{/* 
-          <motion.button 
-            className="flex items-center justify-center px-12 py-4 mx-auto text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-950 group"
-            variants={slideFromBottom}
-          >
-            Start Your Journey
-            <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-          </motion.button> */}
             <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
@@ -358,7 +350,7 @@ const CTA: React.FC = () => {
                 <HashLink 
                   smooth 
                   to="/#contact"
-                  className="flex items-center justify-center px-12 py-4 mx-auto text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg w-80 hover:bg-blue-950 group"
+                  className="flex items-center justify-center px-8 sm:px-12 py-4 mx-auto text-base sm:text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg w-full sm:w-80 max-w-full hover:bg-blue-950 group"
 
                 >
                   Start Your Journey

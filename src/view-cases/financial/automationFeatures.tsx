@@ -1,287 +1,336 @@
-import React, { useState, useEffect } from 'react';
-import { Shield, FileText, Users, AlertTriangle, BarChart3, Clock, CheckCircle, Bot, Zap, Brain, Eye, Star, Activity, Layers, Cpu } from 'lucide-react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  FileText,
+  AlertTriangle,
+  ShieldCheck,
+  Activity,
+  ArrowRight,
+  PlayCircle,
+  Sparkles,
+  Zap,
+  Target,
+  TrendingDown,
+  Users,
+  Fingerprint,
+  FileCheck2,
+  Lock,
+} from 'lucide-react';
 
-const AutomationFeaturesSection = () => {
-  const [selectedFeature, setSelectedFeature] = useState(0);
-  const [animationIndex, setAnimationIndex] = useState(0);
-  const [liveMetrics, setLiveMetrics] = useState({});
-  
-  const automationSuite = [
+const AutomationFeaturesSection: React.FC = () => {
+  const navigate = useNavigate();
+  const [activeEngine, setActiveEngine] = useState(0);
+
+  const handleServicesClick = () => {
+    navigate('/#services');
+    const el = document.getElementById('services');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleBookingClick = () => {
+    navigate('/book-consultation');
+  };
+
+  const engines = [
     {
       id: 'kyc',
-      title: 'KYC Document Intelligence',
-      subtitle: 'Revolutionary Identity Verification',
-      description: 'AI-powered document processing that understands context, detects fraud, and verifies identities with superhuman accuracy.',
+      name: 'KYC Document Intelligence',
+      tagline: 'Verify identities and documents in seconds, not days',
+      description:
+        'AI that reads, extracts, and cross-validates passports, IDs, and utility bills with 99.94% accuracy and automated fraud tampering detection.',
       icon: FileText,
-      iconBg: 'from-blue-900 to-blue-900',
-      metrics: {
-        'Processing Speed': { value: '1.2s', change: '+156%', type: 'time' },
-        'Accuracy Rate': { value: '99.94%', change: '+0.12%', type: 'percentage' },
-        'Cost Reduction': { value: '87%', change: '+12%', type: 'savings' },
-        'Fraud Detection': { value: '99.7%', change: '+2.1%', type: 'security' }
-      },
-      capabilities: [
-        'Multi-language document OCR',
-        'Biometric verification matching', 
-        'Real-time fraud pattern detection',
-        'Automated compliance scoring',
-        'Cross-reference validation',
-        'Regulatory reporting automation'
-      ],
-      visualization: {
-        type: 'flow',
-        steps: ['Document Upload', 'AI Analysis', 'Fraud Check', 'Compliance Validation', 'Approval']
-      }
+      badge: 'Identity & KYC',
+      stats: '1.2s avg speed',
     },
     {
       id: 'risk',
-      title: 'Predictive Risk Engine',
-      subtitle: 'Advanced Threat Intelligence',
-      description: 'Machine learning models that predict financial risks before they materialize, protecting your institution proactively.',
+      name: 'Predictive Risk Engine',
+      tagline: 'Score risk in real time, before it becomes exposure',
+      description:
+        'Machine learning models that predict credit, market, and operational risks before they materialize, protecting your balance sheet proactively.',
       icon: AlertTriangle,
-      iconBg: 'from-blue-900 to-blue-900',
-      metrics: {
-        'Risk Prediction': { value: '94.2%', change: '+8.7%', type: 'accuracy' },
-        'Threat Prevention': { value: '847', change: '+23', type: 'count' },
-        'Model Accuracy': { value: '96.8%', change: '+1.4%', type: 'percentage' },
-        'Response Time': { value: '47ms', change: '-23ms', type: 'time' }
-      },
-      capabilities: [
-        'Portfolio risk assessment',
-        'Market volatility prediction',
-        'Credit risk modeling',
-        'Operational risk monitoring',
-        'Stress testing automation',
-        'Regulatory capital optimization'
-      ],
-      visualization: {
-        type: 'network',
-        nodes: ['Market Data', 'Portfolio Analysis', 'Risk Models', 'Predictions', 'Alerts']
-      }
+      badge: 'Real-Time Risk',
+      stats: '2.1/10 low risk',
     },
     {
       id: 'compliance',
-      title: 'Intelligent Compliance Hub',
-      subtitle: 'Automated Regulatory Management',
-      description: 'Comprehensive compliance automation that monitors regulations across jurisdictions and ensures continuous adherence.',
-      icon: Shield,
-      iconBg: 'from-blue-900 to-blue-900',
-      metrics: {
-        'Compliance Score': { value: '98.9%', change: '+1.2%', type: 'percentage' },
-        'Regulations Tracked': { value: '247', change: '+18', type: 'count' },
-        'Reports Generated': { value: '1,456', change: '+34%', type: 'count' },
-        'Audit Readiness': { value: '100%', change: '0%', type: 'percentage' }
-      },
-      capabilities: [
-        'Multi-jurisdiction monitoring',
-        'Automated report generation',
-        'Regulation change detection',
-        'Audit trail management',
-        'Policy update automation',
-        'Penalty risk assessment'
-      ],
-      visualization: {
-        type: 'dashboard',
-        widgets: ['Compliance Score', 'Active Regulations', 'Risk Alerts', 'Report Status']
-      }
+      name: 'Intelligent Compliance Hub',
+      tagline: 'Track regulatory adherence across every jurisdiction',
+      description:
+        'Continuous automated compliance monitoring across US (SOX, OFAC), UK (FCA, MLRs), Canada (FINTRAC, OSFI), and EU (GDPR, MiFID II).',
+      icon: ShieldCheck,
+      badge: '50+ Jurisdictions',
+      stats: '98.6% score',
     },
     {
       id: 'fraud',
-      title: 'Advanced Fraud Defense',
-      subtitle: 'Real-time Threat Detection',
-      description: 'AI sentinels that monitor every transaction, learning patterns and stopping sophisticated fraud attempts instantly.',
+      name: 'Advanced Fraud Defense',
+      tagline: 'Catch fraud patterns before they cost you',
+      description:
+        'AI sentinels that inspect transactional patterns, synthetic identities, and device velocity to stop sophisticated fraud in sub-second latency.',
       icon: Activity,
-      iconBg: 'from-blue-900 to-blue-900',
-      metrics: {
-        'Fraud Detection': { value: '99.91%', change: '+0.23%', type: 'percentage' },
-        'False Positives': { value: '0.08%', change: '-0.15%', type: 'percentage' },
-        'Response Time': { value: '23ms', change: '-45ms', type: 'time' },
-        'Threats Blocked': { value: '12,847', change: '+1,234', type: 'count' }
-      },
-      capabilities: [
-        'Real-time transaction monitoring',
-        'Behavioral pattern analysis',
-        'Network fraud detection',
-        'Account takeover prevention',
-        'Synthetic identity detection',
-        'Money laundering prevention'
-      ],
-      visualization: {
-        type: 'radar',
-        metrics: ['Transaction Volume', 'Risk Score', 'Alert Level', 'Pattern Match', 'Geographic Risk']
-      }
-    }
+      badge: 'Active Defense',
+      stats: '99.91% caught',
+    },
   ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setAnimationIndex(prev => (prev + 1) % 4);
-      setLiveMetrics(prev => ({
-        ...prev,
-        [`metric_${Date.now()}`]: Math.random()
-      }));
-    }, 2500);
-    return () => clearInterval(interval);
-  }, []);
-
-  const currentFeature = automationSuite[selectedFeature];
-
   return (
-    <div className="relative bg-white sm:py-16 md:py-20 lg:py-24">
-      <div className="relative px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-        {/* Header */}
-        <div className="mb-12 text-center sm:mb-16 lg:mb-20">
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 text-sm text-blue-900 bg-white border border-blue-200 sm:gap-3 sm:px-6 sm:py-3 sm:mb-8 sm:text-base rounded-xl sm:rounded-2xl">
-            <Cpu className="flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5" />
-            <span className="font-bold">AI-Powered Financial Automation Suite</span>
-          </div>
-          
-          <h2 className="mb-4 text-3xl font-black leading-tight sm:mb-6 sm:text-4xl md:text-5xl lg:text-6xl">
-            <span className="text-black">INTELLIGENT</span>
-            <br />
-            <span className="text-blue-900">AUTOMATION</span>
-          </h2>
-          
-          <p className="max-w-3xl px-4 mx-auto text-base leading-relaxed text-black sm:text-lg lg:text-xl">
-            Deploy specialized AI systems that revolutionize every aspect of your financial operations with unprecedented intelligence and efficiency.
-          </p>
-        </div>
+    <div className="bg-[#f8fafc] text-slate-900 overflow-hidden">
+      {/* ========================================================================= */}
+      {/* SECTION 2: SUITE OVERVIEW (One Platform. Four Specialized AI Engines)     */}
+      {/* ========================================================================= */}
+      <section id="suite-overview" className="py-20 sm:py-24 lg:py-28 border-b border-slate-200/80 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="text-center max-w-3xl mx-auto space-y-4 mb-12 sm:mb-16">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase bg-[#eff6ff] text-[#2563eb] border border-blue-100/80 shadow-2xs">
+              <Sparkles className="w-3.5 h-3.5 text-[#2563eb]" />
+              <span>AI-Powered Financial Automation Suite</span>
+            </div>
 
-        {/* Feature selector - Responsive grid */}
-        <div className="flex justify-center pb-4 mb-12 overflow-x-auto sm:mb-16">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-0 p-1.5 sm:p-2 bg-white border border-blue-200 shadow-xl rounded-2xl sm:rounded-3xl min-w-min">
-            {automationSuite.map((feature, index) => {
-              const IconComponent = feature.icon;
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0f172a] tracking-tight">
+              One Platform. <span className="text-[#1d4ed8]">Four Specialized AI Engines.</span>
+            </h2>
+
+            <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
+              Purpose-built AI systems for every stage of financial operations — engineered for the accuracy and auditability regulators expect, not bolted on after the fact.
+            </p>
+          </div>
+
+          {/* 4 Engine Selector Tabs */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+            {engines.map((engine, idx) => {
+              const Icon = engine.icon;
+              const isActive = activeEngine === idx;
               return (
                 <button
-                  key={feature.id}
-                  onClick={() => setSelectedFeature(index)}
-                  className={`relative flex flex-col items-center gap-2 sm:gap-3 px-3 sm:px-6 lg:px-8 py-4 sm:py-6 rounded-xl sm:rounded-2xl transition-all duration-300 ${
-                    selectedFeature === index 
-                      ? 'bg-white shadow-lg scale-105' 
-                      : 'hover:bg-white/50'
+                  key={engine.id}
+                  onClick={() => setActiveEngine(idx)}
+                  className={`p-5 rounded-2xl text-left transition-all duration-300 border flex flex-col justify-between cursor-pointer ${
+                    isActive
+                      ? 'bg-white border-[#2563eb] shadow-[0_8px_30px_rgba(37,99,235,0.12)] ring-2 ring-blue-500/20 scale-[1.02]'
+                      : 'bg-white/80 border-slate-200/80 hover:bg-white hover:border-blue-200 hover:shadow-md'
                   }`}
                 >
-                  <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-blue-900 flex items-center justify-center shadow-lg ${
-                    selectedFeature === index ? 'scale-110' : ''
-                  } transition-transform duration-300`}>
-                    <IconComponent className="w-5 h-5 text-white sm:w-6 sm:h-6" />
-                  </div>
-                  <div className="text-center">
-                    <div className={`font-bold text-xs sm:text-sm ${selectedFeature === index ? 'text-black' : 'text-gray-600'}`}>
-                      {feature.title.split(' ')[0]}
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <div
+                        className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${
+                          isActive
+                            ? 'bg-[#1d4ed8] text-white shadow-md'
+                            : 'bg-[#eff6ff] text-[#2563eb]'
+                        }`}
+                      >
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <span
+                        className={`text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                          isActive
+                            ? 'bg-blue-50 text-[#1d4ed8]'
+                            : 'bg-slate-100 text-slate-600'
+                        }`}
+                      >
+                        {engine.badge}
+                      </span>
                     </div>
-                    <div className={`text-xs hidden sm:block ${selectedFeature === index ? 'text-gray-600' : 'text-gray-400'}`}>
-                      {feature.title.split(' ').slice(1).join(' ')}
-                    </div>
+
+                    <h3 className="text-base font-bold text-[#0f172a] mb-1">
+                      {engine.name}
+                    </h3>
+                    <p className="text-xs font-semibold text-[#2563eb] mb-2 leading-snug">
+                      {engine.tagline}
+                    </p>
+                    <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed">
+                      {engine.description}
+                    </p>
                   </div>
-                  {selectedFeature === index && (
-                    <div className="absolute w-2 h-2 transform -translate-x-1/2 bg-blue-900 rounded-full -bottom-2 left-1/2"></div>
-                  )}
+
+                  <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                    <span className="font-semibold text-slate-700">{engine.stats}</span>
+                    <span
+                      className={`font-bold inline-flex items-center gap-1 ${
+                        isActive ? 'text-[#1d4ed8]' : 'text-slate-400'
+                      }`}
+                    >
+                      Active <ArrowRight className="w-3 h-3" />
+                    </span>
+                  </div>
                 </button>
               );
             })}
           </div>
-        </div>
 
-        {/* Main content area - Responsive layout */}
-        <div className="grid items-start gap-8 lg:gap-12 lg:grid-cols-5">
-          {/* Feature details */}
-          <div className="space-y-6 sm:space-y-8 lg:col-span-2">
-            <div className="space-y-4 sm:space-y-6">
-              <div className="flex items-center justify-center bg-blue-900 shadow-2xl w-14 h-14 sm:w-16 sm:h-16 rounded-2xl sm:rounded-3xl">
-                <currentFeature.icon className="text-white w-7 h-7 sm:w-8 sm:h-8" />
-              </div>
-              
-              <div>
-                <h3 className="mb-2 text-2xl font-bold text-black sm:text-3xl">{currentFeature.title}</h3>
-                <p className="mb-3 text-base font-semibold text-blue-900 sm:mb-4 sm:text-lg">{currentFeature.subtitle}</p>
-                <p className="text-sm leading-relaxed text-black sm:text-base">{currentFeature.description}</p>
-              </div>
-            </div>
-
-            {/* Capabilities */}
-            <div className="space-y-3 sm:space-y-4">
-              <h4 className="text-base font-bold text-black sm:text-lg">Core Capabilities</h4>
-              <div className="grid grid-cols-1 gap-2 sm:gap-3">
-                {currentFeature.capabilities.map((capability, index) => (
-                  <div key={index} className="flex items-center gap-3 p-3 transition-all duration-300 bg-white border border-gray-200 rounded-lg sm:p-4 sm:rounded-xl hover:shadow-md">
-                    <div className="flex-shrink-0 w-2 h-2 bg-blue-900 rounded-full"></div>
-                    <span className="text-sm font-medium text-black sm:text-base">{capability}</span>
-                  </div>
-                ))}
-              </div>
+          {/* Engine Showcase Visual: ai doc intelligent.png */}
+          <div className="relative rounded-3xl overflow-hidden bg-white border border-blue-100/80 shadow-[0_20px_50px_rgba(30,58,138,0.08)] p-3 sm:p-5 lg:p-6 mb-12">
+            <div className="relative rounded-2xl overflow-hidden bg-slate-900/5 aspect-[16/9] max-h-[580px] flex items-center justify-center">
+              <img
+                src="/images/finance/ai doc intelligent.png"
+                alt="AI Document Intelligence 4-Engine Architecture"
+                className="w-full h-full object-contain rounded-xl hover:scale-[1.01] transition-transform duration-500"
+              />
             </div>
           </div>
 
-          {/* Metrics - Responsive dashboard */}
-          <div className="lg:col-span-3">
-            <div className="overflow-hidden bg-white border border-gray-200 shadow-2xl rounded-2xl sm:rounded-3xl">
-              <div className="relative p-4 overflow-hidden text-white bg-blue-900 sm:p-6">
-                <div className="relative flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center sm:gap-0">
-                  <div className="flex items-center gap-3 sm:gap-4">
-                    <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-white/20 backdrop-blur-sm rounded-xl sm:rounded-2xl">
-                      <Bot className="w-5 h-5 sm:w-6 sm:h-6" />
-                    </div>
-                    <div>
-                      <h4 className="text-lg font-bold sm:text-xl">{currentFeature.title} Dashboard</h4>
-                      <p className="text-sm sm:text-base text-white/80">Real-time Analytics & Performance</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-blue-300 rounded-full animate-pulse"></div>
-                    <span className="text-xs font-medium sm:text-sm">LIVE</span>
-                  </div>
-                </div>
+          {/* Stat Strip */}
+          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 sm:p-7">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-slate-100 text-center">
+              <div className="px-2 pt-2 sm:pt-0">
+                <div className="text-2xl sm:text-3xl font-extrabold text-[#0f172a]">12,847</div>
+                <div className="text-xs font-medium text-slate-500 mt-1">Documents Processed Today</div>
               </div>
-
-              {/* Metrics grid - Responsive columns */}
-              <div className="p-4 sm:p-6">
-                <div className="grid grid-cols-1 gap-4 mb-6 sm:grid-cols-2 sm:gap-6 sm:mb-8">
-                  {Object.entries(currentFeature.metrics).map(([label, data], index) => (
-                    <div key={label} className={`p-4 sm:p-6 rounded-xl sm:rounded-2xl border-2 transition-all duration-500 ${
-                      animationIndex === index 
-                        ? `border-blue-300 bg-blue-50 shadow-lg scale-105` 
-                        : 'border-gray-200 bg-white hover:shadow-md'
-                    }`}>
-                      <div className="flex items-center justify-between mb-2 sm:mb-3">
-                        <h5 className="text-xs font-bold tracking-wide text-black uppercase sm:text-sm">{label}</h5>
-                        <div className="px-2 py-1 text-xs font-bold text-blue-900 bg-blue-100 rounded-full whitespace-nowrap">
-                          {data.change}
-                        </div>
-                      </div>
-                      <div className="mb-2 text-2xl font-black text-black sm:text-3xl">{data.value}</div>
-                      <div className="w-full h-1.5 sm:h-2 bg-gray-200 rounded-full">
-                        <div 
-                          className="h-1.5 sm:h-2 transition-all duration-1000 bg-blue-900 rounded-full"
-                          style={{ width: animationIndex === index ? '95%' : '75%' }}
-                        ></div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Performance indicator - Responsive layout */}
-                <div className="p-4 border border-blue-200 sm:p-6 bg-blue-50 rounded-xl sm:rounded-2xl">
-                  <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-4">
-                    <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 bg-blue-900 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl">
-                      <Zap className="w-5 h-5 text-white sm:w-6 sm:h-6" />
-                    </div>
-                    <div className="flex-1">
-                      <h5 className="mb-1 text-base font-bold text-black sm:text-lg">System Performance</h5>
-                      <p className="text-xs text-black sm:text-sm">All systems operational • 99.9% uptime • Real-time processing</p>
-                    </div>
-                    <div className="w-full text-left sm:text-right sm:w-auto">
-                      <div className="text-xl font-bold text-blue-900 sm:text-2xl">98.7%</div>
-                      <div className="text-xs text-black sm:text-sm">Optimal</div>
-                    </div>
-                  </div>
-                </div>
+              <div className="px-2 pt-4 sm:pt-0">
+                <div className="text-2xl sm:text-3xl font-extrabold text-[#1d4ed8]">99.8%</div>
+                <div className="text-xs font-medium text-slate-500 mt-1">Accuracy Rate</div>
+              </div>
+              <div className="px-2 pt-4 sm:pt-0">
+                <div className="text-2xl sm:text-3xl font-extrabold text-[#0f172a]">80%</div>
+                <div className="text-xs font-medium text-slate-500 mt-1">Cost Reduction</div>
+              </div>
+              <div className="px-2 pt-4 sm:pt-0">
+                <div className="text-2xl sm:text-3xl font-extrabold text-[#1d4ed8]">2.3s</div>
+                <div className="text-xs font-medium text-slate-500 mt-1">Average Processing Speed</div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 3: KYC DOCUMENT INTELLIGENCE (Turn Documents into Trusted Identities) */}
+      {/* ========================================================================= */}
+      <section
+        id="kyc-verification"
+        className="scroll-mt-28 py-20 sm:py-24 lg:py-28 relative overflow-hidden bg-white border-b border-slate-200/80"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+            {/* Left Column: Copy & Feature List (5 Cols) */}
+            <div className="lg:col-span-5 space-y-6 sm:space-y-8">
+              <div className="space-y-4">
+                {/* Eyebrow badge */}
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase bg-[#eff6ff] text-[#2563eb] border border-blue-100/80 shadow-2xs">
+                  <FileText className="w-3.5 h-3.5 text-[#2563eb]" />
+                  <span>KYC & Identity Verification</span>
+                </div>
+
+                {/* Headline */}
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0f172a] tracking-tight leading-[1.14]">
+                  Turn Documents into{' '}
+                  <span className="text-[#1d4ed8]">Trusted Identities</span>
+                </h2>
+
+                {/* Body Copy */}
+                <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
+                  Our AI reads, understands, and verifies documents with human-like accuracy — helping financial institutions reduce risk, prevent fraud, and onboard customers faster.
+                </p>
+              </div>
+
+              {/* 4 Feature Items with light blue icons */}
+              <div className="space-y-3.5 pt-1">
+                {/* Feature 1 */}
+                <div className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-slate-50/80 transition-colors">
+                  <div className="w-11 h-11 rounded-xl bg-[#eff6ff] text-[#2563eb] flex items-center justify-center shrink-0 shadow-2xs">
+                    <FileText className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm sm:text-base font-bold text-[#0f172a]">
+                      Multi-Document Support
+                    </h4>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-0.5 leading-relaxed">
+                      Passports, national IDs, driver&apos;s licenses, utility bills, and proof of address.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Feature 2 */}
+                <div className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-slate-50/80 transition-colors">
+                  <div className="w-11 h-11 rounded-xl bg-[#eff6ff] text-[#2563eb] flex items-center justify-center shrink-0 shadow-2xs">
+                    <Fingerprint className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm sm:text-base font-bold text-[#0f172a]">
+                      Advanced Identity Verification
+                    </h4>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-0.5 leading-relaxed">
+                      High-precision OCR, facial biometric matching, and liveness checks.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Feature 3 */}
+                <div className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-slate-50/80 transition-colors">
+                  <div className="w-11 h-11 rounded-xl bg-[#eff6ff] text-[#2563eb] flex items-center justify-center shrink-0 shadow-2xs">
+                    <Lock className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm sm:text-base font-bold text-[#0f172a]">
+                      Real-time Fraud Detection
+                    </h4>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-0.5 leading-relaxed">
+                      Detect manipulated, photoshopped, or suspicious documents instantly.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Feature 4 */}
+                <div className="flex items-start gap-3.5 p-3 rounded-xl hover:bg-slate-50/80 transition-colors">
+                  <div className="w-11 h-11 rounded-xl bg-[#eff6ff] text-[#2563eb] flex items-center justify-center shrink-0 shadow-2xs">
+                    <FileCheck2 className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm sm:text-base font-bold text-[#0f172a]">
+                      Automated Compliance
+                    </h4>
+                    <p className="text-xs sm:text-sm text-slate-500 mt-0.5 leading-relaxed">
+                      Regulatory checks against AML, KYC, PEP, and global sanctions with audit trails.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* CTAs */}
+              <div className="pt-2 space-y-3">
+                <div className="flex flex-wrap items-center gap-3.5">
+                  <button
+                    onClick={handleServicesClick}
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-sm text-white bg-[#1d4ed8] hover:bg-[#1e40af] shadow-[0_4px_14px_rgba(29,78,216,0.28)] hover:shadow-[0_6px_20px_rgba(29,78,216,0.36)] transition-all cursor-pointer"
+                  >
+                    <span>See It in Action</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+
+                  <button
+                    onClick={handleBookingClick}
+                    className="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl font-bold text-sm text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 shadow-2xs hover:border-slate-400 transition-all cursor-pointer"
+                  >
+                    <PlayCircle className="w-4 h-4 text-[#2563eb]" />
+                    <span>Watch Demo</span>
+                  </button>
+                </div>
+
+                <p className="text-xs text-slate-400 font-medium">
+                  Trusted by leading financial institutions worldwide
+                </p>
+              </div>
+            </div>
+
+            {/* Right Column: Visual docs into trusted identites.png (7 Cols) */}
+            <div className="lg:col-span-7">
+              <div className="relative rounded-3xl overflow-hidden bg-white border border-blue-100/80 shadow-[0_20px_50px_rgba(30,58,138,0.08)] p-2 sm:p-4">
+                <div className="relative rounded-2xl overflow-hidden aspect-[16/9] flex items-center justify-center bg-slate-50">
+                  <img
+                    src="/images/finance/docs into trusted identites.png"
+                    alt="Passport scanner, data extraction flow, identity verification monitor, and bottom metric bar"
+                    className="w-full h-full object-contain rounded-xl hover:scale-[1.01] transition-transform duration-500"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

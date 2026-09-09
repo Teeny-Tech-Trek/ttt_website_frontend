@@ -1,13 +1,19 @@
 import { Bot, Puzzle as PuzzlePiece, Cog, Sparkles, Rocket, Boxes, Workflow } from 'lucide-react';
 import React from 'react';
+import chatbotImg from '../Images/services/chatbot.png';
+import agenticImg from '../Images/services/agentic workflow.png';
+import smartProcessesImg from '../Images/services/smart processes.png';
+import claudeImg from '../Images/services/claude.png';
+import lightweightImg from '../Images/services/lightweight api.png';
+import customAiImg from '../Images/services/custom ai integrations.png';
+import n8nImg from '../Images/services/n8n automations.png';
 
 export const services = [
   {
     icon: <Bot size={32} className="text-primary" />,
     title: "AI-Powered Chatbots & Virtual Assistants",
     slug: "ai-chatbots",
-    // 👇 IS CARD KI IMAGE — yahan apna real path daal dena (e.g. '/images/services/ai-chatbots.png')
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Ai-Service-Assets/Chatbot-Image.webp",
+    image: chatbotImg,
     description: "Context-aware GPT bots for customer support, onboarding, or internal tools — integrated with your existing platforms (Slack, Notion, CRMs, etc.)",
     features: ["Customer Support", "User Onboarding", "Internal Knowledge Base", "Platform Integration"],
     featureDescriptions: [
@@ -55,8 +61,7 @@ export const services = [
     icon: <PuzzlePiece size={32} className="text-primary" />,
     title: "Agentic AI Workflows",
     slug: "agentic-ai-workflows",
-    // 👇 IS CARD KI IMAGE — yahan apna real path daal dena
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Ai-Service-Assets/Agentic-Image.webp",
+    image: agenticImg,
     description: "Autonomous agents that can retrieve data, summarize content, make decisions, and complete multi-step tasks using LangChain, AutoGen, or CrewAI.",
     features: ["Data Retrieval", "Content Summarization", "Decision Making", "Multi-step Task Automation"],
     featureDescriptions: [
@@ -109,8 +114,7 @@ export const services = [
     icon: <Cog size={32} className="text-primary" />,
     title: "Smart Process Automation",
     slug: "smart-process-automation",
-    // 👇 IS CARD KI IMAGE — yahan apna real path daal dena
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Ai-Service-Assets/SmartProcess-Image.webp",
+    image: smartProcessesImg,
     description: "Save hours by automating repetitive tasks with Python, APIs, Zapier, and Make. From CRM updates to email replies — we connect your stack, end-to-end.",
     features: ["CRM Automation", "Email Management", "Data Processing", "Workflow Integration"],
     featureDescriptions: [
@@ -168,8 +172,7 @@ export const services = [
     icon: <Sparkles size={32} className="text-primary" />,
     title: "Claude Automation",
     slug: "claude-automation",
-    // 👇 IS CARD KI IMAGE — yahan apna real path daal dena
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Ai-Service-Assets/Claude-Image.webp",
+    image: claudeImg,
     description: "Leverage Claude AI to automate complex tasks — tool connections, custom MCP integrations, scheduled runs, and human-in-the-loop workflows for smarter business operations.",
     features: ["Tool Connections", "Custom MCP Tools", "Cowork Setups", "Recurring Runs"],
     featureDescriptions: [
@@ -213,8 +216,7 @@ export const services = [
     icon: <Rocket size={32} className="text-primary" />,
     title: "Lightweight AI Apps",
     slug: "ai-apps-micro-saas",
-    // 👇 IS CARD KI IMAGE — yahan apna real path daal dena
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Ai-Service-Assets/Lightweight-Image.webp",
+    image: lightweightImg,
     description: "Ship focused micro-SaaS and internal AI tools fast — single-purpose apps with clean UIs, built on modern stacks and ready to launch in weeks, not months.",
     features: ["Rapid MVPs", "Micro-SaaS Tools", "Internal Dashboards", "API-First Builds"],
     featureDescriptions: [
@@ -253,8 +255,7 @@ export const services = [
     icon: <Boxes size={32} className="text-primary" />,
     title: "Custom AI Integrations",
     slug: "custom-ai-integrations",
-    // 👇 IS CARD KI IMAGE — yahan apna real path daal dena (MOCK DATA — replace later)
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Ai-Service-Assets/Custom-Image.webp",
+    image: customAiImg,
     description: "Mock placeholder service — connect AI models into your existing products with tailored integrations, embeddings, and vector search. Replace this copy later.",
     features: ["Model Integration", "Embeddings & RAG", "Vector Search", "Custom Pipelines"],
     featureDescriptions: [
@@ -299,8 +300,7 @@ export const services = [
     icon: <Workflow size={32} className="text-primary" />,
     title: "n8n Automations",
     slug: "n8n-automations",
-    // 👇 PLACEHOLDER — reusing an existing asset until the real n8n image is uploaded
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Ai-Service-Assets/SmartProcess-Image.webp",
+    image: n8nImg,
     description: "Build powerful, self-hosted automation workflows that connect your apps, APIs, AI models, and business processes.",
     features: ["Self-Hosted Workflows", "API & App Connectors", "AI Model Integrations", "Business Process Automation"],
     featureDescriptions: [

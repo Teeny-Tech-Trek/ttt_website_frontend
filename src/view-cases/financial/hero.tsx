@@ -1,181 +1,205 @@
-import React, { useState, useEffect } from 'react';
-import { Bot, ArrowRight, PlayCircle, Shield, Star, Brain, CheckCircle } from 'lucide-react';
-import SectionLink from '../../components/ui/SectionLink';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  ArrowRight,
+  PlayCircle,
+  FileText,
+  Zap,
+  Target,
+  TrendingDown,
+  Lock,
+  FileCheck,
+  Globe,
+  Building2,
+  Sparkles,
+} from 'lucide-react';
 
-const FinancialHeroSection = () => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [processingMetric, setProcessingMetric] = useState(0);
-
-  const processingSteps = [
-    { label: 'Document Analysis', status: 'completed' },
-    { label: 'Identity Verification', status: 'completed' },
-    { label: 'Risk Assessment', status: 'processing' },
-    { label: 'Compliance Check', status: 'pending' }
-  ];
-
-  const metrics = [
-    { label: 'Documents Processed', value: '12,847', suffix: 'today' },
-    { label: 'Processing Speed', value: '2.3', suffix: 'seconds' },
-    { label: 'Accuracy Rate', value: '99.8', suffix: '%' },
-    { label: 'Cost Savings', value: '80', suffix: '%' }
-  ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentStep((prev) => (prev + 1) % processingSteps.length);
-      setProcessingMetric((prev) => (prev + 1) % metrics.length);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, []);
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'completed':
-        return 'bg-blue-900 text-white';
-      case 'processing':
-        return 'bg-blue-900 text-white animate-pulse';
-      case 'pending':
-        return 'bg-gray-200 text-gray-600';
-      default:
-        return 'bg-gray-200 text-gray-600';
-    }
-  };
+const FinancialHeroSection: React.FC = () => {
+  const navigate = useNavigate();
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-white">
-      <div className="relative z-10 px-4 pt-16 pb-12 mx-auto sm:px-6 lg:px-8 sm:pt-20 sm:pb-16 max-w-7xl">
-        <div className="grid items-center gap-8 sm:gap-12 lg:gap-16 lg:grid-cols-2">
-          {/* Left content */}
-          <div className="space-y-6 sm:space-y-8">
-            <div className="space-y-4 sm:space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-2 text-xs font-medium text-blue-900 rounded-full sm:px-4 sm:text-sm bg-blue-900/10">
-                <Brain className="flex-shrink-0 w-3 h-3 sm:w-4 sm:h-4" />
+    <section className="relative overflow-hidden bg-[#f8fafc] pt-32 sm:pt-36 lg:pt-40 pb-16 sm:pb-20 border-b border-slate-100">
+      <div className="relative z-10 px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl">
+        {/* Main Grid: Left copy & metrics, Right 3D Visual */}
+        <div className="grid items-center gap-10 lg:gap-14 lg:grid-cols-12">
+          {/* Left Column (5 Cols) */}
+          <div className="lg:col-span-5 space-y-6 sm:space-y-8">
+            <div className="space-y-4">
+              {/* Eyebrow Badge */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase bg-[#eff6ff] text-[#2563eb] border border-blue-100/80 shadow-2xs">
+                <Sparkles className="w-3.5 h-3.5 text-[#2563eb]" />
                 <span>AI-Powered Financial Automation</span>
               </div>
 
-              <h1 className="text-4xl font-black leading-tight sm:text-5xl md:text-6xl lg:text-7xl">
-                <span className="text-black">Transform</span>
+              {/* Headline */}
+              <h1 className="text-4xl sm:text-5xl lg:text-[54px] font-extrabold text-[#0f172a] tracking-tight leading-[1.12]">
+                Transform
                 <br />
-                <span className="text-blue-900">Financial</span>
+                <span className="text-[#1d4ed8]">Financial</span>
                 <br />
-                <span className="text-blue-900">Operations</span>
+                <span className="text-[#1d4ed8]">Operations</span>
               </h1>
 
-              <p className="max-w-xl text-base leading-relaxed text-black sm:text-lg lg:text-xl">
-                Automate KYC processes, ensure regulatory compliance, and reduce operational costs by 80% with our enterprise-grade AI platform designed specifically for financial institutions.
+              {/* Subtitle */}
+              <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-lg pt-1">
+                Automate KYC onboarding, stay ahead of evolving regulation, and cut operational costs by 80% with our enterprise-grade AI platform designed specifically for financial institutions.
               </p>
             </div>
 
-            {/* Key metrics preview - Responsive Grid */}
-            <div className="grid grid-cols-2 gap-3 pt-6 sm:gap-4 lg:gap-6 sm:pt-8">
-              {metrics.map((metric, index) => (
-                <div
-                  key={index}
-                  className={`p-3 sm:p-4 rounded-lg sm:rounded-xl transition-all duration-500 ${
-                    processingMetric === index
-                      ? 'bg-white shadow border-2 border-blue-900 scale-105'
-                      : 'bg-white border border-gray-200'
-                  }`}
-                >
-                  <div className="text-xl font-bold text-black sm:text-2xl">{metric.value}</div>
-                  <div className="text-xs text-black sm:text-sm">{metric.label}</div>
-                  <div className="text-xs font-medium text-blue-900">{metric.suffix}</div>
+            {/* 4 Stat Boxes (2x2 Grid) */}
+            <div className="grid grid-cols-2 gap-3.5 sm:gap-4 pt-2">
+              {/* Stat 1 */}
+              <div className="p-4 rounded-2xl bg-white border border-blue-50/80 shadow-[0_4px_20px_rgba(30,58,138,0.04)] flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#eff6ff] text-[#2563eb] flex items-center justify-center shrink-0 shadow-2xs">
+                  <FileText className="w-5 h-5" />
                 </div>
-              ))}
+                <div>
+                  <div className="text-xl sm:text-2xl font-extrabold text-[#0f172a] leading-tight">12,847</div>
+                  <div className="text-xs font-medium text-slate-500 mt-0.5 leading-tight">Documents Processed</div>
+                  <div className="text-[11px] text-[#2563eb] font-semibold">today</div>
+                </div>
+              </div>
+
+              {/* Stat 2 */}
+              <div className="p-4 rounded-2xl bg-white border border-blue-50/80 shadow-[0_4px_20px_rgba(30,58,138,0.04)] flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#eff6ff] text-[#2563eb] flex items-center justify-center shrink-0 shadow-2xs">
+                  <Zap className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="text-xl sm:text-2xl font-extrabold text-[#0f172a] leading-tight">2.3s</div>
+                  <div className="text-xs font-medium text-slate-500 mt-0.5 leading-tight">Processing Speed</div>
+                  <div className="text-[11px] text-[#2563eb] font-semibold">average</div>
+                </div>
+              </div>
+
+              {/* Stat 3 */}
+              <div className="p-4 rounded-2xl bg-white border border-blue-50/80 shadow-[0_4px_20px_rgba(30,58,138,0.04)] flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#eff6ff] text-[#2563eb] flex items-center justify-center shrink-0 shadow-2xs">
+                  <Target className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="text-xl sm:text-2xl font-extrabold text-[#0f172a] leading-tight">99.8%</div>
+                  <div className="text-xs font-medium text-slate-500 mt-0.5 leading-tight">Accuracy Rate</div>
+                  <div className="text-[11px] text-[#2563eb] font-semibold">AI-powered</div>
+                </div>
+              </div>
+
+              {/* Stat 4 */}
+              <div className="p-4 rounded-2xl bg-white border border-blue-50/80 shadow-[0_4px_20px_rgba(30,58,138,0.04)] flex items-start gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#eff6ff] text-[#2563eb] flex items-center justify-center shrink-0 shadow-2xs">
+                  <TrendingDown className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="text-xl sm:text-2xl font-extrabold text-[#0f172a] leading-tight">80%</div>
+                  <div className="text-xs font-medium text-slate-500 mt-0.5 leading-tight">Cost Reduction</div>
+                  <div className="text-[11px] text-[#2563eb] font-semibold">operational savings</div>
+                </div>
+              </div>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-wrap items-center gap-3.5 pt-2">
+              <button
+                onClick={() => {
+                  navigate('/book-consultation');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="px-7 py-3.5 rounded-xl bg-[#2563eb] hover:bg-[#1d4ed8] text-white font-bold text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2 group cursor-pointer"
+              >
+                <span>Request a Demo</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+
+              <button
+                onClick={() => {
+                  navigate('/#services');
+                  const el = document.getElementById('services');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-bold text-sm border border-slate-200/90 shadow-2xs transition-all duration-200 flex items-center gap-2 group cursor-pointer"
+              >
+                <PlayCircle className="w-4 h-4 text-[#2563eb]" />
+                <span>See It in Action</span>
+              </button>
             </div>
           </div>
 
-          {/* Right demo panel - Responsive */}
-          <div className="relative">
-            <div className="p-4 bg-white border border-gray-200 shadow sm:p-6 lg:p-8 rounded-2xl sm:rounded-3xl mt-10">
-              {/* Header - Responsive */}
-              <div className="flex items-center gap-3 mb-6 sm:gap-4 sm:mb-8">
-                <div className="relative flex-shrink-0">
-                  <div className="flex items-center justify-center w-12 h-12 bg-blue-900 shadow sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl">
-                    <Brain className="w-6 h-6 text-white sm:w-7 sm:h-7" />
-                  </div>
-                  <div className="absolute w-3 h-3 bg-blue-900 border-2 border-white rounded-full sm:w-4 sm:h-4 -top-1 -right-1 animate-pulse"></div>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-base font-bold text-black truncate sm:text-lg lg:text-xl">FinanceAI Pro</h3>
-                  <p className="text-xs text-black truncate sm:text-sm">Processing KYC Document #12847</p>
-                </div>
-                <div className="flex-shrink-0 text-right">
-                  <div className="text-xs font-bold text-blue-900 sm:text-sm">LIVE</div>
-                  <div className="text-xs text-black">Real-time</div>
-                </div>
-              </div>
+          {/* Right Column: Visual Component (7 Cols) */}
+          <div className="lg:col-span-7 relative select-none">
+            {/* Top-Right Speech Bubble: From Documents to Decisions */}
+            <div className="absolute -top-6 right-6 z-20 hidden sm:flex items-center gap-2 px-4 py-2 bg-[#2563eb] text-white rounded-2xl shadow-lg text-xs font-semibold">
+              <span>From Documents to Decisions — Smarter, Faster, Safer</span>
+              <div className="absolute -bottom-1.5 right-6 w-3 h-3 bg-[#2563eb] rotate-45" />
+            </div>
 
-              {/* Processing flow - Responsive */}
-              <div className="mb-6 space-y-3 sm:mb-8 sm:space-y-4">
-                <h4 className="mb-3 text-sm font-semibold text-black sm:mb-4 sm:text-base">Processing Pipeline</h4>
-                {processingSteps.map((step, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-3 p-3 bg-white border border-gray-200 rounded-lg sm:gap-4 sm:p-4 sm:rounded-xl"
-                  >
-                    <div
-                      className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0 ${getStatusColor(
-                        step.status
-                      )}`}
-                    >
-                      {step.status === 'completed' ? (
-                        <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
-                      ) : step.status === 'processing' ? (
-                        <div className="w-3 h-3 border-2 border-white rounded-full sm:w-4 sm:h-4 border-t-transparent animate-spin"></div>
-                      ) : (
-                        index + 1
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium text-black truncate sm:text-base">{step.label}</div>
-                      <div className="text-xs text-black capitalize sm:text-sm">{step.status}</div>
-                    </div>
-                    {step.status === 'completed' && (
-                      <div className="flex-shrink-0 text-xs font-medium text-blue-900 sm:text-sm">✓ Done</div>
-                    )}
-                  </div>
-                ))}
-              </div>
+            {/* Main Visual Image Card */}
+            <div className="relative rounded-3xl overflow-hidden bg-white border border-blue-50/80 shadow-[0_16px_50px_rgba(30,58,138,0.1)]">
+              <img
+                src="/images/finance/finance.png"
+                alt="FinanceAI Pro - Live Financial Operations AI Dashboard"
+                className="w-full h-auto object-contain rounded-3xl"
+              />
+            </div>
 
-              {/* Results summary - Responsive */}
-              <div className="p-4 border rounded-lg sm:p-6 sm:rounded-xl bg-blue-900/5 border-blue-900/20">
-                <div className="flex items-center gap-2 mb-3 sm:gap-3">
-                  <CheckCircle className="flex-shrink-0 w-5 h-5 text-blue-900 sm:w-6 sm:h-6" />
-                  <h4 className="text-sm font-bold text-blue-900 sm:text-base">Processing Complete</h4>
-                </div>
-                <div className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-2 sm:gap-4 sm:text-sm">
-                  <div>
-                    <span className="text-black">Risk Score:</span>
-                    <span className="ml-2 font-bold text-blue-900">Low (2.1/10)</span>
-                  </div>
-                  <div>
-                    <span className="text-black">Compliance:</span>
-                    <span className="ml-2 font-bold text-blue-900">Approved</span>
-                  </div>
-                  <div>
-                    <span className="text-black">Processing Time:</span>
-                    <span className="ml-2 font-bold text-blue-900">2.3 seconds</span>
-                  </div>
-                  <div>
-                    <span className="text-black">Status:</span>
-                    <span className="ml-2 font-bold text-blue-900">Ready</span>
-                  </div>
-                </div>
+            {/* Handwritten Script Accent at bottom-right */}
+            <div className="text-right mt-3 pr-2 pointer-events-none">
+              <span className="font-serif italic text-lg sm:text-xl text-[#2563eb] tracking-wide inline-block">
+                Powering a Smarter Financial Future ⚡
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Trust Row */}
+        <div className="mt-12 sm:mt-16 pt-8 border-t border-slate-200/70">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 items-center">
+            {/* Trust 1 */}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#eff6ff] text-[#2563eb] flex items-center justify-center shrink-0">
+                <Lock className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="text-xs sm:text-sm font-bold text-[#0f172a] leading-tight">Bank-Grade Security</h4>
+                <p className="text-[11px] text-slate-500 leading-tight mt-0.5">AES-256 & TLS 1.3</p>
               </div>
             </div>
 
-            {/* Floating badges - Responsive positioning */}
-            <div className="absolute px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold text-white bg-blue-900 shadow top-2 sm:-top-4 -right-2 sm:-right-4 rounded-lg sm:rounded-xl mt-10">
-              99.8% Accurate
+            {/* Trust 2 */}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#eff6ff] text-[#2563eb] flex items-center justify-center shrink-0">
+                <FileCheck className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="text-xs sm:text-sm font-bold text-[#0f172a] leading-tight">Regulatory Compliance</h4>
+                <p className="text-[11px] text-slate-500 leading-tight mt-0.5">SOX, GDPR, AML & KYC</p>
+              </div>
             </div>
-            <div className="absolute px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-bold text-white bg-blue-900 shadow -bottom-2 sm:-bottom-4 -left-2 sm:-left-4 rounded-lg sm:rounded-xl">
-              80% Cost Reduction
+
+            {/* Trust 3 */}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#eff6ff] text-[#2563eb] flex items-center justify-center shrink-0">
+                <Globe className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="text-xs sm:text-sm font-bold text-[#0f172a] leading-tight">Scalable for Global Ops</h4>
+                <p className="text-[11px] text-slate-500 leading-tight mt-0.5">US, UK, CA & Worldwide</p>
+              </div>
+            </div>
+
+            {/* Trust 4 */}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#eff6ff] text-[#2563eb] flex items-center justify-center shrink-0">
+                <Building2 className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="text-xs sm:text-sm font-bold text-[#0f172a] leading-tight">Enterprise Ready</h4>
+                <p className="text-[11px] text-slate-500 leading-tight mt-0.5">Core banking integrations</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

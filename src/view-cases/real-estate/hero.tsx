@@ -96,8 +96,8 @@ const Hero: React.FC<ChatbotOpenProps> = ({ onOpenChatbot }) => {
 
   return (
     <section className="relative overflow-hidden bg-white">
-      <div className="px-6 pt-16 pb-20 mx-auto max-w-7xl sm:pt-20">
-        <div className="grid items-center gap-16 lg:grid-cols-2">
+      <div className="px-4 sm:px-6 lg:px-8 pt-24 sm:pt-28 pb-12 sm:pb-16 mx-auto max-w-7xl">
+        <div className="grid items-center gap-10 lg:gap-16 lg:grid-cols-2">
           {/* Left content */}
           <motion.div
             className="space-y-8"
@@ -114,7 +114,7 @@ const Hero: React.FC<ChatbotOpenProps> = ({ onOpenChatbot }) => {
             </motion.div>
 
             <motion.h1
-              className="text-5xl font-black leading-tight text-black md:text-6xl lg:text-6xl"
+              className="text-3xl sm:text-5xl md:text-6xl font-black leading-tight text-black"
               variants={slideFromLeft}
             >
               Your AI Workforce
@@ -122,7 +122,7 @@ const Hero: React.FC<ChatbotOpenProps> = ({ onOpenChatbot }) => {
               <span className="text-blue-900">for Real Estate</span>
             </motion.h1>
 
-            <motion.p className="max-w-lg text-xl leading-relaxed text-gray-700" variants={slideFromLeft}>
+            <motion.p className="max-w-lg text-base sm:text-lg leading-relaxed text-gray-700" variants={slideFromLeft}>
               Intelligent systems that read the market in real time, equip your sales team with
               insights they can act on, and help you deliver better outcomes on every property you
               manage.
@@ -149,7 +149,7 @@ const Hero: React.FC<ChatbotOpenProps> = ({ onOpenChatbot }) => {
 
             {/* Feature strip */}
             <motion.div
-              className="grid grid-cols-2 gap-x-6 gap-y-5 pt-4"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 pt-4"
               variants={staggerContainer}
             >
               {heroFeatures.map((f) => (
@@ -349,10 +349,10 @@ const CleanSolutions = () => {
         </motion.div>
 
         <div className="flex justify-center mb-12">
-          <div className="inline-flex p-1.5 bg-white border border-gray-200 rounded-xl shadow-sm">
+          <div className="inline-flex p-1 sm:p-1.5 bg-white border border-gray-200 rounded-xl shadow-sm">
             <button
               onClick={() => setActiveTab('analytics')}
-              className={`flex items-center gap-2 px-6 py-3 text-sm sm:text-base font-semibold rounded-lg transition-all duration-300 ${
+              className={`flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-base font-semibold rounded-lg transition-all duration-300 ${
                 activeTab === 'analytics' ? 'bg-blue-900 text-white shadow-sm' : 'text-gray-600 hover:text-blue-900'
               }`}
             >
@@ -361,7 +361,7 @@ const CleanSolutions = () => {
             </button>
             <button
               onClick={() => setActiveTab('crm')}
-              className={`flex items-center gap-2 px-6 py-3 text-sm sm:text-base font-semibold rounded-lg transition-all duration-300 ${
+              className={`flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-base font-semibold rounded-lg transition-all duration-300 ${
                 activeTab === 'crm' ? 'bg-blue-900 text-white shadow-sm' : 'text-gray-600 hover:text-blue-900'
               }`}
             >

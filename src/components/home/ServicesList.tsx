@@ -133,7 +133,7 @@ const Services = () => {
                       <motion.img
                         src={featured.image}
                         alt={featured.title}
-                        className="h-24 w-24 object-contain drop-shadow-[0_4px_22px_rgba(34,211,238,0.5)] sm:h-28 sm:w-28"
+                        className="h-28 w-auto max-w-[220px] object-contain drop-shadow-[0_4px_22px_rgba(34,211,238,0.5)] sm:h-36 sm:max-w-[260px]"
                         loading="lazy"
                         animate={{ y: [0, -10, 0] }}
                         transition={{
@@ -190,7 +190,7 @@ const Services = () => {
                     <motion.img
                       src={service.image}
                       alt={service.title}
-                      className="h-16 w-16 object-contain drop-shadow-[0_4px_18px_rgba(34,211,238,0.4)] sm:h-20 sm:w-20"
+                      className="h-20 w-auto max-w-[170px] object-contain drop-shadow-[0_4px_18px_rgba(34,211,238,0.4)] sm:h-24 sm:max-w-[190px]"
                       loading="lazy"
                       animate={{ y: [0, -8, 0] }}
                       transition={{
