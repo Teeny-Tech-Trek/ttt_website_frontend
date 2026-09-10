@@ -113,7 +113,7 @@ Future-proofing development requires moving beyond treating AI as a simple autom
     category: "AI Engineering",
     date: "Aug 24, 2026",
     readTime: "7 min read",
-    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
+    image: "/images/blogs/hard-truths-ai-assisted-development-Image.png",
     author: "Anisha Singla"
   },
   {
@@ -219,7 +219,7 @@ We didn't ban the AI afterward. **We banned the skim.**
     category: "AI Engineering",
     date: "Aug 24, 2026",
     readTime: "5 min read",
-    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80",
+    image: "/images/blogs/three-years-of-prompting-Image.png",
     author: "Anisha Singla"
   },
   {
@@ -334,7 +334,7 @@ The operational benefits of this shift include:
     category: "AI Solutions",
     date: "Jan 15, 2025",
     readTime: "6 min read",
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Blogs-Assets/ai-powered-automation-Image.webp",
+    image: "/images/blogs/ai-powered-automation-Image.png",
     author: "Sarah Chen"
   },
   {
@@ -462,7 +462,7 @@ Setting up a customer service chatbot takes **hours, not weeks** when using mode
     category: "Automation",
     date: "Jan 10, 2025",
     readTime: "6 min read",
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Blogs-Assets/chatbots-Image.webp",
+    image: "/images/blogs/chatbots-Image.png",
     author: "Marcus Johnson"
   },
   {
@@ -594,7 +594,7 @@ Before implementing any AI tools, run through this critical four-step integratio
     category: "Industry Insights",
     date: "Jan 8, 2025",
     readTime: "7 min read",
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Blogs-Assets/ai-in-medical-practices-Image.webp",
+    image: "/images/blogs/ai-in-medical-practices-Image.png",
     author: "Dr. Elizabeth Wu"
   },
   {
@@ -681,7 +681,7 @@ Before implementing any AI tools, run through this critical four-step integratio
     category: "Industry Insights",
     date: "Jan 5, 2025",
     readTime: "6 min read",
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Blogs-Assets/Retail-Revolution-Image.webp",
+    image: "/images/blogs/Retail-Revolution-Image.png",
     author: "David Martinez"
   },
   {
@@ -778,7 +778,7 @@ This modern method enables real estate firms to bypass slow, manual appraisals, 
     category: "AI Solutions",
     date: "Jan 2, 2025",
     readTime: "8 min read",
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Blogs-Assets/getting-started-Image.webp",
+    image: "/images/blogs/getting-started-Image.png",
     author: "Professor James Liu"
   },
   {
@@ -925,7 +925,7 @@ Automating compliance allows small providers to **meet strict regulatory mandate
     category: "Industry Insights",
     date: "Dec 28, 2024",
     readTime: "7 min read",
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Blogs-Assets/financial-Image.webp",
+    image: "/images/blogs/financial-Image.png",
     author: "Robert Goldman"
   },
   {
@@ -1112,7 +1112,7 @@ NLP gives small businesses a competitive advantage by enabling them to analyze a
     category: "AI Solutions",
     date: "Dec 22, 2024",
     readTime: "5 min read",
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Blogs-Assets/natural-language-Image.webp",
+    image: "/images/blogs/natural-language-Image.png",
     author: "Angela Torres"
   },
   {
@@ -1262,7 +1262,7 @@ Shifting to this proactive model dramatically improves overall line reliability.
     category: "Industry Insights",
     date: "Dec 18, 2024",
     readTime: "7 min read",
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Blogs-Assets/manufacturing-meets.webp",
+    image: "/images/blogs/manufacturing-meets.png",
     author: "Thomas Anderson"
   }
 ];

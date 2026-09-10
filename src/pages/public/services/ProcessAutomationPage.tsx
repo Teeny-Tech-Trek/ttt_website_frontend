@@ -1,848 +1,1070 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database, GitBranch, Workflow, Search, CheckSquare, AlertTriangle, Activity, Layers, Mail, Upload, Bell, Slack, Filter, AlertCircle, RefreshCw, Lock, RotateCcw } from 'lucide-react';
-import ProcessAutomationRichCard from "../../../components/home/ProcessAutomationRichCard";
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Zap, 
+  ArrowRight, 
+  CheckCircle2, 
+  Shield, 
+  Calendar, 
+  Play, 
+  Plus, 
+  ChevronRight, 
+  Activity, 
+  Mail, 
+  AlertTriangle, 
+  FileText, 
+  Database, 
+  Clock, 
+  Check, 
+  ExternalLink
+} from 'lucide-react';
 import HashLink from '../../../components/ui/SectionLink';
 
 // Animation variants
 const fadeInUp = {
-  initial: { opacity: 0, y: 60 },
+  initial: { opacity: 0, y: 30 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 1, ease: "easeOut" }
+  transition: { duration: 0.6, ease: "easeOut" }
 };
 
-const fadeInLeft = {
-  initial: { opacity: 0, x: -60 },
-  animate: { opacity: 1, x: 0 },
-  transition: { duration: 1, ease: "easeOut" }
-};
+interface ProcessAutomationPageProps {
+  onOpenChatbot?: () => void;
+}
 
-const fadeInRight = {
-  initial: { opacity: 0, x: 60 },
-  animate: { opacity: 1, x: 0 },
-  transition: { duration: 1, ease: "easeOut" }
-};
-
-const staggerContainer = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-};
-
-const scaleIn = {
-  initial: { opacity: 0, scale: 0.8 },
-  animate: { opacity: 1, scale: 1 },
-  transition: { duration: 0.5, ease: "easeOut" }
-};
-
-const ProcessAutomationPage = ({ onOpenChatbot }) => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [message, setMessage] = useState("");
-  const [activePromptIndex, setActivePromptIndex] = useState(0);
-  const intervalRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
+export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomationPageProps) {
   const navigate = useNavigate();
+  const [activePromptIndex, setActivePromptIndex] = useState(0);
+  const [activeFaq, setActiveFaq] = useState<number | null>(0);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  const handleClick = () => {
-    setMessage("Thank you for your interest! Please proceed by clicking on 'Call with AI' to explore the live demo.");
-    setTimeout(() => setMessage(""), 5000);
-  };
-
-  const handleTryDemo = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleOpenChat = () => {
     if (onOpenChatbot) {
       onOpenChatbot();
+    } else {
+      navigate('/book-consultation');
     }
   };
 
-  const automationScenarios = [
-    [
-      { step: "Email/CSV", icon: Mail, desc: "Carrier CSV received" },
-      { step: "Parse & Normalize", icon: Filter, desc: "Extract shipment rows" },
-      { step: "Flag Late Shipments", icon: AlertCircle, desc: "Apply delay rules" },
-      { step: "Slack Alert", icon: Bell, desc: "Notify ops team" },
-      { step: "Customer Update", icon: MessageSquare, desc: "Send delay notice" },
-      { step: "Daily Digest", icon: FileText, desc: "Exception summary" },
-    ],
-    [
-      { step: "Trigger", icon: Mail, desc: "Delay flag detected" },
-      { step: "Lookup Customer", icon: Filter, desc: "Fetch order details" },
-      { step: "Draft Message", icon: AlertCircle, desc: "Friendly delay template" },
-      { step: "Personalise", icon: Bell, desc: "Insert name & ETA" },
-      { step: "Send Email", icon: MessageSquare, desc: "Deliver update" },
-      { step: "Log Sent", icon: FileText, desc: "Record in tracker" },
-    ],
-    [
-      { step: "Collect Data", icon: Mail, desc: "Gather today's flags" },
-      { step: "Aggregate", icon: Filter, desc: "Group by exception type" },
-      { step: "Summarise", icon: AlertCircle, desc: "Build digest body" },
-      { step: "Format Report", icon: Bell, desc: "Attach CSV export" },
-      { step: "Send Digest", icon: MessageSquare, desc: "Email to managers" },
-      { step: "Archive", icon: FileText, desc: "Save to Drive" },
-    ],
-  ];
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 3500);
+  };
 
-  const automationFlow = automationScenarios[activePromptIndex];
-
+  // Section 3 interactive prompts
   const demoPrompts = [
-    "Parse this carrier CSV and flag late shipments",
-    "Send a friendly update to customers about delays",
-    "Show me today's exceptions digest"
+    {
+      id: 0,
+      title: "Parse this carrier CSV and flag late shipments",
+      hint: "Click to see automation in action",
+      icon: FileText
+    },
+    {
+      id: 1,
+      title: "Send a friendly update to customers about delays",
+      hint: "Click to see automation in action",
+      icon: Mail
+    },
+    {
+      id: 2,
+      title: "Show me today's exceptions digest",
+      hint: "Click to see automation in action",
+      icon: Activity
+    },
+    {
+      id: 3,
+      title: "Match these invoices against our PO system and flag mismatches",
+      hint: "Click to see automation in action",
+      icon: Database
+    },
+    {
+      id: 4,
+      title: "Alert us if any vendor SLA is at risk this week",
+      hint: "Click to see automation in action",
+      icon: AlertTriangle
+    }
   ];
 
-  const startAutoPlay = (scenarioIndex: number) => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    setCurrentStep(0);
-    intervalRef.current = setInterval(() => {
-      setCurrentStep((prev) => {
-        if (prev < automationScenarios[scenarioIndex].length - 1) {
-          setIsProcessing(true);
-          setTimeout(() => setIsProcessing(false), 1200);
-          return prev + 1;
-        }
-        if (intervalRef.current) clearInterval(intervalRef.current);
-        return prev;
-      });
-    }, 2800);
-  };
-
-  const handlePromptClick = (index: number) => {
-    setActivePromptIndex(index);
-    startAutoPlay(index);
-  };
-
-  useEffect(() => {
-    startAutoPlay(0);
-    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
-  }, []);
-
-  const problems = [
-    { title: "Status buried in emails/attachments", desc: "Important updates lost in inbox clutter" },
-    { title: "Manual copy-paste into trackers", desc: "Hours wasted on repetitive data entry" },
-    { title: "Late exception alerts; SLA penalties", desc: "Missing deadlines due to delayed notifications" }
+  // Integrations items (10 tiles)
+  const integrations = [
+    { 
+      name: "Gmail / Outlook", 
+      icon: (
+        <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+          <path fill="#EA4335" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z" opacity=".2"/>
+          <path fill="#EA4335" d="M4 6l8 5 8-5v12H4V6z"/>
+          <path fill="#4285F4" d="M20 6l-8 5-8-5v2l8 5 8-5V6z"/>
+        </svg>
+      )
+    },
+    { 
+      name: "Slack", 
+      icon: (
+        <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+          <path fill="#E01E5A" d="M6 15a2 2 0 1 1-2-2h2v2zm1 0a2 2 0 1 1 4 0v5a2 2 0 1 1-4 0v-5z"/>
+          <path fill="#36C5F0" d="M9 6a2 2 0 1 1 2 2H9V6zm0 1a2 2 0 1 1 0 4H4a2 2 0 1 1 0-4h5z"/>
+          <path fill="#2EB67D" d="M18 9a2 2 0 1 1 2 2h-2V9zm-1 0a2 2 0 1 1-4 0V4a2 2 0 1 1 4 0v5z"/>
+          <path fill="#ECB22E" d="M15 18a2 2 0 1 1-2-2h2v2zm0-1a2 2 0 1 1 0-4h5a2 2 0 1 1 0 4h-5z"/>
+        </svg>
+      )
+    },
+    { 
+      name: "Google Sheets", 
+      icon: (
+        <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+          <path fill="#0F9D58" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v-2h4v2zm0-4h-4V7h4v2zM7 7h4v2H7V7zm0 4h4v2H7v-2zm0 4h4v2H7v-2zm10 2h-4v-2h4v2z"/>
+        </svg>
+      )
+    },
+    { 
+      name: "BigQuery", 
+      icon: (
+        <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14.93V18h-2v-1.07c-2.83-.48-5-2.94-5-5.93s2.17-5.45 5-5.93V4h2v1.07c2.83.48 5 2.94 5 5.93s-2.17 5.45-5 5.93z"/>
+        </svg>
+      )
+    },
+    { 
+      name: "AWS S3", 
+      icon: (
+        <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+          <path fill="#FF9900" d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
+        </svg>
+      )
+    },
+    { 
+      name: "Webhooks", 
+      icon: (
+        <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+          <path fill="#E11D48" d="M12 2a4 4 0 0 0-4 4c0 1.61.96 3 2.34 3.65l-2.06 4.12A3.99 3.99 0 0 0 6 13a4 4 0 1 0 3.86 5h4.28A4 4 0 1 0 18 13a3.99 3.99 0 0 0-2.28.77l-2.06-4.12C15.04 9 16 7.61 16 6a4 4 0 0 0-4-4z"/>
+        </svg>
+      )
+    },
+    { 
+      name: "CSV Portals", 
+      icon: (
+        <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+          <path fill="#2563EB" d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+        </svg>
+      )
+    },
+    { 
+      name: "Custom APIs", 
+      icon: (
+        <span className="font-mono font-black text-[#2563eb] text-base leading-none tracking-tight">
+          &#123; &#125;
+        </span>
+      )
+    },
+    { 
+      name: "Zapier", 
+      icon: (
+        <svg className="w-5 h-5 shrink-0" viewBox="0 0 24 24">
+          <path fill="#FF4A00" d="M11 2h2v7h7v2h-7v9h-2v-9H4v-2h7V2z"/>
+        </svg>
+      )
+    },
+    { 
+      name: "And 200+ more", 
+      icon: (
+        <div className="w-5 h-5 rounded-md bg-[#2563eb] text-white flex items-center justify-center text-xs font-black">
+          +
+        </div>
+      ), 
+      isHighlight: true 
+    }
   ];
 
-  const deliverables = [
-    { 
-      title: "Ingestors", 
-      desc: "Email/CSV/parser with normalization to consistent schema", 
-      icon: Upload,
-      features: ["Multi-format parsing", "Data validation", "Error handling"]
+  // FAQ Items
+  const faqItems = [
+    {
+      q: "What’s an “idempotent write,” in plain English?",
+      a: "It means if an automation runs twice on the exact same email, order, or CSV row, it will never create duplicate records or charge someone twice. The system detects the unique fingerprint of the event and safely ignores redundant runs."
     },
-    { 
-      title: "Rules Engine", 
-      desc: "Delay/damage/lost or your business rules", 
-      icon: Settings,
-      features: ["Custom logic", "Threshold alerts", "Escalation paths"]
+    {
+      q: "Can we see exactly what an automation did?",
+      a: "Yes. Every single run produces an immutable audit log detailing the exact input data, which rules were evaluated, and the final action taken. You can inspect runs live, verify payloads, or replay past executions with one click."
     },
-    { 
-      title: "Notifications", 
-      desc: "Slack/Email with next-best actions; day-end digest", 
-      icon: Bell,
-      features: ["Smart routing", "Action buttons", "Daily summaries"]
+    {
+      q: "What if our input data is messy or inconsistent?",
+      a: "Our Smart Ingestors feature automatic schema normalization, date parsing, and fuzzy matching. When an abnormal record fails validation thresholds, it routes safely to human review instead of making brittle assumptions."
     },
-    { 
-      title: "Customer Updates", 
-      desc: "Friendly, templated status emails/pages", 
-      icon: MessageSquare,
-      features: ["Branded templates", "Auto-personalization", "Delivery tracking"]
+    {
+      q: "Do our customers see anything unbranded or robotic?",
+      a: "Never. Customer communications use strict template locks, verified company domains, and personalized variables that match your exact brand voice, ensuring a natural and professional customer experience."
     }
   ];
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative py-24 overflow-hidden bg-white">
-        <div className="absolute inset-0">
-          <motion.div 
-            className="absolute top-0 right-0 bg-gray-100 rounded-full w-96 h-96 blur-3xl opacity-30"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 0.3, scale: 1 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-          />
-          <motion.div 
-            className="absolute bottom-0 left-0 rounded-full w-80 h-80 bg-gray-50 blur-3xl opacity-20"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 0.2, scale: 1 }}
-            transition={{ duration: 1.5, ease: "easeOut", delay: 0.3 }}
-          />
-        </div>
-        
-        <div className="relative px-6 mx-auto max-w-7xl">
-          <div className="grid items-center gap-16 lg:grid-cols-2">
+    <div className="min-h-screen bg-[#f8faff] text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900">
+      
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed top-24 right-6 z-50 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700 text-sm"
+          >
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span>{toastMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ========================================================================= */}
+      {/* SECTION 1: HERO SECTION                                                   */}
+      {/* ========================================================================= */}
+      <section className="relative pt-28 sm:pt-36 pb-20 sm:pb-28 overflow-hidden bg-white border-b border-slate-100">
+        <div className="absolute top-0 right-0 w-96 sm:w-[500px] h-96 sm:h-[500px] bg-blue-100/40 rounded-full blur-3xl pointer-events-none -z-10" />
+        <div className="absolute top-1/2 left-0 w-72 sm:w-96 h-72 sm:h-96 bg-indigo-50/50 rounded-full blur-3xl pointer-events-none -z-10" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+            
+            {/* Left Hero Content */}
             <motion.div 
-              className="space-y-10"
+              className="lg:col-span-5 space-y-6 sm:space-y-8 text-left"
               initial="initial"
               animate="animate"
-              variants={staggerContainer}
+              variants={fadeInUp}
             >
-              <motion.div 
-                className="inline-flex items-center gap-2 px-6 py-3 text-blue-900 bg-blue-100 rounded-full"
-                variants={scaleIn}
-              >
-                <Zap className="w-5 h-5" />
-                <span className="font-medium">Smart Process Automation</span>
-              </motion.div>
-              
-              <motion.h1 
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-black"
-                variants={fadeInUp}
-              >
-                Kill the busywork. <span className="text-blue-900 ">Keep control.</span>
-              </motion.h1>
-              
-              <motion.p 
-                className="text-lg sm:text-xl lg:text-2xl leading-relaxed text-gray-700"
-                variants={fadeInUp}
-              >
-                Turn emails/CSVs/sheets into clean data, rules, and alerts—so your team handles exceptions, not drudgery.
-              </motion.p>
-              
-              <motion.div 
-                className="flex flex-col gap-4 sm:flex-row"
-                variants={fadeInUp}
-              >
-                <motion.div 
-                  className="flex flex-col gap-3 sm:flex-row"
-                  variants={fadeInUp}
-                >
-                  <motion.div 
-                    className="flex flex-col gap-4 sm:flex-row"
-                    variants={fadeInUp}
-                  >
-                <div className="flex flex-col items-center">
-                  {/* Wrap in relative container */}
-                  <div className="relative flex flex-col items-center">
-                    {/* <motion.button 
-                      className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={handleClick}
-                    >
-                      <Play className="w-5 h-5" />
-                      Try the ops demo
-                    </motion.button> */}
+              {/* Pill Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#eef4ff] border border-[#dbeafe] text-[#2563eb] text-sm font-semibold shadow-xs">
+                <Zap className="w-4 h-4 text-[#2563eb] fill-[#2563eb]" />
+                <span>Smart Process Automation</span>
+              </div>
 
-                    {/* Absolutely positioned message */}
-                    {message && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.3 }}
-                        className="absolute max-w-md px-4 py-2 mt-20 text-sm text-center text-gray-700 bg-gray-100 rounded-lg shadow-md ml-52 w-max"
-                      >
-                        {message}
+              {/* Headline */}
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-950 tracking-tight leading-[1.12]">
+                Kill the busywork.<br />
+                <span className="text-[#2563eb]">Keep control.</span>
+              </h1>
+
+              {/* Subheadline */}
+              <p className="text-lg sm:text-xl text-slate-600 leading-relaxed max-w-xl font-normal">
+                Turn emails/CSVs/sheets into clean data, rules, and alerts—so your team handles exceptions, not drudgery.
+              </p>
+
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 pt-2">
+                <motion.a
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.96 }}
+                  href="#demo-section"
+                  className="inline-flex items-center justify-center gap-2.5 px-7 py-4 text-base font-bold text-white bg-[#1e40af] hover:bg-[#1d4ed8] rounded-xl shadow-md shadow-blue-900/15 hover:shadow-lg transition-all duration-200 group cursor-pointer"
+                >
+                  <Play className="w-4 h-4 fill-white transition-transform group-hover:scale-110" />
+                  <span>See it in action</span>
+                </motion.a>
+
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.96 }}
+                >
+                  <HashLink
+                    smooth
+                    to="/book-consultation"
+                    className="inline-flex items-center justify-center gap-2.5 px-7 py-4 text-base font-bold text-[#1e40af] bg-white border-2 border-[#1e40af] hover:bg-blue-50/60 rounded-xl transition-all duration-200 cursor-pointer w-full"
+                  >
+                    <Calendar className="w-4 h-4 text-[#1e40af]" />
+                    <span>Book a 45-min call</span>
+                  </HashLink>
+                </motion.div>
+              </div>
+
+              {/* Trust Checkmarks */}
+              <div className="flex flex-wrap items-center gap-y-2 gap-x-6 pt-3 text-sm text-slate-700 font-medium">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#2563eb]" />
+                  <span>Connects to your tools</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#2563eb]" />
+                  <span>Runs in the background</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#2563eb]" />
+                  <span>You stay in control</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Right Hero Diagram (Using newly uploaded kill the busy work.png) */}
+            <motion.div 
+              className="lg:col-span-7 relative flex justify-center items-center"
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut", delay: 0.15 }}
+            >
+              <div className="relative w-full rounded-3xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(37,99,235,0.12)] border border-slate-200/80 bg-white">
+                <img 
+                  src="/images/services/smart-process/kill-the-busy-work.png" 
+                  alt="Smart Automation pipeline connecting triggers, process logic, and actions"
+                  className="w-full h-auto object-contain block"
+                />
+              </div>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 2: PROBLEMS WE SOLVE (3 Challenge Cards)                          */}
+      {/* ========================================================================= */}
+      <section className="py-24 bg-[#f8faff] relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100/70 border border-blue-200/60 text-[#2563eb] text-xs font-bold uppercase tracking-wider mb-4">
+            <span>⚠️ THE CHALLENGE</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 tracking-tight mb-4">
+            Problems We <span className="text-[#2563eb]">Solve</span>
+          </h2>
+          <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto mb-16">
+            Common pain points that eat up your team's time
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            
+            {/* Card 1: Status Buried in Emails */}
+            <motion.div 
+              className="bg-white rounded-3xl p-8 sm:p-9 border border-slate-200/80 shadow-xs hover:shadow-xl hover:border-blue-200 transition-all duration-300 flex flex-col items-center text-center group"
+              whileHover={{ y: -6 }}
+            >
+              <div className="w-full h-44 flex items-center justify-center mb-6">
+                <img 
+                  src="/images/services/smart-process/status-buried-in-emails.png" 
+                  alt="Status Buried in Emails" 
+                  className="max-h-40 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 border border-red-200/60 text-red-500 text-xs font-semibold mb-4">
+                <Mail className="w-3.5 h-3.5" />
+                <span>Communication</span>
+              </span>
+              <h3 className="text-xl font-bold text-slate-900 mb-2.5">
+                Status Buried in Emails
+              </h3>
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+                Important updates lost in inbox clutter, making tracking impossible.
+              </p>
+            </motion.div>
+
+            {/* Card 2: Manual Copy-Paste */}
+            <motion.div 
+              className="bg-white rounded-3xl p-8 sm:p-9 border border-slate-200/80 shadow-xs hover:shadow-xl hover:border-blue-200 transition-all duration-300 flex flex-col items-center text-center group"
+              whileHover={{ y: -6 }}
+            >
+              <div className="w-full h-44 flex items-center justify-center mb-6">
+                <img 
+                  src="/images/services/smart-process/manual-copy-paste.png" 
+                  alt="Manual Copy-Paste" 
+                  className="max-h-40 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 border border-red-200/60 text-red-500 text-xs font-semibold mb-4">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                <span>Manual Work</span>
+              </span>
+              <h3 className="text-xl font-bold text-slate-900 mb-2.5">
+                Manual Copy-Paste
+              </h3>
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+                Hours wasted on repetitive data entry into tracking systems.
+              </p>
+            </motion.div>
+
+            {/* Card 3: Late Exception Alerts */}
+            <motion.div 
+              className="bg-white rounded-3xl p-8 sm:p-9 border border-slate-200/80 shadow-xs hover:shadow-xl hover:border-blue-200 transition-all duration-300 flex flex-col items-center text-center group"
+              whileHover={{ y: -6 }}
+            >
+              <div className="w-full h-44 flex items-center justify-center mb-6">
+                <img 
+                  src="/images/services/smart-process/late-exception-alerts.png" 
+                  alt="Late Exception Alerts" 
+                  className="max-h-40 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-50 border border-red-200/60 text-red-500 text-xs font-semibold mb-4">
+                <AlertTriangle className="w-3.5 h-3.5" />
+                <span>Penalties</span>
+              </span>
+              <h3 className="text-xl font-bold text-slate-900 mb-2.5">
+                Late Exception Alerts
+              </h3>
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+                Missing deadlines due to delayed notifications and SLA penalties.
+              </p>
+            </motion.div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 3: TRY THESE AUTOMATIONS + NOTIFICATIONS                          */}
+      {/* ========================================================================= */}
+      <section id="demo-section" className="py-24 bg-white border-y border-slate-100 relative scroll-mt-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-14 items-start">
+            
+            {/* Left Column: Try These Automations */}
+            <div className="lg:col-span-6 space-y-8">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100/70 border border-blue-200/60 text-[#2563eb] text-xs font-bold uppercase tracking-wider mb-3">
+                  <Zap className="w-3.5 h-3.5 fill-[#2563eb]" />
+                  <span>SEE IT IN ACTION</span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight">
+                  Try These <span className="text-[#2563eb]">Automations</span>
+                </h2>
+                <p className="text-base sm:text-lg text-slate-600 mt-2 font-normal">
+                  Real workflows. Real outcomes. Click to see them in action.
+                </p>
+              </div>
+
+              {/* Prompt buttons */}
+              <div className="space-y-4">
+                {demoPrompts.map((prompt, idx) => {
+                  const isActive = activePromptIndex === idx;
+                  const Icon = prompt.icon;
+                  return (
+                    <motion.button
+                      key={prompt.id}
+                      whileHover={{ scale: 1.01 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setActivePromptIndex(idx)}
+                      className={`w-full p-5 sm:p-6 rounded-2xl text-left transition-all duration-200 flex items-center justify-between gap-4 border cursor-pointer ${
+                        isActive 
+                          ? 'bg-[#1e40af] text-white border-[#1e40af] shadow-lg shadow-blue-900/20' 
+                          : 'bg-white text-slate-800 border-slate-200 hover:border-blue-300 hover:bg-slate-50/70 shadow-xs'
+                      }`}
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
+                          isActive ? 'bg-white/20 text-white' : 'bg-blue-50 text-[#2563eb]'
+                        }`}>
+                          <Icon className="w-6 h-6" />
+                        </div>
+                        <div>
+                          <p className={`font-semibold text-base sm:text-lg leading-snug ${
+                            isActive ? 'text-white' : 'text-slate-900'
+                          }`}>
+                            "{prompt.title}"
+                          </p>
+                          <p className={`text-xs mt-1 font-medium ${
+                            isActive ? 'text-blue-100' : 'text-slate-500'
+                          }`}>
+                            {prompt.hint}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${
+                        isActive ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'
+                      }`}>
+                        <ChevronRight className="w-5 h-5" />
+                      </div>
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Right Column: Smart Notifications Card */}
+            <div className="lg:col-span-6 space-y-8">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100/70 border border-blue-200/60 text-[#2563eb] text-xs font-bold uppercase tracking-wider mb-3">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  <span>STAY AHEAD</span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight">
+                  Smart <span className="text-[#2563eb]">Notifications</span>
+                </h2>
+                <p className="text-base sm:text-lg text-slate-600 mt-2 font-normal">
+                  Get the right alerts, at the right time, in the right channel.
+                </p>
+              </div>
+
+              {/* Dynamic Notification Card Display */}
+              {activePromptIndex === 0 ? (
+                /* 1:1 image representation for the primary scenario with direct interactive hotspots */
+                <div className="relative rounded-3xl overflow-hidden shadow-xl border border-slate-200/90 bg-white group">
+                  <img 
+                    src="/images/services/smart-process/try-these-automations.png" 
+                    alt="Delayed Shipment Alert Notification in #operations"
+                    className="w-full h-auto object-contain block"
+                  />
+                  {/* Clickable interactive hotspots with tactile click animation */}
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => showToast("Dispatched proactive delay updates to 3 customers via email & SMS.")}
+                    title="Click to Notify Customers"
+                    className="absolute top-[61.5%] left-[7.5%] w-[33.5%] h-[15%] rounded-xl transition-all duration-150 cursor-pointer hover:bg-white/10"
+                    aria-label="Notify Customers"
+                  />
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => showToast("Alert snoozed for 1 hour. Will re-check carrier API at 3:34 PM.")}
+                    title="Click to Snooze 1 hr"
+                    className="absolute top-[61.5%] left-[43%] w-[25.5%] h-[15%] rounded-xl transition-all duration-150 cursor-pointer hover:bg-blue-500/10"
+                    aria-label="Snooze 1 hr"
+                  />
+                </div>
+              ) : (
+                /* Dynamic interactive preview for prompts 1, 2, 3, 4 */
+                <div className="bg-white rounded-3xl border border-slate-200/90 shadow-xl overflow-hidden">
+                  <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/60">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">
+                        #
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-slate-900 text-sm">operations</span>
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 font-semibold text-[11px] border border-emerald-200/60">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                            Live
+                          </span>
+                        </div>
+                        <span className="text-xs text-slate-400">Today at 2:34 PM</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 text-slate-400 text-xs font-medium">
+                      <span className="px-2 py-1 bg-slate-100 rounded text-slate-600 font-mono text-[11px]">Slack</span>
+                      <span className="px-2 py-1 bg-slate-100 rounded text-slate-600 font-mono text-[11px]">Email</span>
+                      <span className="px-2 py-1 bg-slate-100 rounded text-slate-600 font-mono text-[11px]">Teams</span>
+                    </div>
+                  </div>
+
+                  <div className="p-6 sm:p-7 space-y-6">
+                    {activePromptIndex === 1 && (
+                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+                        <div className="p-4 rounded-2xl bg-blue-50/70 border border-blue-200/80">
+                          <div className="flex items-center gap-2 text-blue-900 font-bold text-base mb-1">
+                            <Mail className="w-5 h-5 text-blue-600" />
+                            <span>Customer Notification Dispatched</span>
+                          </div>
+                          <p className="text-blue-700 text-xs sm:text-sm">
+                            Friendly delay notices sent to 3 accounts with live tracking links.
+                          </p>
+                        </div>
+                        <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 text-sm space-y-2">
+                          <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Preview Template</div>
+                          <p className="text-slate-800 italic bg-white p-3 rounded-xl border border-slate-200/60 leading-relaxed text-xs sm:text-sm">
+                            "Hi Acme Corp team, we noticed your carrier run #ABC123 is delayed by 2 days due to regional weather. Your revised delivery window is tomorrow by 11:00 AM."
+                          </p>
+                          <div className="flex items-center gap-3 text-xs text-slate-600 pt-1">
+                            <span className="text-emerald-600 font-bold flex items-center gap-1">
+                              <Check className="w-3.5 h-3.5" /> 3 / 3 Sent
+                            </span>
+                            <span>• Channel: SendGrid & WhatsApp</span>
+                          </div>
+                        </div>
+                        <div className="flex gap-3 pt-2">
+                          <button onClick={() => showToast("Opened delivery audit log.")} className="px-5 py-2.5 bg-[#2563eb] text-white text-sm font-semibold rounded-xl hover:bg-[#1d4ed8] transition-colors">
+                            View Logs
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {activePromptIndex === 2 && (
+                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+                        <div className="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200/80">
+                          <div className="flex items-center gap-2 text-emerald-900 font-bold text-base mb-1">
+                            <Activity className="w-5 h-5 text-emerald-600" />
+                            <span>Today’s Operations Exceptions Digest</span>
+                          </div>
+                          <p className="text-emerald-700 text-xs sm:text-sm">
+                            Daily executive summary generated automatically at 2:34 PM
+                          </p>
+                        </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                          <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/60">
+                            <div className="text-xl font-extrabold text-slate-900">847</div>
+                            <div className="text-[11px] text-slate-500 font-medium">Processed</div>
+                          </div>
+                          <div className="p-3 bg-red-50 rounded-xl border border-red-200/60">
+                            <div className="text-xl font-extrabold text-red-600">3</div>
+                            <div className="text-[11px] text-red-600 font-medium">Exceptions</div>
+                          </div>
+                          <div className="p-3 bg-blue-50 rounded-xl border border-blue-200/60">
+                            <div className="text-xl font-extrabold text-blue-600">99.6%</div>
+                            <div className="text-[11px] text-blue-600 font-medium">SLA Health</div>
+                          </div>
+                          <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-200/60">
+                            <div className="text-xl font-extrabold text-emerald-600">0</div>
+                            <div className="text-[11px] text-emerald-600 font-medium">Lost Cargo</div>
+                          </div>
+                        </div>
+                        <div className="flex gap-3 pt-2">
+                          <button onClick={() => showToast("Exported exceptions digest CSV to downloads.")} className="px-5 py-2.5 bg-[#2563eb] text-white text-sm font-semibold rounded-xl hover:bg-[#1d4ed8] transition-colors">
+                            Export CSV Digest
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {activePromptIndex === 3 && (
+                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+                        <div className="p-4 rounded-2xl bg-blue-50/70 border border-blue-200/80">
+                          <div className="flex items-center gap-2 text-blue-900 font-bold text-base mb-1">
+                            <Database className="w-5 h-5 text-blue-600" />
+                            <span>PO & Invoice Reconciliation</span>
+                          </div>
+                          <p className="text-blue-700 text-xs sm:text-sm">
+                            Comparing 12 incoming vendor bills against approved NetSuite Purchase Orders
+                          </p>
+                        </div>
+                        <div className="space-y-2 text-xs sm:text-sm">
+                          <div className="flex justify-between items-center p-3 bg-slate-50 rounded-xl border border-slate-200">
+                            <span className="font-mono font-bold">INV-2024-881 (Apex Packaging)</span>
+                            <span className="text-emerald-600 font-bold">✓ 100% Match ($14,200)</span>
+                          </div>
+                          <div className="flex justify-between items-center p-3 bg-amber-50 rounded-xl border border-amber-200">
+                            <span className="font-mono font-bold">INV-2024-882 (Global Air)</span>
+                            <span className="text-amber-700 font-bold">⚠️ Line item qty mismatch (+2 units)</span>
+                          </div>
+                        </div>
+                        <div className="flex gap-3 pt-2">
+                          <button onClick={() => showToast("Auto-approved 11 matching invoices into ERP.")} className="px-5 py-2.5 bg-[#2563eb] text-white text-sm font-semibold rounded-xl hover:bg-[#1d4ed8] transition-colors">
+                            Approve Matched (11)
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+
+                    {activePromptIndex === 4 && (
+                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
+                        <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80">
+                          <div className="flex items-center gap-2 text-amber-900 font-bold text-base mb-1">
+                            <AlertTriangle className="w-5 h-5 text-amber-600" />
+                            <span>Vendor SLA Risk Detected</span>
+                          </div>
+                          <p className="text-amber-700 text-xs sm:text-sm">
+                            Apex Logistics turnaround is 4.4 hrs (Threshold: 3.0 hrs)
+                          </p>
+                        </div>
+                        <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200/80 text-xs sm:text-sm space-y-2">
+                          <div className="flex justify-between text-slate-700">
+                            <span>Contracted SLA:</span>
+                            <span className="font-bold">98.5% 24hr Turnaround</span>
+                          </div>
+                          <div className="flex justify-between text-slate-700">
+                            <span>Current Week Performance:</span>
+                            <span className="font-bold text-red-600">92.1% (Penalty threshold triggered)</span>
+                          </div>
+                        </div>
+                        <div className="flex gap-3 pt-2">
+                          <button onClick={() => showToast("Escalated SLA claim to carrier.")} className="px-5 py-2.5 bg-[#2563eb] text-white text-sm font-semibold rounded-xl hover:bg-[#1d4ed8] transition-colors">
+                            File SLA Claim
+                          </button>
+                        </div>
                       </motion.div>
                     )}
                   </div>
+
+                  <div className="px-6 py-4 bg-blue-50/50 border-t border-blue-100/60 flex items-center justify-between text-xs sm:text-sm font-medium text-blue-900">
+                    <div className="flex items-center gap-2">
+                      <Activity className="w-4 h-4 text-[#2563eb]" />
+                      <span>Reduce response time, avoid penalties, and keep customers informed.</span>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-[#2563eb]" />
+                  </div>
                 </div>
-
-                    {/* <motion.button 
-                      className="flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-blue-900 transition-colors bg-white border border-blue-900 rounded-xl hover:bg-blue-50"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                     <Activity className="w-5 h-5" />
-                            See automation patterns
-                    </motion.button> */}
-                  </motion.div>
-
-              </motion.div>
-
-              </motion.div>
-            </motion.div>
-            
-          {/* Live process automation preview */}
-          <motion.div
-            className="relative"
-            initial={{ opacity: 0, x: 60 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
-          >
-            <ProcessAutomationRichCard className="w-full max-w-xl mx-auto" />
-          </motion.div>
-
+              )}
+            </div>
 
           </div>
         </div>
       </section>
 
-      {/* Problems We Solve */}
-      <section className="py-20 bg-gray-50">
-  <div className="px-6 mx-auto max-w-7xl">
-    <motion.div 
-      className="mb-16 text-center"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-    >
-      <h2 className="mb-4 text-4xl font-bold text-black">
-        Problems We <span className="text-blue-900">Solve</span>
-      </h2>
-      <p className="text-xl text-gray-700">Common pain points that eat up your team's time</p>
-    </motion.div>
-    
-    <motion.div 
-      className="grid gap-8 lg:grid-cols-3"
-      variants={staggerContainer}
-      initial="initial"
-      whileInView="animate"
-      viewport={{ once: true, amount: 0.3 }}
-    >
-      {/* Status buried in emails */}
-      <motion.div 
-        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
-        variants={scaleIn}
-        whileHover={{ y: -8, transition: { duration: 0.3 } }}
-      >
-        <div className="flex flex-col items-center text-center">
-          <motion.div 
-            className="flex items-center justify-center w-20 h-20 mb-4 bg-red-100 rounded-2xl"
-            initial={{ scale: 0, rotate: -180 }}
-            whileInView={{ scale: 1, rotate: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <Mail className="w-8 h-8 text-red-500" />
-          </motion.div>
-          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-red-700 bg-red-100 rounded-full">
-            Communication
+      {/* ========================================================================= */}
+      {/* SECTION 4: WHAT WE DELIVER (4 Pillars)                                    */}
+      {/* ========================================================================= */}
+      <section className="py-24 bg-[#f8faff] relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100/70 border border-blue-200/60 text-[#2563eb] text-xs font-bold uppercase tracking-wider mb-4">
+            <span>📦 COMPLETE SOLUTION</span>
           </div>
-          <h3 className="mb-3 text-xl font-bold text-black">Status Buried in Emails</h3>
-          <p className="leading-relaxed text-gray-600">
-            Important updates lost in inbox clutter, making tracking impossible.
-          </p>
-        </div>
-      </motion.div>
 
-      {/* Manual copy-paste */}
-      <motion.div 
-        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
-        variants={scaleIn}
-        whileHover={{ y: -8, transition: { duration: 0.3 } }}
-      >
-        <div className="flex flex-col items-center text-center">
-          <motion.div 
-            className="flex items-center justify-center w-20 h-20 mb-4 bg-red-100 rounded-2xl"
-            initial={{ scale: 0, rotate: -180 }}
-            whileInView={{ scale: 1, rotate: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
-          >
-            <RotateCcw className="w-8 h-8 text-red-500" />
-          </motion.div>
-          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-red-700 bg-red-100 rounded-full">
-            Manual Work
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 tracking-tight mb-4">
+            What We <span className="text-[#2563eb]">Deliver</span>
+          </h2>
+          <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto mb-16">
+            Complete automation solution with all components
+          </p>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            
+            {/* Pillar 1: Smart Ingestors */}
+            <div className="bg-white rounded-3xl p-7 border border-slate-200/80 shadow-xs hover:shadow-xl hover:border-blue-200 transition-all duration-300 flex flex-col items-center text-center group">
+              <div className="w-full h-44 flex items-center justify-center mb-6">
+                <img 
+                  src="/images/services/smart-process/smart-ingestors.png" 
+                  alt="Smart Ingestors" 
+                  className="max-h-40 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <span className="px-3 py-1 rounded-full bg-[#eff6ff] text-[#2563eb] border border-[#dbeafe]/80 text-xs font-semibold mb-3">
+                Input
+              </span>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Smart Ingestors</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">
+                Email/CSV parser with normalization to consistent data schema.
+              </p>
+            </div>
+
+            {/* Pillar 2: Rules Engine (Active Blue Border) */}
+            <div className="bg-white rounded-3xl p-7 border-2 border-[#2563eb] shadow-xl shadow-blue-500/10 transition-all duration-300 flex flex-col items-center text-center relative group">
+              <div className="w-full h-44 flex items-center justify-center mb-6">
+                <img 
+                  src="/images/services/smart-process/rules-engine.png" 
+                  alt="Rules Engine" 
+                  className="max-h-40 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <span className="px-3.5 py-1 rounded-full bg-[#eff6ff] text-[#2563eb] border border-[#dbeafe]/80 text-xs font-semibold mb-3 shadow-xs">
+                Logic
+              </span>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Rules Engine</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">
+                Delay/damage/lost detection with your custom business rules.
+              </p>
+            </div>
+
+            {/* Pillar 3: Smart Notifications */}
+            <div className="bg-white rounded-3xl p-7 border border-slate-200/80 shadow-xs hover:shadow-xl hover:border-blue-200 transition-all duration-300 flex flex-col items-center text-center group">
+              <div className="w-full h-44 flex items-center justify-center mb-6">
+                <img 
+                  src="/images/services/smart-process/smart-notifications.png" 
+                  alt="Smart Notifications" 
+                  className="max-h-40 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <span className="px-3 py-1 rounded-full bg-[#eff6ff] text-[#2563eb] border border-[#dbeafe]/80 text-xs font-semibold mb-3">
+                Alerts
+              </span>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Smart Notifications</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">
+                Slack/Email alerts with next-best actions and daily digest summaries.
+              </p>
+            </div>
+
+            {/* Pillar 4: Customer Updates */}
+            <div className="bg-white rounded-3xl p-7 border border-slate-200/80 shadow-xs hover:shadow-xl hover:border-blue-200 transition-all duration-300 flex flex-col items-center text-center group">
+              <div className="w-full h-44 flex items-center justify-center mb-6">
+                <img 
+                  src="/images/services/smart-process/customer-updates.png" 
+                  alt="Customer Updates" 
+                  className="max-h-40 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <span className="px-3 py-1 rounded-full bg-[#eff6ff] text-[#2563eb] border border-[#dbeafe]/80 text-xs font-semibold mb-3">
+                Communication
+              </span>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Customer Updates</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">
+                Friendly, templated status emails with branded customer pages.
+              </p>
+            </div>
+
           </div>
-          <h3 className="mb-3 text-xl font-bold text-black">Manual Copy-Paste</h3>
-          <p className="leading-relaxed text-gray-600">
-            Hours wasted on repetitive data entry into tracking systems.
-          </p>
         </div>
-      </motion.div>
+      </section>
 
-      {/* Late exception alerts */}
-      <motion.div 
-        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
-        variants={scaleIn}
-        whileHover={{ y: -8, transition: { duration: 0.3 } }}
-      >
-        <div className="flex flex-col items-center text-center">
-          <motion.div 
-            className="flex items-center justify-center w-20 h-20 mb-4 bg-red-100 rounded-2xl"
-            initial={{ scale: 0, rotate: -180 }}
-            whileInView={{ scale: 1, rotate: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-          >
-            <AlertTriangle className="w-8 h-8 text-red-500" />
-          </motion.div>
-          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-red-700 bg-red-100 rounded-full">
-            Penalties
-          </div>
-          <h3 className="mb-3 text-xl font-bold text-black">Late Exception Alerts</h3>
-          <p className="leading-relaxed text-gray-600">
-            Missing deadlines due to delayed notifications and SLA penalties.
-          </p>
-        </div>
-      </motion.div>
-    </motion.div>
-  </div>
-</section>
+      {/* ========================================================================= */}
+      {/* SECTION 5: INTEGRATIONS + GUARDRAILS                                      */}
+      {/* ========================================================================= */}
+      <section className="py-24 bg-white border-b border-slate-100 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-14 items-start">
+            
+            {/* Left Column: Integrations */}
+            <div className="lg:col-span-6 space-y-8">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100/70 border border-blue-200/60 text-[#2563eb] text-xs font-bold uppercase tracking-wider mb-3">
+                  <span>🔗 INTEGRATIONS</span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight">
+                  Integrations
+                </h2>
+                <p className="text-base sm:text-lg text-slate-600 mt-2 font-normal">
+                  Connect with your existing tools seamlessly
+                </p>
+              </div>
 
-     
-  
-
-      {/* Interactive Demo */}
-      <section className="py-24 bg-gray-50">
-        <div className="px-6 mx-auto max-w-7xl">
-          <div className="grid gap-16 lg:grid-cols-2">
-            {/* Demo Prompts */}
-            <motion.div
-              initial={{ opacity: 0, x: -60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <h2 className="mb-10 text-4xl font-bold text-black">
-                Try These <span className="text-blue-900">Automations</span>
-              </h2>
-              <div className="space-y-6">
-                {demoPrompts.map((prompt, index) => (
-                  <motion.button
-                    key={index}
-                    onClick={() => handlePromptClick(index)}
-                    className={`w-full p-8 text-left transition-all duration-300 border-2 rounded-3xl hover:shadow-lg ${
-                      activePromptIndex === index
-                        ? 'bg-blue-900 border-blue-900 shadow-lg'
-                        : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+              {/* 10 Integration Tiles */}
+              <div className="grid grid-cols-2 gap-3.5 sm:gap-4">
+                {integrations.map((tool, idx) => (
+                  <div
+                    key={idx}
+                    className={`p-3 sm:p-5 rounded-2xl flex items-center justify-between transition-all duration-200 font-bold text-xs sm:text-base ${
+                      tool.isHighlight 
+                        ? 'bg-[#eff6ff] text-[#2563eb] border border-[#bfdbfe] hover:bg-[#dbeafe] shadow-xs' 
+                        : 'bg-white border border-slate-200 text-slate-800 hover:border-blue-300 hover:shadow-xs'
                     }`}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
                   >
-                    <div className="flex items-start gap-6">
-                      <div className={`flex items-center justify-center w-12 h-12 rounded-2xl ${
-                        activePromptIndex === index ? 'bg-white/20' : 'bg-blue-100'
-                      }`}>
-                        <Activity className={`w-6 h-6 ${activePromptIndex === index ? 'text-white' : 'text-blue-900'}`} />
-                      </div>
-                      <div>
-                        <p className={`text-xl font-medium ${activePromptIndex === index ? 'text-white' : 'text-black'}`}>"{prompt}"</p>
-                        <p className={`mt-2 ${activePromptIndex === index ? 'text-blue-100' : 'text-gray-700'}`}>Click to see automation in action</p>
-                      </div>
+                    <div className="flex items-center gap-2 sm:gap-3 truncate">
+                      <span className="flex items-center justify-center shrink-0">{tool.icon}</span>
+                      <span className={`truncate ${tool.isHighlight ? 'text-[#2563eb]' : 'text-slate-800'}`}>{tool.name}</span>
                     </div>
-                  </motion.button>
+                    <ArrowRight className={`w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0 ${tool.isHighlight ? 'text-[#2563eb]' : 'text-slate-400'}`} />
+                  </div>
                 ))}
               </div>
-            </motion.div>
-            
-            {/* Dynamic Notification Demo */}
-            <motion.div
-              initial={{ opacity: 0, x: 60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <h2 className="mb-10 text-4xl font-bold text-black">
-                Smart <span className="text-blue-900">Notifications</span>
-              </h2>
-              <div className="p-8 bg-white border-2 border-gray-200 shadow-xl rounded-3xl">
-                {/* Header — channel changes per scenario */}
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="flex items-center justify-center w-12 h-12 bg-green-100 rounded-2xl">
-                    <Slack className="w-6 h-6 text-green-600" />
-                  </div>
-                  <div>
-                    <div className="text-xl font-bold text-blue-900">
-                      {activePromptIndex === 0 && '#operations'}
-                      {activePromptIndex === 1 && '#customer-success'}
-                      {activePromptIndex === 2 && '#daily-digest'}
-                    </div>
-                    <div className="text-black">Today at {activePromptIndex === 0 ? '2:34 PM' : activePromptIndex === 1 ? '3:12 PM' : '6:00 PM'}</div>
-                  </div>
+            </div>
+
+            {/* Right Column: Guardrails (Using newly uploaded guardrails.png) */}
+            <div className="lg:col-span-6 space-y-8">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100/70 border border-blue-200/60 text-[#2563eb] text-xs font-bold uppercase tracking-wider mb-3">
+                  <Shield className="w-3.5 h-3.5" />
+                  <span>BUILT FOR TRUST</span>
                 </div>
-
-                {/* Scenario 0 — Late shipment flag */}
-                {activePromptIndex === 0 && (
-                  <motion.div
-                    key="scenario-0"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4 }}
-                    className="p-6 border-l-4 border-amber-400 bg-amber-50 rounded-2xl"
-                  >
-                    <div className="mb-4 text-xl font-bold text-amber-800">⚠️ Delayed Shipment Alert</div>
-                    <div className="mb-4 text-amber-700">3 shipments flagged from today's carrier CSV</div>
-                    <div className="p-4 bg-white rounded-xl space-y-2 text-sm">
-                      <div className="text-black"><strong>Order #ABC123</strong> — Acme Corp — 2 days late</div>
-                      <div className="text-black"><strong>Order #DEF456</strong> — TechFlow Ltd — 1 day late</div>
-                      <div className="text-black"><strong>Reason:</strong> Weather delay at hub</div>
-                    </div>
-                    <div className="flex gap-3 mt-4">
-                      <button className="px-4 py-2 text-sm font-semibold text-white bg-blue-900 rounded-xl hover:bg-blue-800 transition-colors">Notify Customers</button>
-                      <button className="px-4 py-2 text-sm font-semibold text-gray-600 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors">Snooze 1hr</button>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Scenario 1 — Customer email update */}
-                {activePromptIndex === 1 && (
-                  <motion.div
-                    key="scenario-1"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4 }}
-                    className="p-6 border-l-4 border-blue-400 bg-blue-50 rounded-2xl"
-                  >
-                    <div className="mb-4 text-xl font-bold text-blue-800">📧 Customer Update Sent</div>
-                    <div className="mb-4 text-blue-700">Friendly delay notice dispatched to 3 customers</div>
-                    <div className="p-4 bg-white rounded-xl space-y-2 text-sm">
-                      <div className="text-black"><strong>Subject:</strong> Update on your order #ABC123</div>
-                      <div className="text-black italic text-gray-600">"Hi Sarah, your order is running 2 days late due to weather. New ETA: Dec 17. We apologise for the delay…"</div>
-                      <div className="text-black"><strong>Sent to:</strong> 3 customers • <span className="text-green-600 font-medium">✓ All delivered</span></div>
-                    </div>
-                    <div className="flex gap-3 mt-4">
-                      <button className="px-4 py-2 text-sm font-semibold text-white bg-blue-900 rounded-xl hover:bg-blue-800 transition-colors">View Emails</button>
-                      <button className="px-4 py-2 text-sm font-semibold text-gray-600 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors">Edit Template</button>
-                    </div>
-                  </motion.div>
-                )}
-
-                {/* Scenario 2 — Exceptions digest */}
-                {activePromptIndex === 2 && (
-                  <motion.div
-                    key="scenario-2"
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4 }}
-                    className="p-6 border-l-4 border-green-400 bg-green-50 rounded-2xl"
-                  >
-                    <div className="mb-4 text-xl font-bold text-green-800">📊 Daily Exceptions Digest</div>
-                    <div className="mb-4 text-green-700">End-of-day summary — 12 Dec 2024</div>
-                    <div className="p-4 bg-white rounded-xl space-y-2 text-sm">
-                      <div className="text-black"><strong>Total shipments processed:</strong> 847</div>
-                      <div className="text-amber-600"><strong>⚠️ Delayed:</strong> 5 orders</div>
-                      <div className="text-red-600"><strong>🚨 Lost/damaged:</strong> 1 order</div>
-                      <div className="text-green-600"><strong>✓ On-time delivery rate:</strong> 99.3%</div>
-                    </div>
-                    <div className="flex gap-3 mt-4">
-                      <button className="px-4 py-2 text-sm font-semibold text-white bg-blue-900 rounded-xl hover:bg-blue-800 transition-colors">Full Report</button>
-                      <button className="px-4 py-2 text-sm font-semibold text-gray-600 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors">Export CSV</button>
-                    </div>
-                  </motion.div>
-                )}
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight">
+                  Guardrails
+                </h2>
+                <p className="text-base sm:text-lg text-slate-600 mt-2 font-normal">
+                  Built-in safety and reliability features
+                </p>
               </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-      <section className="py-20 bg-white">
-   <div className="px-6 mx-auto max-w-7xl">
-    <motion.div 
-      className="mb-16 text-center"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-    >
-      <h2 className="mb-4 text-4xl font-bold text-black">
-        What We <span className="text-blue-900">Deliver</span>
-      </h2>
-      <p className="text-xl text-gray-700">Complete automation solution with all components</p>
-    </motion.div>
-    
-    <motion.div 
-      className="grid gap-8 md:grid-cols-2 lg:grid-cols-4"
-      variants={staggerContainer}
-      initial="initial"
-      whileInView="animate"
-      viewport={{ once: true, amount: 0.3 }}
-    >
-      {/* Ingestors */}
-      <motion.div 
-        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
-        variants={fadeInUp}
-        whileHover={{ y: -8, transition: { duration: 0.3 } }}
-      >
-        <div className="flex flex-col items-center text-center">
-          <motion.div 
-            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
-            initial={{ scale: 0, rotate: 180 }}
-            whileInView={{ scale: 1, rotate: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            <Upload className="w-8 h-8 text-blue-900" />
-          </motion.div>
-          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
-            Input
-          </div>
-          <h3 className="mb-3 text-xl font-bold text-black">Smart Ingestors</h3>
-          <p className="leading-relaxed text-gray-600">
-            Email/CSV parser with normalization to consistent data schema.
-          </p>
-        </div>
-      </motion.div>
 
-      {/* Rules Engine */}
-      <motion.div 
-        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
-        variants={fadeInUp}
-        whileHover={{ y: -8, transition: { duration: 0.3 } }}
-      >
-        <div className="flex flex-col items-center text-center">
-          <motion.div 
-            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
-            initial={{ scale: 0, rotate: 180 }}
-            whileInView={{ scale: 1, rotate: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
-          >
-            <Settings className="w-8 h-8 text-blue-900" />
-          </motion.div>
-          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
-            Logic
-          </div>
-          <h3 className="mb-3 text-xl font-bold text-black">Rules Engine</h3>
-          <p className="leading-relaxed text-gray-600">
-            Delay/damage/lost detection with your custom business rules.
-          </p>
-        </div>
-      </motion.div>
-
-      {/* Notifications */}
-      <motion.div 
-        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
-        variants={fadeInUp}
-        whileHover={{ y: -8, transition: { duration: 0.3 } }}
-      >
-        <div className="flex flex-col items-center text-center">
-          <motion.div 
-            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
-            initial={{ scale: 0, rotate: 180 }}
-            whileInView={{ scale: 1, rotate: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-          >
-            <Bell className="w-8 h-8 text-blue-900" />
-          </motion.div>
-          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
-            Alerts
-          </div>
-          <h3 className="mb-3 text-xl font-bold text-black">Smart Notifications</h3>
-          <p className="leading-relaxed text-gray-600">
-            Slack/Email alerts with next-best actions and daily digest summaries.
-          </p>
-        </div>
-      </motion.div>
-
-      {/* Customer Updates */}
-      <motion.div 
-        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
-        variants={fadeInUp}
-        whileHover={{ y: -8, transition: { duration: 0.3 } }}
-      >
-        <div className="flex flex-col items-center text-center">
-          <motion.div 
-            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
-            initial={{ scale: 0, rotate: 180 }}
-            whileInView={{ scale: 1, rotate: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
-          >
-            <MessageSquare className="w-8 h-8 text-blue-900" />
-          </motion.div>
-          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
-            Communication
-          </div>
-          <h3 className="mb-3 text-xl font-bold text-black">Customer Updates</h3>
-          <p className="leading-relaxed text-gray-600">
-            Friendly, templated status emails with branded customer pages.
-          </p>
-        </div>
-      </motion.div>
-    </motion.div>
-  </div>
-</section>
-
-      {/* Integrations & Features */}
-      <section className="py-24 bg-white">
-        <div className="px-6 mx-auto max-w-7xl">
-          <div className="grid gap-20 lg:grid-cols-2">
-            {/* Integrations */}
-            <motion.div
-              initial={{ opacity: 0, x: -60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <h2 className="mb-10 text-4xl font-bold text-blue-900">
-                Integrations
-              </h2>
-              <p className="mb-8 text-xl text-gray-700">Connect with your existing tools seamlessly</p>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {["Gmail/Outlook", "Slack", "Google Sheets", "BigQuery", "S3", "Webhooks", "CSV Portals", "Custom APIs", "Zapier"].map((integration, index) => (
-                  <motion.div 
-                    key={index}
-                    className="p-4 font-semibold text-center text-black bg-white border-2 border-gray-200 rounded-2xl hover:border-blue-300 hover:bg-blue-50"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, ease: "easeOut", delay: index * 0.05 }}
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    {integration}
-                  </motion.div>
-                ))}
+              {/* Guardrails Image Card */}
+              <div className="rounded-3xl overflow-hidden border border-slate-200/80 shadow-xs bg-white">
+                <img 
+                  src="/images/services/smart-process/guardrails.png" 
+                  alt="Replayable runs, Idempotent writes, Immutable logs, Template locks" 
+                  className="w-full h-auto object-contain block"
+                />
               </div>
-            </motion.div>
 
-            {/* Guardrails */}
-            <motion.div
-              initial={{ opacity: 0, x: 60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <h2 className="mb-10 text-4xl font-bold text-blue-900">
-                Guardrails
-              </h2>
-              <p className="mb-8 text-xl text-gray-700">Built-in safety and reliability features</p>
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                {[
-                  { title: "Replayable runs", desc: "Every process can be re-executed safely" },
-                  { title: "Idempotent writes", desc: "No duplicate data or duplicate actions" },
-                  { title: "Immutable logs", desc: "Complete audit trail for compliance" },
-                  { title: "Template locks", desc: "Customer communications stay on-brand" }
-                ].map((guardrail, index) => (
-                  <motion.div 
-                    key={index}
-                    className="flex items-start gap-4 p-6 transition-all duration-300 bg-white border-2 border-gray-200 rounded-2xl hover:border-blue-300 hover:shadow-lg"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, ease: "easeOut", delay: index * 0.1 }}
-                    whileHover={{ x: 8 }}
-                  >
-                    <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-2xl">
-                      <Shield className="w-6 h-6 text-blue-900" />
-                    </div>
-                    <div>
-                      <h3 className="mb-2 text-xl font-bold text-blue-900">{guardrail.title}</h3>
-                      <p className="text-black">{guardrail.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
+              {/* Bottom Enterprise Banner */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-blue-50/60 border border-blue-200/70 flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3 text-sm font-semibold text-blue-950">
+                  <Shield className="w-5 h-5 text-[#2563eb] shrink-0" />
+                  <span>Enterprise-ready automation with security, auditability, and control.</span>
+                </div>
+                <ArrowRight className="w-5 h-5 text-[#2563eb] shrink-0" />
               </div>
-            </motion.div>
+
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="relative py-24 overflow-hidden text-black bg-white">
-        <div className="absolute inset-0">
-          <div className="absolute top-0 right-0 bg-blue-100 rounded-full w-96 h-96 opacity-20 blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 rounded-full w-80 h-80 bg-blue-50 opacity-10 blur-3xl"></div>
-        </div>
-        
-        <div className="relative max-w-5xl px-6 mx-auto text-center">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <motion.div 
-              className="inline-flex items-center gap-3 px-8 py-4 mb-8 bg-blue-100 border-2 border-blue-200 rounded-full backdrop-blur-sm"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-            >
-              <Zap className="w-6 h-6 text-blue-900" />
-              <span className="font-semibold text-blue-900">Ready to eliminate busywork?</span>
-            </motion.div>
-            
-            <motion.h2 
-              className="mb-8 text-3xl font-bold text-black lg:text-4xl"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
-            >
-              Cut busywork by <span className="text-blue-900">20-40%</span>
-            </motion.h2>
-            
-            <motion.p 
-              className="max-w-3xl mx-auto mb-12 text-xl leading-relaxed text-gray-700"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
-            >
-              Transform manual processes into smart automation with human oversight and clear ROI tracking.
-            </motion.p>
-          </motion.div>
+      {/* ========================================================================= */}
+      {/* SECTION 6: HOW WE WORK / TIMELINE                                         */}
+      {/* ========================================================================= */}
+      <section className="py-24 bg-[#f8faff] relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           
-          <motion.div 
-            className="flex flex-col justify-center gap-6 mb-12 sm:flex-row"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
-          >
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100/70 border border-blue-200/60 text-[#2563eb] text-xs font-bold uppercase tracking-wider mb-4">
+            <Zap className="w-3.5 h-3.5 fill-[#2563eb]" />
+            <span>HOW WE WORK</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 tracking-tight mb-4">
+            From Busywork to Automated — <span className="text-[#2563eb]">Fast</span>
+          </h2>
+          <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto mb-16">
+            A focused path to automating your highest-friction processes first.
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-8 text-left">
             
-              <motion.div 
-                    className="flex flex-col gap-4 sm:flex-row"
-                    variants={fadeInUp}
-                  >
-                    
+            {/* Step 1 */}
+            <div className="bg-white rounded-3xl p-8 sm:p-9 border border-slate-200/80 shadow-xs hover:shadow-xl hover:border-blue-200 transition-all duration-300 relative">
+              <div className="text-4xl font-extrabold text-[#2563eb] mb-4">01</div>
+              <h3 className="text-2xl font-bold text-slate-950 mb-3">Find the Top 3</h3>
+              <p className="text-slate-600 leading-relaxed text-sm sm:text-base">
+                We look at where your team loses the most time to manual copy-paste and buried status updates, and pick the three processes worth automating first.
+              </p>
+            </div>
 
-                    <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <button
-                      type="button"
-                      onClick={handleTryDemo}
-                      className="flex items-center justify-center w-full gap-2 px-10 py-6 text-base font-semibold text-white transition-colors bg-blue-900 rounded-xl hover:bg-blue-800"
-                    >
-                      <Zap className="w-5 h-5" />
-                         Automate the top 3 processes
-                    </button>
-                  </motion.div>
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <HashLink 
-                      smooth 
-                      to="/book-consultation"
-                      className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-blue-900 transition-all duration-300 bg-white border-2 border-blue-900 shadow-lg rounded-xl hover:bg-blue-50 hover:border-blue-800"
-                    >
-                        <Calendar className="w-5 h-5" />
-                          Book a working session
-                    </HashLink>
-                  </motion.div>
-                  </motion.div>
+            {/* Step 2 */}
+            <div className="bg-white rounded-3xl p-8 sm:p-9 border-2 border-[#2563eb] shadow-xl shadow-blue-500/10 transition-all duration-300 relative">
+              <div className="text-4xl font-extrabold text-[#2563eb] mb-4">02</div>
+              <h3 className="text-2xl font-bold text-slate-950 mb-3">Build & Test</h3>
+              <p className="text-slate-600 leading-relaxed text-sm sm:text-base">
+                We build the ingestion, rules, and alerting for those three processes and test them against real data before anything goes live.
+              </p>
+            </div>
 
-          </motion.div>
-          
-          <motion.div 
-            className="grid max-w-3xl gap-8 mx-auto sm:grid-cols-3"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 1.0 }}
-          >
-            <div className="flex items-center justify-center gap-3 text-lg text-black">
-              <CheckCircle2 className="w-6 h-6 text-blue-900" />
-              <span>20-40% time savings</span>
+            {/* Step 3 */}
+            <div className="bg-white rounded-3xl p-8 sm:p-9 border border-slate-200/80 shadow-xs hover:shadow-xl hover:border-blue-200 transition-all duration-300 relative">
+              <div className="text-4xl font-extrabold text-[#2563eb] mb-4">03</div>
+              <h3 className="text-2xl font-bold text-slate-950 mb-3">Launch & Monitor</h3>
+              <p className="text-slate-600 leading-relaxed text-sm sm:text-base">
+                Automations go live with full audit logs and replay safety — you watch it work, not just take our word for it.
+              </p>
             </div>
-            <div className="flex items-center justify-center gap-3 text-lg text-black">
-              <CheckCircle2 className="w-6 h-6 text-blue-900" />
-              <span>Exception handling</span>
-            </div>
-            <div className="flex items-center justify-center gap-3 text-lg text-black">
-              <CheckCircle2 className="w-6 h-6 text-blue-900" />
-              <span>Clear ROI tracking</span>
-            </div>
-          </motion.div>
+
+          </div>
         </div>
       </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 7: PLAIN-ENGLISH TECHNICAL FAQ                                    */}
+      {/* ========================================================================= */}
+      <section className="py-24 bg-white border-t border-slate-100">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100/70 border border-blue-200/60 text-[#2563eb] text-xs font-bold uppercase tracking-wider mb-4">
+              <span>❓ FAQ</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 tracking-tight mb-4">
+              Frequently Asked <span className="text-[#2563eb]">Questions</span>
+            </h2>
+            <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
+              Plain-English technical answers for leaders who need reliability.
+            </p>
+          </div>
+
+          {/* Website-styled Accordion with + button rotating to X */}
+          <div className="border-t border-b border-slate-200 divide-y divide-slate-200">
+            {faqItems.map((item, idx) => {
+              const isOpen = activeFaq === idx;
+
+              return (
+                <div key={idx} className="transition-colors">
+                  <button
+                    onClick={() => setActiveFaq(isOpen ? null : idx)}
+                    aria-expanded={isOpen}
+                    className="w-full py-6 sm:py-7 flex items-center justify-between text-left gap-4 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg cursor-pointer"
+                  >
+                    <span
+                      className={`text-lg sm:text-xl font-bold transition-colors duration-200 ${
+                        isOpen ? 'text-[#1d4ed8]' : 'text-slate-900 group-hover:text-[#1d4ed8]'
+                      }`}
+                    >
+                      {item.q}
+                    </span>
+
+                    <span
+                      className={`flex-shrink-0 w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                        isOpen
+                          ? 'border-[#1d4ed8] bg-[#1d4ed8] text-white rotate-45'
+                          : 'border-slate-300 text-slate-400 group-hover:border-[#1d4ed8] group-hover:text-[#1d4ed8] bg-white shadow-xs'
+                      }`}
+                    >
+                      <Plus className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300" />
+                    </span>
+                  </button>
+
+                  {/* Question Answer - animated via framer-motion */}
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        key="faq-content"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: [0.04, 0.62, 0.23, 0.98] }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pb-6 pr-4 sm:pr-12 text-slate-600 text-sm sm:text-base leading-relaxed">
+                          {item.a}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 8: FINAL CTA (Image 6 Reference)                                  */}
+      {/* ========================================================================= */}
+      <section className="relative py-24 sm:py-32 overflow-hidden bg-white border-t border-slate-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          
+          {/* We display the clean cut-busy-work graphic + interactive actions */}
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-white">
+            <img 
+              src="/images/services/smart-process/cut-busy-work.png" 
+              alt="Cut busywork by 20-40%"
+              className="w-full h-auto object-contain block"
+            />
+
+            {/* Desktop Clickable Buttons directly positioned over image buttons with tactile click animation */}
+            <div className="hidden md:block">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleOpenChat}
+                title="Automate the top 3 processes"
+                className="absolute top-[54.5%] left-[22.8%] w-[28.8%] h-[13.8%] bg-[#1d4ed8] hover:bg-[#1e40af] text-white font-bold text-xs md:text-sm lg:text-base rounded-xl md:rounded-2xl shadow-lg flex items-center justify-center gap-2 cursor-pointer transition-colors"
+                aria-label="Automate the top 3 processes"
+              >
+                <Zap className="w-4 h-4 fill-white shrink-0" />
+                <span>Automate the top 3 processes</span>
+                <ArrowRight className="w-4 h-4 shrink-0" />
+              </motion.button>
+
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.95 }}
+                className="absolute top-[54.5%] left-[52.4%] w-[24.2%] h-[13.8%]"
+              >
+                <HashLink
+                  smooth
+                  to="/book-consultation"
+                  title="Book a working session"
+                  className="w-full h-full bg-white hover:bg-blue-50/80 text-[#1d4ed8] border-2 border-[#1d4ed8] font-bold text-xs md:text-sm lg:text-base rounded-xl md:rounded-2xl shadow-sm flex items-center justify-center gap-2 cursor-pointer transition-colors"
+                  aria-label="Book a working session"
+                >
+                  <Calendar className="w-4 h-4 text-[#1d4ed8] shrink-0" />
+                  <span>Book a working session</span>
+                  <ArrowRight className="w-4 h-4 shrink-0" />
+                </HashLink>
+              </motion.div>
+            </div>
+
+            {/* Mobile Touch Action Buttons underneath with tactile click animation */}
+            <div className="md:hidden py-5 px-4 bg-white/95 border-t border-slate-100 flex flex-col gap-3">
+              <motion.button
+                whileTap={{ scale: 0.96 }}
+                onClick={handleOpenChat}
+                className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-bold text-white bg-[#1e40af] hover:bg-[#1d4ed8] active:bg-blue-900 rounded-xl shadow-md transition-all duration-200 cursor-pointer"
+              >
+                <Zap className="w-4 h-4 fill-white" />
+                <span>Automate the top 3 processes</span>
+                <ArrowRight className="w-4 h-4" />
+              </motion.button>
+
+              <motion.div whileTap={{ scale: 0.96 }}>
+                <HashLink
+                  smooth
+                  to="/book-consultation"
+                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-bold text-[#1e40af] bg-white border-2 border-[#1e40af] hover:bg-blue-50 active:bg-blue-100 rounded-xl transition-all duration-200 cursor-pointer"
+                >
+                  <Calendar className="w-4 h-4 text-[#1e40af]" />
+                  <span>Book a working session</span>
+                  <ArrowRight className="w-4 h-4" />
+                </HashLink>
+              </motion.div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
     </div>
   );
-};
-
-export default ProcessAutomationPage;
+}

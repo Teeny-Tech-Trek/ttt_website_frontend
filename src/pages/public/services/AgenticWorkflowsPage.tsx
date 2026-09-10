@@ -1,910 +1,1258 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { MessageSquare, CheckCircle2, Bot, Sparkles, Zap, ArrowRight, Users, Clock, Target, Eye, Brain, TrendingUp, DollarSign, BarChart3, Shield, FileText, Headphones, Play, Calendar, Phone, MessageCircle, Settings, Database, GitBranch, Workflow, Search, CheckSquare, AlertTriangle, Activity, Layers } from 'lucide-react';
-import AgenticWorkflowRichCard from "../../../components/home/AgenticWorkflowRichCard";
-import HashLink from '../../../components/ui/SectionLink';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Workflow,
+  Phone,
+  Calendar,
+  ArrowRight,
+  CheckCircle2,
+  Check,
+  Zap,
+  Play,
+  FileText,
+  Mail,
+  RotateCcw,
+  Plus,
+  Eye,
+  ShieldCheck,
+  Shield,
+  Lock,
+  Database,
+  Users,
+  TrendingUp,
+  Headphones,
+  Sparkles,
+  Bot,
+  Brain,
+  Activity,
+  Layers,
+  AlertTriangle,
+  Search,
+  GitBranch,
+  DollarSign,
+  PenTool,
+  UserPlus,
+  Filter,
+  Server,
+  MessageCircle,
+  CheckSquare,
+  RefreshCw,
+  ChevronRight,
+  ChevronDown
+} from 'lucide-react';
+import HashLink from '../../../components/ui/SectionLink';
 
-// Animation variants
-const fadeInUp = {
-  initial: { opacity: 0, y: 60 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 1, ease: "easeOut" }
-};
+interface AgenticWorkflowsPageProps {
+  onOpenChatbot?: () => void;
+}
 
-const fadeInLeft = {
-  initial: { opacity: 0, x: -60 },
-  animate: { opacity: 1, x: 0 },
-  transition: { duration: 1, ease: "easeOut" }
-};
-
-const fadeInRight = {
-  initial: { opacity: 0, x: 60 },
-  animate: { opacity: 1, x: 0 },
-  transition: { duration: 1, ease: "easeOut" }
-};
-
-const staggerContainer = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-};
-
-const scaleIn = {
-  initial: { opacity: 0, scale: 0.8 },
-  animate: { opacity: 1, scale: 1 },
-  transition: { duration: 0.5, ease: "easeOut" }
-};
-
-const AgenticWorkflowsPage = ({onOpenChatbot}) => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [activeDemo, setActiveDemo] = useState(0);
-  const [activePromptIndex, setActivePromptIndex] = useState(0);
-  const intervalRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
+const AgenticWorkflowsPage: React.FC<AgenticWorkflowsPageProps> = ({ onOpenChatbot }) => {
   const navigate = useNavigate();
 
-  const handleTryDemo = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  // Interactive Live Demo State
+  const [activeWorkflowIndex, setActiveWorkflowIndex] = useState(0);
+  const [approvalState, setApprovalState] = useState<'idle' | 'approved' | 'declined'>('idle');
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // FAQ Accordion State
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
+
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 3500);
+  };
+
+  const handle4WeekPilotBtn = () => {
+    navigate('/pilot');
+  };
+
+  const handleTryDemo = (e?: React.MouseEvent) => {
+    e?.preventDefault?.();
+    e?.stopPropagation?.();
     if (onOpenChatbot) {
       onOpenChatbot();
+    } else {
+      const demoSec = document.getElementById('live-demo');
+      if (demoSec) {
+        demoSec.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
-  const workflowScenarios = [
-    [
-      { step: "Retrieve", desc: "Lead data from CRM", icon: Search },
-      { step: "Analyze", desc: "Score and qualify lead", icon: Brain },
-      { step: "Generate", desc: "Draft personalized email", icon: FileText },
-      { step: "Preview", desc: "Human approval required", icon: Eye },
-      { step: "Execute", desc: "Send & log to HubSpot", icon: Zap },
-    ],
-    [
-      { step: "Retrieve", desc: "Read email thread", icon: Search },
-      { step: "Summarize", desc: "Extract key action items", icon: Brain },
-      { step: "Draft", desc: "Generate follow-up note", icon: FileText },
-      { step: "Log", desc: "Save to CRM with context", icon: Eye },
-      { step: "Notify", desc: "Slack alert to owner", icon: Zap },
-    ],
-    [
-      { step: "Ingest", desc: "Read uploaded CSV file", icon: Search },
-      { step: "Parse", desc: "Normalize column headers", icon: Brain },
-      { step: "Validate", desc: "Flag anomalies & blanks", icon: FileText },
-      { step: "Append", desc: "Write rows to Google Sheets", icon: Eye },
-      { step: "Confirm", desc: "Send digest to Slack", icon: Zap },
-    ],
-  ];
-
-  const workflowSteps = workflowScenarios[activePromptIndex];
-
-  const demoPrompts = [
-    "Qualify this lead and create a HubSpot task for Friday",
-    "Summarize this email thread and log a follow-up",
-    "Parse this CSV and append normalized rows to our sheet"
-  ];
-
-  const startWorkflowPlay = () => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    setCurrentStep(0);
-    intervalRef.current = setInterval(() => {
-      setCurrentStep((prev) => {
-        if (prev < workflowScenarios[0].length - 1) {
-          setIsProcessing(true);
-          setTimeout(() => setIsProcessing(false), 1200);
-          return prev + 1;
-        }
-        if (intervalRef.current) clearInterval(intervalRef.current);
-        return prev;
-      });
-    }, 3000);
+  const handleApproveAction = () => {
+    setApprovalState('approved');
+    showToast('✓ Approved: Lead score updated to 85, status set to Qualified, demo call scheduled.');
   };
 
-  const handlePromptClick = (index: number) => {
-    setActivePromptIndex(index);
-    setCurrentStep(0);
-    if (intervalRef.current) clearInterval(intervalRef.current);
-    intervalRef.current = setInterval(() => {
-      setCurrentStep((prev) => {
-        if (prev < workflowScenarios[index].length - 1) {
-          setIsProcessing(true);
-          setTimeout(() => setIsProcessing(false), 1200);
-          return prev + 1;
-        }
-        if (intervalRef.current) clearInterval(intervalRef.current);
-        return prev;
-      });
-    }, 3000);
+  const handleDeclineAction = () => {
+    setApprovalState('declined');
+    showToast('✕ Declined: Action cancelled, lead remains in review queue.');
   };
 
-  useEffect(() => {
-    startWorkflowPlay();
-    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
-  }, []);
-
-  const useCases = [
+  // Section 1: Hero Capability Cards
+  const heroCapabilities = [
     {
-      title: "Sales ops",
-      flow: "enrich lead → draft email → log to CRM → set follow-up",
-      icon: TrendingUp,
-      color: "from-blue-900 to-blue-800"
+      icon: Zap,
+      title: 'Plans and executes',
+      desc: 'Breaks down complex tasks and runs multi-step workflows.'
     },
     {
-      title: "Support ops", 
-      flow: "diagnose issue → run playbook → create ticket with artifacts",
-      icon: Headphones,
-      color: "from-blue-900 to-blue-800"
-    },
-    {
-      title: "Internal ops",
-      flow: "parse email/CSV → normalize → update sheet → notify Slack",
       icon: Database,
-      color: "from-blue-900 to-blue-800"
+      title: 'Uses your tools',
+      desc: 'Connects to 200+ apps via API or custom MCP.'
+    },
+    {
+      icon: Shield,
+      title: 'Built-in guardrails',
+      desc: 'Human approval for key actions and full audit logs.'
+    },
+    {
+      icon: TrendingUp,
+      title: 'Real results',
+      desc: 'Faster resolution times, lower manual work, and happier customers.'
     }
   ];
 
-  const deliverables = [
-    { icon: GitBranch, title: "Agent Blueprint", desc: "Roles, tools, refusal rules, approval gates" },
-    { icon: Settings, title: "Tooling", desc: "HTTP, CRM/Helpdesk/Sheets/Slack actions; calendar & doc tools" },
-    { icon: Activity, title: "Observability", desc: "Step-by-step logs, retries, alerts, test suite" },
-    { icon: CheckSquare, title: "Human-approval Loop", desc: "For sensitive steps with preview and approval" }
+  // Section 3: Where Teams Use Agentic Workflows (CHANGE 2 - 6 Real-world use cases)
+  const useCasesGallery = [
+    {
+      icon: Headphones,
+      title: 'Customer Support Resolution',
+      tag: 'Support Ops',
+      desc: 'Retrieves customer data, diagnoses the issue, drafts a response, and updates the ticket — with approval before anything sends.'
+    },
+    {
+      icon: TrendingUp,
+      title: 'Sales Lead Qualification',
+      tag: 'Revenue Ops',
+      desc: 'Pulls lead data, scores it, drafts outreach, and updates the CRM — approval before anything sends.'
+    },
+    {
+      icon: DollarSign,
+      title: 'Finance Reconciliation',
+      tag: 'Finance & Accounting',
+      desc: 'Pulls transactions, matches them against invoices, flags discrepancies, and drafts a summary for review.'
+    },
+    {
+      icon: Sparkles,
+      title: 'Marketing Content Pipeline',
+      tag: 'Marketing & Brand',
+      desc: 'Researches a topic, drafts a post, checks it against brand guidelines, and queues it for approval.'
+    },
+    {
+      icon: Users,
+      title: 'HR Onboarding',
+      tag: 'People Ops',
+      desc: "Creates accounts, assigns training, sends welcome materials, and confirms everything's ready before a new hire's first day."
+    },
+    {
+      icon: Database,
+      title: 'Ops Data Entry & Cleanup',
+      tag: 'Internal Ops',
+      desc: 'Pulls records from multiple systems, normalizes and deduplicates them, and flags anything that needs a human decision.'
+    }
   ];
 
-  const patterns = [
-    { title: "Retrieve → Answer", desc: "Safe Q&A with receipts", icon: Search },
-    { title: "Retrieve → Act", desc: "Answer + action with preview", icon: Zap },
-    { title: "Multi-tool Routing", desc: "Choose best tool per step", icon: GitBranch },
-    { title: "Human Approval", desc: "Preview → Approve/Decline", icon: CheckSquare }
+  // Section 4: Live Demo Workflows
+  const demoWorkflows = [
+    {
+      id: 0,
+      title: 'Qualify this lead and create a HubSpot task for Friday',
+      icon: Users,
+      pipelineTitle: 'Sales Agent Workflow',
+      pipelineSub: 'Lead Qualification Pipeline',
+      currentStep: 'Step 3 of 5 (Processing...)',
+      steps: [
+        { num: '1', title: 'Retrieve', desc: 'Pull lead data from CRM (HubSpot)', time: '12s', status: 'done' },
+        { num: '2', title: 'Analyze', desc: 'Score and qualify lead with AI', time: '18s', status: 'done' },
+        { num: '3', title: 'Generate', desc: 'Draft personalized email', time: 'Processing...', status: 'active' },
+        { num: '4', title: 'Human Approval', desc: 'Review and approve before sending', time: 'Pending', status: 'pending' },
+        { num: '5', title: 'Execute', desc: 'Send email and log to HubSpot', time: 'Pending', status: 'pending' }
+      ],
+      output: {
+        subject: 'Excited to explore how we can help, {{first_name}}',
+        body: 'Hi {{first_name}},\n\nBased on your interest in {{product}}, I wanted to share a quick overview of how our agents integrate directly into your CRM to automate repetitive tasks.'
+      },
+      approval: {
+        agentGoal: 'Agent wants to update CRM record for "Acme Corp"',
+        changes: [
+          { label: 'Lead Score', val: '45 → 85' },
+          { label: 'Status', val: 'New → Qualified' },
+          { label: 'Next Action', val: 'Schedule demo call' },
+          { label: 'Owner', val: 'Sales Team' },
+          { label: 'Tags', val: 'High Intent • Enterprise' }
+        ]
+      }
+    },
+    {
+      id: 1,
+      title: 'Summarize this email thread and log a follow-up',
+      icon: Mail,
+      pipelineTitle: 'Email Intelligence Agent',
+      pipelineSub: 'Customer Inbox Triaging',
+      currentStep: 'Step 3 of 4 (Reviewing...)',
+      steps: [
+        { num: '1', title: 'Read Thread', desc: 'Extract message history & attachments', time: '8s', status: 'done' },
+        { num: '2', title: 'Synthesize', desc: 'Identify 3 action items & deadlines', time: '14s', status: 'done' },
+        { num: '3', title: 'Human Approval', desc: 'Confirm drafted calendar invites', time: 'Pending', status: 'active' },
+        { num: '4', title: 'Sync CRM', desc: 'Log thread summary to account record', time: 'Pending', status: 'pending' }
+      ],
+      output: {
+        subject: 'Executive Summary: Q3 Strategy Call Follow-up',
+        body: 'Key Decisions:\n• Agreed on 4-week pilot scope\n• Security review scheduled for Thursday\n• Next sync booked for Friday 2:00 PM EST'
+      },
+      approval: {
+        agentGoal: 'Agent wants to schedule follow-up calendar event & log summary',
+        changes: [
+          { label: 'Event', val: 'Pilot Kickoff Sync' },
+          { label: 'Attendees', val: '3 team leads + Acme VP' },
+          { label: 'Date/Time', val: 'Friday at 2:00 PM EST' },
+          { label: 'CRM Link', val: 'Acme Corp / Opportunity #942' },
+          { label: 'Tags', val: 'Meeting Scheduled' }
+        ]
+      }
+    },
+    {
+      id: 2,
+      title: 'Parse this CSV and append normalized rows to our sheet',
+      icon: FileText,
+      pipelineTitle: 'Data Normalization Agent',
+      pipelineSub: 'Bulk Ingestion & Schema Mapper',
+      currentStep: 'Step 3 of 4 (Validating...)',
+      steps: [
+        { num: '1', title: 'Parse CSV', desc: 'Extract 450 raw customer records', time: '6s', status: 'done' },
+        { num: '2', title: 'Normalize', desc: 'Deduplicate & validate email formats', time: '22s', status: 'done' },
+        { num: '3', title: 'Human Approval', desc: 'Verify 3 flagged anomaly records', time: 'Pending', status: 'active' },
+        { num: '4', title: 'Append Rows', desc: 'Write 447 clean rows to Google Sheet', time: 'Pending', status: 'pending' }
+      ],
+      output: {
+        subject: 'Batch Schema Normalization Report',
+        body: '450 records processed:\n• 447 records validated successfully\n• 3 records flagged for duplicate tax ID numbers\n• Ready to append to Master Accounts Sheet'
+      },
+      approval: {
+        agentGoal: 'Agent wants to write 447 verified rows to Google Sheet',
+        changes: [
+          { label: 'Target Sheet', val: 'Master Accounts Database' },
+          { label: 'New Rows', val: '+447 verified rows' },
+          { label: 'Deduplicated', val: '12 duplicate entries merged' },
+          { label: 'Audit Log', val: 'Uploaded by Ops Team' },
+          { label: 'Tags', val: 'Batch Processed' }
+        ]
+      }
+    }
   ];
 
-  const integrations = [
-    "HubSpot", "Salesforce", "Zendesk", "Slack", "Gmail", "Sheets", 
-    "Notion", "Calendly", "WhatsApp", "Custom REST", "GraphQL"
+  // Section 5: What the Agent Can — and Can't — Do Without You (CHANGE 3)
+  const guardrailsCards = [
+    {
+      icon: ShieldCheck,
+      title: 'Action Allow-Lists',
+      desc: "The agent can only call the tools and take the actions you've explicitly approved — nothing more.",
+      badge: 'Strict Boundaries'
+    },
+    {
+      icon: Eye,
+      title: 'Approval Gates',
+      desc: 'Anything with real consequences (sending an email, updating a record, spending money) pauses for your review by default.',
+      badge: 'Human in the Loop'
+    },
+    {
+      icon: FileText,
+      title: 'Full Audit Log',
+      desc: 'Every step, decision, and approval is logged, so you can see exactly what happened and why.',
+      badge: 'Complete Transparency'
+    },
+    {
+      icon: RotateCcw,
+      title: 'Reversible by Design',
+      desc: 'Wherever possible, actions are built to be undone, not just monitored after the fact.',
+      badge: 'Safety First'
+    }
   ];
 
-  const guardrails = [
-    { icon: Shield, title: "Confidence Thresholds", desc: "Only act when certain about outcomes" },
-    { icon: CheckCircle2, title: "Allowlists", desc: "Restricted to approved tools and actions" },
-    { icon: Eye, title: "Dry-run Mode", desc: "Preview before execution with approval gates" },
-    { icon: FileText, title: "Audit Logs", desc: "Every step recorded with signed webhooks" }
+  // Section 6: 4-Week Pilot Steps (Image 4)
+  const pilotSteps = [
+    {
+      week: 'Week 1',
+      title: 'Discovery',
+      image: '/images/services/agentic-workflows/pilot-step-1.webp',
+      desc: 'Map workflows, identify tools, set success criteria, and define use cases.'
+    },
+    {
+      week: 'Week 2',
+      title: 'Tools + Tests',
+      image: '/images/services/agentic-workflows/pilot-step-2.webp',
+      desc: 'Build connectors, create test scenarios, and validate logic.'
+    },
+    {
+      week: 'Week 3',
+      title: 'Approvals + UAT',
+      image: '/images/services/agentic-workflows/pilot-step-3.webp',
+      desc: 'Add human gates, run user acceptance testing, and refine based on feedback.'
+    },
+    {
+      week: 'Week 4',
+      title: 'Launch + Hypercare',
+      image: '/images/services/agentic-workflows/pilot-step-4.webp',
+      desc: 'Go live with monitoring, support, and performance tracking.'
+    }
   ];
 
-  const kpis = [
-    'Agent success rate %', 'Human approval acceptance %', 'Cycle time', 
-    'Error rate', 'Business outcome per workflow', 'Step completion rate'
+  // Section 7: Integrations List (Image 4)
+  const integrationList = [
+    { name: 'HubSpot', logo: '🟧' },
+    { name: 'Salesforce', logo: '☁️' },
+    { name: 'Zendesk', logo: '⚡' },
+    { name: 'Slack', logo: '💬' },
+    { name: 'Gmail', logo: '✉️' },
+    { name: 'Sheets', logo: '📊' },
+    { name: 'Notion', logo: '📝' },
+    { name: 'Calendly', logo: '📅' },
+    { name: 'WhatsApp', logo: '🟢' },
+    { name: 'Intercom', logo: '💬' },
+    { name: 'Teams', logo: '👥' },
+    { name: 'Shopify', logo: '🛍️' },
+    { name: 'WooCommerce', logo: '🛒' },
+    { name: 'Custom REST', logo: '🌐' },
+    { name: 'GraphQL', logo: '◈' }
   ];
 
-  const pilotPlan = [
-    { week: "Week 1", title: "Discovery", desc: "Map workflows, identify tools, set success criteria" },
-    { week: "Week 2", title: "Tools + Tests", desc: "Build connectors, create test scenarios, validate logic" },
-    { week: "Week 3", title: "Approvals + UAT", desc: "Add human gates, user acceptance testing" },
-    { week: "Week 4", title: "Launch + Hypercare", desc: "Go live with monitoring and support" }
+  // Section 8: FAQs (Expanded from 3 to 6 + Website Default Signature Accordion)
+  const faqItems = [
+    {
+      q: "What makes an AI workflow 'agentic'?",
+      a: 'Unlike linear automations that run the exact same rigid sequence every time, an agentic workflow evaluates a high-level goal, dynamically selects the appropriate tools, adapts to intermediate outputs, and only pauses for human approval when predefined risk thresholds are reached.'
+    },
+    {
+      q: 'What if a step is risky?',
+      a: 'Anything with real consequences—such as sending an external email, altering a CRM record, or modifying sensitive financial data—is held at an approval gate where a human must review the proposed changes before execution.'
+    },
+    {
+      q: 'Do you support our custom API?',
+      a: 'Yes. We integrate via standard REST, GraphQL, Model Context Protocol (MCP), or custom webhook connectors so agents can use your proprietary internal databases and tools.'
+    },
+    {
+      /* TODO: Real positioning decision needed across n8n, Claude Automations, and Agentic Workflows.
+         Placeholder question flagged as requested in Part 1 Content Plan. */
+      q: 'How is this different from your n8n or Claude Automations service?',
+      a: 'Different projects call for different architectures: n8n excels at scheduled deterministic pipelines, Claude Automations handles deep document reasoning and code workflows, while Agentic Workflows are autonomous systems designed for dynamic multi-step goals that decide their own actions across tools with human approval gates.'
+    },
+    {
+      q: 'What happens if the agent gets something wrong?',
+      a: 'Every risky action requires your approval before it happens, and everything is logged — so mistakes are catchable, and reversible, before they cause damage.'
+    },
+    {
+      q: 'Can we set limits on what it is allowed to do?',
+      a: 'Yes — every agent runs inside an explicit allow-list of tools and actions you define upfront.'
+    }
   ];
- 
-  const handle4WeekPilotBtn = () => {
-    navigate("/pilot")
-  } 
+
+  const currentWf = demoWorkflows[activeWorkflowIndex];
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden bg-white">
-        <div className="absolute inset-0">
-          <motion.div 
-            className="absolute top-0 right-0 bg-gray-100 rounded-full w-96 h-96 blur-3xl opacity-30"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 0.3, scale: 1 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-          />
-          <motion.div 
-            className="absolute bottom-0 left-0 rounded-full w-80 h-80 bg-gray-50 blur-3xl opacity-20"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 0.2, scale: 1 }}
-            transition={{ duration: 1.5, ease: "easeOut", delay: 0.3 }}
-          />
+    <div className="min-h-screen bg-white font-sans selection:bg-blue-100 selection:text-blue-900">
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95 }}
+            className="fixed bottom-8 right-8 z-50 flex items-center gap-3 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-slate-700/80 text-sm font-medium"
+          >
+            <div className="w-2.5 h-2.5 rounded-full bg-blue-400 animate-ping shrink-0" />
+            <span>{toastMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ========================================================================= */}
+      {/* SECTION 1: HERO SECTION (Image 2 Reference)                                */}
+      {/* ========================================================================= */}
+      <section className="relative pt-28 sm:pt-32 md:pt-36 pb-20 md:pb-28 overflow-hidden bg-white">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-24 right-1/4 w-[500px] h-[500px] bg-blue-100/40 rounded-full blur-3xl" />
+          <div className="absolute top-1/3 -left-20 w-[420px] h-[420px] bg-indigo-50/50 rounded-full blur-3xl" />
         </div>
-        
-        <div className="relative px-6 mx-auto max-w-7xl">
-          <div className="grid items-center gap-12 lg:grid-cols-2">
-            <motion.div 
-              className="space-y-8"
-              initial="initial"
-              animate="animate"
-              variants={staggerContainer}
-            >
-              <motion.div 
-                className="inline-flex items-center gap-2 px-4 py-2 text-blue-900 bg-blue-100 rounded-full"
-                variants={scaleIn}
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+            
+            {/* Left Column: Hero Text */}
+            <div className="lg:col-span-6 space-y-7 text-left">
+              {/* Category Pill */}
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200/70 text-[#2563eb] text-xs sm:text-sm font-semibold tracking-wide"
               >
-                <Workflow className="w-4 h-4" />
-                <span className="text-sm font-medium">Agentic AI Workflows</span>
+                <Workflow className="w-4 h-4 text-[#2563eb]" />
+                <span>Agentic AI Workflows</span>
               </motion.div>
-              
-              <motion.h1 
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-black"
-                variants={fadeInUp}
+
+              {/* Main Headline */}
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-slate-950 tracking-tight leading-[1.08]"
               >
-                Agents that don't just answer—<span className="text-blue-900">they act</span>
+                Agents that don't <br className="hidden sm:inline" />
+                just answer — <br className="hidden sm:inline" />
+                <span className="text-[#2563eb]">they act</span>
               </motion.h1>
-              
-              <motion.p 
-                className="text-xl leading-relaxed text-gray-700"
-                variants={fadeInUp}
+
+              {/* Subheadline */}
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-lg sm:text-xl text-slate-600 max-w-xl font-normal leading-relaxed"
               >
                 Multi-step workflows that retrieve data, call tools, and finish tasks with guardrails and approvals.
               </motion.p>
-              
-              <motion.div 
-                className="flex flex-col gap-4 sm:flex-row"
-                variants={fadeInUp}
-              >
-              {/* <motion.button 
-                className="flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                    
-              >
-                <Play className="w-5 h-5" />
-                See workflow examples
-              </motion.button> */}
 
-              <motion.button 
-                className="flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-blue-900 transition-colors bg-white border-2 border-blue-900 rounded-lg hover:bg-blue-50"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                 onClick={handleTryDemo} 
+              {/* CTA Buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="flex flex-col sm:flex-row gap-4 pt-2"
               >
-                <Bot className="w-5 h-5" />
-                Try a workflow demo
-              </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={handleTryDemo}
+                  type="button"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4.5 bg-[#1d4ed8] hover:bg-[#1e40af] text-white text-base sm:text-lg font-bold rounded-2xl shadow-xl shadow-blue-500/20 transition-all duration-200 cursor-pointer text-center"
+                >
+                  <Play className="w-5 h-5 fill-white shrink-0" />
+                  <span>Try a workflow demo</span>
+                </motion.button>
+
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.96 }}
+                  className="w-full sm:w-auto"
+                >
+                  <HashLink
+                    smooth
+                    to="/book-consultation"
+                    className="inline-flex items-center justify-center gap-2.5 px-8 py-4.5 bg-white hover:bg-blue-50/50 text-[#1d4ed8] border-2 border-[#1d4ed8] text-base sm:text-lg font-bold rounded-2xl shadow-md transition-all duration-200 cursor-pointer w-full sm:w-auto text-center"
+                  >
+                    <Calendar className="w-5 h-5 text-[#1d4ed8] shrink-0" />
+                    <span>Book a 45-min call</span>
+                  </HashLink>
+                </motion.div>
               </motion.div>
-            </motion.div>
-            
-            {/* Architecture Diagram */}
-            
-           {/* Live agentic workflow preview */}
+
+              {/* 3 Trust Checkmarks */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="flex flex-wrap items-center gap-5 pt-3 text-xs sm:text-sm text-slate-700 font-medium"
+              >
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#2563eb]" />
+                  <span>Works with your tools</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#2563eb]" />
+                  <span>Human-in-the-loop</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#2563eb]" />
+                  <span>Measurable results</span>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Right Column: Hero Graphic (Customer Support Agent Mockup) */}
             <motion.div
-              className="relative"
-              initial={{ opacity: 0, x: 60 }}
+              initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="lg:col-span-6 relative"
             >
-              <AgenticWorkflowRichCard className="w-full max-w-xl mx-auto" />
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-100/90 bg-white group hover:shadow-3xl transition-shadow duration-500">
+                <img
+                  src="/images/services/agentic-workflows/hero-agent-mockup.webp"
+                  alt="Customer Support Agent live execution dashboard with Salesforce, Zendesk, Slack, Gmail, and Notion"
+                  className="w-full h-auto object-contain block group-hover:scale-[1.01] transition-transform duration-500"
+                />
+              </div>
             </motion.div>
 
           </div>
+
+          {/* 4 Capability Cards Row below Hero */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-16 mt-16 border-t border-slate-100">
+            {heroCapabilities.map((cap, idx) => {
+              const Icon = cap.icon;
+              return (
+                <div
+                  key={idx}
+                  className="p-6 rounded-2xl bg-white border border-slate-200/80 hover:border-blue-300 hover:shadow-lg transition-all duration-300 flex flex-col justify-between group"
+                >
+                  <div>
+                    <div className="w-11 h-11 rounded-xl bg-blue-50 text-[#2563eb] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-bold text-slate-900 text-base mb-1.5">{cap.title}</h3>
+                    <p className="text-xs text-slate-600 leading-relaxed">{cap.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
         </div>
       </section>
 
-      {/* Live Workflow Demo */}
-      <section className="py-20 bg-gray-50">
-        <div className="px-6 mx-auto max-w-7xl">
-          <motion.div 
-            className="mb-16 text-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            <h2 className="mb-4 text-4xl font-bold text-black">
-              Watch Agents <span className="text-blue-900">Work</span>
-            </h2>
-            <p className="text-xl text-gray-700">See how multi-step workflows execute with human approval gates</p>
-          </motion.div>
+      {/* ========================================================================= */}
+      {/* SECTION 2: NOT JUST A CHATBOT. NOT JUST A WORKFLOW. (CHANGE 1 Repurposed)  */}
+      {/* ========================================================================= */}
+      <section className="py-24 bg-[#f8faff] border-t border-slate-100 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="grid gap-12 lg:grid-cols-2">
-            {/* Workflow Visualization */}
-            <motion.div 
-              className="overflow-hidden bg-white border border-gray-200 shadow-xl rounded-2xl"
-              initial={{ opacity: 0, x: -60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <motion.div 
-                className="p-6 text-white bg-blue-900"
-                initial={{ opacity: 0, y: -20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-              >
-                <div className="flex items-center justify-between">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100/70 border border-blue-200/60 text-[#2563eb] text-xs font-bold uppercase tracking-wider mb-4">
+              <Brain className="w-3.5 h-3.5" />
+              <span>THE AGENT ADVANTAGE</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 tracking-tight mb-4">
+              Not Just a Chatbot. <br className="hidden sm:inline" />
+              <span className="text-[#2563eb]">Not Just a Workflow.</span>
+            </h2>
+
+            <p className="text-lg sm:text-xl text-slate-600 font-medium mb-6">
+              An agent plans its own steps, decides what to do next, and only stops to ask when it matters.
+            </p>
+
+            <p className="text-base text-slate-600 leading-relaxed">
+              A chatbot answers questions. A scheduled workflow runs the same steps every time, in the same order. An agent sits in between — it looks at a goal, figures out what steps get there, calls the tools it needs along the way, and checks in with you before anything risky happens.
+            </p>
+          </div>
+
+          {/* 3 Conceptual Difference Cards */}
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            {/* Card 1: Chatbot */}
+            <div className="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-xs hover:shadow-lg transition-all flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center mb-5">
+                  <Bot className="w-6 h-6" />
+                </div>
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Tier 1</span>
+                <h3 className="text-2xl font-bold text-slate-900 mt-1 mb-3">Chatbots</h3>
+                <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                  Passively answer questions inside a chat bubble. Good for FAQ lookups, but cannot execute actions, call APIs, or handle complex multi-system handoffs.
+                </p>
+              </div>
+              <div className="pt-4 border-t border-slate-100 text-xs font-semibold text-slate-500">
+                Limit: Answers words, doesn't take action.
+              </div>
+            </div>
+
+            {/* Card 2: Scheduled Workflow */}
+            <div className="bg-white rounded-3xl p-8 border border-slate-200/80 shadow-xs hover:shadow-lg transition-all flex flex-col justify-between">
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center mb-5">
+                  <GitBranch className="w-6 h-6" />
+                </div>
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Tier 2</span>
+                <h3 className="text-2xl font-bold text-slate-900 mt-1 mb-3">Linear Workflows</h3>
+                <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                  Executes step A → B → C in exact deterministic order. Great for rigid predictable pipelines, but breaks if unexpected outputs or edge cases appear.
+                </p>
+              </div>
+              <div className="pt-4 border-t border-slate-100 text-xs font-semibold text-slate-500">
+                Limit: Rigid steps, cannot adapt dynamically.
+              </div>
+            </div>
+
+            {/* Card 3: Agentic Workflows (Active Featured Card) */}
+            <div className="bg-white rounded-3xl p-8 border-2 border-[#1d4ed8] shadow-xl shadow-blue-500/10 flex flex-col justify-between relative">
+              <div className="absolute -top-3.5 right-6 px-3 py-1 bg-[#1d4ed8] text-white text-[11px] font-bold uppercase tracking-wider rounded-full shadow-sm">
+                Autonomous & Safe
+              </div>
+              <div>
+                <div className="w-12 h-12 rounded-2xl bg-blue-50 text-[#1d4ed8] flex items-center justify-center mb-5">
+                  <Sparkles className="w-6 h-6" />
+                </div>
+                <span className="text-xs font-bold uppercase tracking-wider text-[#1d4ed8]">Tier 3 — The Agent</span>
+                <h3 className="text-2xl font-bold text-slate-950 mt-1 mb-3">Agentic AI Workflows</h3>
+                <p className="text-sm text-slate-600 leading-relaxed mb-4">
+                  Given a high-level objective, it analyzes context, decides the optimal sequence of tools, retrieves data, iterates, and asks for approval before impactful steps.
+                </p>
+              </div>
+              <div className="pt-4 border-t border-blue-100 text-xs font-bold text-[#1d4ed8] flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4" />
+                <span>Full autonomy with built-in human guardrails</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Neutral Illustrative Mini-Run (Generic Example) */}
+          <div className="p-6 sm:p-7 rounded-2xl bg-white border border-slate-200/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-700">
+            <div className="flex flex-col sm:flex-row items-center gap-3 text-sm font-semibold text-center sm:text-left">
+              <div className="flex items-center gap-2">
+                <Activity className="w-5 h-5 text-[#2563eb] shrink-0" />
+                <span>Example agent run:</span>
+              </div>
+              <span className="font-mono text-[11px] sm:text-xs bg-slate-100 px-3 py-1.5 rounded-lg text-slate-800 max-w-full break-words">
+                Retrieve → Analyze → Draft → Update (with human approval gate)
+              </span>
+            </div>
+            <span className="text-xs text-slate-500 font-medium">
+              Runs in seconds • 100% audit logged
+            </span>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 3: WHERE TEAMS USE AGENTIC WORKFLOWS (CHANGE 2 - 🆕 Gallery)      */}
+      {/* ========================================================================= */}
+      <section className="py-24 bg-white border-t border-slate-100 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100/70 border border-blue-200/60 text-[#2563eb] text-xs font-bold uppercase tracking-wider mb-4">
+              <Layers className="w-3.5 h-3.5" />
+              <span>USE CASES ACROSS TEAMS</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 tracking-tight mb-4">
+              Where Teams Use <span className="text-[#2563eb]">Agentic Workflows</span>
+            </h2>
+            <p className="text-lg sm:text-xl text-slate-600">
+              Real examples, not hypotheticals.
+            </p>
+          </div>
+
+          {/* 6-Card Gallery Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            {useCasesGallery.map((uc, idx) => {
+              const Icon = uc.icon;
+              return (
+                <div
+                  key={idx}
+                  className="p-7 sm:p-8 rounded-3xl bg-[#fcfdff] border border-slate-200/80 shadow-xs hover:shadow-xl hover:border-blue-300 transition-all duration-300 flex flex-col justify-between group"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-5">
+                      <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-[#2563eb] group-hover:bg-[#1d4ed8] group-hover:text-white transition-all duration-300">
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">
+                        {uc.tag}
+                      </span>
+                    </div>
+
+                    <h3 className="text-xl font-bold text-slate-950 mb-3 leading-snug">
+                      {uc.title}
+                    </h3>
+
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      {uc.desc}
+                    </p>
+                  </div>
+
+                  <div className="pt-6 mt-6 border-t border-slate-100 flex items-center gap-2 text-xs font-semibold text-[#1d4ed8]">
+                    <Check className="w-4 h-4" />
+                    <span>Approval before anything sends</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 4: WATCH AGENTS WORK (LIVE DEMO - Image 3 Reference)               */}
+      {/* ========================================================================= */}
+      <section id="live-demo" className="py-24 bg-[#f8faff] border-t border-slate-100 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100/70 border border-blue-200/60 text-[#2563eb] text-xs font-bold uppercase tracking-wider mb-4">
+              <Play className="w-3.5 h-3.5 fill-[#2563eb]" />
+              <span>LIVE DEMO</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 tracking-tight mb-4">
+              Watch Agents <span className="text-[#2563eb]">Work</span>
+            </h2>
+            <p className="text-lg sm:text-xl text-slate-600">
+              See how multi-step workflows execute with human approval gates
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+            
+            {/* Left Column: Live Agent Execution Window */}
+            <div className="lg:col-span-6 space-y-6">
+              <div className="rounded-3xl border border-slate-200/90 shadow-xl overflow-hidden bg-white">
+                {/* Header Banner */}
+                <div className="p-6 bg-[#1d4ed8] text-white flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-xl">
+                    <div className="w-11 h-11 rounded-2xl bg-white/20 flex items-center justify-center text-white">
                       <Workflow className="w-6 h-6" />
                     </div>
                     <div>
-                      <div className="text-lg font-bold">Sales Agent Workflow</div>
-                      <div className="text-sm text-blue-100">Lead Qualification Pipeline</div>
+                      <h3 className="font-bold text-lg leading-tight">{currentWf.pipelineTitle}</h3>
+                      <p className="text-xs text-blue-100">{currentWf.pipelineSub}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 bg-blue-300 rounded-full animate-pulse"></div>
-                    <span className="text-sm">Processing</span>
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-xs font-semibold text-blue-50">{currentWf.currentStep}</span>
                   </div>
                 </div>
-              </motion.div>
-              
-              <div className="p-6 bg-gray-50">
-                <div className="space-y-4">
-                  {workflowSteps.map((step, index) => (
-                    <motion.div 
-                      key={index}
-                      className={`flex items-center gap-4 p-4 rounded-xl transition-all ${
-                        index <= currentStep ? 'bg-blue-100 border border-blue-200' : 'bg-white border border-gray-200'
+
+                {/* Step List */}
+                <div className="p-6 space-y-3.5 bg-slate-50/70">
+                  {currentWf.steps.map((st, i) => (
+                    <div
+                      key={i}
+                      className={`p-4 rounded-2xl border transition-all flex items-center justify-between gap-3 text-sm ${
+                        st.status === 'done'
+                          ? 'bg-white border-emerald-200/80 shadow-xs'
+                          : st.status === 'active'
+                          ? 'bg-blue-50/90 border-[#1d4ed8] shadow-sm'
+                          : 'bg-white/60 border-slate-200/60 text-slate-400'
                       }`}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
                     >
-                      <div className={`flex items-center justify-center w-10 h-10 rounded-xl ${
-                        index < currentStep ? 'bg-blue-900' : 
-                        index === currentStep ? 'bg-blue-700 animate-pulse' : 'bg-gray-300'
-                      }`}>
-                        <step.icon className={`w-5 h-5 ${index <= currentStep ? 'text-white' : 'text-gray-600'}`} />
-                      </div>
-                      <div className="flex-1">
-                        <div className={`font-semibold ${index <= currentStep ? 'text-blue-900' : 'text-gray-500'}`}>
-                          {step.step}
+                      <div className="flex items-center gap-3.5">
+                        <div
+                          className={`w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs ${
+                            st.status === 'done'
+                              ? 'bg-emerald-500 text-white'
+                              : st.status === 'active'
+                              ? 'bg-[#1d4ed8] text-white animate-pulse'
+                              : 'bg-slate-200 text-slate-500'
+                          }`}
+                        >
+                          {st.status === 'done' ? <Check className="w-4 h-4" /> : st.num}
                         </div>
-                        <div className={`text-sm ${index <= currentStep ? 'text-black' : 'text-gray-400'}`}>
-                          {step.desc}
+                        <div>
+                          <span className={`font-bold ${st.status === 'active' ? 'text-[#1d4ed8]' : 'text-slate-900'}`}>
+                            {st.num}. {st.title}
+                          </span>
+                          <p className="text-xs text-slate-500 mt-0.5">{st.desc}</p>
                         </div>
                       </div>
-                      {index < currentStep && (
-                        <CheckCircle2 className="w-5 h-5 text-blue-900" />
-                      )}
-                      {index === currentStep && isProcessing && (
-                        <div className="w-5 h-5 border-2 border-blue-900 rounded-full border-t-transparent animate-spin"></div>
-                      )}
-                    </motion.div>
+
+                      <span
+                        className={`text-xs font-semibold font-mono ${
+                          st.status === 'done'
+                            ? 'text-slate-500'
+                            : st.status === 'active'
+                            ? 'text-[#1d4ed8]'
+                            : 'text-slate-400'
+                        }`}
+                      >
+                        {st.time}
+                      </span>
+                    </div>
                   ))}
                 </div>
+
+                {/* Agent Output Draft Preview */}
+                <div className="p-6 border-t border-slate-100 bg-white space-y-2">
+                  <div className="flex items-center justify-between text-xs font-bold text-slate-500 uppercase tracking-wider">
+                    <span className="flex items-center gap-1.5">
+                      <FileText className="w-4 h-4 text-[#2563eb]" />
+                      Agent Output (Draft)
+                    </span>
+                    <span className="text-[#1d4ed8] normal-case cursor-pointer hover:underline">
+                      View full output →
+                    </span>
+                  </div>
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 font-mono text-xs text-slate-800 whitespace-pre-line leading-relaxed">
+                    <span className="font-bold text-slate-950">{currentWf.output.subject}</span>
+                    {'\n\n'}
+                    {currentWf.output.body}
+                  </div>
+                </div>
               </div>
-            </motion.div>
-            
-            {/* Demo Prompts and Approval UI */}
-            <motion.div 
-              className="space-y-6"
-              initial={{ opacity: 0, x: 60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <motion.h3 
-                className="text-2xl font-bold text-blue-900"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-              >
-                Try these workflows:
-              </motion.h3>
+            </div>
+
+            {/* Right Column: Workflow Switchers + Approval Gate Card */}
+            <div className="lg:col-span-6 space-y-6">
               
-              <motion.div 
-                className="space-y-4"
-                variants={staggerContainer}
-                initial="initial"
-                whileInView="animate"
-                viewport={{ once: true, amount: 0.3 }}
-              >
-                {demoPrompts.map((prompt, index) => (
-                  <motion.button
-                    key={index}
-                    onClick={() => handlePromptClick(index)}
-                    className={`w-full p-4 text-left transition-colors border rounded-lg ${
-                      activePromptIndex === index
-                        ? 'bg-blue-900 border-blue-900 text-white'
-                        : 'bg-white border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+              {/* Box 1: Try These Workflows */}
+              <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-sm space-y-4">
+                <div className="flex items-center gap-2 text-sm font-bold text-[#1d4ed8] uppercase tracking-wider">
+                  <Zap className="w-4 h-4 fill-[#1d4ed8]" />
+                  <span>Try these workflows:</span>
+                </div>
+
+                <div className="space-y-3">
+                  {demoWorkflows.map((wf, idx) => {
+                    const Icon = wf.icon;
+                    const isActive = activeWorkflowIndex === idx;
+                    return (
+                      <button
+                        key={idx}
+                        onClick={() => {
+                          setActiveWorkflowIndex(idx);
+                          setApprovalState('idle');
+                        }}
+                        className={`w-full p-4 rounded-2xl border text-left flex items-center justify-between gap-3 text-sm font-semibold transition-all cursor-pointer ${
+                          isActive
+                            ? 'bg-[#1d4ed8] text-white border-[#1d4ed8] shadow-md shadow-blue-500/10'
+                            : 'bg-white text-slate-800 border-slate-200 hover:border-blue-300 hover:bg-blue-50/40'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <Icon className={`w-5 h-5 shrink-0 ${isActive ? 'text-white' : 'text-[#1d4ed8]'}`} />
+                          <span>{wf.title}</span>
+                        </div>
+                        <ArrowRight className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Box 2: Human Approval Required Card */}
+              <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-lg space-y-5">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                  <div className="flex items-center gap-2.5">
+                    <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0" />
+                    <span className="font-bold text-base text-slate-950">Human Approval Required</span>
+                  </div>
+                  <span className="text-xs text-slate-400 font-medium">Today at 10:24 AM</span>
+                </div>
+
+                <p className="text-sm font-medium text-slate-700">
+                  {currentWf.approval.agentGoal}
+                </p>
+
+                {/* Proposed Changes Table */}
+                <div className="p-4 rounded-2xl bg-[#f0f7ff] border border-blue-200/70 space-y-2">
+                  <div className="text-[11px] font-bold text-[#1d4ed8] uppercase tracking-wider mb-2">
+                    PROPOSED CHANGES
+                  </div>
+                  <div className="space-y-1.5 text-xs text-slate-800">
+                    {currentWf.approval.changes.map((ch, i) => (
+                      <div key={i} className="flex items-center justify-between">
+                        <span className="text-slate-500">{ch.label}:</span>
+                        <span className="font-bold text-slate-900">{ch.val}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                {approvalState === 'idle' ? (
+                  <div className="flex gap-3 pt-1">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.96 }}
+                      onClick={handleApproveAction}
+                      className="flex-1 py-3.5 px-5 bg-[#1d4ed8] hover:bg-[#1e40af] text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 shadow-md shadow-blue-500/15 cursor-pointer transition-colors"
+                    >
+                      <Check className="w-4 h-4" />
+                      <span>Approve</span>
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.96 }}
+                      onClick={handleDeclineAction}
+                      className="flex-1 py-3.5 px-5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-semibold text-sm rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-colors"
+                    >
+                      <span>✕ Decline</span>
+                    </motion.button>
+                  </div>
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`p-4 rounded-2xl flex items-center justify-between gap-4 border ${
+                      approvalState === 'approved'
+                        ? 'bg-emerald-50 border-emerald-200 text-emerald-950'
+                        : 'bg-slate-100 border-slate-200 text-slate-800'
                     }`}
-                    variants={fadeInUp}
-                    whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-                    whileTap={{ scale: 0.98 }}
                   >
-                    <div className="flex items-start gap-3">
-                      <Workflow className={`w-5 h-5 mt-0.5 ${activePromptIndex === index ? 'text-white' : 'text-blue-900'}`} />
-                      <span className={activePromptIndex === index ? 'text-white' : 'text-black'}>"{prompt}"</span>
+                    <div className="flex items-center gap-2.5">
+                      {approvalState === 'approved' ? (
+                        <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+                      ) : (
+                        <RotateCcw className="w-5 h-5 text-slate-500 shrink-0" />
+                      )}
+                      <span className="text-xs sm:text-sm font-semibold">
+                        {approvalState === 'approved'
+                          ? 'Action approved — executed & logged to audit trail.'
+                          : 'Action declined — execution cancelled safely.'}
+                      </span>
                     </div>
-                  </motion.button>
-                ))}
-              </motion.div>
-              
-              {/* Approval Card Mock */}
-              <motion.div 
-                className="p-6 bg-white border border-gray-200 rounded-lg"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
-              >
-                <div className="mb-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <AlertTriangle className="w-5 h-5 text-amber-500" />
-                    <span className="font-semibold text-blue-900">Human Approval Required</span>
-                  </div>
-                  <p className="text-sm text-black">Agent wants to update CRM record for "Acme Corp"</p>
-                </div>
-                
-                <div className="p-3 mb-4 rounded-lg bg-blue-50">
-                  <div className="mb-1 text-xs font-medium text-blue-900">PROPOSED CHANGES</div>
-                  <div className="text-sm text-black">
-                    • Lead Score: 45 → 85<br/>
-                    • Status: New → Qualified<br/>
-                    • Next Action: Schedule demo call
-                  </div>
-                </div>
-                
-                <div className="flex gap-3">
-                  <button className="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-900 rounded-lg hover:bg-blue-800">
-                    Approve
-                  </button>
-                  <button className="flex-1 px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">
-                    Decline
-                  </button>
-                </div>
-              </motion.div>
-            </motion.div>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => setApprovalState('idle')}
+                      className="px-3 py-1.5 bg-white border border-slate-200 text-slate-700 rounded-lg text-xs font-bold hover:bg-slate-50 flex items-center gap-1 cursor-pointer shrink-0"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5" />
+                      <span>Reset</span>
+                    </motion.button>
+                  </motion.div>
+                )}
+              </div>
+
+            </div>
+
           </div>
+
+          {/* Bottom Works With Your Tools Logo Row */}
+          <div className="mt-14 pt-8 border-t border-slate-200/80 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              WORKS WITH YOUR TOOLS
+            </span>
+            <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 text-sm font-semibold text-slate-700">
+              <span className="flex items-center gap-2">🟧 HubSpot</span>
+              <span className="flex items-center gap-2">☁️ Salesforce</span>
+              <span className="flex items-center gap-2">✉️ Gmail</span>
+              <span className="flex items-center gap-2">💬 Slack</span>
+              <span className="flex items-center gap-2">📊 Google Sheets</span>
+              <span className="flex items-center gap-2">📝 Notion</span>
+              <span className="px-3 py-1 rounded-full bg-blue-50 text-[#1d4ed8] text-xs font-bold">
+                + 200+ more
+              </span>
+            </div>
+          </div>
+
         </div>
       </section>
 
-  
-    
+      {/* ========================================================================= */}
+      {/* SECTION 5: WHAT THE AGENT CAN — AND CAN'T — DO WITHOUT YOU (CHANGE 3 🆕)   */}
+      {/* ========================================================================= */}
+      <section className="py-24 bg-white border-t border-slate-100 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100/70 border border-blue-200/60 text-[#2563eb] text-xs font-bold uppercase tracking-wider mb-4">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>SAFETY & LIMITS</span>
+            </div>
 
-      {/* Patterns We Ship */}
-  
-
-      {/* 4-Week Pilot Plan */}
-      <section className="py-20 bg-gray-50">
-  <div className="px-6 mx-auto max-w-7xl">
-    <motion.div 
-      className="mb-16 text-center"
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.3 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-    >
-      <h2 className="mb-4 text-4xl font-bold text-black">
-        4-Week <span className="text-blue-900">Pilot</span>
-      </h2>
-      <p className="text-xl text-gray-700">From discovery to launch with proven methodology</p>
-    </motion.div>
-    
-    <motion.div 
-      className="grid gap-8 md:grid-cols-2 lg:grid-cols-4"
-      variants={staggerContainer}
-      initial="initial"
-      whileInView="animate"
-      viewport={{ once: true, amount: 0.3 }}
-    >
-      {/* Week 1 */}
-      <motion.div 
-        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
-        variants={fadeInUp}
-        whileHover={{ y: -8, transition: { duration: 0.3 } }}
-      >
-        <div className="flex flex-col items-center text-center">
-          <motion.div 
-            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
-            initial={{ scale: 0, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            <Search className="w-8 h-8 text-blue-900" />
-          </motion.div>
-          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
-            Week 1
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 tracking-tight mb-4">
+              What the Agent Can — and Can't — <span className="text-[#2563eb]">Do Without You</span>
+            </h2>
+            <p className="text-lg sm:text-xl text-slate-600">
+              Every agent runs inside limits you set, not limits it decides for itself.
+            </p>
           </div>
-          <h3 className="mb-3 text-xl font-bold text-black">Discovery</h3>
-          <p className="leading-relaxed text-gray-600">
-            Map workflows, identify tools, set success criteria.
-          </p>
-        </div>
-        {/* Arrow for desktop */}
-        <motion.div 
-          className="absolute hidden transform -translate-y-1/2 lg:block top-1/2 -right-4"
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
-        >
-          <ArrowRight className="w-6 h-6 text-gray-300" />
-        </motion.div>
-      </motion.div>
 
-      {/* Week 2 */}
-      <motion.div 
-        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
-        variants={fadeInUp}
-        whileHover={{ y: -8, transition: { duration: 0.3 } }}
-      >
-        <div className="flex flex-col items-center text-center">
-          <motion.div 
-            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
-            initial={{ scale: 0, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
-          >
-            <Settings className="w-8 h-8 text-blue-900" />
-          </motion.div>
-          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
-            Week 2
-          </div>
-          <h3 className="mb-3 text-xl font-bold text-black">Tools + Tests</h3>
-          <p className="leading-relaxed text-gray-600">
-            Build connectors, create test scenarios, validate logic.
-          </p>
-        </div>
-        <motion.div 
-          className="absolute hidden transform -translate-y-1/2 lg:block top-1/2 -right-4"
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
-        >
-          <ArrowRight className="w-6 h-6 text-gray-300" />
-        </motion.div>
-      </motion.div>
-
-      {/* Week 3 */}
-      <motion.div 
-        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
-        variants={fadeInUp}
-        whileHover={{ y: -8, transition: { duration: 0.3 } }}
-      >
-        <div className="flex flex-col items-center text-center">
-          <motion.div 
-            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
-            initial={{ scale: 0, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
-          >
-            <CheckSquare className="w-8 h-8 text-blue-900" />
-          </motion.div>
-          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
-            Week 3
-          </div>
-          <h3 className="mb-3 text-xl font-bold text-black">Approvals + UAT</h3>
-          <p className="leading-relaxed text-gray-600">
-            Add human gates, user acceptance testing.
-          </p>
-        </div>
-        <motion.div 
-          className="absolute hidden transform -translate-y-1/2 lg:block top-1/2 -right-4"
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
-        >
-          <ArrowRight className="w-6 h-6 text-gray-300" />
-        </motion.div>
-      </motion.div>
-
-      {/* Week 4 */}
-      <motion.div 
-        className="relative p-8 rounded-2xl hover:bg-white hover:border hover:border-gray-200"
-        variants={fadeInUp}
-        whileHover={{ y: -8, transition: { duration: 0.3 } }}
-      >
-        <div className="flex flex-col items-center text-center">
-          <motion.div 
-            className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
-            initial={{ scale: 0, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
-          >
-            <Zap className="w-8 h-8 text-blue-900" />
-          </motion.div>
-          <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
-            Week 4
-          </div>
-          <h3 className="mb-3 text-xl font-bold text-black">Launch + Hypercare</h3>
-          <p className="leading-relaxed text-gray-600">
-            Go live with monitoring and support.
-          </p>
-        </div>
-      </motion.div>
-    </motion.div>
-  </div>
-</section>
-
-      {/* Guardrails & KPIs */}
-      {/* <section className="py-20 bg-white">
-        <div className="px-6 mx-auto max-w-7xl">
-          <div className="grid gap-12 lg:grid-cols-2">
-            <motion.div 
-              className="p-8 border border-blue-200 bg-blue-50 rounded-2xl"
-              initial={{ opacity: 0, x: -60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <motion.h2 
-                className="mb-8 text-3xl font-bold text-black"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-              >
-                <span className="text-blue-900">Guardrails</span>
-              </motion.h2>
-              <motion.div 
-                className="space-y-6"
-                variants={staggerContainer}
-                initial="initial"
-                whileInView="animate"
-                viewport={{ once: true, amount: 0.3 }}
-              >
-                {guardrails.map((item, index) => (
-                  <motion.div 
-                    key={index}
-                    className="flex items-start gap-4 p-4 bg-white border border-blue-100 rounded-xl"
-                    variants={fadeInLeft}
-                    whileHover={{ x: 8, transition: { duration: 0.3 } }}
-                  >
-                    <motion.div 
-                      className="flex items-center justify-center flex-shrink-0 w-12 h-12 bg-blue-100 rounded-xl"
-                      initial={{ scale: 0, rotate: -90 }}
-                      whileInView={{ scale: 1, rotate: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 * index }}
-                    >
-                      <item.icon className="w-6 h-6 text-blue-900" />
-                    </motion.div>
-                    <div>
-                      <h3 className="mb-1 font-bold text-blue-900">{item.title}</h3>
-                      <p className="text-black">{item.desc}</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            {guardrailsCards.map((gd, idx) => {
+              const Icon = gd.icon;
+              return (
+                <div
+                  key={idx}
+                  className="bg-[#fcfdff] rounded-3xl p-7 border border-slate-200/80 shadow-xs hover:shadow-xl hover:border-blue-300 transition-all duration-300 flex flex-col justify-between group"
+                >
+                  <div>
+                    <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center text-[#2563eb] mb-5 group-hover:scale-110 group-hover:bg-[#1d4ed8] group-hover:text-white transition-all duration-300">
+                      <Icon className="w-6 h-6" />
                     </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </motion.div>
-            
-            <motion.div 
-              className="p-8 border border-blue-200 bg-blue-50 rounded-2xl"
-              initial={{ opacity: 0, x: 60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <motion.h2 
-                className="mb-8 text-3xl font-bold text-black"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-              >
-                KPIs We <span className="text-blue-900">Track</span>
-              </motion.h2>
-              <motion.div 
-                className="space-y-4"
-                variants={staggerContainer}
-                initial="initial"
-                whileInView="animate"
-                viewport={{ once: true, amount: 0.3 }}
-              >
-                {kpis.map((kpi, index) => (
-                  <motion.div 
-                    key={index} 
-                    className="flex items-center gap-4 p-4 bg-white border border-blue-100 rounded-xl"
-                    variants={fadeInRight}
-                    whileHover={{ x: -8, transition: { duration: 0.3 } }}
-                  >
-                    <motion.div 
-                      className="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-lg"
-                      initial={{ scale: 0, rotate: 90 }}
-                      whileInView={{ scale: 1, rotate: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 * index }}
-                    >
-                      <BarChart3 className="w-5 h-5 text-blue-900" />
-                    </motion.div>
-                    <span className="font-medium text-black">{kpi}</span>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </motion.div>
+                    <span className="inline-block px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[11px] font-semibold tracking-wide uppercase mb-3">
+                      {gd.badge}
+                    </span>
+                    <h3 className="text-xl font-bold text-slate-950 mb-2.5 leading-snug">
+                      {gd.title}
+                    </h3>
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      {gd.desc}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        </div>
-      </section> */}
 
-      {/* Integrations */}
-      <section className="py-20 bg-gray-50">
-        <div className="px-6 mx-auto max-w-7xl">
-          <motion.div 
-            className="mb-16 text-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            <h2 className="mb-4 text-4xl font-bold text-blue-900">
-              Integrations
-            </h2>
-            <p className="text-xl text-gray-700">Connect with your existing tools and systems</p>
-          </motion.div>
-          
-          <motion.div 
-            className="flex flex-wrap justify-center gap-4"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.3 }}
-          >
-            {integrations.map((integration, index) => (
-              <motion.div 
-                key={index} 
-                className="px-6 py-3 font-medium text-black bg-white border border-gray-200 rounded-full"
-                variants={scaleIn}
-                whileHover={{ scale: 1.05, backgroundColor: '#f0f9ff', borderColor: '#3b82f6', transition: { duration: 0.2 } }}
-              >
-                {integration}
-              </motion.div>
-            ))}
-          </motion.div>
         </div>
       </section>
 
-      {/* FAQs */}
-      <section className="py-20 bg-white">
-        <div className="max-w-4xl px-6 mx-auto">
-          <motion.div 
-            className="mb-16 text-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            <h2 className="mb-4 text-4xl font-bold text-black">
-              Frequently Asked <span className="text-blue-900">Questions</span>
-            </h2>
-          </motion.div>
+      {/* ========================================================================= */}
+      {/* SECTION 6: 4-WEEK PILOT (Image 4 Reference)                                */}
+      {/* ========================================================================= */}
+      <section className="py-16 sm:py-20 bg-[#f8faff] border-t border-slate-100 relative">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           
-          <motion.div 
-            className="space-y-6"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.3 }}
-          >
-            {[
-              { q: "Can we see each step?", a: "Yes—every step is logged with inputs/outputs." },
-              { q: "What if a step is risky?", a: "It goes to preview and requires human approval." },
-              { q: "Do you support our custom API?", a: "Yes—HTTP tool or custom connector." }
-            ].map((faq, index) => (
-              <motion.div 
-                key={index} 
-                className="p-6 bg-white border border-gray-200 rounded-xl"
-                variants={fadeInUp}
-                whileHover={{ y: -4, transition: { duration: 0.3 } }}
-              >
-                <motion.h3 
-                  className="mb-2 font-bold text-blue-900"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 * index }}
-                >
-                  {faq.q}
-                </motion.h3>
-                <motion.p 
-                  className="text-black"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 + 0.1 * index }}
-                >
-                  {faq.a}
-                </motion.p>
-              </motion.div>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100/70 border border-blue-200/60 text-[#2563eb] text-xs font-bold uppercase tracking-wider mb-3">
+            <Calendar className="w-3.5 h-3.5" />
+            <span>4-WEEK PILOT</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight mb-3">
+            From discovery to launch with <span className="text-[#2563eb]">proven methodology</span>
+          </h2>
+          <p className="text-base sm:text-lg text-slate-600 max-w-xl mx-auto mb-10">
+            A structured 4-week pilot to deliver real value, fast.
+          </p>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-center items-center">
+            {pilotSteps.map((step, idx) => (
+              <div key={idx} className="relative group max-w-[230px] mx-auto w-full">
+                <div className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm hover:shadow-lg border border-slate-200/80 transition-all duration-300 bg-white">
+                  <img
+                    src={step.image}
+                    alt={`${step.week}: ${step.title}`}
+                    className="w-full h-auto max-h-[310px] object-contain block group-hover:scale-[1.02] transition-transform duration-300 mx-auto"
+                  />
+                </div>
+
+                {/* Connecting Arrow for desktop */}
+                {idx < 3 && (
+                  <div className="hidden lg:flex absolute top-1/2 -right-3.5 transform -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-white border border-slate-200 shadow-sm items-center justify-center text-slate-400 pointer-events-none">
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </div>
+                )}
+              </div>
             ))}
-          </motion.div>
+          </div>
+
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="relative py-20 overflow-hidden text-black bg-white">
-        <div className="absolute inset-0">
-          <div className="absolute top-0 right-0 bg-blue-100 rounded-full w-96 h-96 opacity-20 blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 rounded-full w-80 h-80 bg-blue-50 opacity-10 blur-3xl"></div>
-        </div>
-        
-        <div className="relative max-w-4xl px-6 mx-auto text-center">
-          <motion.div 
-            className="mb-8"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <motion.div 
-              className="inline-flex items-center gap-3 px-6 py-3 mb-6 bg-blue-100 border border-blue-200 rounded-full backdrop-blur-sm"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-            >
-              <Workflow className="w-5 h-5 text-blue-900" />
-              <span className="text-sm font-medium text-blue-900">Ready to automate?</span>
-            </motion.div>
-            
-            <motion.h2 
-              className="mb-6 text-4xl font-bold text-black lg:text-5xl"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
-            >
-              Start a <span className="text-blue-900">4-week agent pilot</span>
-            </motion.h2>
-            
-            <motion.p 
-              className="max-w-2xl mx-auto mb-8 text-xl leading-relaxed text-gray-700"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
-            >
-              Get multi-step AI workflows running with human oversight and measurable business outcomes.
-            </motion.p>
-          </motion.div>
+      {/* ========================================================================= */}
+      {/* SECTION 7: INTEGRATIONS (Image 4 Reference)                                */}
+      {/* ========================================================================= */}
+      <section className="py-24 bg-white border-t border-slate-100 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           
-          <motion.div 
-            className="flex flex-col justify-center gap-4 mb-8 sm:flex-row"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
-          >
-            <motion.button 
-              className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-white transition-all duration-300 bg-blue-900 shadow-lg rounded-xl hover:bg-blue-800 hover:shadow-xl"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handle4WeekPilotBtn}
-            >
-              <Zap className="w-5 h-5" />
-              Start a 4-week pilot
-            </motion.button>
-            
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100/70 border border-blue-200/60 text-[#2563eb] text-xs font-bold uppercase tracking-wider mb-4">
+            <Layers className="w-3.5 h-3.5" />
+            <span>INTEGRATIONS</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 tracking-tight mb-4">
+            Connect with your <span className="text-[#2563eb]">existing tools</span> and systems
+          </h2>
+          <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto mb-16">
+            Works with 200+ tools out of the box, or any tool via custom API or MCP.
+          </p>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-4 max-w-6xl mx-auto">
+            {integrationList.map((item, idx) => (
+              <div
+                key={idx}
+                className="p-4 rounded-2xl bg-white border border-slate-200/90 hover:border-blue-300 hover:bg-blue-50/40 hover:shadow-md transition-all flex flex-col items-center justify-center gap-2 font-semibold text-xs sm:text-sm text-slate-800"
+              >
+                <span className="text-2xl">{item.logo}</span>
+                <span className="truncate w-full text-center">{item.name}</span>
+              </div>
+            ))}
+
+            {/* + 200+ More Card */}
+            <div className="p-4 rounded-2xl bg-blue-50 border border-blue-200 hover:bg-blue-100/70 transition-all flex flex-col items-center justify-center gap-1 font-bold text-xs sm:text-sm text-[#1d4ed8]">
+              <span className="text-lg font-extrabold">+</span>
+              <span>200+ more</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 8: FREQUENTLY ASKED QUESTIONS (CHANGE 4 - 6 FAQs + Signature FAQ)  */}
+      {/* ========================================================================= */}
+      <section className="py-24 bg-[#f8faff] border-t border-slate-100 relative">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100/70 border border-blue-200/60 text-[#2563eb] text-xs font-bold uppercase tracking-wider mb-4">
+              <span>❓ FAQ</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 tracking-tight mb-4">
+              Frequently Asked <span className="text-[#2563eb]">Questions</span>
+            </h2>
+            <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
+              Plain-English technical answers about autonomy, safety, and integrations.
+            </p>
+          </div>
+
+          {/* Signature Website Accordion with Rotating + */}
+          <div className="border-t border-b border-slate-200 divide-y divide-slate-200">
+            {faqItems.map((item, idx) => {
+              const isOpen = activeFaq === idx;
+
+              return (
+                <div key={idx} className="transition-colors">
+                  <button
+                    onClick={() => setActiveFaq(isOpen ? null : idx)}
+                    aria-expanded={isOpen}
+                    className="w-full py-5 sm:py-6 flex items-center justify-between text-left gap-4 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg cursor-pointer"
+                  >
+                    <span
+                      className={`text-base sm:text-lg font-bold transition-colors duration-200 ${
+                        isOpen ? 'text-[#1d4ed8]' : 'text-slate-900 group-hover:text-[#1d4ed8]'
+                      }`}
+                    >
+                      {item.q}
+                    </span>
+
+                    <span
+                      className={`flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                        isOpen
+                          ? 'border-[#1d4ed8] bg-[#1d4ed8] text-white rotate-45'
+                          : 'border-slate-300 text-slate-400 group-hover:border-[#1d4ed8] group-hover:text-[#1d4ed8] bg-white shadow-xs'
+                      }`}
+                    >
+                      <Plus className="w-4 h-4 transition-transform duration-300" />
+                    </span>
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        key="faq-content"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: [0.04, 0.62, 0.23, 0.98] }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pb-5 pr-4 sm:pr-10 text-slate-600 text-sm leading-relaxed">
+                          {item.a}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Bottom Support Banner */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-blue-50/60 border border-blue-200/70 flex items-center justify-between gap-4 mt-8">
+            <div className="flex items-center gap-3 text-sm font-semibold text-slate-800">
+              <MessageCircle className="w-5 h-5 text-[#2563eb] shrink-0" />
+              <span>Have another question? Let's talk.</span>
+            </div>
             <HashLink
-            smooth
-            to="/book-consultation"
-            className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-blue-900 transition-all duration-300 bg-white border-2 border-blue-900 shadow-lg rounded-xl hover:bg-blue-50 hover:border-blue-800"
-          >
-            <Phone className="w-5 h-5" />
-             Book a consultation
-          </HashLink>
-             
-          </motion.div>
-          
-          <motion.div 
-            className="grid max-w-2xl gap-6 mx-auto sm:grid-cols-3"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 1.0 }}
-          >
-            <div className="flex items-center justify-center gap-2 text-black">
-              <CheckCircle2 className="w-5 h-5 text-blue-900" />
-              <span className="text-sm">Human oversight</span>
-            </div>
-            <div className="flex items-center justify-center gap-2 text-black">
-              <CheckCircle2 className="w-5 h-5 text-blue-900" />
-              <span className="text-sm">Full observability</span>
-            </div>
-            <div className="flex items-center justify-center gap-2 text-black">
-              <CheckCircle2 className="w-5 h-5 text-blue-900" />
-              <span className="text-sm">Proven outcomes</span>
-            </div>
-          </motion.div>
+              smooth
+              to="/book-consultation"
+              className="inline-flex items-center gap-1.5 text-sm font-bold text-[#1d4ed8] hover:text-[#1e40af] hover:underline"
+            >
+              <span>Book a call</span>
+              <ArrowRight className="w-4 h-4" />
+            </HashLink>
+          </div>
+
         </div>
       </section>
+
+      {/* ========================================================================= */}
+      {/* SECTION 9: FINAL CTA (Image 1 Reference + CHANGE 5)                        */}
+      {/* ========================================================================= */}
+      <section className="relative py-24 sm:py-32 overflow-hidden bg-white border-t border-slate-100">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          
+          {/* Pill */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 rounded-full bg-blue-100/70 border border-blue-200/60 text-[#2563eb] text-xs sm:text-sm font-bold uppercase tracking-wider">
+            <Zap className="w-4 h-4 fill-[#2563eb]" />
+            <span>READY TO GET STARTED?</span>
+          </div>
+
+          {/* Headline */}
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-950 tracking-tight mb-6">
+            Start a <span className="text-[#2563eb]">4-week pilot</span>
+          </h2>
+
+          {/* Subheadline */}
+          <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto mb-12">
+            Get your AI assistant up and running with measurable results. No long commitments, just proven outcomes.
+          </p>
+
+          {/* CTA Buttons Container with Curved Hand-drawn Annotation */}
+          <div className="relative inline-block w-full max-w-2xl mx-auto mb-16">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+              {/* Primary: Start a 4-week pilot */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.96 }}
+                type="button"
+                onClick={handle4WeekPilotBtn}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 sm:px-10 py-4.5 text-base sm:text-lg font-bold text-white transition-colors bg-[#1d4ed8] hover:bg-[#1e40af] rounded-2xl shadow-xl shadow-blue-500/20 cursor-pointer"
+              >
+                <Zap className="w-5 h-5 fill-white" />
+                <span>Start a 4-week pilot</span>
+                <ArrowRight className="w-5 h-5" />
+              </motion.button>
+
+              {/* Secondary: Book a 45-min call (Updated from Book a consultation) */}
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.96 }}
+                className="w-full sm:w-auto"
+              >
+                <HashLink
+                  smooth
+                  to="/book-consultation"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-4.5 text-base sm:text-lg font-bold text-[#1d4ed8] transition-all duration-300 bg-white border-2 border-[#1d4ed8] shadow-md rounded-2xl hover:bg-blue-50 hover:border-[#1e40af] cursor-pointer"
+                >
+                  <Phone className="w-5 h-5 text-[#1d4ed8]" />
+                  <span>Book a 45-min call</span>
+                </HashLink>
+              </motion.div>
+            </div>
+
+            {/* Hand-drawn Annotation Callout from Image 1 */}
+            <div className="hidden xl:block absolute -right-16 top-1 transform -translate-y-4 text-left pointer-events-none">
+              <span className="font-serif italic text-sm font-semibold text-[#1d4ed8] leading-tight block">
+                See real <br /> results in <br /> 4 weeks
+              </span>
+              <svg
+                className="w-12 h-12 text-[#1d4ed8] -mt-1 transform -rotate-12"
+                fill="none"
+                viewBox="0 0 48 48"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M38 10 C 25 15, 12 25, 10 38" strokeDasharray="3 3" />
+                <path d="M6 34 L 10 40 L 16 36" />
+              </svg>
+            </div>
+          </div>
+
+          {/* 3 Value Stats */}
+          <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-14 pt-8 border-t border-slate-100 max-w-3xl mx-auto text-sm font-semibold text-slate-800">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-full bg-blue-50 text-[#2563eb] flex items-center justify-center">
+                <Check className="w-4 h-4" />
+              </div>
+              <span>No setup fees</span>
+            </div>
+
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-full bg-blue-50 text-[#2563eb] flex items-center justify-center">
+                <Check className="w-4 h-4" />
+              </div>
+              <span>Quick deployment</span>
+            </div>
+
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-full bg-blue-50 text-[#2563eb] flex items-center justify-center">
+                <Check className="w-4 h-4" />
+              </div>
+              <span>Proven results</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
     </div>
   );
 };

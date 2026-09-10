@@ -471,20 +471,11 @@ function DynamicBlogMedia({ src, alt, isFeatured = false }: DynamicBlogMediaProp
 
   // Pre-classification for immediate correct render without layout shift
   const isKnownPhoto = activeSrc.includes('unsplash.com') || activeSrc.includes('pexels.com');
-  const isKnownUltraWide =
-    activeSrc.includes('/uploads/blogs/featured/') ||
-    activeSrc.includes('ai-powered-automation') ||
-    activeSrc.includes('chatbots-Image') ||
-    activeSrc.includes('ai-in-medical-practices') ||
-    activeSrc.includes('Retail-Revolution') ||
-    activeSrc.includes('getting-started') ||
-    activeSrc.includes('financial-Image') ||
-    activeSrc.includes('natural-language') ||
-    activeSrc.includes('manufacturing-meets');
+  const isKnownUltraWide = false;
 
-  // Dynamic classification based on pre-detection OR loaded natural aspect ratio
-  const isUltraWide = isKnownUltraWide || (ratio !== null && ratio >= 2.35);
-  const isPhoto = isKnownPhoto || (ratio !== null && ratio <= 1.55);
+  // Dynamic classification based on loaded natural aspect ratio (fallback to pre-detection)
+  const isUltraWide = ratio !== null ? ratio >= 2.35 : false;
+  const isPhoto = ratio !== null ? ratio <= 1.55 : isKnownPhoto;
 
   const handleLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const { naturalWidth, naturalHeight } = e.currentTarget;
