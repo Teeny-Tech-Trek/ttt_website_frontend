@@ -298,11 +298,12 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, ease: "easeOut", delay: 0.15 }}
             >
-              <div className="relative w-full rounded-3xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(37,99,235,0.12)] border border-slate-200/80 bg-white">
+              <div className="relative w-full rounded-3xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(37,99,235,0.12)] border border-slate-200/80 bg-white aspect-[1627/967]">
                 <img 
                   src="/images/services/smart-process/kill-the-busy-work.png" 
                   alt="Smart Automation pipeline connecting triggers, process logic, and actions"
-                  className="w-full h-auto object-contain block"
+                  className="w-full h-full object-contain block"
+                  loading="eager"
                 />
               </div>
             </motion.div>
@@ -494,11 +495,12 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
               {/* Dynamic Notification Card Display */}
               {activePromptIndex === 0 ? (
                 /* 1:1 image representation for the primary scenario with direct interactive hotspots */
-                <div className="relative rounded-3xl overflow-hidden shadow-xl border border-slate-200/90 bg-white group">
+                <div className="relative rounded-3xl overflow-hidden shadow-xl border border-slate-200/90 bg-white group aspect-[1444/1089]">
                   <img 
                     src="/images/services/smart-process/try-these-automations.png" 
                     alt="Delayed Shipment Alert Notification in #operations"
-                    className="w-full h-auto object-contain block"
+                    className="w-full h-full object-contain block"
+                    loading="lazy"
                   />
                   {/* Clickable interactive hotspots with tactile click animation */}
                   <motion.button
@@ -804,11 +806,11 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
               </div>
 
               {/* 10 Integration Tiles */}
-              <div className="grid grid-cols-2 gap-3.5 sm:gap-4">
+              <div className="grid grid-cols-2 gap-2.5 sm:gap-4">
                 {integrations.map((tool, idx) => (
                   <div
                     key={idx}
-                    className={`p-3 sm:p-5 rounded-2xl flex items-center justify-between transition-all duration-200 font-bold text-xs sm:text-base ${
+                    className={`p-2.5 sm:p-4 rounded-2xl flex items-center justify-between transition-all duration-200 font-bold text-xs sm:text-base ${
                       tool.isHighlight 
                         ? 'bg-[#eff6ff] text-[#2563eb] border border-[#bfdbfe] hover:bg-[#dbeafe] shadow-xs' 
                         : 'bg-white border border-slate-200 text-slate-800 hover:border-blue-300 hover:shadow-xs'
@@ -840,11 +842,12 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
               </div>
 
               {/* Guardrails Image Card */}
-              <div className="rounded-3xl overflow-hidden border border-slate-200/80 shadow-xs bg-white">
+              <div className="rounded-3xl overflow-hidden border border-slate-200/80 shadow-xs bg-white aspect-[1788/880]">
                 <img 
                   src="/images/services/smart-process/guardrails.png" 
                   alt="Replayable runs, Idempotent writes, Immutable logs, Template locks" 
-                  className="w-full h-auto object-contain block"
+                  className="w-full h-full object-contain block"
+                  loading="lazy"
                 />
               </div>
 
@@ -995,11 +998,12 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           
           {/* We display the clean cut-busy-work graphic + interactive actions */}
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-white">
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-white aspect-[1942/809]">
             <img 
               src="/images/services/smart-process/cut-busy-work.png" 
               alt="Cut busywork by 20-40%"
-              className="w-full h-auto object-contain block"
+              className="w-full h-full object-contain block"
+              loading="lazy"
             />
 
             {/* Desktop Clickable Buttons directly positioned over image buttons with tactile click animation */}

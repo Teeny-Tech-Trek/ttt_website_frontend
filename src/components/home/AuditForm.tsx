@@ -124,15 +124,33 @@ const navigate = useNavigate();
   const scoreBadge = getScoreBadge(score);
   const answeredQuestions = Object.values(answers).filter(a => a !== null).length;
 
+  const COLOR_STYLES = {
+    emerald: {
+      activeCircle: 'border-emerald-500 bg-emerald-500',
+      hoverBorder: 'group-hover:border-emerald-300',
+      activeText: 'text-emerald-700',
+    },
+    amber: {
+      activeCircle: 'border-amber-500 bg-amber-500',
+      hoverBorder: 'group-hover:border-amber-300',
+      activeText: 'text-amber-700',
+    },
+    red: {
+      activeCircle: 'border-red-500 bg-red-500',
+      hoverBorder: 'group-hover:border-red-300',
+      activeText: 'text-red-700',
+    },
+  } as const;
+
   return (
-    <div className="max-w-4xl mx-auto p-6 mt-20">
+    <div className="max-w-4xl mx-auto p-4 sm:p-6 mt-20 sm:mt-24">
       {/* Header */}
       <div className="text-center mb-12">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-teal-600 rounded-full mb-6">
           <Target className="w-8 h-8 text-white" />
         </div>
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">AI Readiness Audit</h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">AI Readiness Audit</h1>
+        <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
           Evaluate your organization's readiness to implement AI solutions with this comprehensive 15-question assessment.
         </p>
       </div>
@@ -154,21 +172,21 @@ const navigate = useNavigate();
       {/* Questions */}
       <div className="space-y-6 mb-10">
         {questions.map((q, i) => (
-          <div key={q.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow duration-200">
-            <div className="flex items-start gap-4">
+          <div key={q.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 sm:p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-start gap-3 sm:gap-4">
               <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-r from-blue-100 to-teal-100 rounded-lg flex items-center justify-center text-blue-600">
                 {q.icon}
               </div>
               <div className="flex-grow">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">
                   <span className="text-blue-600 mr-2">Q{i + 1}.</span>
                   {q.text}
                 </h3>
                 <div className="flex flex-wrap gap-4">
                   {[
-                    { value: 'yes', label: 'Yes', color: 'emerald' },
-                    { value: 'partial', label: 'Partially', color: 'amber' },
-                    { value: 'no', label: 'No', color: 'red' }
+                    { value: 'yes', label: 'Yes', color: 'emerald' as const },
+                    { value: 'partial', label: 'Partially', color: 'amber' as const },
+                    { value: 'no', label: 'No', color: 'red' as const }
                   ].map(opt => (
                     <label key={opt.value} className="flex items-center cursor-pointer group">
                       <input
@@ -181,13 +199,13 @@ const navigate = useNavigate();
                       />
                       <div className={`
                         w-5 h-5 rounded-full border-2 flex items-center justify-center mr-3 transition-all duration-200
-                        ${answers[q.id] === opt.value ? `border-${opt.color}-500 bg-${opt.color}-500` : `border-gray-300 group-hover:border-${opt.color}-300`}
+                        ${answers[q.id] === opt.value ? COLOR_STYLES[opt.color].activeCircle : `border-gray-300 ${COLOR_STYLES[opt.color].hoverBorder}`}
                       `}>
                         {answers[q.id] === opt.value && <div className="w-2 h-2 bg-white rounded-full"></div>}
                       </div>
                       <span className={`
                         font-medium transition-colors duration-200
-                        ${answers[q.id] === opt.value ? `text-${opt.color}-700` : 'text-gray-700 group-hover:text-gray-900'}
+                        ${answers[q.id] === opt.value ? COLOR_STYLES[opt.color].activeText : 'text-gray-700 group-hover:text-gray-900'}
                       `}>
                         {opt.label}
                       </span>

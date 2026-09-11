@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
+import { DiscussionSkeleton, EventCardSkeleton, ResourceCardSkeleton } from '../components/skeleton';
 
 interface Discussion {
   id: string;
@@ -1573,17 +1574,7 @@ const Community = () => {
                   {isLoadingDiscussions ? (
                     <div className="space-y-6">
                       {[1, 2, 3].map((i) => (
-                        <motion.div
-                          key={i}
-                          className="p-6 bg-gradient-to-r from-gray-100 to-gray-200 rounded-2xl animate-pulse"
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: i * 0.1 }}
-                        >
-                          <div className="h-4 mb-3 bg-gray-300 rounded" />
-                          <div className="h-3 mb-2 bg-gray-300 rounded" />
-                          <div className="w-3/4 h-3 bg-gray-300 rounded" />
-                        </motion.div>
+                        <DiscussionSkeleton key={i} />
                       ))}
                     </div>
                   ) : discussions.length === 0 ? (
@@ -1748,13 +1739,7 @@ const Community = () => {
                   {isLoadingEvents ? (
                     <div className="space-y-6">
                       {[1, 2, 3].map((i) => (
-                        <motion.div
-                          key={i}
-                          className="h-32 bg-gradient-to-r from-gray-100 to-gray-200 rounded-2xl animate-pulse"
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: i * 0.1 }}
-                        />
+                        <EventCardSkeleton key={i} />
                       ))}
                     </div>
                   ) : upcomingEvents.length === 0 ? (
@@ -1880,13 +1865,7 @@ const Community = () => {
                   {isLoadingResources ? (
                     <div className="space-y-6">
                       {[1, 2, 3].map((i) => (
-                        <motion.div
-                          key={i}
-                          className="h-32 bg-gradient-to-r from-gray-100 to-gray-200 rounded-2xl animate-pulse"
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: i * 0.1 }}
-                        />
+                        <ResourceCardSkeleton key={i} />
                       ))}
                     </div>
                   ) : resources.length === 0 ? (

@@ -47,7 +47,7 @@ const HOME_SCHEMA_JSON = `{
           "@type": "ContactPoint",
           "contactType": "sales",
           "email": "anishasingla@teenytechtrek.com",
-          "telephone": "+1-647-864-5465",
+          "telephone": "+1-647-509-2111",
           "areaServed": ["CA", "US"],
           "availableLanguage": "English"
         }

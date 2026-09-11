@@ -552,7 +552,7 @@ const Navbar = () => {
               transition={{ duration: 0.3, ease: 'easeInOut' }}
               className="fixed inset-0 top-[60px] sm:top-[80px] z-40 bg-white/95 backdrop-blur-md lg:hidden overflow-y-auto"
             >
-           <div className="flex flex-col items-end justify-start min-h-screen px-8 py-8 space-y-4 sm:space-y-6 sm:px-12">
+            <div className="flex flex-col items-end justify-start min-h-[calc(100vh-60px)] sm:min-h-[calc(100vh-80px)] pb-24 px-8 py-8 space-y-4 sm:space-y-6 sm:px-12">
                 {topNavLinks.map((link, index) => {
                   const delay = 0.1 * index;
                   return (

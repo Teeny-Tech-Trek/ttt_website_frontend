@@ -53,7 +53,7 @@ const Services = () => {
       {/* ── BLUE-900 SECTION ── */}
       <section
         id="services"
-        className="relative mx-6 mb-10 overflow-hidden rounded-3xl bg-blue-900 py-8 md:mx-12 lg:mx-20 lg:py-10"
+        className="relative mx-3 sm:mx-6 mb-10 overflow-hidden rounded-3xl bg-blue-900 py-8 md:mx-12 lg:mx-20 lg:py-10"
       >
         {/* Glow blobs */}
         <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">

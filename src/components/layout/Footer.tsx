@@ -107,7 +107,7 @@ const Footer = () => {
               <img
                 src={logo}
                 alt="Teeny Tech Trek Logo"
-                className="h-10 rounded-lg shadow-md w-15"
+                className="h-10 w-auto rounded-lg shadow-md"
                 onError={(e) => {
                   e.currentTarget.src = 'https://via.placeholder.com/40';
                 }}
@@ -187,8 +187,8 @@ const Footer = () => {
               <li className="flex items-start gap-3">
                 <Phone size={18} className="text-[#3b82f6] mt-1 flex-shrink-0" />
                 <div className="text-[#93c5fd] text-sm">
-                  <a href="tel:+16478645465" className="block transition-colors duration-300 hover:text-white">
-                    +1 647-864-5465
+                  <a href="tel:+16475092111" className="block transition-colors duration-300 hover:text-white">
+                    +1 647 509 2111
                   </a>
                   <a href="tel:+919855806696" className="block transition-colors duration-300 hover:text-white">
                     +91 98558 06696

@@ -102,8 +102,8 @@ const Contact = () => {
     {
       icon: <Phone size={20} className="text-[#3b82f6]" />,
       title: 'Phone',
-      value: '+1 647-864-5465, +91 98558 06696',
-      href: 'tel:+16478645465',
+      value: '+1 647 509 2111, +91 98558 06696',
+      href: 'tel:+16475092111',
     },
     {
       icon: <MapPin size={20} className="text-[#3b82f6]" />,

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { searchBlogs, getBlogById } from "../../services/blogService"; 
 import { Blog } from "../../types/blog";                  
 import { BlogRenderer } from "../../components/blog/BlogRenderer";
+import { BlogDetailSkeleton } from "../../components/skeleton";
 import { 
   ArrowLeft, 
   Share2, 
@@ -235,17 +236,7 @@ export default function BlogSingleView() {
   };
 
   if (loading) {
-    return (
-      <div
-        className="min-h-screen bg-slate-50 flex items-center justify-center font-sans"
-        style={{ fontFamily: FONT_FAMILY }}
-      >
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 rounded-full border-4 border-blue-200 border-t-blue-600 animate-spin" />
-          <p className="text-gray-600 font-medium">Loading article...</p>
-        </div>
-      </div>
-    );
+    return <BlogDetailSkeleton />;
   }
 
   if (error || !blog) {

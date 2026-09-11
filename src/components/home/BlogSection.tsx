@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, type ReactNode, type SVGProps } from 'rea
 import { useNavigate } from 'react-router-dom';
 import { getPublicBlogs } from '../../services/blogService';
 import { BlogRenderer } from '../../components/blog/BlogRenderer';
+import { FeaturedBlogSkeleton, BlogCardSkeleton } from '../skeleton';
 import {
   Calendar,
   Clock,
@@ -551,6 +552,7 @@ function DynamicBlogMedia({ src, alt, isFeatured = false }: DynamicBlogMediaProp
 
 export function BlogSection({ blogPosts: initialBlogPosts }: BlogSectionProps) {
   const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedPostId, setSelectedPostId] = useState<number | string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
@@ -595,6 +597,8 @@ export function BlogSection({ blogPosts: initialBlogPosts }: BlogSectionProps) {
       } catch (err) {
         console.error("Failed to load public blogs from database, using static fallback", err);
         setPosts(initialBlogPosts);
+      } finally {
+        setIsLoading(false);
       }
     }
     loadBlogs();
@@ -1001,6 +1005,9 @@ export function BlogSection({ blogPosts: initialBlogPosts }: BlogSectionProps) {
         {/* ======================================================== */}
         {/* 3. HERO FEATURED ARTICLE CARD (FULL WIDTH)               */}
         {/* ======================================================== */}
+        {!isFiltered && isLoading && posts.length === 0 && (
+          <FeaturedBlogSkeleton />
+        )}
         {!isFiltered && featuredPost && (
           <div className="mb-10 sm:mb-12">
             <div
@@ -1092,8 +1099,15 @@ export function BlogSection({ blogPosts: initialBlogPosts }: BlogSectionProps) {
           </div>
 
           {/* Articles Full-Width Card Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
-            {displayArticles.map((post) => (
+          {isLoading && posts.length === 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
+              <BlogCardSkeleton />
+              <BlogCardSkeleton />
+              <BlogCardSkeleton />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
+              {displayArticles.map((post) => (
               <article
                 key={post.id}
                 onClick={() => handlePostClick(post)}
@@ -1143,6 +1157,7 @@ export function BlogSection({ blogPosts: initialBlogPosts }: BlogSectionProps) {
               </article>
             ))}
           </div>
+          )}
 
           {/* No Results Fallback */}
           {displayArticles.length === 0 && (

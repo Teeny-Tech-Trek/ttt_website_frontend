@@ -223,7 +223,7 @@ function Pilot() {
           <h3 className="mb-8 text-3xl font-bold text-center text-gray-900">
             Lean Team Structure
           </h3>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
             {roles.map((role, index) => (
               <div key={index} className="p-6 transition-shadow duration-300 bg-white border border-gray-100 shadow-md rounded-xl hover:shadow-lg">
                 <div className="mb-4">

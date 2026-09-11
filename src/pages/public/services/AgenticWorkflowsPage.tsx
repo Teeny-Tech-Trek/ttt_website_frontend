@@ -477,11 +477,12 @@ const AgenticWorkflowsPage: React.FC<AgenticWorkflowsPageProps> = ({ onOpenChatb
               transition={{ duration: 0.8, delay: 0.2 }}
               className="lg:col-span-6 relative"
             >
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-100/90 bg-white group hover:shadow-3xl transition-shadow duration-500">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-100/90 bg-white group hover:shadow-3xl transition-shadow duration-500 aspect-[1477/1065]">
                 <img
                   src="/images/services/agentic-workflows/hero-agent-mockup.webp"
                   alt="Customer Support Agent live execution dashboard with Salesforce, Zendesk, Slack, Gmail, and Notion"
-                  className="w-full h-auto object-contain block group-hover:scale-[1.01] transition-transform duration-500"
+                  className="w-full h-full object-contain block group-hover:scale-[1.01] transition-transform duration-500"
+                  loading="eager"
                 />
               </div>
             </motion.div>

@@ -348,11 +348,12 @@ const AiAppsPage: React.FC<AiAppsPageProps> = ({ onOpenChatbot }) => {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="lg:col-span-6 relative"
             >
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-100/90 bg-white group hover:shadow-3xl transition-shadow duration-500">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-100/90 bg-white group hover:shadow-3xl transition-shadow duration-500 aspect-[1473/1068]">
                 <img
                   src="/images/services/lightweight-apps/small-app-real-impact.png"
                   alt="Lightweight AI App interface demo with Google Sheets, Slack, and AI Models"
-                  className="w-full h-auto object-contain block group-hover:scale-[1.01] transition-transform duration-500"
+                  className="w-full h-full object-contain block group-hover:scale-[1.01] transition-transform duration-500"
+                  loading="eager"
                 />
               </div>
             </motion.div>
@@ -733,11 +734,12 @@ const AiAppsPage: React.FC<AiAppsPageProps> = ({ onOpenChatbot }) => {
               </div>
 
               {/* High-res Graphic Card for KPIs */}
-              <div className="rounded-3xl overflow-hidden border border-slate-200/80 shadow-lg bg-white group hover:shadow-xl transition-shadow duration-300">
+              <div className="rounded-3xl overflow-hidden border border-slate-200/80 shadow-lg bg-white group hover:shadow-xl transition-shadow duration-300 aspect-[1617/972]">
                 <img
                   src="/images/services/lightweight-apps/kpi-we-use.png"
                   alt="KPIs We Track: Task completion time -40%, Adoption % 85%, Weekly active users 240+, Error rate <1%"
-                  className="w-full h-auto object-contain block group-hover:scale-[1.01] transition-transform duration-300"
+                  className="w-full h-full object-contain block group-hover:scale-[1.01] transition-transform duration-300"
+                  loading="lazy"
                 />
               </div>
 
@@ -846,11 +848,12 @@ const AiAppsPage: React.FC<AiAppsPageProps> = ({ onOpenChatbot }) => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           
           {/* High-res Complete Section Graphic with Interactive Clickable Hotspots */}
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-white group">
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-white group aspect-[1944/809]">
             <img
               src="/images/services/lightweight-apps/prototype.png"
               alt="Prototype an app in 4-6 weeks with working internal tool or micro-SaaS"
-              className="w-full h-auto object-contain block"
+              className="w-full h-full object-contain block"
+              loading="lazy"
             />
 
             {/* Desktop Clickable Hotspots mapped directly over the image buttons */}

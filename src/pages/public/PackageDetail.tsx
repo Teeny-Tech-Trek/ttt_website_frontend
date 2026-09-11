@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import SectionLink from '../../components/ui/SectionLink';
 import { getPublicPackagesByField } from '../../services/packageService';
 import type { Package } from '../../types/package';
+import { PackageDetailSkeleton } from '../../components/skeleton';
 
 const EXCLUDED_FIELDS: (keyof Package)[] = ['id', 'is_active', 'created_at', 'updated_at'];
 const FIELD_LABELS: Record<keyof Package, string> = {
@@ -57,7 +58,7 @@ const PackageDetailPage: React.FC = () => {
       .finally(() => setLoading(false));
   }, [slug]);
 
-  if (loading) return <div>Loading package...</div>;
+  if (loading) return <PackageDetailSkeleton />;
   if (err) return <div style={{ color: 'red' }}>{err}</div>;
   if (!pkg) return null;
 

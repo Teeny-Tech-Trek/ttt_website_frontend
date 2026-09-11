@@ -98,7 +98,7 @@ const HeroSection: React.FC = () => {
 
             {/* Headline */}
             <motion.div variants={slideFromLeft}>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-[1.15] text-black tracking-tight">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black leading-[1.15] text-black tracking-tight">
                 Your AI Call Agent
                 <br />
                 <span className="text-blue-900">for Manufacturing & Logistics</span>

@@ -421,11 +421,12 @@ const CustomAiIntegrationsPage: React.FC<CustomAiIntegrationsPageProps> = ({ onO
               transition={{ duration: 0.8, delay: 0.2 }}
               className="lg:col-span-6 relative"
             >
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-100/90 bg-white group hover:shadow-3xl transition-shadow duration-500">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-100/90 bg-white group hover:shadow-3xl transition-shadow duration-500 aspect-[1716/916]">
                 <img
                   src="/images/services/custom-ai/hero-pipeline-mockup.webp"
                   alt="Custom AI Pipeline orchestrator with OpenAI, Claude, Vector DB, Google Cloud Vertex, Slack, Notion, and HubSpot"
-                  className="w-full h-auto object-contain block group-hover:scale-[1.01] transition-transform duration-500"
+                  className="w-full h-full object-contain block group-hover:scale-[1.01] transition-transform duration-500"
+                  loading="eager"
                 />
               </div>
             </motion.div>
@@ -506,11 +507,12 @@ const CustomAiIntegrationsPage: React.FC<CustomAiIntegrationsPageProps> = ({ onO
               </div>
 
               {/* High-res 3D Cube Graphic from deliver-pipeline-cube.webp */}
-              <div className="rounded-3xl overflow-hidden shadow-xl border border-slate-200/80 bg-white group hover:shadow-2xl transition-shadow duration-300">
+              <div className="rounded-3xl overflow-hidden shadow-xl border border-slate-200/80 bg-white group hover:shadow-2xl transition-shadow duration-300 aspect-[1679/937]">
                 <img
                   src="/images/services/custom-ai/deliver-pipeline-cube.webp"
                   alt="AI Pipeline architecture with multi-source ingestion and output routing"
-                  className="w-full h-auto object-contain block group-hover:scale-[1.01] transition-transform duration-300"
+                  className="w-full h-full object-contain block group-hover:scale-[1.01] transition-transform duration-300"
+                  loading="lazy"
                 />
               </div>
 
@@ -765,7 +767,7 @@ const CustomAiIntegrationsPage: React.FC<CustomAiIntegrationsPageProps> = ({ onO
                   {grp.items.map((item, iIdx) => (
                     <div
                       key={iIdx}
-                      className="p-5 rounded-2xl bg-[#fcfdff] border border-slate-200/80 hover:border-blue-300 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between group"
+                      className="p-3.5 sm:p-5 rounded-2xl bg-[#fcfdff] border border-slate-200/80 hover:border-blue-300 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between group"
                     >
                       <div className="flex items-center gap-3 mb-2">
                         <span className="text-2xl group-hover:scale-110 transition-transform">{item.icon}</span>
@@ -871,11 +873,12 @@ const CustomAiIntegrationsPage: React.FC<CustomAiIntegrationsPageProps> = ({ onO
               </div>
 
               {/* High-res Graphic Card for KPIs */}
-              <div className="rounded-3xl overflow-hidden border border-slate-200/80 shadow-lg bg-white group hover:shadow-xl transition-shadow duration-300">
+              <div className="rounded-3xl overflow-hidden border border-slate-200/80 shadow-lg bg-white group hover:shadow-xl transition-shadow duration-300 aspect-[1241/1268]">
                 <img
                   src="/images/services/custom-ai/kpis-we-track.webp"
                   alt="KPIs We Track: Query Latency <200ms, Retrieval Accuracy 98.5%, Data Sync Uptime 99.9%, API Security 99.9%"
-                  className="w-full h-auto object-contain block group-hover:scale-[1.01] transition-transform duration-300"
+                  className="w-full h-full object-contain block group-hover:scale-[1.01] transition-transform duration-300"
+                  loading="lazy"
                 />
               </div>
 
@@ -980,11 +983,12 @@ const CustomAiIntegrationsPage: React.FC<CustomAiIntegrationsPageProps> = ({ onO
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           
           {/* Shared Prototype Closer Graphic with Interactive Clickable Hotspots */}
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-white group">
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-white group aspect-[1944/809]">
             <img
               src="/images/services/lightweight-apps/prototype.png"
               alt="Prototype an app in 4-6 weeks with working internal tool or micro-SaaS"
-              className="w-full h-auto object-contain block"
+              className="w-full h-full object-contain block"
+              loading="lazy"
             />
 
             {/* Desktop Clickable Hotspots mapped directly over the image buttons */}
