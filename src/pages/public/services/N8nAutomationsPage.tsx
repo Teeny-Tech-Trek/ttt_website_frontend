@@ -1,27 +1,24 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import {
   Workflow,
   LayoutTemplate,
   Wrench,
   ServerCog,
+  Cloud,
+  Users,
   LifeBuoy,
-  Gauge,
   Wallet,
   ShieldCheck,
-  MessageSquare,
-  Star,
   Database,
   Ban,
-  GitBranch,
   Github,
+  GitBranch,
   Sparkles,
   Phone,
   CheckCircle2,
   Play,
   Zap,
-  RotateCcw,
-  Loader2,
   ShoppingCart,
   UserPlus,
   Headset,
@@ -29,25 +26,66 @@ import {
   Receipt,
   ClipboardList,
   ArrowRight,
+  Search,
+  Plug,
+  FileText,
+  FlaskConical,
+  Rocket,
+  LayoutGrid,
+  Calendar,
+  Mail,
+  BarChart3,
+  Settings2,
 } from 'lucide-react';
+import {
+  SiSlack,
+  SiGmail,
+  SiGooglesheets,
+  SiHubspot,
+  SiShopify,
+  SiStripe,
+  SiNotion,
+  SiAirtable,
+  SiPostgresql,
+  SiTelegram,
+  SiZendesk,
+  SiMailchimp,
+  SiZapier,
+  SiN8N,
+  SiOpenai,
+  SiGoogle,
+  SiGoogledrive,
+  SiQuickbooks,
+  SiBuffer,
+  SiZoom,
+} from 'react-icons/si';
 import HashLink from '../../../components/ui/SectionLink';
 import { useNavigate } from 'react-router-dom';
 import { scrollToSection } from '../../../utils/scrollToSection';
-import N8nAutomationRichCard from '../../../components/home/N8nAutomationRichCard';
+import n8nHeroImg from '../../../Images/services/n8n regenerated webp images/hero page.webp';
+import builtToYourProcessImg from '../../../Images/services/n8n regenerated webp images/built to your process.webp';
+import readyMadeImg from '../../../Images/services/n8n regenerated webp images/ready made.webp';
+import selfHostedSetupImg from '../../../Images/services/n8n regenerated webp images/self hosted setup.webp';
+import ongoingMaintenanceImg from '../../../Images/services/n8n regenerated webp images/ongoing maintenance.webp';
+import liveInDaysImg from '../../../Images/services/n8n regenerated webp images/live in days, not in months.webp';
+import noPerTaskPricingImg from '../../../Images/services/n8n regenerated webp images/no per task pricing.webp';
+import youOwnTheWorkflowImg from '../../../Images/services/n8n regenerated webp images/you own the workflow.webp';
+import readyToAutomateImg from '../../../Images/services/n8n regenerated webp images/ready to automate.webp';
+import useReadyMadeTemplateImg from '../../../Images/services/n8n regenerated webp images/use a ready made template.png';
+import getACustomBuildImg from '../../../Images/services/n8n regenerated webp images/get a custom build.png';
 
-// Animation variants (matched to the other service pages)
+/* ------------------------------------------------------------------ */
+/*  Shared bits                                                        */
+/* ------------------------------------------------------------------ */
+
 const fadeInUp = {
-  initial: { opacity: 0, y: 60 },
+  initial: { opacity: 0, y: 40 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 1, ease: 'easeOut' },
+  transition: { duration: 0.6, ease: 'easeOut' },
 };
 
 const staggerContainer = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
+  animate: { transition: { staggerChildren: 0.08 } },
 };
 
 const scaleIn = {
@@ -56,417 +94,481 @@ const scaleIn = {
   transition: { duration: 0.5, ease: 'easeOut' },
 };
 
-/* ------------------------------------------------------------------ */
-/*  SECTION 5 — Workflow Runner Demo widget                            */
-/*  Self-contained, front-end-only, scripted animation. NO API calls,  */
-/*  NO storage. Starts on scroll-into-view, honors reduced-motion.     */
-/* ------------------------------------------------------------------ */
+// The hand-drawn marginal notes used throughout the reference design —
+// a small rotated cursive aside next to a section heading. Desktop-only;
+// there's no good place to put them without crowding mobile layouts.
+const HandNote: React.FC<{ className?: string; children: React.ReactNode; rotate?: number }> = ({
+  className = '',
+  children,
+  rotate = -4,
+}) => (
+  <div
+    className={`hidden lg:block absolute text-blue-400 text-xl leading-snug pointer-events-none select-none ${className}`}
+    style={{ fontFamily: "'Caveat', cursive", transform: `rotate(${rotate}deg)` }}
+    aria-hidden="true"
+  >
+    {children}
+  </div>
+);
 
-const workflowScenarios = [
-  [
-    { type: 'user', text: 'A new Shopify order comes in — process it end-to-end.' },
-    { type: 'agent', text: 'Reading order details from Shopify…', resolves: true },
-    { type: 'agent', text: 'Checking inventory and reserving stock…', resolves: true },
-    { type: 'agent', text: 'Creating a shipping label via ShipStation…', resolves: true },
-    { type: 'final', text: 'Done. Order #4821 is packed and the customer has been emailed.', approve: true },
-  ],
-  [
-    { type: 'user', text: 'Sync new website leads into the CRM automatically.' },
-    { type: 'agent', text: 'Reading new submissions from the web form…', resolves: true },
-    { type: 'agent', text: 'Enriching contact data via Clearbit…', resolves: true },
-    { type: 'agent', text: 'Creating a deal in HubSpot and pinging #sales on Slack…', resolves: true },
-    { type: 'final', text: 'Done. 8 leads synced — 2 flagged as high-priority.', approve: true },
-  ],
-  [
-    { type: 'user', text: 'Triage overnight support tickets before the team logs in.' },
-    { type: 'agent', text: 'Reading new tickets from Zendesk…', resolves: true },
-    { type: 'agent', text: 'Classifying urgency and topic…', resolves: true },
-    { type: 'agent', text: 'Routing tickets and drafting first responses…', resolves: true },
-    { type: 'final', text: 'Done. 14 tickets routed — 3 marked urgent for review.', approve: true },
-  ],
-];
+const Eyebrow: React.FC<{ icon: React.ElementType; children: React.ReactNode; light?: boolean }> = ({
+  icon: Icon,
+  children,
+  light = false,
+}) => (
+  <div
+    className={`inline-flex items-center gap-2 px-4 py-1.5 mb-4 text-xs font-semibold tracking-wide uppercase rounded-full ${
+      light ? 'bg-white/15 text-white' : 'bg-blue-50 text-blue-900'
+    }`}
+  >
+    <Icon className="w-3.5 h-3.5" aria-hidden="true" />
+    {children}
+  </div>
+);
 
-const WorkflowRunnerDemo = ({ scenario = workflowScenarios[0] }: { scenario?: typeof workflowScenarios[0] }) => {
-  const [statuses, setStatuses] = useState(scenario.map(() => 'hidden'));
-  const containerRef = useRef(null);
-  const timeouts = useRef<any[]>([]);
-  const startedRef = useRef(false);
-  const reducedMotion = useRef(false);
+type AppIcon = { icon: React.ElementType; color: string };
 
-  const clearTimers = () => {
-    timeouts.current.forEach((t) => clearTimeout(t));
-    timeouts.current = [];
-  };
+const APP_ICONS: Record<string, AppIcon> = {
+  Slack: { icon: SiSlack, color: '#4A154B' },
+  Gmail: { icon: SiGmail, color: '#EA4335' },
+  'Google Sheets': { icon: SiGooglesheets, color: '#0F9D58' },
+  HubSpot: { icon: SiHubspot, color: '#FF7A59' },
+  Shopify: { icon: SiShopify, color: '#95BF47' },
+  Stripe: { icon: SiStripe, color: '#635BFF' },
+  Notion: { icon: SiNotion, color: '#000000' },
+  Airtable: { icon: SiAirtable, color: '#18BFFF' },
+  Postgres: { icon: SiPostgresql, color: '#4169E1' },
+  Telegram: { icon: SiTelegram, color: '#26A5E4' },
+  Zendesk: { icon: SiZendesk, color: '#03363D' },
+  Mailchimp: { icon: SiMailchimp, color: '#FFE01B' },
+  QuickBooks: { icon: SiQuickbooks, color: '#2CA01C' },
+  'Google Drive': { icon: SiGoogledrive, color: '#4285F4' },
+  Buffer: { icon: SiBuffer, color: '#231F20' },
+  Zoom: { icon: SiZoom, color: '#2D8CFF' },
+  OpenAI: { icon: SiOpenai, color: '#000000' },
+};
 
-  const run = () => {
-    clearTimers();
-    if (reducedMotion.current) {
-      setStatuses(scenario.map(() => 'done'));
-      return;
-    }
-    setStatuses(scenario.map(() => 'hidden'));
-    let delay = 350;
-    scenario.forEach((step, idx) => {
-      timeouts.current.push(
-        setTimeout(() => {
-          setStatuses((prev) => {
-            const next = [...prev];
-            next[idx] = step.type === 'agent' && step.resolves ? 'processing' : 'done';
-            return next;
-          });
-        }, delay)
-      );
-      delay += 850;
-      if (step.type === 'agent' && step.resolves) {
-        timeouts.current.push(
-          setTimeout(() => {
-            setStatuses((prev) => {
-              const next = [...prev];
-              next[idx] = 'done';
-              return next;
-            });
-          }, delay)
-        );
-        delay += 550;
-      }
-    });
-  };
-
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.matchMedia) {
-      reducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    }
-    const el = containerRef.current;
-    if (!el) return undefined;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !startedRef.current) {
-            startedRef.current = true;
-            run();
-          }
-        });
-      },
-      { threshold: 0.4 }
+const AppChip: React.FC<{ name: string; size?: 'sm' | 'md' }> = ({ name, size = 'sm' }) => {
+  const entry = APP_ICONS[name];
+  const dim = size === 'sm' ? 'w-7 h-7' : 'w-10 h-10';
+  const iconDim = size === 'sm' ? 'w-3.5 h-3.5' : 'w-5 h-5';
+  if (!entry) {
+    return (
+      <div className={`flex items-center justify-center ${dim} bg-gray-100 border border-gray-200 rounded-lg`} title={name}>
+        <span className="text-[9px] font-bold text-gray-500">{name.slice(0, 1)}</span>
+      </div>
     );
-    observer.observe(el);
-    return () => {
-      observer.disconnect();
-      clearTimers();
-    };
-  }, [scenario]);
-
-  const replay = () => {
-    startedRef.current = false;
-    run();
-  };
-
+  }
+  const Icon = entry.icon;
   return (
     <div
-      ref={containerRef}
-      className="overflow-hidden bg-white border border-gray-200 shadow-xl rounded-2xl"
+      className={`flex items-center justify-center ${dim} bg-white border border-gray-200 rounded-lg shadow-sm`}
+      title={name}
     >
-      {/* Header bar */}
-      <div className="p-6 text-white bg-blue-900">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-xl">
-              <Workflow className="w-6 h-6" />
-            </div>
-            <div>
-              <div className="text-lg font-bold">n8n Workflow Engine</div>
-              <div className="text-sm text-blue-100">Automation • Running</div>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-            <span className="text-sm">Live Demo</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Step list */}
-      <div className="p-6 min-h-[24rem] bg-gray-50" aria-live="polite">
-        <div className="space-y-3">
-          {scenario.map((step, idx) => {
-            const status = statuses[idx];
-            if (status === 'hidden') return null;
-
-            if (step.type === 'user') {
-              return (
-                <motion.div
-                  key={idx}
-                  className="flex justify-end"
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <div className="max-w-md p-4 text-black bg-gray-200 rounded-2xl rounded-tr-md">
-                    <p className="text-sm leading-relaxed">{step.text}</p>
-                  </div>
-                </motion.div>
-              );
-            }
-
-            if (step.type === 'final') {
-              return (
-                <motion.div
-                  key={idx}
-                  className="flex items-start gap-3 p-4 bg-white border border-blue-100 rounded-xl"
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="text-sm font-semibold text-black">{step.text}</p>
-                    {step.approve && (
-                      <button
-                        type="button"
-                        onClick={replay}
-                        className="px-3 py-1 mt-2 text-xs font-medium text-blue-900 rounded-full bg-blue-100 hover:bg-blue-200 transition-colors"
-                      >
-                        Replay this workflow
-                      </button>
-                    )}
-                  </div>
-                </motion.div>
-              );
-            }
-
-            // agent step
-            return (
-              <motion.div
-                key={idx}
-                className="flex items-center gap-3 px-4 py-3 bg-white border border-gray-100 rounded-xl"
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
-              >
-                {status === 'processing' ? (
-                  <Loader2 className="w-5 h-5 text-blue-900 animate-spin flex-shrink-0" />
-                ) : (
-                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
-                )}
-                <span className="text-sm text-gray-700">{step.text}</span>
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Replay */}
-      <div className="flex items-center justify-end px-6 py-3 bg-white border-t border-gray-100">
-        <button
-          type="button"
-          onClick={replay}
-          className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-blue-900 rounded-lg hover:bg-blue-50 transition-colors"
-        >
-          <RotateCcw className="w-4 h-4" />
-          Replay
-        </button>
-      </div>
+      <Icon className={iconDim} style={{ color: entry.color }} aria-hidden="true" />
     </div>
   );
 };
 
 /* ------------------------------------------------------------------ */
-/*  PAGE                                                               */
+/*  Live Demo — real n8n canvases per category                         */
+/* ------------------------------------------------------------------ */
+
+type N8nNode = {
+  id: string;
+  name: string;
+  type: string;
+  typeVersion: number;
+  position: [number, number];
+  parameters: Record<string, unknown>;
+};
+type N8nWorkflow = {
+  name: string;
+  nodes: N8nNode[];
+  connections: Record<string, { main: { node: string; type: 'main'; index: number }[][] }>;
+};
+type Scenario = {
+  category: string;
+  prompt: string;
+  n8nWorkflow: N8nWorkflow;
+  moreExamples: string[];
+  bridge?: string;
+  reverse?: boolean;
+};
+
+// Real n8n node types (n8n-nodes-base.*) so the embedded canvas renders
+// correct icons — these are hand-built rather than literal exports, but the
+// type strings match n8n's actual catalog. Swap in a real export any time by
+// replacing the `n8nWorkflow` value below; the shape is unchanged.
+const chain = (names: string[]): N8nWorkflow['connections'] =>
+  Object.fromEntries(
+    names.slice(0, -1).map((name, i) => [name, { main: [[{ node: names[i + 1], type: 'main' as const, index: 0 }]] }])
+  );
+
+const workflowScenarios: Scenario[] = [
+  {
+    category: 'E-commerce',
+    prompt: 'A new Shopify order comes in — process it end-to-end.',
+    moreExamples: [
+      'Abandoned Cart Recovery',
+      'Inventory Sync Across Channels',
+      'Return & Refund Processing',
+      'Product Review Requests',
+      'Low Stock Alerts',
+      'Multi-Warehouse Order Routing',
+    ],
+    n8nWorkflow: {
+      name: 'E-Commerce Order Fulfillment',
+      nodes: [
+        { id: '1', name: 'Shopify Trigger', type: 'n8n-nodes-base.shopifyTrigger', typeVersion: 1, position: [240, 300], parameters: { topic: 'orders/create' } },
+        { id: '2', name: 'Check Inventory', type: 'n8n-nodes-base.httpRequest', typeVersion: 4.2, position: [460, 300], parameters: { url: 'https://api.example.com/inventory/check' } },
+        { id: '3', name: 'Create Shipping Label', type: 'n8n-nodes-base.httpRequest', typeVersion: 4.2, position: [680, 300], parameters: { url: 'https://api.shipstation.com/orders/createlabel' } },
+        { id: '4', name: 'Send Confirmation Email', type: 'n8n-nodes-base.gmail', typeVersion: 2.1, position: [900, 300], parameters: { operation: 'send' } },
+      ],
+      connections: chain(['Shopify Trigger', 'Check Inventory', 'Create Shipping Label', 'Send Confirmation Email']),
+    },
+  },
+  {
+    category: 'Sales & CRM',
+    prompt: 'Sync new website leads into the CRM automatically.',
+    bridge: "Same engine, different job — here's the same kind of automation wired straight into your CRM.",
+    reverse: true,
+    moreExamples: [
+      'Deal Stage Notifications',
+      'Quote-to-Invoice Automation',
+      'Meeting Scheduler Sync',
+      'Lead Scoring & Routing',
+      'Win/Loss Reporting',
+      'Renewal Reminder Sequences',
+    ],
+    n8nWorkflow: {
+      name: 'Lead Capture & CRM Sync',
+      nodes: [
+        { id: '1', name: 'New Lead Webhook', type: 'n8n-nodes-base.webhook', typeVersion: 2, position: [240, 300], parameters: { path: 'new-lead' } },
+        { id: '2', name: 'Enrich Contact', type: 'n8n-nodes-base.httpRequest', typeVersion: 4.2, position: [460, 300], parameters: { url: 'https://api.example.com/enrich' } },
+        { id: '3', name: 'Create HubSpot Deal', type: 'n8n-nodes-base.hubspot', typeVersion: 2, position: [680, 220], parameters: { resource: 'deal', operation: 'create' } },
+        { id: '4', name: 'Notify Sales on Slack', type: 'n8n-nodes-base.slack', typeVersion: 2.2, position: [680, 380], parameters: { channel: '#sales' } },
+      ],
+      connections: {
+        'New Lead Webhook': { main: [[{ node: 'Enrich Contact', type: 'main', index: 0 }]] },
+        'Enrich Contact': {
+          main: [
+            [
+              { node: 'Create HubSpot Deal', type: 'main', index: 0 },
+              { node: 'Notify Sales on Slack', type: 'main', index: 0 },
+            ],
+          ],
+        },
+      },
+    },
+  },
+  {
+    category: 'Support',
+    prompt: 'Triage overnight support tickets before the team logs in.',
+    bridge: 'And when something needs a human, fast — here\'s how that gets flagged and routed.',
+    moreExamples: [
+      'CSAT Survey Automation',
+      'SLA Breach Alerts',
+      'Knowledge Base Auto-Suggestions',
+      'Escalation Routing',
+      'Ticket Backlog Digest',
+      'After-Hours On-Call Paging',
+    ],
+    n8nWorkflow: {
+      name: 'Support Ticket Triage',
+      nodes: [
+        { id: '1', name: 'New Zendesk Ticket', type: 'n8n-nodes-base.zendeskTrigger', typeVersion: 1, position: [240, 300], parameters: {} },
+        { id: '2', name: 'Classify Ticket', type: 'n8n-nodes-base.openAi', typeVersion: 1.3, position: [460, 300], parameters: { resource: 'text', operation: 'classify' } },
+        { id: '3', name: 'Route Ticket', type: 'n8n-nodes-base.if', typeVersion: 2, position: [680, 300], parameters: {} },
+        { id: '4', name: 'Notify Support Slack', type: 'n8n-nodes-base.slack', typeVersion: 2.2, position: [900, 300], parameters: { channel: '#support-urgent' } },
+      ],
+      connections: {
+        'New Zendesk Ticket': { main: [[{ node: 'Classify Ticket', type: 'main', index: 0 }]] },
+        'Classify Ticket': { main: [[{ node: 'Route Ticket', type: 'main', index: 0 }]] },
+        'Route Ticket': { main: [[{ node: 'Notify Support Slack', type: 'main', index: 0 }], []] },
+      },
+    },
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Data                                                                */
+/* ------------------------------------------------------------------ */
+
+const HOW_WE_HELP = [
+  { icon: Settings2, title: 'Custom n8n Workflows', desc: 'Design and build workflows specific to your business processes and goals.' },
+  { icon: Plug, title: 'API & App Integrations', desc: 'Connect your favorite tools, APIs, and AI models seamlessly.' },
+  { icon: Sparkles, title: 'AI-Powered Automation', desc: 'Integrate LLMs and AI services for intelligent workflows.' },
+  { icon: BarChart3, title: 'Monitoring & Error Handling', desc: 'Set up logging, alerts, and recovery to keep your automations running.' },
+];
+
+type DeliverCard = {
+  icon: React.ElementType;
+  pill: string;
+  title: string;
+  desc: string;
+  points?: string[];
+  cta: string;
+  image?: string;
+};
+
+const DELIVER_GROUPS: { label: string; cards: DeliverCard[] }[] = [
+  {
+    label: 'Build & Launch',
+    cards: [
+      {
+        icon: LayoutTemplate,
+        pill: 'Premade',
+        title: 'Ready-Made Templates',
+        desc: "Battle-tested workflows for common ops, sales, and support tasks — pick one from our library, we connect it to your accounts, and it's live the same week.",
+        points: ['Pre-built and tested', 'Quick deployment', 'Works with your tools', 'Easy to customize'],
+        cta: 'Browse Templates',
+        image: readyMadeImg,
+      },
+      {
+        icon: Wrench,
+        pill: 'Custom',
+        title: 'Custom Workflow Builds',
+        desc: 'Nothing off-the-shelf fits? We design and build a custom n8n workflow around your exact process — with automatic error handling and status notifications built in from day one.',
+        points: ['Tailored to your exact tools', 'Automatic retries and error handling', 'Real-time alerts to Slack, email, or SMS'],
+        cta: 'Start a Custom Build',
+        image: builtToYourProcessImg,
+      },
+    ],
+  },
+  {
+    label: 'Host & Run',
+    cards: [
+      {
+        icon: ServerCog,
+        pill: 'Your Cloud',
+        title: 'Self-Hosted on Your Cloud',
+        desc: 'We set up and configure n8n on your own cloud infrastructure — documented and ready for your team to run day to day, no engineering background required.',
+        points: ['Deployed on your cloud (AWS, GCP, DigitalOcean)', 'Access and permissions for your team', 'Full documentation for non-technical staff'],
+        cta: 'View Deployment Options',
+        image: selfHostedSetupImg,
+      },
+      {
+        icon: Cloud,
+        pill: 'Our Cloud',
+        title: 'Fully-Managed Hosting',
+        desc: 'Prefer we run the infrastructure too? We host and manage your n8n instance on our own servers — patched, monitored, and backed up.',
+        points: ['Hosted and maintained on our infrastructure', 'Security patching, backups, and monitoring', 'You still own every workflow — fully exportable'],
+        cta: 'Compare Hosting Options',
+      },
+    ],
+  },
+  {
+    label: 'Keep It Going',
+    cards: [
+      {
+        icon: LifeBuoy,
+        pill: 'Support',
+        title: 'Ongoing Workflow Management',
+        desc: 'APIs change and edge cases appear. We proactively monitor every workflow we build or manage, fix what breaks, and extend it as your process evolves.',
+        points: ['Proactive monitoring on every live workflow', 'Fast fixes when an integration breaks', 'Ongoing extensions as your process changes'],
+        cta: 'Get Ongoing Support',
+        image: ongoingMaintenanceImg,
+      },
+      {
+        icon: Users,
+        pill: 'Enablement',
+        title: 'Team Enablement & Training',
+        desc: 'Automation only pays off if your team can actually use it. Every build comes with hands-on training and clear documentation.',
+        points: ['Live walkthroughs for your team', 'Written documentation for every workflow', 'Office-hours support after launch'],
+        cta: "See What's Included",
+      },
+    ],
+  },
+];
+
+const DELIVER_IMAGE_CARDS = DELIVER_GROUPS.flatMap((g) => g.cards).filter((c) => c.image);
+const DELIVER_TEXT_CARDS = DELIVER_GROUPS.flatMap((g) => g.cards).filter((c) => !c.image);
+
+type Template = {
+  icon: React.ElementType;
+  title: string;
+  apps: string[];
+  desc: string;
+  price: string;
+  category: string;
+  popular?: boolean;
+};
+
+const TEMPLATES: Template[] = [
+  {
+    icon: ShoppingCart,
+    title: 'E-Commerce Order Fulfillment',
+    apps: ['Shopify', 'ShipStation', 'Gmail'],
+    desc: 'New order triggers inventory check, shipping label creation, and a branded customer confirmation email.',
+    price: 'From $149',
+    category: 'E-commerce',
+    popular: true,
+  },
+  {
+    icon: UserPlus,
+    title: 'Lead Capture & CRM Sync',
+    apps: ['Airtable', 'HubSpot', 'Slack'],
+    desc: 'Enriches every new lead automatically and drops a qualified summary straight into your CRM and sales channel.',
+    price: 'From $129',
+    category: 'Sales & CRM',
+  },
+  {
+    icon: Headset,
+    title: 'Support Ticket Triage',
+    apps: ['Zendesk', 'OpenAI', 'Slack'],
+    desc: 'Classifies incoming tickets by urgency and topic, routes them to the right queue, and flags anything urgent.',
+    price: 'From $179',
+    category: 'Support',
+  },
+  {
+    icon: Mail,
+    title: 'Email Marketing Automation',
+    apps: ['Gmail', 'Mailchimp', 'Notion'],
+    desc: 'Automatically segments contacts, sends personalized campaigns, and updates your CRM based on engagement.',
+    price: 'From $99',
+    category: 'Marketing',
+  },
+  {
+    icon: Receipt,
+    title: 'Invoice Processing',
+    apps: ['Google Drive', 'QuickBooks', 'Slack'],
+    desc: 'Extracts data from invoices, creates records in your accounting system, and notifies your team for review.',
+    price: 'From $149',
+    category: 'Finance',
+  },
+  {
+    icon: Users,
+    title: 'Employee Onboarding',
+    apps: ['Google Drive', 'Slack', 'Notion'],
+    desc: 'Creates accounts, sends welcome messages, assigns training, and tracks onboarding progress automatically.',
+    price: 'From $119',
+    category: 'HR',
+  },
+  {
+    icon: Share2,
+    title: 'Social Content Pipeline',
+    apps: ['Notion', 'Buffer'],
+    desc: 'Turns new blog posts or content briefs into scheduled social drafts across your channels automatically.',
+    price: 'From $119',
+    category: 'Marketing',
+  },
+  {
+    icon: ClipboardList,
+    title: 'Meeting Notes & Follow-Ups',
+    apps: ['Zoom', 'OpenAI', 'Notion'],
+    desc: 'Summarizes recorded meetings and emails action items to attendees within minutes of the call ending.',
+    price: 'From $99',
+    category: 'Operations',
+  },
+];
+
+const CHANGES = [
+  {
+    title: 'Live in Days, Not Months',
+    desc: 'Start from a premade template and go live this week, or scope a custom build that still ships in weeks — not a multi-month integration project.',
+    image: liveInDaysImg,
+  },
+  {
+    title: 'No Per-Task Pricing',
+    desc: 'Self-hosted n8n means no metered "task" fees that scale with your volume — run 100 or 100,000 executions for the same infrastructure cost.',
+    image: noPerTaskPricingImg,
+  },
+  {
+    title: 'You Own the Workflow',
+    desc: 'Every workflow is version-controlled and fully yours — export it, audit it, or hand it to an in-house team at any time.',
+    image: youOwnTheWorkflowImg,
+  },
+];
+
+const INTEGRATIONS: { name: string; categories: string[] }[] = [
+  { name: 'Slack', categories: ['Popular', 'Communication'] },
+  { name: 'Gmail', categories: ['Popular', 'Communication'] },
+  { name: 'Google Sheets', categories: ['Popular', 'Productivity'] },
+  { name: 'HubSpot', categories: ['Popular', 'CRM & Sales'] },
+  { name: 'Shopify', categories: ['Popular', 'E-commerce'] },
+  { name: 'Stripe', categories: ['Popular', 'Finance'] },
+  { name: 'Notion', categories: ['Popular', 'Productivity'] },
+  { name: 'Airtable', categories: ['Popular', 'Productivity'] },
+  { name: 'Postgres', categories: ['Popular', 'Databases'] },
+  { name: 'Telegram', categories: ['Popular', 'Communication'] },
+  { name: 'Zendesk', categories: ['Popular', 'CRM & Sales'] },
+  { name: 'Mailchimp', categories: ['Popular', 'Marketing'] },
+];
+
+const INTEGRATION_CATEGORIES = ['Popular', 'Productivity', 'CRM & Sales', 'Marketing', 'E-commerce', 'Finance', 'Communication', 'Databases', 'All'];
+
+const WHY_SELF_HOSTED_1 = [
+  { icon: Database, title: 'Full Data Ownership', desc: 'Your workflows and data live on infrastructure you control.', points: ['Keep your data private', 'Export, audit, and modify anytime', 'No vendor lock-in'] },
+  { icon: Ban, title: 'No Per-Task Fees', desc: 'Self-hosted execution means no metered pricing as you scale.', points: ['Run 100 or 100,000 executions', 'Same infrastructure cost', 'Predictable and transparent'] },
+  { icon: Github, title: 'Open-Source Core', desc: "Built on n8n — no proprietary black box locking you in.", points: ['Open and extensible', 'Access to 400+ community nodes', 'Customize for your exact needs'] },
+  { icon: GitBranch, title: 'Version-Controlled', desc: 'Every workflow change is tracked, reviewable, and reversible.', points: ['Track changes over time', 'Collaborate with your team', 'Rollback when needed'] },
+];
+
+const HOW_IT_WORKS = [
+  { icon: FileText, title: 'Pick or scope', desc: 'Choose a premade template, or tell us the process you want automated from scratch.' },
+  { icon: Plug, title: 'Connect & build', desc: 'We wire up your accounts and build any custom logic your process needs.' },
+  { icon: FlaskConical, title: 'Test on real data', desc: 'The workflow runs against real cases while you review the output before go-live.' },
+  { icon: Rocket, title: 'Launch & support', desc: 'We flip it on, hand over documentation, and stay on for ongoing maintenance.' },
+];
+
+/* ------------------------------------------------------------------ */
+/*  PAGE                                                                */
 /* ------------------------------------------------------------------ */
 
 const N8nAutomationsPage = () => {
   const navigate = useNavigate();
-  const [activeTaskIndex, setActiveTaskIndex] = useState(0);
+  const [integrationCategory, setIntegrationCategory] = useState('Popular');
+  const [integrationSearch, setIntegrationSearch] = useState('');
 
-  const handlePilotBtn = () => {
-    navigate('/pilot');
-  };
+  const handlePilotBtn = () => navigate('/pilot');
 
-  const deliverables = [
-    {
-      icon: LayoutTemplate,
-      pill: 'Premade',
-      title: 'Ready-Made Templates',
-      desc: "Battle-tested workflows for common ops, sales, and support tasks — pick one from our library, we connect it to your accounts, and it's live the same week.",
-    },
-    {
-      icon: Wrench,
-      pill: 'Custom',
-      title: 'Built to Your Process',
-      desc: "Nothing off-the-shelf fits? We design and build a custom n8n workflow around your exact process, tools, and edge cases — from scratch.",
-    },
-    {
-      icon: ServerCog,
-      pill: 'Deploy',
-      title: 'Self-Hosted Setup',
-      desc: 'Your workflows run on infrastructure you control — no per-task pricing, no vendor lock-in, and full ownership of your automation logic and data.',
-    },
-    {
-      icon: LifeBuoy,
-      pill: 'Support',
-      title: 'Ongoing Maintenance',
-      desc: 'APIs change and edge cases appear. We monitor your workflows, fix breakages, and extend them as your process evolves.',
-    },
-  ];
-
-  const changes = [
-    {
-      icon: Gauge,
-      pill: 'Speed',
-      title: 'Live in Days, Not Months',
-      desc: 'Start from a premade template and go live this week, or scope a custom build that still ships in weeks — not a multi-month integration project.',
-    },
-    {
-      icon: Wallet,
-      pill: 'Cost',
-      title: 'No Per-Task Pricing',
-      desc: 'Self-hosted n8n means no metered "task" fees that scale with your volume — run 100 or 100,000 executions for the same infrastructure cost.',
-    },
-    {
-      icon: ShieldCheck,
-      pill: 'Control',
-      title: 'You Own the Workflow',
-      desc: 'Every workflow is version-controlled and fully yours — export it, audit it, or hand it to an in-house team at any time.',
-    },
-  ];
-
-  const demoTasks = [
-    'A new Shopify order comes in — process it end-to-end.',
-    'Sync new website leads into the CRM automatically.',
-    'Triage overnight support tickets before the team logs in.',
-  ];
-
-  const handleTaskClick = (index: number) => {
-    setActiveTaskIndex(index);
-  };
-
-  // Real client testimonials only. Leave this empty until the client supplies a
-  // genuine quote — the "What Users Say" card renders ONLY when this has at least
-  // one entry, so no placeholder is ever shipped to production.
-  const testimonials: Array<{ quote: string; name: string; role: string }> = [];
-
-  // Demo catalog data — replace with real templates/pricing before launch.
-  const premadeTemplates = [
-    {
-      icon: ShoppingCart,
-      title: 'E-Commerce Order Fulfillment',
-      apps: 'Shopify → ShipStation → Gmail',
-      desc: 'New order triggers inventory check, shipping label creation, and a branded customer confirmation email.',
-      price: 'From $149',
-    },
-    {
-      icon: UserPlus,
-      title: 'Lead Capture & CRM Sync',
-      apps: 'Web Form → Clearbit → HubSpot + Slack',
-      desc: 'Enriches every new lead automatically and drops a qualified summary straight into your CRM and sales channel.',
-      price: 'From $129',
-    },
-    {
-      icon: Headset,
-      title: 'Support Ticket Triage',
-      apps: 'Zendesk → Classifier → Slack',
-      desc: 'Classifies incoming tickets by urgency and topic, routes them to the right queue, and flags anything urgent.',
-      price: 'From $179',
-    },
-    {
-      icon: Share2,
-      title: 'Social Content Pipeline',
-      apps: 'RSS/Notion → Draft → Buffer',
-      desc: 'Turns new blog posts or content briefs into scheduled social drafts across your channels automatically.',
-      price: 'From $119',
-    },
-    {
-      icon: Receipt,
-      title: 'Invoice & Expense Automation',
-      apps: 'Gmail → OCR → Sheets/QuickBooks',
-      desc: 'Extracts vendor, date, and amount from incoming receipts and reconciles them into your books automatically.',
-      price: 'From $159',
-    },
-    {
-      icon: ClipboardList,
-      title: 'Meeting Notes & Follow-Ups',
-      apps: 'Recorder → Transcribe → Notion + Email',
-      desc: 'Summarizes recorded meetings and emails action items to attendees within minutes of the call ending.',
-      price: 'From $99',
-    },
-  ];
-
-  const integrations = [
-    'Slack',
-    'Gmail',
-    'Google Sheets',
-    'HubSpot',
-    'Shopify',
-    'Stripe',
-    'Notion',
-    'Airtable',
-    'Postgres',
-    'Telegram',
-    'Zendesk',
-    'Mailchimp',
-  ];
-
-  const guardrails = [
-    { icon: Database, title: 'Full Data Ownership', subtitle: 'Your workflows and data live on infrastructure you control' },
-    { icon: Ban, title: 'No Per-Task Fees', subtitle: 'Self-hosted execution means no metered pricing as you scale' },
-    { icon: Github, title: 'Open-Source Core', subtitle: 'Built on n8n — no proprietary black box locking you in' },
-    { icon: GitBranch, title: 'Version-Controlled', subtitle: 'Every workflow change is tracked, reviewable, and reversible' },
-  ];
-
-  const timeline = [
-    { week: 'Step 1', title: 'Pick or scope', desc: 'Choose a premade template, or tell us the process you want automated from scratch.' },
-    { week: 'Step 2', title: 'Connect & build', desc: 'We wire up your accounts and build any custom logic your process needs.' },
-    { week: 'Step 3', title: 'Test on real data', desc: 'The workflow runs against real cases while you review the output before go-live.' },
-    { week: 'Step 4', title: 'Launch & support', desc: 'We flip it on, hand over documentation, and stay on for ongoing maintenance.' },
-  ];
+  const filteredIntegrations = useMemo(() => {
+    return INTEGRATIONS.filter((i) => {
+      const matchesCategory = integrationCategory === 'All' || i.categories.includes(integrationCategory);
+      const q = integrationSearch.trim().toLowerCase();
+      const matchesSearch = !q || i.name.toLowerCase().includes(q);
+      return matchesCategory && matchesSearch;
+    });
+  }, [integrationCategory, integrationSearch]);
 
   return (
     <div className="min-h-screen bg-white mt-14">
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap"
+        rel="stylesheet"
+      />
+
       {/* ================= HERO ================= */}
       <section className="relative overflow-hidden bg-white">
-        <div className="absolute inset-0">
-          <motion.div
-            className="absolute top-0 right-0 bg-gray-100 rounded-full w-96 h-96 blur-3xl opacity-30"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 0.3, scale: 1 }}
-            transition={{ duration: 1.5, ease: 'easeOut' }}
-          />
-          <motion.div
-            className="absolute bottom-0 left-0 rounded-full w-80 h-80 bg-gray-50 blur-3xl opacity-20"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 0.2, scale: 1 }}
-            transition={{ duration: 1.5, ease: 'easeOut', delay: 0.3 }}
-          />
+        <div className="absolute inset-0" aria-hidden="true">
+          <div className="absolute top-0 right-0 bg-blue-50 rounded-full w-96 h-96 blur-3xl opacity-60" />
         </div>
 
         <div className="relative px-6 pt-8 mx-auto max-w-7xl sm:pt-12 lg:pt-10">
           <div className="grid items-center gap-12 lg:grid-cols-2">
-            <motion.div
-              className="space-y-8"
-              initial="initial"
-              animate="animate"
-              variants={staggerContainer}
-            >
+            <motion.div className="space-y-6" initial="initial" animate="animate" variants={staggerContainer}>
               <motion.div
-                className="items-center hidden gap-2 px-4 py-2 text-blue-900 bg-gray-100 rounded-full lg:inline-flex"
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-blue-900 rounded-full bg-blue-50"
                 variants={scaleIn}
               >
                 <Workflow className="w-4 h-4" aria-hidden="true" />
-                <span className="text-sm font-medium">n8n Automations &amp; Workflows</span>
+                n8n Automations &amp; Workflows
               </motion.div>
 
               <motion.h1
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-black"
+                className="text-4xl font-bold leading-tight text-black sm:text-5xl lg:text-6xl"
                 variants={fadeInUp}
               >
-                Self-hosted automations — <span className="text-blue-900">ready-made or built for you</span>
+                Self-hosted automations —{' '}
+                <span className="text-blue-900">ready-made or built for you</span>
               </motion.h1>
 
-              <motion.p
-                className="text-xl leading-relaxed text-gray-700"
-                variants={fadeInUp}
-              >
-                Launch a proven n8n workflow from our library this week, or get one custom-built around your exact process — either way, you own the automation and the infrastructure it runs on.
+              <motion.p className="max-w-lg text-lg leading-relaxed text-gray-700 sm:text-xl" variants={fadeInUp}>
+                Launch a proven n8n workflow from our library this week, or get one custom-built
+                around your exact process — either way, you own the automation and the infrastructure
+                it runs on.
               </motion.p>
 
               <motion.div className="flex flex-col gap-4 sm:flex-row" variants={fadeInUp}>
@@ -480,44 +582,109 @@ const N8nAutomationsPage = () => {
                 </button>
                 <button
                   type="button"
-                  onClick={() => scrollToSection('premade-library')}
+                  onClick={() => scrollToSection('see-it-work')}
                   className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold text-blue-900 transition-colors bg-white border-2 border-blue-900 rounded-lg hover:bg-blue-50"
                 >
-                  <LayoutTemplate className="w-5 h-5" aria-hidden="true" />
+                  <LayoutGrid className="w-5 h-5" aria-hidden="true" />
                   Browse templates
                 </button>
               </motion.div>
 
-              <motion.div
-                className="p-4 border border-blue-200 rounded-lg bg-blue-50"
-                variants={fadeInUp}
-              >
-                <p className="text-sm text-black">
-                  <span className="font-semibold text-blue-900">For:</span> Ops, sales, and support teams who want automations live fast — a premade template off the shelf, or a custom build wired to a process nothing generic can cover.
-                </p>
+              <motion.div className="grid grid-cols-2 gap-4 pt-4 sm:grid-cols-4" variants={staggerContainer}>
+                {[
+                  { icon: Zap, title: 'Faster', sub: 'Operations' },
+                  { icon: Wallet, title: 'Lower', sub: 'Manual Effort' },
+                  { icon: Settings2, title: 'Fully', sub: 'Customizable' },
+                  { icon: ShieldCheck, title: 'You Own', sub: 'the Infrastructure' },
+                ].map((item) => (
+                  <motion.div key={item.title} className="flex items-start gap-2" variants={fadeInUp}>
+                    <item.icon className="flex-shrink-0 w-4 h-4 mt-0.5 text-blue-600" aria-hidden="true" />
+                    <div className="text-xs leading-tight text-gray-700">
+                      <div className="font-semibold text-black">{item.title}</div>
+                      {item.sub}
+                    </div>
+                  </motion.div>
+                ))}
               </motion.div>
             </motion.div>
 
-            {/* Hero illustration */}
             <motion.div
-              className="relative"
               initial={{ opacity: 0, x: 60 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, ease: 'easeOut', delay: 0.3 }}
             >
-              <motion.div
-                className="pt-2 px-8 pb-8 rounded-2xl"
-                whileHover={{ y: -10, transition: { duration: 0.3 } }}
-              >
-                <N8nAutomationRichCard className="w-full max-w-xl mx-auto" />
-                <div className="mt-4 text-center">
-                  <div className="text-sm text-gray-600">
-                    Flow: Your apps → n8n → Finished action
-                  </div>
-                </div>
-              </motion.div>
+              <img
+                src={n8nHeroImg}
+                alt="n8n workflow editor showing a trigger processing data into an AI Agent, CRM update, and Slack notification, self-hosted with your data and control"
+                className="w-full h-auto"
+              />
             </motion.div>
           </div>
+
+          {/* Trusted-by strip */}
+          <motion.div
+            className="flex flex-col items-center gap-4 p-6 mt-16 border border-blue-100 sm:flex-row bg-blue-50/60 rounded-2xl"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+          >
+            <div className="flex-shrink-0 text-center sm:text-left">
+              <div className="text-sm font-bold text-black">Trusted by innovative teams</div>
+              <div className="text-xs text-gray-600">Building automation infrastructure for startups and enterprises</div>
+            </div>
+            <div className="flex flex-wrap items-center justify-center flex-1 gap-6 sm:justify-end opacity-80">
+              <SiSlack className="w-5 h-5 text-gray-500" aria-hidden="true" />
+              <SiGoogle className="w-5 h-5 text-gray-500" aria-hidden="true" />
+              <SiOpenai className="w-5 h-5 text-gray-500" aria-hidden="true" />
+              <SiHubspot className="w-5 h-5 text-gray-500" aria-hidden="true" />
+              <SiNotion className="w-5 h-5 text-gray-500" aria-hidden="true" />
+              <span className="text-xs text-gray-500">…and more</span>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ================= HOW WE HELP ================= */}
+      <section className="py-20 bg-white">
+        <div className="px-6 mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+          >
+            <h2 className="mb-2 text-2xl font-bold text-black sm:text-3xl">How We Help</h2>
+            <p className="mb-8 text-gray-700">End-to-end n8n automation services tailored to your business processes and goals.</p>
+
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {HOW_WE_HELP.map((item) => (
+                <div key={item.title} className="p-5 bg-gray-50 border border-gray-200 rounded-2xl">
+                  <div className="flex items-center justify-center w-10 h-10 mb-3 bg-blue-100 rounded-lg">
+                    <item.icon className="w-5 h-5 text-blue-900" aria-hidden="true" />
+                  </div>
+                  <h3 className="mb-1 text-base font-bold text-black">{item.title}</h3>
+                  <p className="text-sm text-gray-600">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="mt-10 overflow-hidden rounded-2xl"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.15 }}
+          >
+            <HashLink smooth to="/book-consultation" className="block">
+              <img
+                src={readyToAutomateImg}
+                alt="Ready to automate your workflow? Book a free consultation to discuss how n8n can streamline your operations"
+                className="w-full h-auto rounded-2xl"
+              />
+            </HashLink>
+          </motion.div>
         </div>
       </section>
 
@@ -531,130 +698,97 @@ const N8nAutomationsPage = () => {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
           >
+            <Eyebrow icon={LayoutGrid}>What We Deliver</Eyebrow>
             <h2 className="mb-4 text-4xl font-bold text-black">
               What We <span className="text-blue-900">Deliver</span>
             </h2>
-            <p className="text-xl text-gray-700">
+            <p className="max-w-2xl mx-auto text-xl text-gray-700">
               Two ways to get automated — pick a template, or let us build one from scratch.
             </p>
           </motion.div>
 
-          <motion.div
-            className="grid gap-8 md:grid-cols-2 lg:grid-cols-4"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.3 }}
-          >
-            {deliverables.map((item, index) => {
-              const Icon = item.icon;
-              return (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {DELIVER_IMAGE_CARDS.map((item) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+                whileHover={{ y: -4 }}
+              >
+                <HashLink to="/pilot" className="block">
+                  <img src={item.image} alt={`${item.title} — ${item.desc}`} className="w-full h-auto rounded-2xl" />
+                </HashLink>
+              </motion.div>
+            ))}
+          </div>
+
+          {DELIVER_TEXT_CARDS.length > 0 && (
+            <div className="grid gap-6 mt-8 sm:grid-cols-2">
+              {DELIVER_TEXT_CARDS.map((item) => (
                 <motion.div
                   key={item.title}
-                  className="relative p-8 hover:bg-white rounded-2xl"
-                  variants={fadeInUp}
-                  whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                  className="p-6 bg-white border border-gray-200 rounded-2xl"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.5, ease: 'easeOut' }}
+                  whileHover={{ y: -4 }}
                 >
-                  <div className="flex flex-col items-center text-center">
-                    <motion.div
-                      className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
-                      initial={{ scale: 0, rotate: 180 }}
-                      whileInView={{ scale: 1, rotate: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 * index }}
-                    >
-                      <Icon className="w-8 h-8 text-blue-900" aria-hidden="true" />
-                    </motion.div>
-                    <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
-                      {item.pill}
-                    </div>
-                    <h3 className="mb-3 text-xl font-bold text-black">{item.title}</h3>
-                    <p className="leading-relaxed text-gray-600">{item.desc}</p>
+                  <div className="flex items-center justify-center w-12 h-12 mb-4 bg-blue-100 rounded-xl">
+                    <item.icon className="w-6 h-6 text-blue-900" aria-hidden="true" />
                   </div>
-                </motion.div>
-              );
-            })}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ================= PREMADE AUTOMATION LIBRARY ================= */}
-      <section id="premade-library" className="py-20 bg-white">
-        <div className="px-6 mx-auto max-w-7xl">
-          <motion.div
-            className="mb-16 text-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-          >
-            <h2 className="mb-4 text-4xl font-bold text-black">
-              Premade <span className="text-blue-900">Automation Library</span>
-            </h2>
-            <p className="max-w-2xl mx-auto text-xl text-gray-700">
-              Proven workflows for the tasks every team repeats. Pick one, we connect it to your accounts, and it's running within days.
-            </p>
-            <p className="mt-2 text-sm text-gray-500">
-              Illustrative catalog and pricing — confirm current templates and rates with our team.
-            </p>
-          </motion.div>
-
-          <motion.div
-            className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.2 }}
-          >
-            {premadeTemplates.map((tpl) => {
-              const Icon = tpl.icon;
-              return (
-                <motion.div
-                  key={tpl.title}
-                  className="flex flex-col p-6 bg-gray-50 border border-gray-200 rounded-2xl"
-                  variants={fadeInUp}
-                  whileHover={{ y: -6, transition: { duration: 0.3 } }}
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center justify-center rounded-xl w-14 h-14 bg-blue-100">
-                      <Icon className="w-7 h-7 text-blue-900" aria-hidden="true" />
-                    </div>
-                    <span className="inline-flex items-center px-3 py-1 text-xs font-semibold text-blue-900 bg-blue-100 rounded-full whitespace-nowrap">
-                      {tpl.price}
-                    </span>
-                  </div>
-                  <h3 className="mb-1 text-lg font-bold text-black">{tpl.title}</h3>
-                  <p className="mb-3 text-xs font-medium tracking-wide text-blue-900 uppercase">{tpl.apps}</p>
-                  <p className="flex-1 mb-4 text-sm leading-relaxed text-gray-600">{tpl.desc}</p>
+                  <span className="inline-flex items-center px-2.5 py-0.5 mb-3 text-xs font-semibold text-blue-900 bg-blue-50 rounded-full">
+                    {item.pill}
+                  </span>
+                  <h4 className="mb-2 text-lg font-bold text-black">{item.title}</h4>
+                  <p className="mb-4 text-sm leading-relaxed text-gray-600">{item.desc}</p>
+                  {item.points && (
+                    <ul className="mb-5 space-y-1.5">
+                      {item.points.map((p) => (
+                        <li key={p} className="flex items-start gap-2 text-sm text-gray-700">
+                          <CheckCircle2 className="w-4 h-4 mt-0.5 text-blue-500 flex-shrink-0" aria-hidden="true" />
+                          {p}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                   <HashLink
-                    smooth
-                    to="/book-consultation"
+                    to="/pilot"
                     className="inline-flex items-center gap-1 text-sm font-semibold text-blue-900 hover:text-blue-700"
                   >
-                    Get this workflow
+                    {item.cta}
                     <ArrowRight className="w-4 h-4" aria-hidden="true" />
                   </HashLink>
                 </motion.div>
-              );
-            })}
-          </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
 
-          {/* Custom build callout */}
+      {/* ================= ZAPIER / MAKE MIGRATION BANNER ================= */}
+      <section className="py-16 bg-white">
+        <div className="px-6 mx-auto max-w-7xl">
           <motion.div
-            className="flex flex-col items-center justify-between gap-6 p-8 mt-12 border-2 border-blue-900 border-dashed sm:flex-row bg-blue-50 rounded-2xl"
+            className="flex flex-col items-center justify-between gap-8 p-8 border-2 border-blue-900 border-dashed sm:flex-row bg-blue-50 rounded-2xl"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
           >
             <div className="flex items-start gap-4">
-              <div className="flex items-center justify-center flex-shrink-0 bg-white rounded-full w-14 h-14">
-                <Wrench className="w-6 h-6 text-blue-900" aria-hidden="true" />
+              <div className="flex-shrink-0 hidden sm:flex items-center gap-2 p-3 bg-white rounded-xl shadow-sm">
+                <SiZapier className="w-6 h-6 text-orange-500" aria-hidden="true" />
+                <ArrowRight className="w-4 h-4 text-gray-400" aria-hidden="true" />
+                <SiN8N className="w-6 h-6 text-[#EA4B71]" aria-hidden="true" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-black">Don't see your process on the shelf?</h3>
+                <h3 className="text-xl font-bold text-black">Already Running Zapier or Make?</h3>
                 <p className="mt-1 text-gray-700">
-                  We design and build a custom n8n workflow around your exact tools, data, and edge cases — no template required.
+                  If per-task pricing is eating into your automation budget as you scale, we'll rebuild your
+                  existing automations in self-hosted n8n — same logic, no more metered fees.
                 </p>
               </div>
             </div>
@@ -663,16 +797,18 @@ const N8nAutomationsPage = () => {
               onClick={handlePilotBtn}
               className="flex items-center justify-center flex-shrink-0 gap-2 px-6 py-3 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 whitespace-nowrap"
             >
-              Scope a custom build
+              Scope a Migration
               <ArrowRight className="w-4 h-4" aria-hidden="true" />
             </button>
           </motion.div>
         </div>
       </section>
 
-      {/* ================= WHAT CHANGES ================= */}
-      <section className="py-20 bg-gray-50">
+      {/* ================= LIVE DEMO ================= */}
+      <section id="see-it-work" className="relative py-20 bg-gray-50">
         <div className="px-6 mx-auto max-w-7xl">
+          <HandNote className="-top-2 left-6">Automate{'\n'}What Matters</HandNote>
+
           <motion.div
             className="mb-16 text-center"
             initial={{ opacity: 0, y: 40 }}
@@ -680,165 +816,324 @@ const N8nAutomationsPage = () => {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
           >
+            <Eyebrow icon={Play}>Live Demo</Eyebrow>
+            <h2 className="mb-4 text-4xl font-bold text-black">
+              Watch a workflow take a <span className="text-blue-900">real task</span> from start to finish
+            </h2>
+            <p className="max-w-2xl mx-auto text-xl text-gray-700">
+              Real n8n canvases for the workflows we build most — with the templates already available in each category.
+            </p>
+          </motion.div>
+        </div>
+
+        <div className="space-y-16">
+          {workflowScenarios.map((scenario, idx) => {
+            const categoryTemplates = TEMPLATES.filter((t) => t.category === scenario.category);
+
+            const demoContent = (
+              <>
+                <span className="inline-flex items-center px-3 py-1 mb-4 text-xs font-semibold text-blue-900 uppercase bg-blue-100 rounded-full">
+                  {scenario.category}
+                </span>
+                <h3 className="mb-4 text-xl font-bold text-black">"{scenario.prompt}"</h3>
+                <div className="overflow-hidden bg-white border border-gray-200 shadow-xl rounded-2xl">
+                  <div style={{ '--n8n-workflow-min-height': '420px' } as React.CSSProperties}>
+                    <n8n-demo
+                      key={scenario.category}
+                      workflow={JSON.stringify(scenario.n8nWorkflow)}
+                      frame="true"
+                      theme="light"
+                      collapseformobile="true"
+                    />
+                  </div>
+                </div>
+              </>
+            );
+
+            const listContent = (
+              <>
+                <h4 className="mb-4 text-sm font-bold tracking-wide text-blue-900 uppercase">
+                  Workflows we've already built
+                </h4>
+                <div className="space-y-4">
+                  {categoryTemplates.map((tpl) => (
+                    <div key={tpl.title} className="relative p-5 bg-white border border-gray-200 rounded-2xl">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center justify-center w-11 h-11 bg-blue-100 rounded-xl">
+                          <tpl.icon className="w-5 h-5 text-blue-900" aria-hidden="true" />
+                        </div>
+                        <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-semibold text-blue-900 bg-blue-100 rounded-full whitespace-nowrap">
+                          {tpl.price}
+                        </span>
+                      </div>
+                      {tpl.popular && (
+                        <span className="absolute inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-semibold text-blue-900 bg-blue-50 border border-blue-200 rounded-full top-4 left-[3.75rem]">
+                          <Sparkles className="w-3 h-3" aria-hidden="true" />
+                          Popular
+                        </span>
+                      )}
+                      <h5 className="mb-1 text-base font-bold text-black">{tpl.title}</h5>
+                      <div className="flex items-center gap-1.5 mb-2">
+                        {tpl.apps.map((a) => (
+                          <AppChip key={a} name={a} />
+                        ))}
+                      </div>
+                      <p className="mb-3 text-sm leading-relaxed text-gray-600">{tpl.desc}</p>
+                      <HashLink
+                        smooth
+                        to="/book-consultation"
+                        className="inline-flex items-center gap-1 text-sm font-semibold text-blue-900 hover:text-blue-700"
+                      >
+                        Get this workflow
+                        <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                      </HashLink>
+                    </div>
+                  ))}
+                  {categoryTemplates.length === 0 && (
+                    <p className="p-5 text-sm text-gray-500 bg-white border border-gray-200 border-dashed rounded-2xl">
+                      More {scenario.category} workflows coming soon — tell us what you need on a call.
+                    </p>
+                  )}
+                  {scenario.moreExamples.length > 0 && (
+                    <div className="p-4 bg-white border border-gray-200 rounded-2xl">
+                      <div className="mb-2 text-xs font-semibold tracking-wide text-gray-500 uppercase">
+                        More {scenario.category} workflows
+                      </div>
+                      <div className="pr-2 space-y-2 overflow-y-auto max-h-36">
+                        {scenario.moreExamples.map((name) => (
+                          <div key={name} className="flex items-center gap-2 text-sm text-gray-600">
+                            <Workflow className="flex-shrink-0 w-3.5 h-3.5 text-gray-300" aria-hidden="true" />
+                            {name}
+                          </div>
+                        ))}
+                      </div>
+                      <p className="mt-2 text-[11px] text-gray-400">
+                        Illustrative examples — ask us about your specific process.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </>
+            );
+
+            const [firstContent, secondContent] = scenario.reverse ? [listContent, demoContent] : [demoContent, listContent];
+            const [firstSpan, secondSpan] = scenario.reverse ? ['lg:col-span-2', 'lg:col-span-3'] : ['lg:col-span-3', 'lg:col-span-2'];
+
+            return (
+              <div key={scenario.category}>
+                {idx > 0 && scenario.bridge && (
+                  <div className="py-12 bg-white border-t border-gray-200">
+                    <div className="max-w-3xl px-6 mx-auto text-center">
+                      <p className="text-lg font-medium leading-relaxed text-gray-700">{scenario.bridge}</p>
+                    </div>
+                  </div>
+                )}
+                <div className="px-6 mx-auto max-w-7xl">
+                  <div className="grid items-start gap-10 lg:grid-cols-5">
+                    <motion.div
+                      className={firstSpan}
+                      initial={{ opacity: 0, x: -40 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.3 }}
+                      transition={{ duration: 0.6, ease: 'easeOut' }}
+                    >
+                      {firstContent}
+                    </motion.div>
+
+                    <motion.div
+                      className={secondSpan}
+                      initial={{ opacity: 0, x: 40 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.3 }}
+                      transition={{ duration: 0.6, ease: 'easeOut' }}
+                    >
+                      {secondContent}
+                    </motion.div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ================= WHAT CHANGES ================= */}
+      <section className="relative py-20 bg-white">
+        <div className="px-6 mx-auto max-w-7xl">
+          <HandNote className="top-4 right-6">Less Busy Work.{'\n'}More Progress.</HandNote>
+
+          <motion.div
+            className="mb-16 text-center"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+          >
+            <Eyebrow icon={BarChart3}>Real Impact</Eyebrow>
             <h2 className="mb-4 text-4xl font-bold text-black">
               What <span className="text-blue-900">Changes</span>
             </h2>
-            <p className="text-xl text-gray-700">
-              Measurable impact on your team's day-to-day operations.
-            </p>
+            <p className="text-xl text-gray-700">Measurable impact on your team's day-to-day operations.</p>
           </motion.div>
 
           <motion.div
-            className="grid gap-8 md:grid-cols-3"
+            className="grid gap-6 mb-8 md:grid-cols-3"
             variants={staggerContainer}
             initial="initial"
             whileInView="animate"
             viewport={{ once: true, amount: 0.3 }}
           >
-            {changes.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <motion.div
-                  key={item.title}
-                  className="relative p-8 hover:bg-white rounded-2xl"
-                  variants={fadeInUp}
-                  whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                >
-                  <div className="flex flex-col items-center text-center">
-                    <motion.div
-                      className="flex items-center justify-center w-20 h-20 mb-4 bg-blue-100 rounded-2xl"
-                      initial={{ scale: 0, rotate: 180 }}
-                      whileInView={{ scale: 1, rotate: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 * index }}
-                    >
-                      <Icon className="w-8 h-8 text-blue-900" aria-hidden="true" />
-                    </motion.div>
-                    <div className="inline-flex items-center px-3 py-1 mb-4 text-sm font-medium text-blue-900 bg-blue-100 rounded-full">
-                      {item.pill}
-                    </div>
-                    <h3 className="mb-3 text-xl font-bold text-black">{item.title}</h3>
-                    <p className="leading-relaxed text-gray-600">{item.desc}</p>
-                  </div>
-                </motion.div>
-              );
-            })}
+            {CHANGES.map((item) => (
+              <motion.div key={item.title} variants={fadeInUp}>
+                <img src={item.image} alt={`${item.title} — ${item.desc}`} className="w-full h-auto rounded-2xl" />
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.div
+            className="flex flex-col items-center gap-4 p-6 border border-blue-100 sm:flex-row bg-blue-50 rounded-2xl"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+          >
+            <div className="flex items-center flex-shrink-0 gap-2">
+              <BarChart3 className="w-5 h-5 text-blue-900" aria-hidden="true" />
+              <div>
+                <div className="text-sm font-bold text-black">Real Results</div>
+                <div className="text-xs text-gray-600">Teams automate faster, reduce costs, and stay in control — without compromise.</div>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-center flex-1 gap-8 sm:justify-end">
+              {[
+                { value: '50-80%', label: 'Faster execution' },
+                { value: '40%+', label: 'Lower operational costs' },
+                { value: '100%', label: 'Your data. Your control.' },
+              ].map((s) => (
+                <div key={s.label} className="text-center">
+                  <div className="text-lg font-bold text-blue-900">{s.value}</div>
+                  <div className="text-xs text-gray-600 whitespace-nowrap">{s.label}</div>
+                </div>
+              ))}
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* ================= SEE IT WORK ================= */}
-      <section id="see-it-work" className="py-20 bg-gray-50">
+      {/* ================= INTEGRATIONS ================= */}
+      <section className="py-20 bg-white">
         <div className="px-6 mx-auto max-w-7xl">
           <motion.div
-            className="mb-16 text-center"
+            className="mb-10 text-center"
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
           >
+            <Eyebrow icon={Plug}>Integrations</Eyebrow>
             <h2 className="mb-4 text-4xl font-bold text-black">
-              Watch a workflow take a <span className="text-blue-900">real task</span> from start to finish
+              Integr<span className="text-blue-900">ations</span>
             </h2>
+            <p className="text-xl text-gray-700">n8n connects to hundreds of apps out of the box — and anything else via HTTP or webhook.</p>
           </motion.div>
 
-          <div className="grid gap-12 lg:grid-cols-2">
-            {/* Demo widget */}
-            <motion.div
-              initial={{ opacity: 0, x: -60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-            >
-              <WorkflowRunnerDemo scenario={workflowScenarios[activeTaskIndex]} />
-            </motion.div>
+          <div className="max-w-2xl mx-auto mb-6">
+            <div className="relative">
+              <Search className="absolute w-4 h-4 text-gray-400 -translate-y-1/2 left-4 top-1/2" aria-hidden="true" />
+              <input
+                type="text"
+                value={integrationSearch}
+                onChange={(e) => setIntegrationSearch(e.target.value)}
+                placeholder="Search for an app (e.g. Slack, Gmail, Shopify...)"
+                className="w-full py-3 pl-11 pr-4 text-sm bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-300"
+              />
+            </div>
+          </div>
 
-            {/* Tasks + testimonial */}
-            <motion.div
-              className="space-y-6"
-              initial={{ opacity: 0, x: 60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-            >
-              <h3 className="text-2xl font-bold text-blue-900">Try these workflows:</h3>
-
-              <motion.div
-                className="space-y-4"
-                variants={staggerContainer}
-                initial="initial"
-                whileInView="animate"
-                viewport={{ once: true, amount: 0.3 }}
+          <div className="flex flex-wrap justify-center gap-2 mb-10">
+            {INTEGRATION_CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setIntegrationCategory(cat)}
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
+                  integrationCategory === cat ? 'bg-blue-900 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:border-blue-300'
+                }`}
               >
-                {demoTasks.map((task, index) => (
-                  <motion.div
-                    key={index}
-                    onClick={() => handleTaskClick(index)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => e.key === 'Enter' && handleTaskClick(index)}
-                    className={`w-full p-4 text-left transition-colors cursor-pointer border rounded-lg ${
-                      activeTaskIndex === index
-                        ? 'bg-blue-900 border-blue-900'
-                        : 'bg-white border-gray-200 hover:border-blue-300 hover:bg-blue-50'
-                    }`}
-                    variants={fadeInUp}
-                    whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-                  >
-                    <div className="flex items-start gap-3">
-                      <MessageSquare className={`w-5 h-5 mt-0.5 ${activeTaskIndex === index ? 'text-white' : 'text-blue-900'}`} aria-hidden="true" />
-                      <span className={activeTaskIndex === index ? 'text-white' : 'text-black'}>"{task}"</span>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
+                {cat}
+              </button>
+            ))}
+          </div>
 
-              {/* What Users Say — renders ONLY when a real client testimonial exists
-                  (see the `testimonials` array above), so no placeholder ships. */}
-              {testimonials.length > 0 && (
+          <div className="grid gap-6 lg:grid-cols-3">
+            <div className="grid grid-cols-3 gap-3 sm:grid-cols-6 lg:col-span-2">
+              {filteredIntegrations.map((integration) => (
                 <motion.div
-                  className="p-6 bg-white border border-gray-200 shadow-lg rounded-xl"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  key={integration.name}
+                  className="flex flex-col items-center gap-2 p-4 text-center bg-white border border-gray-200 rounded-xl"
+                  variants={scaleIn}
+                  initial="initial"
+                  whileInView="animate"
                   viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.6, ease: 'easeOut', delay: 0.4 }}
+                  whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
                 >
-                  <div className="flex items-center gap-3 mb-4">
-                    <Star className="w-6 h-6 text-yellow-500" aria-hidden="true" />
-                    <h4 className="text-lg font-semibold text-gray-900">What Users Say</h4>
-                  </div>
-
-                  <div className="space-y-4">
-                    {testimonials.map((t, i) => (
-                      <div key={i} className="p-4 rounded-lg bg-gray-50">
-                        <div className="flex items-center gap-1 mb-2">
-                          {[...Array(5)].map((_, s) => (
-                            <Star key={s} className="w-4 h-4 text-yellow-400 fill-yellow-400" aria-hidden="true" />
-                          ))}
-                        </div>
-                        <p className="text-sm italic text-gray-700">"{t.quote}"</p>
-                        <div className="flex items-center gap-3 mt-3">
-                          <div className="flex items-center justify-center w-8 h-8 text-sm font-bold text-white bg-blue-500 rounded-full">
-                            {t.name.charAt(0)}
-                          </div>
-                          <div>
-                            <div className="text-sm font-medium text-gray-900">{t.name}</div>
-                            <div className="text-xs text-gray-600">{t.role}</div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <AppChip name={integration.name} size="md" />
+                  <span className="text-xs font-medium text-black">{integration.name}</span>
                 </motion.div>
+              ))}
+              {filteredIntegrations.length === 0 && (
+                <p className="col-span-full py-6 text-sm text-center text-gray-500">No apps match that search.</p>
               )}
+            </div>
+
+            <motion.div
+              className="relative self-start flex flex-col p-6 overflow-hidden bg-blue-50 border border-blue-100 rounded-2xl"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.5, ease: 'easeOut' }}
+            >
+              <div className="flex items-center justify-center w-10 h-10 mb-4 bg-white rounded-full shadow-sm">
+                <Plug className="w-5 h-5 text-blue-900" aria-hidden="true" />
+              </div>
+              <h3 className="mb-1 text-base font-bold text-black">Don't see your app?</h3>
+              <p className="mb-4 text-sm text-gray-700">Connect to any app with an API or webhook — no limits.</p>
+              <button
+                type="button"
+                onClick={handlePilotBtn}
+                className="inline-flex items-center gap-2 px-5 py-2.5 mb-4 text-sm font-semibold text-white bg-blue-900 rounded-lg hover:bg-blue-800"
+              >
+                <Plug className="w-4 h-4" aria-hidden="true" />
+                Add any app
+                <ArrowRight className="w-4 h-4" aria-hidden="true" />
+              </button>
+              <ul className="space-y-1.5">
+                {['HTTP requests', 'Webhooks (inbound & outbound)', 'Custom API integrations', 'Build connectors for internal tools'].map((p) => (
+                  <li key={p} className="flex items-start gap-2 text-xs text-gray-700">
+                    <CheckCircle2 className="w-3.5 h-3.5 mt-0.5 text-blue-500 flex-shrink-0" aria-hidden="true" />
+                    {p}
+                  </li>
+                ))}
+              </ul>
+              <p
+                className="mt-4 text-sm text-right text-blue-500"
+                style={{ fontFamily: "'Caveat', cursive" }}
+              >
+                If it has an API, it works.
+              </p>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* ================= INTEGRATIONS ================= */}
-      <section className="py-20 bg-gray-50">
+      {/* ================= WHY SELF-HOSTED + HOW IT WORKS ================= */}
+      <section className="relative py-20 bg-white">
         <div className="px-6 mx-auto max-w-7xl">
+          <HandNote className="top-4 left-6">More control.{'\n'}More possibilities.</HandNote>
+          <HandNote className="top-4 right-6" rotate={4}>
+            Your workflows.{'\n'}Your infrastructure.
+          </HandNote>
+
           <motion.div
             className="mb-16 text-center"
             initial={{ opacity: 0, y: 40 }}
@@ -846,217 +1141,220 @@ const N8nAutomationsPage = () => {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
           >
-            <h2 className="mb-4 text-4xl font-bold text-blue-900">Integrations</h2>
-            <p className="text-xl text-gray-700">
-              n8n connects to hundreds of apps out of the box — and anything else via HTTP or webhook.
-            </p>
-          </motion.div>
-
-          <motion.div
-            className="flex flex-wrap justify-center gap-4"
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, amount: 0.3 }}
-          >
-            {integrations.map((integration, index) => (
-              <motion.div
-                key={index}
-                className="px-6 py-3 font-medium text-black bg-white border border-gray-200 rounded-full"
-                variants={scaleIn}
-                whileHover={{
-                  scale: 1.05,
-                  backgroundColor: '#f0f9ff',
-                  borderColor: '#3b82f6',
-                  transition: { duration: 0.2 },
-                }}
-              >
-                {integration}
-              </motion.div>
-            ))}
-            {/* Highlighted custom-connector pill */}
-            <motion.div
-              className="px-6 py-3 font-semibold text-white bg-blue-900 border border-blue-900 rounded-full"
-              variants={scaleIn}
-              whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
-            >
-              + Any app with an API or webhook
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ================= GUARDRAILS ================= */}
-      <section className="py-20 bg-white">
-        <div className="px-6 mx-auto max-w-7xl">
-          <motion.div
-            className="mb-16 text-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-          >
+            <Eyebrow icon={ShieldCheck}>Built for Your Control</Eyebrow>
             <h2 className="mb-4 text-4xl font-bold text-black">
               Why <span className="text-blue-900">self-hosted n8n</span>
             </h2>
-            <p className="text-xl text-gray-700">
-              Ownership and cost control that hosted no-code tools can't match.
-            </p>
+            <p className="text-xl text-gray-700">Ownership and cost control that hosted no-code tools can't match.</p>
           </motion.div>
 
           <motion.div
-            className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+            className="grid gap-6 mb-20 sm:grid-cols-2 lg:grid-cols-4"
             variants={staggerContainer}
             initial="initial"
             whileInView="animate"
             viewport={{ once: true, amount: 0.3 }}
           >
-            {guardrails.map((item) => {
-              const Icon = item.icon;
-              return (
-                <motion.div
-                  key={item.title}
-                  className="p-6 text-center border border-gray-200 rounded-2xl"
-                  variants={fadeInUp}
-                >
-                  <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-blue-100 rounded-xl">
-                    <Icon className="w-6 h-6 text-blue-900" aria-hidden="true" />
-                  </div>
-                  <h3 className="mb-2 text-base font-bold text-black">{item.title}</h3>
-                  <p className="text-sm text-gray-600">{item.subtitle}</p>
-                </motion.div>
-              );
-            })}
+            {WHY_SELF_HOSTED_1.map((item) => (
+              <motion.div key={item.title} className="p-6 bg-white border border-gray-200 rounded-2xl" variants={fadeInUp}>
+                <div className="flex items-center justify-center w-11 h-11 mb-4 bg-blue-100 rounded-xl">
+                  <item.icon className="w-5 h-5 text-blue-900" aria-hidden="true" />
+                </div>
+                <h3 className="mb-2 text-base font-bold text-black">{item.title}</h3>
+                <p className="mb-3 text-sm text-gray-600">{item.desc}</p>
+                <ul className="space-y-1">
+                  {item.points.map((p) => (
+                    <li key={p} className="flex items-start gap-1.5 text-xs text-gray-700">
+                      <CheckCircle2 className="w-3.5 h-3.5 mt-0.5 text-blue-500 flex-shrink-0" aria-hidden="true" />
+                      {p}
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
           </motion.div>
-        </div>
-      </section>
 
-      {/* ================= HOW IT WORKS (timeline) ================= */}
-      <section id="how-it-works" className="py-20 bg-gray-50">
-        <div className="px-6 mx-auto max-w-7xl">
-          <motion.div
-            className="mb-16 text-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
-          >
+          {/* HOW IT WORKS */}
+          <div id="how-it-works" className="text-center">
+            <Eyebrow icon={Settings2}>Simple Process</Eyebrow>
             <h2 className="mb-4 text-4xl font-bold text-black">
               How it <span className="text-blue-900">works</span>
             </h2>
-          </motion.div>
+            <p className="mb-16 text-xl text-gray-700">From idea to impact — in just a few steps.</p>
+          </div>
 
           <motion.div
-            className="relative grid gap-8 md:grid-cols-4"
+            className="grid gap-8 mb-12 md:grid-cols-4"
             variants={staggerContainer}
             initial="initial"
             whileInView="animate"
             viewport={{ once: true, amount: 0.2 }}
           >
-            {/* connecting line (desktop) */}
-            <div className="absolute top-7 left-0 right-0 hidden h-0.5 bg-blue-100 md:block" aria-hidden="true" />
-
-            {timeline.map((step, index) => (
-              <motion.div key={step.week} className="relative text-center" variants={fadeInUp}>
-                <div className="relative z-10 flex items-center justify-center w-14 h-14 mx-auto mb-4 text-lg font-bold text-white bg-blue-900 rounded-full shadow-md">
-                  {index + 1}
-                </div>
-                <div className="inline-flex items-center px-3 py-1 mb-2 text-xs font-medium text-blue-900 bg-blue-100 rounded-full">
-                  {step.week}
+            {HOW_IT_WORKS.map((step, index) => (
+              <motion.div key={step.title} className="relative text-center" variants={fadeInUp}>
+                {index < HOW_IT_WORKS.length - 1 && (
+                  <ArrowRight
+                    className="absolute z-10 hidden w-5 h-5 text-blue-300 -translate-y-1/2 md:block top-9 -right-6"
+                    aria-hidden="true"
+                  />
+                )}
+                <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 bg-blue-900 rounded-2xl shadow-md">
+                  <span className="absolute flex items-center justify-center w-6 h-6 -mt-2 -ml-2 text-xs font-bold text-blue-900 bg-white rounded-full shadow top-2 left-1/2 -translate-x-8">
+                    {index + 1}
+                  </span>
+                  <step.icon className="w-7 h-7 text-white" aria-hidden="true" />
                 </div>
                 <h3 className="mb-2 text-lg font-bold text-black">{step.title}</h3>
                 <p className="text-sm leading-relaxed text-gray-600">{step.desc}</p>
               </motion.div>
             ))}
           </motion.div>
+
+          <div className="text-center">
+            <HashLink
+              to="/pilot"
+              className="inline-flex items-center gap-2 px-8 py-4 text-lg font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800 group"
+            >
+              Get started today
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+            </HashLink>
+            <p className="mt-4 text-sm text-gray-500">Automate smarter. Stay in control.</p>
+          </div>
         </div>
       </section>
 
-      {/* ================= CLOSING CTA ================= */}
-      <section id="start-pilot" className="relative py-20 overflow-hidden text-black bg-white">
-        <div className="absolute inset-0">
-          <div className="absolute top-0 right-0 bg-blue-100 rounded-full w-96 h-96 opacity-20 blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 rounded-full w-80 h-80 bg-blue-50 opacity-10 blur-3xl"></div>
+      {/* ================= CLOSING CTA — template vs. custom build ================= */}
+      <section id="start-pilot" className="relative py-20 overflow-hidden bg-gray-50">
+        <div className="absolute inset-0" aria-hidden="true">
+          <div className="absolute top-0 right-0 bg-blue-100 rounded-full w-96 h-96 opacity-20 blur-3xl" />
+          <div className="absolute bottom-0 left-0 rounded-full w-80 h-80 bg-blue-50 opacity-30 blur-3xl" />
         </div>
 
-        <div className="relative max-w-4xl px-6 mx-auto text-center">
-          <motion.div
-            className="mb-8"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-          >
-            <motion.div
-              className="inline-flex items-center gap-3 px-6 py-3 mb-6 bg-blue-100 border border-blue-200 rounded-full backdrop-blur-sm"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
-            >
-              <Sparkles className="w-5 h-5 text-blue-900" aria-hidden="true" />
-              <span className="text-sm font-medium text-blue-900">Ready to automate?</span>
-            </motion.div>
-
-            <motion.h2
-              className="mb-6 text-4xl font-bold text-black lg:text-5xl"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: 'easeOut', delay: 0.4 }}
-            >
-              Start with a <span className="text-blue-900">template or a custom build</span>
-            </motion.h2>
-
-            <motion.p
-              className="max-w-2xl mx-auto mb-8 text-xl leading-relaxed text-gray-700"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: 'easeOut', delay: 0.6 }}
-            >
-              Get a proven workflow running this week, or scope a custom build around your process — either way, you walk away owning the automation.
-            </motion.p>
-          </motion.div>
+        <div className="relative px-6 mx-auto max-w-7xl">
+          <HandNote className="top-16 left-6" rotate={-5}>
+            Same power.{'\n'}Your way.
+          </HandNote>
 
           <motion.div
-            className="flex flex-col justify-center gap-4 mb-8 sm:flex-row"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: 'easeOut', delay: 0.8 }}
-          >
-            <motion.button
-              className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-white transition-all duration-300 bg-blue-900 shadow-lg rounded-xl hover:bg-blue-800 hover:shadow-xl"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handlePilotBtn}
-            >
-              <Zap className="w-5 h-5" aria-hidden="true" />
-              Start a pilot workflow
-            </motion.button>
-
-            <HashLink
-              smooth
-              to="/book-consultation"
-              className="flex items-center justify-center gap-2 px-8 py-4 text-lg font-bold text-blue-900 transition-all duration-300 bg-white border-2 border-blue-900 shadow-lg rounded-xl hover:bg-blue-50 hover:border-blue-800"
-            >
-              <Phone className="w-5 h-5" aria-hidden="true" />
-              Book a 45-min call
-            </HashLink>
-          </motion.div>
-
-          <motion.div
-            className="grid max-w-2xl gap-6 mx-auto sm:grid-cols-3"
+            className="mb-12 text-center"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: 'easeOut', delay: 1.0 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
           >
-            {['No per-task pricing', 'You own the infrastructure', 'Human-reviewed before launch'].map((item) => (
-              <div key={item} className="flex items-center justify-center gap-2 text-black">
-                <CheckCircle2 className="w-5 h-5 text-blue-900" aria-hidden="true" />
-                <span className="text-sm">{item}</span>
+            <Eyebrow icon={Zap}>Ready to Automate?</Eyebrow>
+            <h2 className="mb-4 text-4xl font-bold text-black lg:text-5xl">
+              Start with a <span className="text-blue-900">template</span> or a{' '}
+              <span className="text-blue-900">custom build</span>
+            </h2>
+            <p className="max-w-2xl mx-auto text-xl leading-relaxed text-gray-700">
+              Get a proven workflow running this week, or scope a custom build around your process —
+              either way, you walk away owning the automation.
+            </p>
+          </motion.div>
+
+          <div className="grid max-w-5xl gap-6 mx-auto mb-12 lg:grid-cols-2">
+            {/* Template path */}
+            <motion.div
+              className="p-8 bg-white border border-gray-200 rounded-2xl"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+            >
+              <div className="flex items-center justify-center w-12 h-12 mb-5 bg-blue-100 rounded-xl">
+                <LayoutGrid className="w-6 h-6 text-blue-900" aria-hidden="true" />
+              </div>
+              <h3 className="mb-2 text-xl font-bold text-black">Use a Ready-Made Template</h3>
+              <p className="mb-5 text-sm text-gray-600">
+                Browse our library of proven workflows for common business tasks. We'll connect it to
+                your tools and get it running — fast.
+              </p>
+              <div className="grid items-center gap-4 mb-6 sm:grid-cols-2">
+                <ul className="space-y-2">
+                  {['Done in days, not months', 'Pre-built and battle-tested', 'We handle the setup', 'You own the workflow'].map((p) => (
+                    <li key={p} className="flex items-start gap-2 text-sm text-gray-700">
+                      <CheckCircle2 className="w-4 h-4 mt-0.5 text-blue-500 flex-shrink-0" aria-hidden="true" />
+                      {p}
+                    </li>
+                  ))}
+                </ul>
+                <img
+                  src={useReadyMadeTemplateImg}
+                  alt="A premade workflow chaining Shopify to Slack to Gmail"
+                  className="w-full h-auto border border-gray-100 rounded-xl"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => scrollToSection('see-it-work')}
+                className="flex items-center justify-center w-full gap-2 px-6 py-3.5 font-semibold text-white transition-colors bg-blue-900 rounded-lg hover:bg-blue-800"
+              >
+                <Play className="w-4 h-4" aria-hidden="true" />
+                Browse templates
+              </button>
+            </motion.div>
+
+            {/* Custom build path */}
+            <motion.div
+              className="p-8 bg-white border border-gray-200 rounded-2xl"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+            >
+              <div className="flex items-center justify-center w-12 h-12 mb-5 bg-blue-100 rounded-xl">
+                <Wrench className="w-6 h-6 text-blue-900" aria-hidden="true" />
+              </div>
+              <h3 className="mb-2 text-xl font-bold text-black">Get a Custom Build</h3>
+              <p className="mb-5 text-sm text-gray-600">
+                Need something unique? We'll design and build a custom n8n workflow around your exact
+                process, tools, and edge cases.
+              </p>
+              <div className="grid items-center gap-4 mb-6 sm:grid-cols-2">
+                <ul className="space-y-2">
+                  {['Tailored to your workflow', 'Integrates with any tool or API', 'Built for scale', 'Fully yours — no vendor lock-in'].map((p) => (
+                    <li key={p} className="flex items-start gap-2 text-sm text-gray-700">
+                      <CheckCircle2 className="w-4 h-4 mt-0.5 text-blue-500 flex-shrink-0" aria-hidden="true" />
+                      {p}
+                    </li>
+                  ))}
+                </ul>
+                <img
+                  src={getACustomBuildImg}
+                  alt="n8n connecting to Slack, a database, cloud infrastructure, and custom code"
+                  className="w-full h-auto border border-gray-100 rounded-xl"
+                />
+              </div>
+              <HashLink
+                smooth
+                to="/book-consultation"
+                className="flex items-center justify-center w-full gap-2 px-6 py-3.5 font-semibold text-blue-900 transition-colors bg-white border-2 border-blue-900 rounded-lg hover:bg-blue-50"
+              >
+                <Calendar className="w-4 h-4" aria-hidden="true" />
+                Book a 45-min call
+              </HashLink>
+            </motion.div>
+          </div>
+
+          <motion.div
+            className="grid max-w-4xl gap-6 mx-auto text-center sm:grid-cols-3"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: 'easeOut', delay: 0.2 }}
+          >
+            {[
+              { icon: Wallet, title: 'No per-task pricing', desc: 'Run 100 or 100,000 executions for the same cost.' },
+              { icon: ShieldCheck, title: 'You own the infrastructure', desc: 'Your data, your workflows, your control.' },
+              { icon: Users, title: 'Human-reviewed before launch', desc: "We test and validate every workflow to make sure it's production-ready." },
+            ].map((item) => (
+              <div key={item.title} className="flex flex-col items-center gap-2">
+                <div className="flex items-center justify-center w-10 h-10 bg-blue-100 rounded-full">
+                  <item.icon className="w-5 h-5 text-blue-900" aria-hidden="true" />
+                </div>
+                <div className="text-sm font-semibold text-black">{item.title}</div>
+                <div className="text-xs text-gray-600">{item.desc}</div>
               </div>
             ))}
           </motion.div>
