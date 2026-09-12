@@ -30,13 +30,13 @@ import {
 import HashLink from '../../components/ui/SectionLink';
 import { scrollToSection } from '../../utils/scrollToSection';
 
-import healthcareHeroImg from '../../Images/Case Studies/healthcare/healthcare.png';
-import benefitsToYouImg from '../../Images/Case Studies/healthcare/benefits-to-you.png';
-import howWeDeliverThemImg from '../../Images/Case Studies/healthcare/how-we-deliver-them.png';
-import urgentCareImg from '../../Images/Case Studies/healthcare/urgent-care-providers.png';
-import surgeryCentersImg from '../../Images/Case Studies/healthcare/surgery-centers.png';
-import hospitalsImg from '../../Images/Case Studies/healthcare/hospitals-&-speciality-practices.png';
-import primaryCareImg from '../../Images/Case Studies/healthcare/primary-care-clinics.png';
+import healthcareHeroImg from '../../Images/Case Studies/healthcare/healthcare.webp';
+import benefitsToYouImg from '../../Images/Case Studies/healthcare/benefits-to-you.webp';
+import howWeDeliverThemImg from '../../Images/Case Studies/healthcare/how-we-deliver-them.webp';
+import urgentCareImg from '../../Images/Case Studies/healthcare/urgent-care-providers.webp';
+import surgeryCentersImg from '../../Images/Case Studies/healthcare/surgery-centers.webp';
+import hospitalsImg from '../../Images/Case Studies/healthcare/hospitals-&-speciality-practices.webp';
+import primaryCareImg from '../../Images/Case Studies/healthcare/primary-care-clinics.webp';
 
 // Animation variants
 const slideFromLeft = {

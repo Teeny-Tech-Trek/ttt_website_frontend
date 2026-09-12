@@ -28,12 +28,12 @@ import {
 import HashLink from '../../components/ui/SectionLink';
 
 // Asset Imports from src/Images/education/
-import educationHeroImg from '../../Images/education/education.png';
-import institutionCollabImg from '../../Images/education/institution collaboration.png';
-import aiWorkshopsImg from '../../Images/education/ai workshops.png';
-import transferingGloballyImg from '../../Images/education/transfering education globally.png';
-import innovationHubImg from '../../Images/education/innovation hub.png';
-import skillDevImg from '../../Images/education/skill development.png';
+import educationHeroImg from '../../Images/education/education.webp';
+import institutionCollabImg from '../../Images/education/institution collaboration.webp';
+import aiWorkshopsImg from '../../Images/education/ai workshops.webp';
+import transferingGloballyImg from '../../Images/education/transfering education globally.webp';
+import innovationHubImg from '../../Images/education/innovation hub.webp';
+import skillDevImg from '../../Images/education/skill development.webp';
 
 // Framer Motion Animation Variants
 const slideFromLeft = {

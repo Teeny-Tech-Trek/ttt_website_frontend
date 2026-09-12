@@ -27,14 +27,14 @@ import {
 import HashLink from '../../components/ui/SectionLink';
 
 // Asset imports from user-added logistics directory
-import heroImg from '../../Images/logistics/manufacturing-logistics.png';
-import leadGenBannerImg from '../../Images/logistics/manufacturing-logistics-lead-generation.png';
-import aiPoweredCallsImg from '../../Images/logistics/ai-powered-calls.png';
-import crmIntegrationImg from '../../Images/logistics/crm-integration.png';
-import ivrIntegrationsImg from '../../Images/logistics/ivr-integrations.png';
-import callSummaryImg from '../../Images/logistics/call-summary.png';
-import callAnalysisReportImg from '../../Images/logistics/call-analysis-report.png';
-import availabilityImg from '../../Images/logistics/24-7-availability.png';
+import heroImg from '../../Images/logistics/manufacturing-logistics.webp';
+import leadGenBannerImg from '../../Images/logistics/manufacturing-logistics-lead-generation.webp';
+import aiPoweredCallsImg from '../../Images/logistics/ai-powered-calls.webp';
+import crmIntegrationImg from '../../Images/logistics/crm-integration.webp';
+import ivrIntegrationsImg from '../../Images/logistics/ivr-integrations.webp';
+import callSummaryImg from '../../Images/logistics/call-summary.webp';
+import callAnalysisReportImg from '../../Images/logistics/call-analysis-report.webp';
+import availabilityImg from '../../Images/logistics/24-7-availability.webp';
 
 // Framer Motion Animation Variants
 const slideFromLeft = {

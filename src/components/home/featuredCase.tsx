@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-// import realEstateImg from "../../Images/real estate.png"
-// import educationImg from "../../Images/education solutions.png"
-// import ecommerceImg from "../../Images/d2c business chatbot.png"
+// import realEstateImg from "../../Images/real estate.webp"
+// import educationImg from "../../Images/education solutions.webp"
+// import ecommerceImg from "../../Images/d2c business chatbot.webp"
 
 const AIServicesCards = () => {
   const navigate = useNavigate();

@@ -985,7 +985,7 @@ const CustomAiIntegrationsPage: React.FC<CustomAiIntegrationsPageProps> = ({ onO
           {/* Shared Prototype Closer Graphic with Interactive Clickable Hotspots */}
           <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-white group aspect-[1944/809]">
             <img
-              src="/images/services/lightweight-apps/prototype.png"
+              src="/images/services/lightweight-apps/prototype.webp"
               alt="Prototype an app in 4-6 weeks with working internal tool or micro-SaaS"
               className="w-full h-full object-contain block"
               loading="lazy"

@@ -190,7 +190,7 @@ const BenefitsSection: React.FC = () => {
             <div className="rounded-3xl overflow-hidden bg-white border border-blue-100/80 shadow-[0_20px_50px_rgba(30,58,138,0.08)] p-3 sm:p-5">
               <div className="rounded-2xl overflow-hidden aspect-[16/9] flex items-center justify-center bg-slate-50">
                 <img
-                  src="/images/finance/proven roi and performance.png"
+                  src="/images/finance/proven roi and performance.webp"
                   alt="Proven ROI and Performance Metrics chart"
                   className="w-full h-full object-contain rounded-xl hover:scale-[1.01] transition-transform duration-500"
                 />

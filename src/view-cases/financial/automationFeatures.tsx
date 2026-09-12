@@ -165,7 +165,7 @@ const AutomationFeaturesSection: React.FC = () => {
           {/* Engine Showcase Visual: ai doc intelligent.png */}
           <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-slate-200/90 shadow-[0_20px_50px_rgba(30,58,138,0.08)] mb-12 group">
             <img
-              src="/images/finance/ai doc intelligent.png"
+              src="/images/finance/ai doc intelligent.webp"
               alt="AI Document Intelligence 4-Engine Architecture"
               className="w-full h-auto block object-contain transform group-hover:scale-[1.01] transition-transform duration-500 select-none"
             />
@@ -318,7 +318,7 @@ const AutomationFeaturesSection: React.FC = () => {
             <div className="lg:col-span-7">
               <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-slate-200/90 shadow-[0_20px_50px_rgba(30,58,138,0.08)] group">
                 <img
-                  src="/images/finance/docs into trusted identites.png"
+                  src="/images/finance/docs into trusted identites.webp"
                   alt="Passport scanner, data extraction flow, identity verification monitor, and bottom metric bar"
                   className="w-full h-auto block object-contain transform group-hover:scale-[1.01] transition-transform duration-500 select-none"
                 />

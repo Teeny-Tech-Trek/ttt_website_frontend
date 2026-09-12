@@ -22,12 +22,12 @@ import { motion } from 'framer-motion';
 import HashLink from '../../components/ui/SectionLink';
 import { scrollToSection } from '../../utils/scrollToSection';
 
-import realEstateHeroImg from '../../Images/Case Studies/RealEstate/real-estate.png';
-import marketPredictionImg from '../../Images/Case Studies/RealEstate/market-prediction.png';
-import locationIntelligenceImg from '../../Images/Case Studies/RealEstate/location-intelligence.png';
-import portfolioAnalysisImg from '../../Images/Case Studies/RealEstate/portfolio-analysis.png';
-import leadScoringImg from '../../Images/Case Studies/RealEstate/lead-scoring.png';
-import testimonialImg from '../../Images/Case Studies/RealEstate/testimonial.png';
+import realEstateHeroImg from '../../Images/Case Studies/RealEstate/real-estate.webp';
+import marketPredictionImg from '../../Images/Case Studies/RealEstate/market-prediction.webp';
+import locationIntelligenceImg from '../../Images/Case Studies/RealEstate/location-intelligence.webp';
+import portfolioAnalysisImg from '../../Images/Case Studies/RealEstate/portfolio-analysis.webp';
+import leadScoringImg from '../../Images/Case Studies/RealEstate/lead-scoring.webp';
+import testimonialImg from '../../Images/Case Studies/RealEstate/testimonial.webp';
 
 // Animation variants
 const slideFromLeft = {

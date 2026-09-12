@@ -28,12 +28,12 @@ import {
 import HashLink from '../../components/ui/SectionLink';
 
 // Asset Imports from src/Images/hospitality/
-import yourAiVoiceImg from '../../Images/hospitality/your ai voice reciponist.png';
-import smartDataMgmtImg from '../../Images/hospitality/smart data management.png';
-import reviewBannerImg from '../../Images/hospitality/review.png';
-import guestSatisfactionImg from '../../Images/hospitality/guest satisfaction.png';
-import responseTimeImg from '../../Images/hospitality/response time.png';
-import efficiencyBoostImg from '../../Images/hospitality/efficiency boost.png';
+import yourAiVoiceImg from '../../Images/hospitality/your ai voice reciponist.webp';
+import smartDataMgmtImg from '../../Images/hospitality/smart data management.webp';
+import reviewBannerImg from '../../Images/hospitality/review.webp';
+import guestSatisfactionImg from '../../Images/hospitality/guest satisfaction.webp';
+import responseTimeImg from '../../Images/hospitality/response time.webp';
+import efficiencyBoostImg from '../../Images/hospitality/efficiency boost.webp';
 
 // Framer Motion Animation Variants
 const slideFromLeft = {

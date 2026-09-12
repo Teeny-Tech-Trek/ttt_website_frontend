@@ -1,11 +1,11 @@
-// import chatbotImg from "../Images/Images-Blogs/chatbots-Image.png"
-// import AiPowered from "../Images/Images-Blogs/ai-powered-automation-Image.png"
-// import AiMedical from "../Images/Images-Blogs/ai-in-medical-practices-Image.png"
-// import Finacial from "../Images/Images-Blogs/financial-Image.png"
-// import GettingStarted from "../Images/Images-Blogs/getting-started-Image.png"
-// import Manufacturing from "../Images/Images-Blogs/manufacturing-meets.png"
-// import NaturalLanguage from "../Images/Images-Blogs/natural-language-Image.png"
-// import RetailRevolution from "../Images/Images-Blogs/Retail-Revolution-Image.png"
+// import chatbotImg from "../Images/Images-Blogs/chatbots-Image.webp"
+// import AiPowered from "../Images/Images-Blogs/ai-powered-automation-Image.webp"
+// import AiMedical from "../Images/Images-Blogs/ai-in-medical-practices-Image.webp"
+// import Finacial from "../Images/Images-Blogs/financial-Image.webp"
+// import GettingStarted from "../Images/Images-Blogs/getting-started-Image.webp"
+// import Manufacturing from "../Images/Images-Blogs/manufacturing-meets.webp"
+// import NaturalLanguage from "../Images/Images-Blogs/natural-language-Image.webp"
+// import RetailRevolution from "../Images/Images-Blogs/Retail-Revolution-Image.webp"
 
 
 export const blogPosts = [
@@ -113,7 +113,7 @@ Future-proofing development requires moving beyond treating AI as a simple autom
     category: "AI Engineering",
     date: "Aug 24, 2026",
     readTime: "7 min read",
-    image: "/images/blogs/hard-truths-ai-assisted-development-Image.png",
+    image: "/images/blogs/hard-truths-ai-assisted-development-Image.webp",
     author: "Anisha Singla"
   },
   {
@@ -219,7 +219,7 @@ We didn't ban the AI afterward. **We banned the skim.**
     category: "AI Engineering",
     date: "Aug 24, 2026",
     readTime: "5 min read",
-    image: "/images/blogs/three-years-of-prompting-Image.png",
+    image: "/images/blogs/three-years-of-prompting-Image.webp",
     author: "Anisha Singla"
   },
   {
@@ -334,7 +334,7 @@ The operational benefits of this shift include:
     category: "AI Solutions",
     date: "Jan 15, 2025",
     readTime: "6 min read",
-    image: "/images/blogs/ai-powered-automation-Image.png",
+    image: "/images/blogs/ai-powered-automation-Image.webp",
     author: "Sarah Chen"
   },
   {
@@ -462,7 +462,7 @@ Setting up a customer service chatbot takes **hours, not weeks** when using mode
     category: "Automation",
     date: "Jan 10, 2025",
     readTime: "6 min read",
-    image: "/images/blogs/chatbots-Image.png",
+    image: "/images/blogs/chatbots-Image.webp",
     author: "Marcus Johnson"
   },
   {
@@ -594,7 +594,7 @@ Before implementing any AI tools, run through this critical four-step integratio
     category: "Industry Insights",
     date: "Jan 8, 2025",
     readTime: "7 min read",
-    image: "/images/blogs/ai-in-medical-practices-Image.png",
+    image: "/images/blogs/ai-in-medical-practices-Image.webp",
     author: "Dr. Elizabeth Wu"
   },
   {
@@ -681,7 +681,7 @@ Before implementing any AI tools, run through this critical four-step integratio
     category: "Industry Insights",
     date: "Jan 5, 2025",
     readTime: "6 min read",
-    image: "/images/blogs/Retail-Revolution-Image.png",
+    image: "/images/blogs/Retail-Revolution-Image.webp",
     author: "David Martinez"
   },
   {
@@ -778,7 +778,7 @@ This modern method enables real estate firms to bypass slow, manual appraisals, 
     category: "AI Solutions",
     date: "Jan 2, 2025",
     readTime: "8 min read",
-    image: "/images/blogs/getting-started-Image.png",
+    image: "/images/blogs/getting-started-Image.webp",
     author: "Professor James Liu"
   },
   {
@@ -925,7 +925,7 @@ Automating compliance allows small providers to **meet strict regulatory mandate
     category: "Industry Insights",
     date: "Dec 28, 2024",
     readTime: "7 min read",
-    image: "/images/blogs/financial-Image.png",
+    image: "/images/blogs/financial-Image.webp",
     author: "Robert Goldman"
   },
   {
@@ -1112,7 +1112,7 @@ NLP gives small businesses a competitive advantage by enabling them to analyze a
     category: "AI Solutions",
     date: "Dec 22, 2024",
     readTime: "5 min read",
-    image: "/images/blogs/natural-language-Image.png",
+    image: "/images/blogs/natural-language-Image.webp",
     author: "Angela Torres"
   },
   {
@@ -1262,7 +1262,7 @@ Shifting to this proactive model dramatically improves overall line reliability.
     category: "Industry Insights",
     date: "Dec 18, 2024",
     readTime: "7 min read",
-    image: "/images/blogs/manufacturing-meets.png",
+    image: "/images/blogs/manufacturing-meets.webp",
     author: "Thomas Anderson"
   }
 ];

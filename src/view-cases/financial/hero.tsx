@@ -135,7 +135,7 @@ const FinancialHeroSection: React.FC = () => {
             {/* Main Visual Image Card */}
             <div className="relative rounded-3xl overflow-hidden bg-white border border-blue-50/80 shadow-[0_16px_50px_rgba(30,58,138,0.1)]">
               <img
-                src="/images/finance/finance.png"
+                src="/images/finance/finance.webp"
                 alt="FinanceAI Pro - Live Financial Operations AI Dashboard"
                 className="w-full h-auto object-contain rounded-3xl"
               />

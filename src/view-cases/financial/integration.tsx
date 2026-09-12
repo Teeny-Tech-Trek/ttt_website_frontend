@@ -157,7 +157,7 @@ const IntegrationsSection: React.FC = () => {
             <div className="lg:col-span-6 flex items-center justify-center">
               <div className="relative w-full max-w-[460px] rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-slate-200/90 shadow-[0_20px_50px_rgba(30,58,138,0.08)] group">
                 <img
-                  src="/images/finance/enterprise grade integration.png"
+                  src="/images/finance/enterprise grade integration.webp"
                   alt="Enterprise Grade Integrations circular hub connecting core banking, ERP, and messaging networks"
                   className="w-full h-auto block object-contain transform group-hover:scale-[1.01] transition-transform duration-500 select-none"
                 />
@@ -244,7 +244,7 @@ const IntegrationsSection: React.FC = () => {
             <div className="lg:col-span-6 flex items-center justify-center">
               <div className="relative w-full max-w-[500px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(15,23,42,0.16)] border border-slate-200/80 bg-[#071330] group">
                 <img
-                  src="/images/finance/developer friendly api.png"
+                  src="/images/finance/developer friendly api.webp"
                   alt="Developer friendly API explorer, code editor, and live sandbox"
                   className="w-full h-auto block object-contain transform group-hover:scale-[1.01] transition-transform duration-500 select-none"
                 />

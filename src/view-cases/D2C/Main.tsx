@@ -36,9 +36,9 @@ import {
 import HashLink from '../../components/ui/SectionLink';
 
 // Asset Imports from src/Images/d2c/
-import d2cHeroImg from '../../Images/d2c/D2C.png';
-import customerSupportImg from '../../Images/d2c/customer-support-chatbot.png';
-import salesConversionImg from '../../Images/d2c/sales-conversion-chatbot.png';
+import d2cHeroImg from '../../Images/d2c/D2C.webp';
+import customerSupportImg from '../../Images/d2c/customer-support-chatbot.webp';
+import salesConversionImg from '../../Images/d2c/sales-conversion-chatbot.webp';
 
 // Framer Motion Animation Variants
 const slideFromLeft = {

@@ -685,9 +685,10 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
       console.warn('Chatbot gate fired despite local capture flag — rendering reply anyway.');
     }
 
-    const shortText = aiResponse.short_message || aiResponse.reply || '';
-    const services = parseServices(shortText);
+    const rawShortText = aiResponse.short_message || aiResponse.reply || '';
+    const services = parseServices(rawShortText);
     const isService = services.length > 0;
+    const shortText = isService ? rawShortText : rawShortText.replace(/\*\*/g, '');
     const learnMoreIntent = inferLearnMoreIntent(visibleLabel || outboundText);
     const learnMoreTarget = getLearnMoreTarget(learnMoreIntent);
     const finalOptions = shouldKeepFlowOptions(aiResponse)
@@ -1003,7 +1004,9 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
                         : 'bg-[#F3F4F6] text-[#1F2937] border border-gray-200 rounded-[14px] px-[12px] py-[10px]'
                     }`}
                   >
-                    <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+                    <p className="leading-relaxed whitespace-pre-wrap">
+                      {msg.isUser ? msg.text : msg.text.replace(/\*\*/g, '')}
+                    </p>
                     {!msg.isUser && msg.options && msg.options.length > 0 && (
                       <div className="flex flex-wrap gap-2 mt-3">
                         {msg.options.map((opt) => (

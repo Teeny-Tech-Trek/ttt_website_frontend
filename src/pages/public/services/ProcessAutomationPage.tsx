@@ -17,7 +17,8 @@ import {
   Database, 
   Clock, 
   Check, 
-  ExternalLink
+  ExternalLink,
+  HelpCircle
 } from 'lucide-react';
 import HashLink from '../../../components/ui/SectionLink';
 
@@ -175,23 +176,39 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
     }
   ];
 
-  // FAQ Items
+  // FAQ Items (Analyzed & tailored to Smart Process Automation)
   const faqItems = [
     {
-      q: "What’s an “idempotent write,” in plain English?",
-      a: "It means if an automation runs twice on the exact same email, order, or CSV row, it will never create duplicate records or charge someone twice. The system detects the unique fingerprint of the event and safely ignores redundant runs."
+      q: "How is Smart Process Automation different from basic Zapier zaps or simple scripts?",
+      a: "Basic zaps and simple scripts break silently whenever data formats change or third-party APIs hiccup. Our Smart Process Automation pipelines include pre-flight validation, automatic schema normalization, deduplication (idempotent writes), and human-in-the-loop exception routing. When an anomalous record or missing field is detected, the system safely routes it to your team with full context instead of failing silently or polluting your databases."
     },
     {
-      q: "Can we see exactly what an automation did?",
-      a: "Yes. Every single run produces an immutable audit log detailing the exact input data, which rules were evaluated, and the final action taken. You can inspect runs live, verify payloads, or replay past executions with one click."
+      q: "What happens if our input data is messy, unstructured, or formatted inconsistently?",
+      a: "Our Smart Ingestors automatically clean and normalize messy inputs before processing. Whether handling multi-format vendor invoices, carrier CSVs with shifting column headers, or unstructured customer email requests, the system parses dates, extracts key fields, standardizes currency values, and validates entries against your master records before triggering downstream actions."
     },
     {
-      q: "What if our input data is messy or inconsistent?",
-      a: "Our Smart Ingestors feature automatic schema normalization, date parsing, and fuzzy matching. When an abnormal record fails validation thresholds, it routes safely to human review instead of making brittle assumptions."
+      q: "What’s an “idempotent write,” and why is it essential for reliable automation?",
+      a: "In plain English: if a network glitch, webhook retry, or accidental double-click triggers the automation twice on the exact same email, order, or CSV row, it will never create duplicate records or charge someone twice. The engine computes a unique cryptographic fingerprint for every event and safely ignores redundant runs."
     },
     {
-      q: "Do our customers see anything unbranded or robotic?",
-      a: "Never. Customer communications use strict template locks, verified company domains, and personalized variables that match your exact brand voice, ensuring a natural and professional customer experience."
+      q: "Can we see exactly what an automation did and replay past executions?",
+      a: "Yes. Every single run produces an immutable, step-by-step audit log detailing the exact input payload, which business rules were evaluated, any transformations applied, and the final actions taken. You can inspect runs in real time, audit historical operations, and replay any execution with a single click."
+    },
+    {
+      q: "How do approval gates work for sensitive or customer-facing operations?",
+      a: "You stay in total control. For internal, low-risk operations (such as syncing spreadsheets or updating status digests), the pipeline runs autonomously. For sensitive actions (like issuing refunds, altering ERP inventory, or sending customer delay notices), the system pauses at an approval gate and pings your designated team members via Slack, Teams, or email with one-click approve/reject actions."
+    },
+    {
+      q: "Do our customers ever see anything unbranded, generic, or robotic?",
+      a: "Never. Customer-facing communications utilize strict template locks, verified company domains, and personalized context variables that mirror your exact brand voice. Output guardrails ensure tone consistency and eliminate hallucinated or robotic phrasing."
+    },
+    {
+      q: "Can you connect with our custom internal tools, legacy databases, and ERPs?",
+      a: "Yes. In addition to 200+ native SaaS integrations (Slack, Gmail/Outlook, Google Sheets, HubSpot, Salesforce, QuickBooks), we build direct connections to proprietary APIs, legacy SQL/NoSQL databases (PostgreSQL, MySQL, MongoDB, BigQuery), cloud storage (AWS S3), and internal webhook listeners."
+    },
+    {
+      q: "How long does a smart automation project take from discovery to live deployment?",
+      a: "Most production automation pipelines go live within 2 to 4 weeks. We start by mapping your highest-friction manual bottlenecks, build a working prototype in staging with test data, validate safety guardrails with your team, and deploy with end-to-end monitoring and documentation."
     }
   ];
 
@@ -300,7 +317,7 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
             >
               <div className="relative w-full rounded-3xl overflow-hidden shadow-[0_20px_60px_-15px_rgba(37,99,235,0.12)] border border-slate-200/80 bg-white aspect-[1627/967]">
                 <img 
-                  src="/images/services/smart-process/kill-the-busy-work.png" 
+                  src="/images/services/smart-process/kill-the-busy-work.webp" 
                   alt="Smart Automation pipeline connecting triggers, process logic, and actions"
                   className="w-full h-full object-contain block"
                   loading="eager"
@@ -338,7 +355,7 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
             >
               <div className="w-full h-44 flex items-center justify-center mb-6">
                 <img 
-                  src="/images/services/smart-process/status-buried-in-emails.png" 
+                  src="/images/services/smart-process/status-buried-in-emails.webp" 
                   alt="Status Buried in Emails" 
                   className="max-h-40 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
                 />
@@ -362,7 +379,7 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
             >
               <div className="w-full h-44 flex items-center justify-center mb-6">
                 <img 
-                  src="/images/services/smart-process/manual-copy-paste.png" 
+                  src="/images/services/smart-process/manual-copy-paste.webp" 
                   alt="Manual Copy-Paste" 
                   className="max-h-40 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
                 />
@@ -386,7 +403,7 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
             >
               <div className="w-full h-44 flex items-center justify-center mb-6">
                 <img 
-                  src="/images/services/smart-process/late-exception-alerts.png" 
+                  src="/images/services/smart-process/late-exception-alerts.webp" 
                   alt="Late Exception Alerts" 
                   className="max-h-40 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
                 />
@@ -497,7 +514,7 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
                 /* 1:1 image representation for the primary scenario with direct interactive hotspots */
                 <div className="relative rounded-3xl overflow-hidden shadow-xl border border-slate-200/90 bg-white group aspect-[1444/1089]">
                   <img 
-                    src="/images/services/smart-process/try-these-automations.png" 
+                    src="/images/services/smart-process/try-these-automations.webp" 
                     alt="Delayed Shipment Alert Notification in #operations"
                     className="w-full h-full object-contain block"
                     loading="lazy"
@@ -712,7 +729,7 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
             <div className="bg-white rounded-3xl p-7 border border-slate-200/80 shadow-xs hover:shadow-xl hover:border-blue-200 transition-all duration-300 flex flex-col items-center text-center group">
               <div className="w-full h-44 flex items-center justify-center mb-6">
                 <img 
-                  src="/images/services/smart-process/smart-ingestors.png" 
+                  src="/images/services/smart-process/smart-ingestors.webp" 
                   alt="Smart Ingestors" 
                   className="max-h-40 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
                 />
@@ -730,7 +747,7 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
             <div className="bg-white rounded-3xl p-7 border-2 border-[#2563eb] shadow-xl shadow-blue-500/10 transition-all duration-300 flex flex-col items-center text-center relative group">
               <div className="w-full h-44 flex items-center justify-center mb-6">
                 <img 
-                  src="/images/services/smart-process/rules-engine.png" 
+                  src="/images/services/smart-process/rules-engine.webp" 
                   alt="Rules Engine" 
                   className="max-h-40 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
                 />
@@ -748,7 +765,7 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
             <div className="bg-white rounded-3xl p-7 border border-slate-200/80 shadow-xs hover:shadow-xl hover:border-blue-200 transition-all duration-300 flex flex-col items-center text-center group">
               <div className="w-full h-44 flex items-center justify-center mb-6">
                 <img 
-                  src="/images/services/smart-process/smart-notifications.png" 
+                  src="/images/services/smart-process/smart-notifications.webp" 
                   alt="Smart Notifications" 
                   className="max-h-40 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
                 />
@@ -766,7 +783,7 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
             <div className="bg-white rounded-3xl p-7 border border-slate-200/80 shadow-xs hover:shadow-xl hover:border-blue-200 transition-all duration-300 flex flex-col items-center text-center group">
               <div className="w-full h-44 flex items-center justify-center mb-6">
                 <img 
-                  src="/images/services/smart-process/customer-updates.png" 
+                  src="/images/services/smart-process/customer-updates.webp" 
                   alt="Customer Updates" 
                   className="max-h-40 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
                 />
@@ -844,7 +861,7 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
               {/* Guardrails Image Card */}
               <div className="rounded-3xl overflow-hidden border border-slate-200/80 shadow-xs bg-white aspect-[1788/880]">
                 <img 
-                  src="/images/services/smart-process/guardrails.png" 
+                  src="/images/services/smart-process/guardrails.webp" 
                   alt="Replayable runs, Idempotent writes, Immutable logs, Template locks" 
                   className="w-full h-full object-contain block"
                   loading="lazy"
@@ -918,25 +935,29 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
       </section>
 
       {/* ========================================================================= */}
-      {/* SECTION 7: PLAIN-ENGLISH TECHNICAL FAQ                                    */}
+      {/* SECTION 7: FREQUENTLY ASKED QUESTIONS (Website Default Signature Design)   */}
       {/* ========================================================================= */}
-      <section className="py-24 bg-white border-t border-slate-100">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative py-24 bg-gradient-to-b from-slate-50/60 via-white to-slate-50/80 border-t border-slate-100 overflow-hidden">
+        {/* Decorative ambient background glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.06),transparent_70%)] pointer-events-none" />
+
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center mb-14">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-blue-100/70 border border-blue-200/60 text-[#2563eb] text-xs font-bold uppercase tracking-wider mb-4">
-              <span>❓ FAQ</span>
+          <div className="text-center mb-14 sm:mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-blue-50 text-blue-700 border border-blue-100 shadow-xs mb-4">
+              <HelpCircle className="w-3.5 h-3.5 text-blue-600" />
+              <span>Frequently Asked Questions</span>
             </div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 tracking-tight mb-4">
               Frequently Asked <span className="text-[#2563eb]">Questions</span>
             </h2>
             <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
-              Plain-English technical answers for leaders who need reliability.
+              Plain-English answers about our smart automation architecture, guardrails, integrations, and deployment timeline.
             </p>
           </div>
 
           {/* Website-styled Accordion with + button rotating to X */}
-          <div className="border-t border-b border-slate-200 divide-y divide-slate-200">
+          <div className="border-t border-b border-slate-200 divide-y divide-slate-200 bg-white/70 backdrop-blur-xs rounded-2xl p-2 sm:p-4 shadow-xs">
             {faqItems.map((item, idx) => {
               const isOpen = activeFaq === idx;
 
@@ -945,10 +966,10 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
                   <button
                     onClick={() => setActiveFaq(isOpen ? null : idx)}
                     aria-expanded={isOpen}
-                    className="w-full py-6 sm:py-7 flex items-center justify-between text-left gap-4 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-lg cursor-pointer"
+                    className="w-full py-5 sm:py-6 px-3 sm:px-4 flex items-center justify-between text-left gap-4 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-xl cursor-pointer"
                   >
                     <span
-                      className={`text-lg sm:text-xl font-bold transition-colors duration-200 ${
+                      className={`text-base sm:text-lg lg:text-xl font-bold transition-colors duration-200 ${
                         isOpen ? 'text-[#1d4ed8]' : 'text-slate-900 group-hover:text-[#1d4ed8]'
                       }`}
                     >
@@ -956,7 +977,7 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
                     </span>
 
                     <span
-                      className={`flex-shrink-0 w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                      className={`flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-full border flex items-center justify-center transition-all duration-300 ${
                         isOpen
                           ? 'border-[#1d4ed8] bg-[#1d4ed8] text-white rotate-45'
                           : 'border-slate-300 text-slate-400 group-hover:border-[#1d4ed8] group-hover:text-[#1d4ed8] bg-white shadow-xs'
@@ -977,7 +998,7 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
                         transition={{ duration: 0.25, ease: [0.04, 0.62, 0.23, 0.98] }}
                         className="overflow-hidden"
                       >
-                        <div className="pb-6 pr-4 sm:pr-12 text-slate-600 text-sm sm:text-base leading-relaxed">
+                        <div className="pb-5 px-3 sm:px-4 pr-6 sm:pr-12 text-slate-600 text-sm sm:text-base leading-relaxed">
                           {item.a}
                         </div>
                       </motion.div>
@@ -1000,7 +1021,7 @@ export default function ProcessAutomationPage({ onOpenChatbot }: ProcessAutomati
           {/* We display the clean cut-busy-work graphic + interactive actions */}
           <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-white aspect-[1942/809]">
             <img 
-              src="/images/services/smart-process/cut-busy-work.png" 
+              src="/images/services/smart-process/cut-busy-work.webp" 
               alt="Cut busywork by 20-40%"
               className="w-full h-full object-contain block"
               loading="lazy"

@@ -29,6 +29,7 @@ import {
   HelpCircle,
   Globe,
   Search,
+  ExternalLink,
 } from 'lucide-react';
 import { LiveAvatarSession, SessionEvent, SessionState, AgentEventsEnum } from '@heygen/liveavatar-web-sdk';
 import {
@@ -407,6 +408,34 @@ const ChatDemoCTA: React.FC<{ onOpenChatbot?: () => void }> = ({ onOpenChatbot }
         </div>
       </div>
     </div>
+  </div>
+);
+
+/* ------------------------------------------------------------------ */
+/* ------------------------------------------------------------------ */
+/*  NetTwin Spotlight — Single-line banner matching website theme       */
+/* ------------------------------------------------------------------ */
+
+const NetTwinSpotlight: React.FC = () => (
+  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-5 sm:px-6 py-3.5 bg-gradient-to-r from-blue-50/90 via-white to-blue-50/90 border border-blue-200/80 rounded-2xl shadow-sm my-2">
+    <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 text-xs font-semibold text-blue-900 uppercase bg-blue-100 rounded-full shrink-0">
+        <Sparkles className="w-3.5 h-3.5 text-blue-700" aria-hidden="true" />
+        Product
+      </span>
+      <p className="text-sm sm:text-base text-gray-800 font-medium">
+        Try our product <strong className="font-bold text-blue-900">NetTwin</strong> — your 24/7 AI Digital Persona & Twin
+      </p>
+    </div>
+    <a
+      href="https://nettwin.techtrekkers.ai/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-blue-900 rounded-lg hover:bg-blue-800 transition-colors shadow-sm shrink-0"
+    >
+      <span>Try NetTwin</span>
+      <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+    </a>
   </div>
 );
 
@@ -1093,6 +1122,11 @@ const ChatbotsPage: React.FC<ChatbotsPageProps> = ({ onOpenChatbot }) => {
               Chat Assistant Demo
             </motion.span>
             <ChatDemoCTA onOpenChatbot={onOpenChatbot} />
+          </div>
+
+          {/* NetTwin Digital Persona Product Spotlight */}
+          <div className="px-6 mx-auto max-w-7xl">
+            <NetTwinSpotlight />
           </div>
 
           <div className="py-12 bg-gray-50 border-y border-gray-100">

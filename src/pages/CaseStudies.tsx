@@ -35,7 +35,7 @@ const caseStudyOptions: CaseStudyOption[] = [
     title: 'Real Estate',
     description: 'Agentic AI for Listing Prep',
     highlight: '50-60% faster prep time',
-    image: '/images/case-studies/real_estate.jpg',
+    image: '/images/case-studies/real_estate.webp',
   },
   {
     id: 'healthcare',
@@ -44,7 +44,7 @@ const caseStudyOptions: CaseStudyOption[] = [
     title: 'Healthcare',
     description: 'Pre-Op Intake & Scheduling',
     highlight: '28% fewer no-shows',
-    image: '/images/case-studies/healthcare.jpg',
+    image: '/images/case-studies/healthcare.webp',
   },
   {
     id: 'ecommerce',
@@ -53,7 +53,7 @@ const caseStudyOptions: CaseStudyOption[] = [
     title: 'D2C E-commerce',
     description: 'AI Support & WhatsApp Assistant',
     highlight: '68% faster response times',
-    image: '/images/case-studies/ecommerce.jpg',
+    image: '/images/case-studies/ecommerce.webp',
   },
   {
     id: 'logistics',
@@ -62,7 +62,7 @@ const caseStudyOptions: CaseStudyOption[] = [
     title: 'Manufacturing & Logistics',
     description: 'Driver WhatsApp Bot + ETA Flow',
     highlight: '17% lower dwell time',
-    image: '/images/case-studies/logistics.jpg',
+    image: '/images/case-studies/logistics.webp',
   },
   {
     id: 'hospitality',
@@ -71,7 +71,7 @@ const caseStudyOptions: CaseStudyOption[] = [
     title: 'Hospitality',
     description: 'AI Concierge & Itinerary Builder',
     highlight: '19% more direct bookings',
-    image: '/images/case-studies/hospitality.jpg',
+    image: '/images/case-studies/hospitality.webp',
   },
   {
     id: 'education',
@@ -80,7 +80,7 @@ const caseStudyOptions: CaseStudyOption[] = [
     title: 'Education',
     description: 'Institutional Collaboration & Workshops',
     highlight: 'Better learning outcomes',
-    image: '/images/case-studies/education.jpg',
+    image: '/images/case-studies/education.webp',
   },
   {
     id: 'financial',
@@ -89,7 +89,7 @@ const caseStudyOptions: CaseStudyOption[] = [
     title: 'Financial Services',
     description: 'Back-Office Smart Automations',
     highlight: '20-25 hours/week saved',
-    image: '/images/case-studies/financial.jpg',
+    image: '/images/case-studies/financial.webp',
   },
 ];
 
@@ -183,7 +183,7 @@ const CaseStudies: React.FC<CaseStudiesProps> = ({ id = 'case-studies', classNam
             {/* Main Hero Visual Card with Building Architecture */}
             <div className="w-full h-full rounded-3xl overflow-hidden shadow-[0_12px_35px_rgba(30,58,138,0.08)] border border-blue-50/80 relative bg-white">
               <img
-                src="/images/case-studies/hero_building.jpg"
+                src="/images/case-studies/hero_building.webp"
                 alt="Corporate Modern High-Rise Towers"
                 className="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-700"
               />

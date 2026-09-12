@@ -1,19 +1,19 @@
 import { Bot, Puzzle as PuzzlePiece, Cog, Sparkles, Rocket, Boxes, Workflow } from 'lucide-react';
 import React from 'react';
-import chatbotImg from '../Images/services/chatbot.png';
-import agenticImg from '../Images/services/agentic workflow.png';
-import smartProcessesImg from '../Images/services/smart processes.png';
-import claudeImg from '../Images/services/claude.png';
-import lightweightImg from '../Images/services/lightweight api.png';
-import customAiImg from '../Images/services/custom ai integrations.png';
-import n8nImg from '../Images/services/n8n automations.png';
+import chatbotImg from '../Images/services/chatbot.webp';
+import agenticImg from '../Images/services/agentic workflow.webp';
+import smartProcessesImg from '../Images/services/smart processes.webp';
+import claudeImg from '../Images/services/claude.webp';
+import lightweightImg from '../Images/services/lightweight api.webp';
+import customAiImg from '../Images/services/custom ai integrations.webp';
+import n8nImg from '../Images/services/n8n automations.webp';
 
 export const services = [
   {
     icon: <Bot size={32} className="text-primary" />,
     title: "AI-Powered Chatbots & Virtual Assistants",
     slug: "ai-chatbots",
-    image: chatbotImg,
+    image: "/ai virtual assistants.webp",
     description: "Context-aware GPT bots for customer support, onboarding, or internal tools — integrated with your existing platforms (Slack, Notion, CRMs, etc.)",
     features: ["Customer Support", "User Onboarding", "Internal Knowledge Base", "Platform Integration"],
     featureDescriptions: [

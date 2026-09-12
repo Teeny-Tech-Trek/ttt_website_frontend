@@ -27,6 +27,16 @@ const Services = () => {
   const featured = services[featuredIndex];
   const restServices = services.filter((_, i) => i !== featuredIndex);
 
+  // Preload all service images immediately into browser cache so switching and scrolling is instant
+  React.useEffect(() => {
+    services.forEach((s) => {
+      if (s.image) {
+        const img = new Image();
+        img.src = s.image;
+      }
+    });
+  }, []);
+
   const showNextFeatured = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -133,8 +143,10 @@ const Services = () => {
                       <motion.img
                         src={featured.image}
                         alt={featured.title}
-                        className="h-28 w-auto max-w-[220px] object-contain drop-shadow-[0_4px_22px_rgba(34,211,238,0.5)] sm:h-36 sm:max-w-[260px]"
-                        loading="lazy"
+                        className="w-full max-w-[280px] sm:max-w-[340px] h-auto max-h-36 sm:max-h-44 object-contain drop-shadow-[0_4px_22px_rgba(34,211,238,0.5)]"
+                        loading="eager"
+                        fetchPriority="high"
+                        decoding="async"
                         animate={{ y: [0, -10, 0] }}
                         transition={{
                           duration: 2.4,
@@ -190,7 +202,8 @@ const Services = () => {
                       src={service.image}
                       alt={service.title}
                       className="h-20 w-auto max-w-[170px] object-contain drop-shadow-[0_4px_18px_rgba(34,211,238,0.4)] sm:h-24 sm:max-w-[190px]"
-                      loading="lazy"
+                      loading="eager"
+                      decoding="async"
                       animate={{ y: [0, -8, 0] }}
                       transition={{
                         duration: 2.4,

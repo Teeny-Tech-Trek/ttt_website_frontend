@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Workflow,
   LayoutTemplate,
@@ -36,6 +36,8 @@ import {
   Mail,
   BarChart3,
   Settings2,
+  Plus,
+  HelpCircle,
 } from 'lucide-react';
 import {
   SiSlack,
@@ -71,8 +73,8 @@ import liveInDaysImg from '../../../Images/services/n8n regenerated webp images/
 import noPerTaskPricingImg from '../../../Images/services/n8n regenerated webp images/no per task pricing.webp';
 import youOwnTheWorkflowImg from '../../../Images/services/n8n regenerated webp images/you own the workflow.webp';
 import readyToAutomateImg from '../../../Images/services/n8n regenerated webp images/ready to automate.webp';
-import useReadyMadeTemplateImg from '../../../Images/services/n8n regenerated webp images/use a ready made template.png';
-import getACustomBuildImg from '../../../Images/services/n8n regenerated webp images/get a custom build.png';
+import useReadyMadeTemplateImg from '../../../Images/services/n8n regenerated webp images/use a ready made template.webp';
+import getACustomBuildImg from '../../../Images/services/n8n regenerated webp images/get a custom build.webp';
 
 /* ------------------------------------------------------------------ */
 /*  Shared bits                                                        */
@@ -513,11 +515,51 @@ const HOW_IT_WORKS = [
 ];
 
 /* ------------------------------------------------------------------ */
+/*  FAQS                                                                */
+/* ------------------------------------------------------------------ */
+
+const FAQ_ITEMS = [
+  {
+    q: "How does n8n compare to Zapier or Make in terms of pricing and scalability?",
+    a: "Zapier and Make charge per task, which means your software bill multiplies as your business grows. n8n is self-hosted on your own cloud (e.g. AWS, DigitalOcean, or Hetzner) for a flat server cost (often under $20/month) whether you execute 1,000 tasks or 1,000,000 tasks. There are zero per-task penalties, no artificial rate limits, and zero execution markups."
+  },
+  {
+    q: "Where is our n8n instance hosted, and who owns the data?",
+    a: "You retain 100% ownership and control. We deploy n8n inside your own cloud infrastructure, VPC, or on-premise server using containerized Docker environments with isolated PostgreSQL databases. Your sensitive company data, API keys, and customer records never pass through third-party multi-tenant servers, making it ideal for strict GDPR, HIPAA, or enterprise privacy requirements."
+  },
+  {
+    q: "Can we integrate AI models like OpenAI, Claude, and custom vector databases into n8n?",
+    a: "Yes. n8n features advanced native LangChain-powered AI nodes. We can wire GPT-4, Claude 3.5, local Ollama models, embeddings, and vector databases (Pinecone, Qdrant, Pgvector) directly into your workflow canvas. This allows automations to read documents, summarize emails, categorize customer tickets, and perform semantic searches automatically."
+  },
+  {
+    q: "Can you migrate our existing Zapier or Make workflows to n8n without downtime?",
+    a: "Yes. We frequently audit and migrate fragile Zapier or Make setups into robust n8n pipelines. We rebuild the logic, map all data transformations, test parallel runs side-by-side in staging, and switch over webhooks with zero downtime or missed events."
+  },
+  {
+    q: "What happens if a workflow fails or an external API experiences an outage?",
+    a: "We engineer enterprise error-handling into every n8n pipeline. Workflows include automated retry policies, dead-letter queues, and conditional error branches. If an external API goes down, the execution pauses, logs the error payload, and pings your operations channel on Slack or Teams with full diagnostic details."
+  },
+  {
+    q: "Who handles server updates, maintenance, and backups after launch?",
+    a: "We set up automated database snapshots, rolling backup routines, and queue health monitoring from day one. Post-launch, you can choose between our ongoing maintenance and monitoring retainer or have our team hand over full documentation and runbooks to your internal IT team."
+  },
+  {
+    q: "Can n8n connect to our proprietary internal APIs and custom legacy databases?",
+    a: "Absolutely. In addition to 400+ native connectors, n8n includes powerful generic HTTP Request nodes, GraphQL clients, and custom JavaScript / Python code execution nodes. If your internal software has an API, webhook, or database connection, n8n can automate it."
+  },
+  {
+    q: "How fast can we launch our first production n8n workflow?",
+    a: "For standardized use cases (like lead routing, Shopify-to-Slack sync, or AI invoice extraction), we can deploy ready-made templates within 3 to 5 business days. For complex, multi-system enterprise integrations, full production build and validation typically takes 2 to 3 weeks."
+  }
+];
+
+/* ------------------------------------------------------------------ */
 /*  PAGE                                                                */
 /* ------------------------------------------------------------------ */
 
 const N8nAutomationsPage = () => {
   const navigate = useNavigate();
+  const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const [integrationCategory, setIntegrationCategory] = useState('Popular');
   const [integrationSearch, setIntegrationSearch] = useState('');
 
@@ -1220,6 +1262,82 @@ const N8nAutomationsPage = () => {
             </HashLink>
             <p className="mt-4 text-sm text-gray-500">Automate smarter. Stay in control.</p>
           </div>
+        </div>
+      </section>
+
+      {/* ================= FREQUENTLY ASKED QUESTIONS (Website Default Signature Design) ================= */}
+      <section className="relative py-24 bg-gradient-to-b from-slate-50/60 via-white to-slate-50/80 border-t border-slate-100 overflow-hidden">
+        {/* Decorative ambient background glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.06),transparent_70%)] pointer-events-none" />
+
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center mb-14 sm:mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase bg-blue-50 text-blue-700 border border-blue-100 shadow-xs mb-4">
+              <HelpCircle className="w-3.5 h-3.5 text-blue-600" />
+              <span>Frequently Asked Questions</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 tracking-tight mb-4">
+              Frequently Asked <span className="text-blue-900">Questions</span>
+            </h2>
+            <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
+              Plain-English answers about self-hosting, cost savings vs Zapier/Make, AI nodes, security, and ongoing support.
+            </p>
+          </div>
+
+          {/* Website-styled Accordion with + button rotating to X */}
+          <div className="border-t border-b border-slate-200 divide-y divide-slate-200 bg-white/70 backdrop-blur-xs rounded-2xl p-2 sm:p-4 shadow-xs">
+            {FAQ_ITEMS.map((item, idx) => {
+              const isOpen = activeFaq === idx;
+
+              return (
+                <div key={idx} className="transition-colors">
+                  <button
+                    onClick={() => setActiveFaq(isOpen ? null : idx)}
+                    aria-expanded={isOpen}
+                    className="w-full py-5 sm:py-6 px-3 sm:px-4 flex items-center justify-between text-left gap-4 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-xl cursor-pointer"
+                  >
+                    <span
+                      className={`text-base sm:text-lg lg:text-xl font-bold transition-colors duration-200 ${
+                        isOpen ? 'text-blue-900' : 'text-slate-900 group-hover:text-blue-900'
+                      }`}
+                    >
+                      {item.q}
+                    </span>
+
+                    <span
+                      className={`flex-shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                        isOpen
+                          ? 'border-blue-900 bg-blue-900 text-white rotate-45'
+                          : 'border-slate-300 text-slate-400 group-hover:border-blue-900 group-hover:text-blue-900 bg-white shadow-xs'
+                      }`}
+                    >
+                      <Plus className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300" />
+                    </span>
+                  </button>
+
+                  {/* Question Answer - animated via framer-motion */}
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        key="faq-content"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: [0.04, 0.62, 0.23, 0.98] }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pb-5 px-3 sm:px-4 pr-6 sm:pr-12 text-slate-600 text-sm sm:text-base leading-relaxed">
+                          {item.a}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+
         </div>
       </section>
 

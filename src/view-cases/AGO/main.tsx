@@ -16,7 +16,7 @@ import {
   Calendar
 } from 'lucide-react';
 
-// import imageOfAgo from "../../Images/Case Studies/AEO_GEO.png"
+// import imageOfAgo from "../../Images/Case Studies/AEO_GEO.webp"
 import HashLink from '../../components/ui/SectionLink';
 
 // Animation variants

@@ -77,25 +77,25 @@ const AiAppsPage: React.FC<AiAppsPageProps> = ({ onOpenChatbot }) => {
   // Section 2: Deliverables (What We Deliver)
   const deliverables = [
     {
-      image: '/images/services/lightweight-apps/clean-dashboard.png',
+      image: '/images/services/lightweight-apps/clean-dashboard.webp',
       badge: 'Interface',
       title: 'Clean Dashboard',
       desc: 'Clean dashboard with auth, roles, and comprehensive audit logs.'
     },
     {
-      image: '/images/services/lightweight-apps/core-actions.png',
+      image: '/images/services/lightweight-apps/core-actions.webp',
       badge: 'Actions',
       title: 'Core Actions',
       desc: 'The 2–3 things staff must do in one click with bulk operations.'
     },
     {
-      image: '/images/services/lightweight-apps/content-operation.png',
+      image: '/images/services/lightweight-apps/content-operation.webp',
       badge: 'Processing',
       title: 'Content Operations',
       desc: 'Doc prep pipelines, auto-tagging, and status state management.'
     },
     {
-      image: '/images/services/lightweight-apps/billing-and-usage.png',
+      image: '/images/services/lightweight-apps/billing-and-usage.webp',
       badge: 'Optional',
       title: 'Billing System',
       desc: 'Stripe for paid tiers with feature flags and usage limits — including Canadian tax handling (GST/HST/PST) where needed.'
@@ -350,7 +350,7 @@ const AiAppsPage: React.FC<AiAppsPageProps> = ({ onOpenChatbot }) => {
             >
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-100/90 bg-white group hover:shadow-3xl transition-shadow duration-500 aspect-[1473/1068]">
                 <img
-                  src="/images/services/lightweight-apps/small-app-real-impact.png"
+                  src="/images/services/lightweight-apps/small-app-real-impact.webp"
                   alt="Lightweight AI App interface demo with Google Sheets, Slack, and AI Models"
                   className="w-full h-full object-contain block group-hover:scale-[1.01] transition-transform duration-500"
                   loading="eager"
@@ -736,7 +736,7 @@ const AiAppsPage: React.FC<AiAppsPageProps> = ({ onOpenChatbot }) => {
               {/* High-res Graphic Card for KPIs */}
               <div className="rounded-3xl overflow-hidden border border-slate-200/80 shadow-lg bg-white group hover:shadow-xl transition-shadow duration-300 aspect-[1617/972]">
                 <img
-                  src="/images/services/lightweight-apps/kpi-we-use.png"
+                  src="/images/services/lightweight-apps/kpi-we-use.webp"
                   alt="KPIs We Track: Task completion time -40%, Adoption % 85%, Weekly active users 240+, Error rate <1%"
                   className="w-full h-full object-contain block group-hover:scale-[1.01] transition-transform duration-300"
                   loading="lazy"
@@ -850,7 +850,7 @@ const AiAppsPage: React.FC<AiAppsPageProps> = ({ onOpenChatbot }) => {
           {/* High-res Complete Section Graphic with Interactive Clickable Hotspots */}
           <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-white group aspect-[1944/809]">
             <img
-              src="/images/services/lightweight-apps/prototype.png"
+              src="/images/services/lightweight-apps/prototype.webp"
               alt="Prototype an app in 4-6 weeks with working internal tool or micro-SaaS"
               className="w-full h-full object-contain block"
               loading="lazy"

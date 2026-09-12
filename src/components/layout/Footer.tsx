@@ -15,6 +15,7 @@ const services: Service[] = [
   { title: 'AI-Powered Chatbots', slug: 'ai-chatbots' },
   { title: 'Agentic AI Workflows', slug: 'agentic-ai-workflows' },
   { title: 'Smart Process Automation', slug: 'smart-process-automation' },
+  { title: 'n8n Automations', slug: 'n8n-automations' },
   { title: 'Lightweight AI Apps', slug: 'ai-apps-micro-saas' },
   { title: 'Claude Automation', slug: 'claude-automation' },
   { title: 'Custom AI Integrations', slug: 'custom-ai-integrations' },

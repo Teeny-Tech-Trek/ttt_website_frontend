@@ -270,6 +270,15 @@ const getMetaForPath = (pathname: string, hash: string): MetaConfig => {
     };
   }
 
+  if (pathname === '/services/n8n-automations') {
+    return {
+      title: 'n8n Automations & Self-Hosted Workflows | Teeny Tech Trek',
+      description:
+        'Build powerful, self-hosted automation workflows with n8n that connect your apps, APIs, AI models, and business processes with zero per-task fees.',
+      canonicalPath: '/services/n8n-automations',
+    };
+  }
+
   if (pathname === '/' && hash === '#contact') {
     return {
       title: 'Contact Teeny Tech Trek | AI Consultation & Project Enquiries',

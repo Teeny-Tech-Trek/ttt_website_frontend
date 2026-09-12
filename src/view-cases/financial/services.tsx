@@ -158,7 +158,7 @@ const SecuritySection: React.FC = () => {
             <div className="lg:col-span-6 flex items-center justify-center">
               <div className="relative w-full max-w-[500px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(15,23,42,0.16)] border border-slate-200/80 bg-[#071330] group">
                 <img
-                  src="/images/finance/bank grade - security dashboard.png"
+                  src="/images/finance/bank grade - security dashboard.webp"
                   alt="Bank Grade Security Dashboard showing live encryption status, SOC telemetry, and access logs"
                   className="w-full h-auto block object-contain transform group-hover:scale-[1.01] transition-transform duration-500 select-none"
                 />
@@ -216,7 +216,7 @@ const SecuritySection: React.FC = () => {
             <div className="lg:col-span-7">
               <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden bg-white border border-slate-200/90 shadow-[0_20px_50px_rgba(30,58,138,0.08)] group">
                 <img
-                  src="/images/finance/compliance and certificates.png"
+                  src="/images/finance/compliance and certificates.webp"
                   alt="Compliance & Certifications badges showing SOC 2, ISO 27001, PCI DSS, GDPR, HIPAA, and FedRAMP"
                   className="w-full h-auto block object-contain transform group-hover:scale-[1.01] transition-transform duration-500 select-none"
                 />

@@ -203,7 +203,7 @@ const ComplianceRiskSection: React.FC = () => {
             <div className="rounded-3xl overflow-hidden bg-white border border-blue-100/80 shadow-[0_20px_50px_rgba(30,58,138,0.08)] p-3 sm:p-5">
               <div className="rounded-2xl overflow-hidden aspect-[16/9] flex items-center justify-center bg-slate-50">
                 <img
-                  src="/images/finance/global regulatory coverage.png"
+                  src="/images/finance/global regulatory coverage.webp"
                   alt="Global Regulatory Coverage Matrix and AI telemetry"
                   className="w-full h-full object-contain rounded-xl hover:scale-[1.01] transition-transform duration-500"
                 />
