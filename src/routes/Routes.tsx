@@ -24,6 +24,8 @@ import AEOIndex from '../view-cases/AGO/main';
 import AuditForm from '../components/home/AuditForm';
 import TechTrekkerAi from '../pages/public/TechTrekkerAi';
 
+import ServicesOverviewPage from '../pages/public/ServicesOverviewPage';
+import AutomationsOverviewPage from '../pages/public/services/AutomationsOverviewPage';
 import ChatbotsPage from '../pages/public/services/ChatbotsPage';
 import AgenticWorkflowsPage from '../pages/public/services/AgenticWorkflowsPage';
 import ProcessAutomationPage from '../pages/public/services/ProcessAutomationPage';
@@ -107,6 +109,8 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ onOpenChatbot }) => (
       <Route path="/admin" element={<AdminCRM />} />
 
       {/* Service routes */}
+      <Route path="/services" element={<ServicesOverviewPage />} />
+      <Route path="/services/automations" element={<AutomationsOverviewPage />} />
       <Route path="/services/ai-chatbots" element={<ChatbotsPage onOpenChatbot={onOpenChatbot} />} />
       <Route path="/services/agentic-ai-workflows" element={<AgenticWorkflowsPage onOpenChatbot={onOpenChatbot} />} />
       <Route path="/services/smart-process-automation" element={<ProcessAutomationPage onOpenChatbot={onOpenChatbot} />} />

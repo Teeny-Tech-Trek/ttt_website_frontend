@@ -157,12 +157,11 @@ const Navbar = () => {
 
   // Updated topNavLinks to match Footer's services structure and add techtrekkers.ai and use cases under Solutions
   const services = [
-    { title: 'AI-Powered Chatbots', slug: 'ai-chatbots', key: 'ai-chatbots' },
-    { title: 'Agentic AI Workflows', slug: 'agentic-ai-workflows', key: 'agentic-ai-workflows' },
-    { title: 'Smart Process Automation', slug: 'smart-process-automation', key: 'smart-process-automation' },
-    { title: 'Claude Automation', slug: 'claude-automation', key: 'claude-automation' },
-    { title: 'Lightweight AI Apps', slug: 'ai-apps-micro-saas', key: 'ai-apps-micro-saas' },
+    { title: 'Custom AI Apps & Micro-SaaS', slug: 'ai-apps-micro-saas', key: 'ai-apps-micro-saas' },
+    { title: 'Autonomous AI Agents', slug: 'agentic-ai-workflows', key: 'agentic-ai-workflows' },
+    { title: 'AI Virtual Assistants', slug: 'ai-chatbots', key: 'ai-chatbots' },
     { title: 'Custom AI Integrations', slug: 'custom-ai-integrations', key: 'custom-ai-integrations' },
+    { title: 'Automations', slug: 'automations', key: 'automations' },
   ];
 
   const techTrekkersProducts = [
@@ -178,7 +177,7 @@ const Navbar = () => {
       key: 'services',
       hash: '#services',
       path: '/',
-      href: isHomePage ? '#services' : '/#services',
+      href: '/services',
       subLinks: services.map((service) => ({
         name: service.title,
         href: `/services/${service.slug}`,
