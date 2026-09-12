@@ -15,10 +15,10 @@ import {
   Gauge,
 } from 'lucide-react';
 
-import automationsHeroImg from '../../../Images/services/services page/automation hero page.png';
-import n8nCardImg from '../../../Images/services/services page/workflow and app automation.png';
-import claudeCardImg from '../../../Images/services/services page/ai work.png';
-import backOfficeCardImg from '../../../Images/services/services page/back office.png';
+import automationsHeroImg from '../../../Images/services/services page/automation hero page.webp';
+import n8nCardImg from '../../../Images/services/services page/workflow and app automation.webp';
+import claudeCardImg from '../../../Images/services/services page/ai work.webp';
+import backOfficeCardImg from '../../../Images/services/services page/back office.webp';
 
 interface AutomationOption {
   id: string;

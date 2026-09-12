@@ -160,6 +160,7 @@ const Navbar = () => {
     { title: 'AI-Powered Chatbots', slug: 'ai-chatbots', key: 'ai-chatbots' },
     { title: 'Agentic AI Workflows', slug: 'agentic-ai-workflows', key: 'agentic-ai-workflows' },
     { title: 'Smart Process Automation', slug: 'smart-process-automation', key: 'smart-process-automation' },
+    { title: 'n8n Automations', slug: 'n8n-automations', key: 'n8n-automations' },
     { title: 'Claude Automation', slug: 'claude-automation', key: 'claude-automation' },
     { title: 'Lightweight AI Apps', slug: 'ai-apps-micro-saas', key: 'ai-apps-micro-saas' },
     { title: 'Custom AI Integrations', slug: 'custom-ai-integrations', key: 'custom-ai-integrations' },

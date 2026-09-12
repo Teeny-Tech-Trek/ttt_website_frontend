@@ -13,12 +13,12 @@ import {
   Sparkles,
 } from 'lucide-react';
 
-import servicesHeroImg from '../../Images/services/services page/hero page services.png';
-import aiAppsCardImg from '../../Images/services/services page/custom ai apps and micro saas.png';
-import autonomousAgentsCardImg from '../../Images/services/services page/autonomous ai agents.png';
-import virtualAssistantsCardImg from '../../Images/services/services page/ai virtual assistant.png';
-import customIntegrationsCardImg from '../../Images/services/services page/Custom AI Integrations.png';
-import automationsCardImg from '../../Images/services/services page/Automations.png';
+import servicesHeroImg from '../../Images/services/services page/hero page services.webp';
+import aiAppsCardImg from '../../Images/services/services page/custom ai apps and micro saas.webp';
+import autonomousAgentsCardImg from '../../Images/services/services page/autonomous ai agents.webp';
+import virtualAssistantsCardImg from '../../Images/services/services page/ai virtual assistant.webp';
+import customIntegrationsCardImg from '../../Images/services/services page/Custom AI Integrations.webp';
+import automationsCardImg from '../../Images/services/services page/Automations.webp';
 
 interface ServiceOption {
   id: string;
