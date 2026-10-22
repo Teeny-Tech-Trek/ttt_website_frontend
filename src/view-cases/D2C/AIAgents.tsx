@@ -242,13 +242,13 @@ const AIAgentsSection = () => {
   
   return (
     <div className="py-20 bg-gradient-to-br from-sky-50 via-blue-50 to-sky-100">
-      <div className="px-6 mx-auto max-w-7xl">
-        <div className="mb-20 text-center">
+      <div className="px-4 sm:px-6 mx-auto max-w-7xl">
+        <div className="mb-12 sm:mb-20 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 text-sm font-medium rounded-full bg-sky-100 text-sky-700">
             <Brain className="w-4 h-4" />
             Next-Generation AI Agents
           </div>
-          <h2 className="mb-6 text-5xl font-bold text-gray-900">
+          <h2 className="mb-6 text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
             Meet Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-sky-600">AI Dream Team</span>
           </h2>
           <p className="max-w-4xl mx-auto text-xl leading-relaxed text-gray-600">
@@ -266,7 +266,7 @@ const AIAgentsSection = () => {
               return (
                 <div 
                   key={key}
-                  className={`group relative p-6 rounded-2xl border-2 cursor-pointer transition-all duration-300 overflow-hidden ${
+                  className={`group relative p-4 sm:p-6 rounded-2xl border-2 cursor-pointer transition-all duration-300 overflow-hidden ${
                     isActive 
                       ? `${lightBlueColors.border} ${lightBlueColors.bg} shadow-xl ${lightBlueColors.glow}` 
                       : 'border-gray-200 hover:border-sky-200 bg-white hover:shadow-lg hover:bg-sky-50/30'
@@ -309,11 +309,11 @@ const AIAgentsSection = () => {
                         
                         {isActive && (
                           <div className="mt-4 space-y-2">
-                            <div className="grid grid-cols-3 gap-2">
+                            <div className="grid grid-cols-3 gap-1 sm:gap-2">
                               {Object.entries(agent.metrics).map(([key, value]) => (
                                 <div key={key} className="text-center">
-                                  <div className={`text-lg font-bold ${lightBlueColors.text}`}>{value}</div>
-                                  <div className="text-xs text-gray-500 capitalize">{key}</div>
+                                  <div className={`text-sm sm:text-base md:text-lg font-bold ${lightBlueColors.text}`}>{value}</div>
+                                  <div className="text-[11px] sm:text-xs text-gray-500 capitalize">{key}</div>
                                 </div>
                               ))}
                             </div>
@@ -331,7 +331,7 @@ const AIAgentsSection = () => {
           <div className="lg:col-span-2">
             <div className="overflow-hidden bg-white border border-gray-200 shadow-2xl rounded-2xl">
               {/* Header */}
-              <div className={`p-6 bg-gradient-to-r ${lightBlueColors.gradient} text-white`}>
+              <div className={`p-4 sm:p-6 bg-gradient-to-r ${lightBlueColors.gradient} text-white`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="relative">
@@ -353,7 +353,7 @@ const AIAgentsSection = () => {
               </div>
               
               {/* Chat Interface */}
-              <div className="p-6 overflow-y-auto min-h-96 max-h-96 bg-gray-50">
+              <div className="p-4 sm:p-6 overflow-y-auto min-h-96 max-h-96 bg-gray-50">
                 <div className="space-y-4">
                   {agents[activeAgent].demo.messages.slice(0, currentMessageIndex + 1).map((message, index) => (
                     <div key={index} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -373,7 +373,7 @@ const AIAgentsSection = () => {
                       )}
                       
                       {(message.type === 'bot' || message.type === 'user') && (
-                        <div className={`max-w-md ${message.type === 'user' ? 'ml-12' : 'mr-12'}`}>
+                        <div className={`max-w-md ${message.type === 'user' ? 'ml-4 sm:ml-12' : 'mr-4 sm:mr-12'}`}>
                           <div className={`p-4 rounded-2xl shadow-sm ${
                             message.type === 'user' 
                               ? 'bg-gray-200 text-gray-800 rounded-tr-md' 

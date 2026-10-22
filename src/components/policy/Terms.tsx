@@ -94,10 +94,10 @@ const Terms: React.FC = () => {
             <br />
             📧{' '}
             <a
-              href="mailto:anisha.singla@teenytechtrek.com"
+              href="mailto:anishasingla@teenytechtrek.com"
               className="text-blue-600 underline hover:text-blue-800 transition-colors"
             >
-              anisha.singla@teenytechtrek.com
+              anishasingla@teenytechtrek.com
             </a>
             <br />
             🌐{' '}
@@ -117,10 +117,10 @@ const Terms: React.FC = () => {
             <br />
             📧{' '}
             <a
-              href="mailto:anisha.singla@teenytechtrek.com"
+              href="mailto:anishasingla@teenytechtrek.com"
               className="text-blue-600 underline hover:text-blue-800 transition-colors"
             >
-              anisha.singla@teenytechtrek.com
+              anishasingla@teenytechtrek.com
             </a>
             <br />
             🌐{' '}

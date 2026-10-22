@@ -79,7 +79,7 @@ const BenefitsSection = () => {
               </div>
               
               <div className="space-y-4">
-                <div className="grid grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
                   {[
                     { icon: FileText, label: 'Docs' },
                     { icon: Camera, label: 'Media' },
@@ -90,7 +90,7 @@ const BenefitsSection = () => {
                     { icon: Phone, label: 'Calls' },
                     { icon: BarChart3, label: 'Analytics' }
                   ].map((item, index) => (
-                    <div key={index} className="flex flex-col items-center p-3 text-center text-white bg-blue-900 rounded-lg">
+                    <div key={index} className="flex flex-col items-center p-2.5 sm:p-3 text-center text-white bg-blue-900 rounded-lg">
                       <item.icon className="w-5 h-5 mb-1" />
                       <span className="text-xs">{item.label}</span>
                     </div>

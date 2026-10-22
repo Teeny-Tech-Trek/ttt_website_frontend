@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight, Users, Zap, Shield, Code, Star, ArrowRight, Phone, MessageCircle } from 'lucide-react';
-// import heroImage from "../../Images/Extra Resources - Hero Page/FounderPage-removebg-preview.png"
-// import characterImage from "../../Images/Extra Resources - Hero Page/Oisha_Character-removebg-preview.png"
+// import heroImage from "../../Images/Extra Resources - Hero Page/FounderPage-removebg-preview.webp"
+// import characterImage from "../../Images/Extra Resources - Hero Page/Oisha_Character-removebg-preview.webp"
 import Services from '../home/ServicesList';
 import HashLink from '../ui/SectionLink';
 

@@ -80,18 +80,21 @@ export const renderBlock = (b: BlogBlock, key: string): ReactNode => {
         ? "text-3xl font-bold text-gray-900 mt-10 mb-4" 
         : "text-2xl md:text-3xl font-bold text-gray-900 leading-tight";
       
+      const cleanText = (b.text || '').replace(/\*\*/g, '').replace(/\*/g, '').trim();
+      const headingId = b.id || (cleanText ? cleanText.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : key);
+
       if (level === 1) {
         return (
-          <h1 key={key} className={classes}>
+          <h1 key={key} id={headingId} className={`${classes} scroll-mt-28`}>
             {renderInline(b.text, key)}
           </h1>
         );
       }
 
       // H2 question check
-      const isQ = (b.text || '').trim().endsWith('?');
+      const isQ = cleanText.endsWith('?');
       return (
-        <div key={key} className="flex items-start gap-3 mt-12 mb-5">
+        <div key={key} id={headingId} className="flex items-start gap-3 mt-12 mb-5 scroll-mt-28">
           {isQ ? (
             <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-sm mt-0.5">
               <HelpCircle className="w-5 h-5" />
@@ -106,12 +109,15 @@ export const renderBlock = (b: BlogBlock, key: string): ReactNode => {
       );
     }
 
-    case 'subheading':
+    case 'subheading': {
+      const cleanSub = (b.text || '').replace(/\*\*/g, '').replace(/\*/g, '').trim();
+      const headingId = b.id || (cleanSub ? cleanSub.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') : key);
       return (
-        <h3 key={key} className="text-xl font-bold text-gray-900 mt-8 mb-3">
+        <h3 key={key} id={headingId} className="text-xl font-bold text-gray-900 mt-8 mb-3 scroll-mt-28">
           {renderInline(b.text, key)}
         </h3>
       );
+    }
 
     case 'paragraph':
     case 'p': {

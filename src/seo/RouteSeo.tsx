@@ -38,7 +38,7 @@ const HOME_SCHEMA_JSON = `{
         {
           "@type": "ContactPoint",
           "contactType": "customer support",
-          "email": "anisha.singla@teenytechtrek.com",
+          "email": "anishasingla@teenytechtrek.com",
           "telephone": "+91-98558-06696",
           "areaServed": "IN",
           "availableLanguage": ["English", "Hindi", "Punjabi"]
@@ -46,8 +46,8 @@ const HOME_SCHEMA_JSON = `{
         {
           "@type": "ContactPoint",
           "contactType": "sales",
-          "email": "anisha.singla@teenytechtrek.com",
-          "telephone": "+1-647-864-5465",
+          "email": "anishasingla@teenytechtrek.com",
+          "telephone": "+1-647-509-2111",
           "areaServed": ["CA", "US"],
           "availableLanguage": "English"
         }
@@ -77,7 +77,7 @@ const HOME_SCHEMA_JSON = `{
       "image": "https://www.teenytechtrek.com/assets/teeny-logo-O8OlOmsa.svg",
       "url": "https://www.teenytechtrek.com/",
       "telephone": "+91-98558-06696",
-      "email": "anisha.singla@teenytechtrek.com",
+      "email": "anishasingla@teenytechtrek.com",
       "priceRange": "₹₹",
       "address": {
         "@type": "PostalAddress",
@@ -267,6 +267,15 @@ const getMetaForPath = (pathname: string, hash: string): MetaConfig => {
         'Connect AI models directly into your software infrastructure, databases, and APIs with custom RAG, semantic search, and secure middleware.',
       canonicalPath: '/services/custom-ai-integrations',
       schemaJson: CUSTOM_INTEGRATIONS_SCHEMA_JSON,
+    };
+  }
+
+  if (pathname === '/services/n8n-automations') {
+    return {
+      title: 'n8n Automations & Self-Hosted Workflows | Teeny Tech Trek',
+      description:
+        'Build powerful, self-hosted automation workflows with n8n that connect your apps, APIs, AI models, and business processes with zero per-task fees.',
+      canonicalPath: '/services/n8n-automations',
     };
   }
 

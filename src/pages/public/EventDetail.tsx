@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getEventsByField } from "../../services/eventService";
 import type { Event } from "../../types/event"; // Adjust import path if needed
+import { EventDetailSkeleton } from "../../components/skeleton";
 
 const PRIMARY = "#1f528c";
 const SECONDARY = "#3e6aa7";
@@ -35,22 +36,7 @@ export default function SingleEventPage({ onRegister }: SingleEventPageProps) {
   }, [slug]);
 
   if (loading) {
-    return (
-      <div
-        style={{
-          background: `linear-gradient(135deg, ${PRIMARY}, ${SECONDARY})`,
-          minHeight: "100vh",
-          color: "#fff",
-          fontFamily: FONT_FAMILY,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: 24,
-        }}
-      >
-        Loading…
-      </div>
-    );
+    return <EventDetailSkeleton />;
   }
 
   if (notFound || !event) {

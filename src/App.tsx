@@ -25,7 +25,7 @@ const AppContent = () => {
   const toggleChatbot = () => setIsChatbotOpen((open) => !open);
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-x-clip">
       {!hideChrome && <Navbar />}
       <RouteSeo />
       {!hideChrome && <ChatbotButton onToggleChatbot={toggleChatbot} isOpen={isChatbotOpen} />}

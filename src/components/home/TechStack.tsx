@@ -163,7 +163,7 @@ const TechStack = () => {
             transition={{ duration: 0.8 }}
             className="relative inline-block"
           >
-            <h2 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-4 relative z-10">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-4 relative z-10">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600">
                 Our Technology Stack
               </span>

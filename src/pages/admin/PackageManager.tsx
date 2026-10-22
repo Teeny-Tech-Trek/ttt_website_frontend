@@ -170,53 +170,55 @@ const PackageManager: React.FC = () => {
         )}
 
         {!loading && packages.length > 0 && (
-          <table className="w-full table-auto border-collapse">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="p-2 text-left">Name</th>
-                <th className="p-2 text-left">Slug</th>
-                <th className="p-2 text-left">Type</th>
-                <th className="p-2 text-left">Price</th>
-                <th className="p-2 text-left">Active?</th>
-                <th className="p-2 text-left">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {packages.map((pkg) => (
-                <tr key={pkg.id} className="border-b">
-                  <td className="p-2">{pkg.name || "—"}</td>
-                  <td className="p-2">{pkg.slug || "—"}</td>
-                  <td className="p-2">
-                    {pkg.package_type.charAt(0).toUpperCase() +
-                      pkg.package_type.slice(1)}
-                  </td>
-                  <td className="p-2">
-                    {/* Coerce price into number before formatting */}
-                    {Number(pkg.price).toFixed(2)}
-                  </td>
-                  <td className="p-2">{pkg.is_active ? "Yes" : "No"}</td>
-                  <td className="p-2 space-x-2">
-                    <Link
-                      to={`/admin/packages/edit/${pkg.id}`}
-                      className="text-blue-600 hover:underline"
-                    >
-                      Edit
-                    </Link>
-                    <button
-                      onClick={() => handleToggleActive(pkg)}
-                      className={`px-2 py-1 text-sm rounded-md focus:outline-none ${
-                        pkg.is_active
-                          ? "bg-red-100 text-red-700"
-                          : "bg-green-100 text-green-700"
-                      }`}
-                    >
-                      {pkg.is_active ? "Deactivate" : "Reactivate"}
-                    </button>
-                  </td>
+          <div className="overflow-x-auto -mx-2 sm:mx-0">
+            <table className="w-full table-auto border-collapse">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="p-2 text-left">Name</th>
+                  <th className="p-2 text-left">Slug</th>
+                  <th className="p-2 text-left">Type</th>
+                  <th className="p-2 text-left">Price</th>
+                  <th className="p-2 text-left">Active?</th>
+                  <th className="p-2 text-left">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {packages.map((pkg) => (
+                  <tr key={pkg.id} className="border-b">
+                    <td className="p-2">{pkg.name || "—"}</td>
+                    <td className="p-2">{pkg.slug || "—"}</td>
+                    <td className="p-2">
+                      {pkg.package_type.charAt(0).toUpperCase() +
+                        pkg.package_type.slice(1)}
+                    </td>
+                    <td className="p-2">
+                      {/* Coerce price into number before formatting */}
+                      {Number(pkg.price).toFixed(2)}
+                    </td>
+                    <td className="p-2">{pkg.is_active ? "Yes" : "No"}</td>
+                    <td className="p-2 space-x-2">
+                      <Link
+                        to={`/admin/packages/edit/${pkg.id}`}
+                        className="text-blue-600 hover:underline"
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        onClick={() => handleToggleActive(pkg)}
+                        className={`px-2 py-1 text-sm rounded-md focus:outline-none ${
+                          pkg.is_active
+                            ? "bg-red-100 text-red-700"
+                            : "bg-green-100 text-green-700"
+                        }`}
+                      >
+                        {pkg.is_active ? "Deactivate" : "Reactivate"}
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

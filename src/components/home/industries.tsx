@@ -97,7 +97,7 @@ const Industries = () => {
     return (
       <div
         key={key}
-        className="flex-shrink-0 w-[280px] sm:w-[320px] px-2 sm:px-3"
+        className="flex-shrink-0 w-[82vw] max-w-[280px] sm:max-w-none sm:w-[320px] px-2 sm:px-3"
         aria-hidden={key.toString().includes('dup') ? true : undefined}
       >
         <div

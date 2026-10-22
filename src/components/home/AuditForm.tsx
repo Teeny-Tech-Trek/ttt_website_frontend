@@ -11,77 +11,77 @@ interface Question {
 const questions: Question[] = [
   {
     id: 1,
-    text: "Do we have 1–2 measurable outcomes for AI in the next 90 days (e.g., \"deflect 40% FAQs\", \"reduce touches/shipment 30%\")?",
+    text: "Does your organisation have a clearly defined AI strategy that is aligned with its current business priorities?",
     icon: <Target className="w-5 h-5" />
   },
   {
     id: 2,
-    text: "Have we identified our top repetitive processes (volume/month, SLA impact, handle time)?",
+    text: "Have you identified the business processes where AI could create the greatest measurable impact?",
     icon: <BarChart3 className="w-5 h-5" />
   },
   {
     id: 3,
-    text: "Is there a single high-impact process we're willing to pilot in 4 weeks?",
+    text: "Do you have a clear understanding of how much time your teams currently spend on repetitive or manual tasks?",
     icon: <Rocket className="w-5 h-5" />
   },
   {
     id: 4,
-    text: "Are policies/FAQs/docs centralized and current, and exportable (PDF/text/Notion/Drive)?",
+    text: "Have you identified at least one high-impact workflow that could realistically be improved with AI within the next 90 days?",
     icon: <FileText className="w-5 h-5" />
   },
   {
     id: 5,
-    text: "Do we know where sensitive/PII data lives and the rules for handling/redaction?",
+    text: "Does your organisation have access to the data required to support its planned AI initiatives?",
     icon: <Shield className="w-5 h-5" />
   },
   {
     id: 6,
-    text: "Can we access core tools via API or service accounts (e.g., HubSpot/Zendesk/Gmail/Sheets)?",
+    text: "Is your business data organised, accurate, and consistent enough to be reliably used by AI systems?",
     icon: <Code className="w-5 h-5" />
   },
   {
     id: 7,
-    text: "Do we have sample data and test accounts for safe development/UAT?",
+    text: "Do your employees have access to approved AI tools for their day-to-day work?",
     icon: <Database className="w-5 h-5" />
   },
   {
     id: 8,
-    text: "Are refusal rules (no medical/legal/financial advice, risky actions) and escalation paths defined?",
+    text: "Does your organisation have visibility into which AI tools and platforms employees are currently using?",
     icon: <AlertTriangle className="w-5 h-5" />
   },
   {
     id: 9,
-    text: "Can we log every agent/tool action with inputs/outputs (audit trail)?",
+    text: "Does your organisation have clear guidelines defining what company or customer information can and cannot be shared with AI tools?",
     icon: <FileText className="w-5 h-5" />
   },
   {
     id: 10,
-    text: "Is an internal owner assigned (with time for reviews during both sprints)?",
+    text: "Do you have a defined process for reviewing and approving new AI tools before they are introduced into your organisation?",
     icon: <Users className="w-5 h-5" />
   },
   {
     id: 11,
-    text: "Are success metrics agreed and easy to track (e.g., deflection %, first-response time, touches/shipment, speed-to-lead)?",
+    text: "Is there a clearly identified person or team responsible for leading and managing your AI initiatives?",
     icon: <BarChart3 className="w-5 h-5" />
   },
   {
     id: 12,
-    text: "Have we selected 8–10 intents/actions to automate in Sprint 1?",
+    text: "Do your teams have the skills and training required to use AI effectively and responsibly?",
     icon: <Settings className="w-5 h-5" />
   },
   {
     id: 13,
-    text: "Do we have a go-live comms & training plan for affected teams?",
+    text: "Are your existing business systems and software capable of integrating with AI tools or automation platforms?",
     icon: <MessageSquare className="w-5 h-5" />
   },
   {
     id: 14,
-    text: "Have we estimated LLM/voice costs and set quotas/rate limits to control spend?",
+    text: "Does your organisation have a way to measure the business impact and ROI of its current or planned AI initiatives?",
     icon: <Calculator className="w-5 h-5" />
   },
   {
     id: 15,
-    text: "Are we comfortable with least-privilege access in vendor cloud, or do we prefer deployment in our cloud/VPC?",
+    text: "Is your organisation ready to move from experimenting with AI to implementing a real AI-powered workflow or solution?",
     icon: <Cloud className="w-5 h-5" />
   }
 ];
@@ -124,15 +124,33 @@ const navigate = useNavigate();
   const scoreBadge = getScoreBadge(score);
   const answeredQuestions = Object.values(answers).filter(a => a !== null).length;
 
+  const COLOR_STYLES = {
+    emerald: {
+      activeCircle: 'border-emerald-500 bg-emerald-500',
+      hoverBorder: 'group-hover:border-emerald-300',
+      activeText: 'text-emerald-700',
+    },
+    amber: {
+      activeCircle: 'border-amber-500 bg-amber-500',
+      hoverBorder: 'group-hover:border-amber-300',
+      activeText: 'text-amber-700',
+    },
+    red: {
+      activeCircle: 'border-red-500 bg-red-500',
+      hoverBorder: 'group-hover:border-red-300',
+      activeText: 'text-red-700',
+    },
+  } as const;
+
   return (
-    <div className="max-w-4xl mx-auto p-6 mt-20">
+    <div className="max-w-4xl mx-auto p-4 sm:p-6 mt-20 sm:mt-24">
       {/* Header */}
       <div className="text-center mb-12">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-teal-600 rounded-full mb-6">
           <Target className="w-8 h-8 text-white" />
         </div>
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">AI Readiness Audit</h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">AI Readiness Audit</h1>
+        <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
           Evaluate your organization's readiness to implement AI solutions with this comprehensive 15-question assessment.
         </p>
       </div>
@@ -154,21 +172,21 @@ const navigate = useNavigate();
       {/* Questions */}
       <div className="space-y-6 mb-10">
         {questions.map((q, i) => (
-          <div key={q.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow duration-200">
-            <div className="flex items-start gap-4">
+          <div key={q.id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 sm:p-6 hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-start gap-3 sm:gap-4">
               <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-r from-blue-100 to-teal-100 rounded-lg flex items-center justify-center text-blue-600">
                 {q.icon}
               </div>
               <div className="flex-grow">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">
                   <span className="text-blue-600 mr-2">Q{i + 1}.</span>
                   {q.text}
                 </h3>
                 <div className="flex flex-wrap gap-4">
                   {[
-                    { value: 'yes', label: 'Yes', color: 'emerald' },
-                    { value: 'partial', label: 'Partially', color: 'amber' },
-                    { value: 'no', label: 'No', color: 'red' }
+                    { value: 'yes', label: 'Yes', color: 'emerald' as const },
+                    { value: 'partial', label: 'Partially', color: 'amber' as const },
+                    { value: 'no', label: 'No', color: 'red' as const }
                   ].map(opt => (
                     <label key={opt.value} className="flex items-center cursor-pointer group">
                       <input
@@ -181,13 +199,13 @@ const navigate = useNavigate();
                       />
                       <div className={`
                         w-5 h-5 rounded-full border-2 flex items-center justify-center mr-3 transition-all duration-200
-                        ${answers[q.id] === opt.value ? `border-${opt.color}-500 bg-${opt.color}-500` : `border-gray-300 group-hover:border-${opt.color}-300`}
+                        ${answers[q.id] === opt.value ? COLOR_STYLES[opt.color].activeCircle : `border-gray-300 ${COLOR_STYLES[opt.color].hoverBorder}`}
                       `}>
                         {answers[q.id] === opt.value && <div className="w-2 h-2 bg-white rounded-full"></div>}
                       </div>
                       <span className={`
                         font-medium transition-colors duration-200
-                        ${answers[q.id] === opt.value ? `text-${opt.color}-700` : 'text-gray-700 group-hover:text-gray-900'}
+                        ${answers[q.id] === opt.value ? COLOR_STYLES[opt.color].activeText : 'text-gray-700 group-hover:text-gray-900'}
                       `}>
                         {opt.label}
                       </span>
@@ -201,14 +219,14 @@ const navigate = useNavigate();
       </div>
 
       {/* Score Display */}
-      <div className="bg-gradient-to-r from-blue-50 to-teal-50 rounded-2xl p-8 border border-blue-100">
+      <div className="bg-gradient-to-r from-blue-50 to-teal-50 rounded-2xl p-5 sm:p-8 border border-blue-100">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Your AI Readiness Score</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">Your AI Readiness Score</h2>
           <div className="flex items-center justify-center mb-6">
-            <div className="text-6xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">{score.toFixed(1)}</div>
-            <div className="text-2xl text-gray-400 ml-2">/15</div>
+            <div className="text-4xl sm:text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">{score.toFixed(1)}</div>
+            <div className="text-xl sm:text-2xl text-gray-400 ml-2">/15</div>
           </div>
-          <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${scoreBadge.bgColor} ${scoreBadge.textColor} font-semibold mb-4`}>
+          <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${scoreBadge.bgColor} ${scoreBadge.textColor} text-xs sm:text-sm font-semibold mb-4`}>
             {scoreBadge.icon} <span>{getScoreMessage(score)}</span>
           </div>
         </div>

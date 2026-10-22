@@ -1,4 +1,4 @@
-﻿import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowLeft,
   BookOpen,
@@ -168,6 +168,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
   const [leadForm, setLeadForm] = useState<LeadFormSpec | null>(null);
   const [leadValues, setLeadValues] = useState<Record<string, string>>({});
   const [leadErrors, setLeadErrors] = useState<Record<string, string>>({});
+  const [privacyConsent, setPrivacyConsent] = useState(false);
   const [isSubmittingLead, setIsSubmittingLead] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -302,6 +303,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
       setLeadForm(form);
       setLeadValues(buildEmptyLeadValues(form));
       setLeadErrors({});
+      setPrivacyConsent(false);
     },
     [buildEmptyLeadValues]
   );
@@ -417,6 +419,18 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
     });
   };
 
+  const handleConsentChange = (checked: boolean) => {
+    setPrivacyConsent(checked);
+    if (checked) {
+      setLeadErrors((prev) => {
+        if (!prev.privacy_consent) return prev;
+        const next = { ...prev };
+        delete next.privacy_consent;
+        return next;
+      });
+    }
+  };
+
   const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!leadForm || isSubmittingLead) return;
@@ -427,6 +441,9 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
       const err = validateLeadField(field, leadValues[field.name] || '');
       if (err) errors[field.name] = err;
     });
+    if (!privacyConsent) {
+      errors.privacy_consent = 'Please check the box above to continue using the chatbot.';
+    }
     if (Object.keys(errors).length > 0) {
       setLeadErrors(errors);
       return;
@@ -435,7 +452,10 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
     setIsSubmittingLead(true);
 
     try {
-      const body: Record<string, string> = { session_id: getSessionId() };
+      const body: Record<string, any> = {
+        session_id: getSessionId(),
+        privacy_consent: true,
+      };
       leadForm.fields.forEach((field) => {
         body[field.name] = (leadValues[field.name] || '').trim();
       });
@@ -492,6 +512,7 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
       setLeadForm(null);
       setLeadValues({});
       setLeadErrors({});
+      setPrivacyConsent(false);
       setMessages((prev) => [
         ...prev,
         {
@@ -664,9 +685,10 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
       console.warn('Chatbot gate fired despite local capture flag — rendering reply anyway.');
     }
 
-    const shortText = aiResponse.short_message || aiResponse.reply || '';
-    const services = parseServices(shortText);
+    const rawShortText = aiResponse.short_message || aiResponse.reply || '';
+    const services = parseServices(rawShortText);
     const isService = services.length > 0;
+    const shortText = isService ? rawShortText : rawShortText.replace(/\*\*/g, '');
     const learnMoreIntent = inferLearnMoreIntent(visibleLabel || outboundText);
     const learnMoreTarget = getLearnMoreTarget(learnMoreIntent);
     const finalOptions = shouldKeepFlowOptions(aiResponse)
@@ -886,8 +908,8 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
         fixed z-[9999] flex flex-col overflow-hidden bg-white border border-blue-100
         shadow-[0_25px_60px_rgba(0,0,0,0.15),0_8px_20px_rgba(0,0,0,0.08)]
         inset-0 rounded-none
-        md:inset-auto md:bottom-24 md:right-6 md:left-auto md:top-auto
-        md:h-[560px] md:max-h-[560px] md:w-[400px] md:min-w-[390px] md:rounded-[18px]
+        md:inset-auto md:bottom-6 lg:bottom-24 md:right-6 md:left-auto md:top-auto
+        md:h-[min(560px,calc(100dvh-5rem))] md:max-h-[calc(100dvh-5rem)] md:w-[400px] md:max-w-[calc(100vw-3rem)] md:rounded-[18px]
         transform-gpu origin-bottom-right transition-all duration-300 ease-in-out
         ${isOpen ? 'opacity-100 translate-y-0 scale-100 pointer-events-auto' : 'opacity-0 translate-y-10 scale-95 pointer-events-none'}
       `}
@@ -982,7 +1004,9 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
                         : 'bg-[#F3F4F6] text-[#1F2937] border border-gray-200 rounded-[14px] px-[12px] py-[10px]'
                     }`}
                   >
-                    <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+                    <p className="leading-relaxed whitespace-pre-wrap">
+                      {msg.isUser ? msg.text : msg.text.replace(/\*\*/g, '')}
+                    </p>
                     {!msg.isUser && msg.options && msg.options.length > 0 && (
                       <div className="flex flex-wrap gap-2 mt-3">
                         {msg.options.map((opt) => (
@@ -1099,6 +1123,41 @@ const ChatbotModal: React.FC<ChatbotModalProps> = ({ isOpen, onClose, fullPage =
                     </div>
                   );
                 })}
+
+                <div className="pt-1">
+                  <div className="flex items-start gap-2.5">
+                    <input
+                      id="lead-privacy-consent"
+                      type="checkbox"
+                      checked={privacyConsent}
+                      onChange={(e) => handleConsentChange(e.target.checked)}
+                      className="mt-0.5 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer shrink-0"
+                      aria-invalid={!!leadErrors.privacy_consent}
+                      aria-describedby={leadErrors.privacy_consent ? 'privacy-consent-error' : undefined}
+                    />
+                    <label
+                      htmlFor="lead-privacy-consent"
+                      className="text-xs leading-relaxed text-gray-600 cursor-pointer select-none"
+                    >
+                      I agree that Teeny Tech Trek may collect, store, and use my information to respond to my inquiry. Please see our{' '}
+                      <a
+                        href="/privacy"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="font-medium text-blue-600 underline hover:text-blue-800"
+                      >
+                        Privacy Policy
+                      </a>
+                      .
+                    </label>
+                  </div>
+                  {leadErrors.privacy_consent && (
+                    <p id="privacy-consent-error" className="mt-1 text-[11px] text-red-500">
+                      {leadErrors.privacy_consent}
+                    </p>
+                  )}
+                </div>
 
                 {leadErrors._form && <p className="text-[11px] text-red-500">{leadErrors._form}</p>}
 

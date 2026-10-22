@@ -168,7 +168,7 @@ export default function WhyUs() {
             fontWeight: 600,
             letterSpacing: "-0.02em",
             lineHeight: 1.05,
-            fontSize: isMobile ? 20 : 44,
+            fontSize: isMobile ? 28 : 44,
             margin: 0,
             color: "#0f1535",
           }}

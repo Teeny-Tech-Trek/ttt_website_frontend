@@ -24,6 +24,8 @@ import AEOIndex from '../view-cases/AGO/main';
 import AuditForm from '../components/home/AuditForm';
 import TechTrekkerAi from '../pages/public/TechTrekkerAi';
 
+import ServicesOverviewPage from '../pages/public/ServicesOverviewPage';
+import AutomationsOverviewPage from '../pages/public/services/AutomationsOverviewPage';
 import ChatbotsPage from '../pages/public/services/ChatbotsPage';
 import AgenticWorkflowsPage from '../pages/public/services/AgenticWorkflowsPage';
 import ProcessAutomationPage from '../pages/public/services/ProcessAutomationPage';
@@ -33,8 +35,10 @@ import Pilot from '../pages/Pilot';
 import { BlogSection } from '../components/home/BlogSection';
 import { blogPosts } from '../data/blogData';
 import ClaudeAutomationsPage from '../pages/public/services/Claudeautomationspage';
+import N8nAutomationsPage from '../pages/public/services/N8nAutomationsPage';
 import AdminLogin from '../pages/admin/AdminLogin';
 import AdminCRM from '../pages/admin/AdminCRM';
+import MediumBlogPreview from '../pages/dev/MediumBlogPreview';
 
 const ScrollToTop = () => {
   const { pathname, hash, state } = useLocation();
@@ -94,6 +98,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ onOpenChatbot }) => (
       <Route path="/blog/:slug" element={<BlogSingleView />} />
       <Route path="/blog-preview/:id" element={<BlogSingleView />} />
       <Route path="/admin/blog-preview/:id" element={<BlogSingleView />} />
+      <Route path="/dev/medium-preview" element={<MediumBlogPreview />} />
       <Route path="/event/:slug" element={<SingleEventPage />} />
 
       {/* Package details */}
@@ -104,11 +109,14 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ onOpenChatbot }) => (
       <Route path="/admin" element={<AdminCRM />} />
 
       {/* Service routes */}
+      <Route path="/services" element={<ServicesOverviewPage />} />
+      <Route path="/services/automations" element={<AutomationsOverviewPage />} />
       <Route path="/services/ai-chatbots" element={<ChatbotsPage onOpenChatbot={onOpenChatbot} />} />
       <Route path="/services/agentic-ai-workflows" element={<AgenticWorkflowsPage onOpenChatbot={onOpenChatbot} />} />
       <Route path="/services/smart-process-automation" element={<ProcessAutomationPage onOpenChatbot={onOpenChatbot} />} />
       <Route path="/services/ai-apps-micro-saas" element={<AiAppsPage onOpenChatbot={onOpenChatbot} />} />
       <Route path="/services/claude-automation" element={<ClaudeAutomationsPage />} />
+      <Route path="/services/n8n-automations" element={<N8nAutomationsPage />} />
       <Route path="/services/custom-ai-integrations" element={<CustomAiIntegrationsPage onOpenChatbot={onOpenChatbot} />} />
 
       {/* Catch-all */}

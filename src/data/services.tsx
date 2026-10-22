@@ -1,13 +1,19 @@
-import { Bot, Puzzle as PuzzlePiece, Cog, Sparkles, Rocket, Boxes } from 'lucide-react';
+import { Bot, Puzzle as PuzzlePiece, Cog, Sparkles, Rocket, Boxes, Workflow } from 'lucide-react';
 import React from 'react';
+import chatbotImg from '../Images/services/chatbot.webp';
+import agenticImg from '../Images/services/agentic workflow.webp';
+import smartProcessesImg from '../Images/services/smart processes.webp';
+import claudeImg from '../Images/services/claude.webp';
+import lightweightImg from '../Images/services/lightweight api.webp';
+import customAiImg from '../Images/services/custom ai integrations.webp';
+import n8nImg from '../Images/services/n8n automations.webp';
 
 export const services = [
   {
     icon: <Bot size={32} className="text-primary" />,
     title: "AI-Powered Chatbots & Virtual Assistants",
     slug: "ai-chatbots",
-    // 👇 IS CARD KI IMAGE — yahan apna real path daal dena (e.g. '/images/services/ai-chatbots.png')
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Ai-Service-Assets/Chatbot-Image.webp",
+    image: "/ai virtual assistants.webp",
     description: "Context-aware GPT bots for customer support, onboarding, or internal tools — integrated with your existing platforms (Slack, Notion, CRMs, etc.)",
     features: ["Customer Support", "User Onboarding", "Internal Knowledge Base", "Platform Integration"],
     featureDescriptions: [
@@ -55,8 +61,7 @@ export const services = [
     icon: <PuzzlePiece size={32} className="text-primary" />,
     title: "Agentic AI Workflows",
     slug: "agentic-ai-workflows",
-    // 👇 IS CARD KI IMAGE — yahan apna real path daal dena
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Ai-Service-Assets/Agentic-Image.webp",
+    image: agenticImg,
     description: "Autonomous agents that can retrieve data, summarize content, make decisions, and complete multi-step tasks using LangChain, AutoGen, or CrewAI.",
     features: ["Data Retrieval", "Content Summarization", "Decision Making", "Multi-step Task Automation"],
     featureDescriptions: [
@@ -109,8 +114,7 @@ export const services = [
     icon: <Cog size={32} className="text-primary" />,
     title: "Smart Process Automation",
     slug: "smart-process-automation",
-    // 👇 IS CARD KI IMAGE — yahan apna real path daal dena
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Ai-Service-Assets/SmartProcess-Image.webp",
+    image: smartProcessesImg,
     description: "Save hours by automating repetitive tasks with Python, APIs, Zapier, and Make. From CRM updates to email replies — we connect your stack, end-to-end.",
     features: ["CRM Automation", "Email Management", "Data Processing", "Workflow Integration"],
     featureDescriptions: [
@@ -168,8 +172,7 @@ export const services = [
     icon: <Sparkles size={32} className="text-primary" />,
     title: "Claude Automation",
     slug: "claude-automation",
-    // 👇 IS CARD KI IMAGE — yahan apna real path daal dena
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Ai-Service-Assets/Claude-Image.webp",
+    image: claudeImg,
     description: "Leverage Claude AI to automate complex tasks — tool connections, custom MCP integrations, scheduled runs, and human-in-the-loop workflows for smarter business operations.",
     features: ["Tool Connections", "Custom MCP Tools", "Cowork Setups", "Recurring Runs"],
     featureDescriptions: [
@@ -213,8 +216,7 @@ export const services = [
     icon: <Rocket size={32} className="text-primary" />,
     title: "Lightweight AI Apps",
     slug: "ai-apps-micro-saas",
-    // 👇 IS CARD KI IMAGE — yahan apna real path daal dena
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Ai-Service-Assets/Lightweight-Image.webp",
+    image: lightweightImg,
     description: "Ship focused micro-SaaS and internal AI tools fast — single-purpose apps with clean UIs, built on modern stacks and ready to launch in weeks, not months.",
     features: ["Rapid MVPs", "Micro-SaaS Tools", "Internal Dashboards", "API-First Builds"],
     featureDescriptions: [
@@ -253,8 +255,7 @@ export const services = [
     icon: <Boxes size={32} className="text-primary" />,
     title: "Custom AI Integrations",
     slug: "custom-ai-integrations",
-    // 👇 IS CARD KI IMAGE — yahan apna real path daal dena (MOCK DATA — replace later)
-    image: "https://4hooltce8r54joof.public.blob.vercel-storage.com/Ai-Service-Assets/Custom-Image.webp",
+    image: customAiImg,
     description: "Mock placeholder service — connect AI models into your existing products with tailored integrations, embeddings, and vector search. Replace this copy later.",
     features: ["Model Integration", "Embeddings & RAG", "Vector Search", "Custom Pipelines"],
     featureDescriptions: [
@@ -292,6 +293,42 @@ export const services = [
       {
         title: "Legacy SQL Query Generator",
         description: "We built a secure middleware that translates plain English queries into safe, structured SQL statements, allowing business teams to extract reports instantly."
+      }
+    ]
+  },
+  {
+    icon: <Workflow size={32} className="text-primary" />,
+    title: "n8n Automations",
+    slug: "n8n-automations",
+    image: n8nImg,
+    description: "Build powerful, self-hosted automation workflows that connect your apps, APIs, AI models, and business processes.",
+    features: ["Self-Hosted Workflows", "API & App Connectors", "AI Model Integrations", "Business Process Automation"],
+    featureDescriptions: [
+      "Run your automations on infrastructure you control, with no per-task pricing or vendor lock-in.",
+      "Connect n8n to hundreds of apps and any REST API, so data flows automatically between the tools you already use.",
+      "Wire AI models directly into your workflows to classify, summarize, or generate content as part of an automated pipeline.",
+      "Automate multi-step business processes end-to-end — approvals, notifications, data sync, and reporting."
+    ],
+    detailedContent: `
+      <h2>Self-Hosted Automation with n8n</h2>
+      <p>n8n gives you the flexibility of a visual workflow builder with the control of self-hosted infrastructure. We design and deploy n8n workflows that connect your apps, APIs, and AI models into a single automated pipeline.</p>
+
+      <h3>What We Build</h3>
+      <ul>
+        <li>Custom workflows connecting your CRM, email, and internal tools</li>
+        <li>AI-powered steps for classification, summarization, and generation</li>
+        <li>Scheduled and event-triggered automations</li>
+        <li>Self-hosted deployments you fully own and control</li>
+      </ul>
+    `,
+    caseStudies: [
+      {
+        title: "Lead Routing Automation",
+        description: "We built an n8n workflow that enriches inbound leads, scores them with an AI model, and routes them to the right sales rep automatically."
+      },
+      {
+        title: "Cross-Platform Data Sync",
+        description: "An n8n pipeline kept a client's CRM, billing system, and support desk in sync in real time, eliminating manual data entry."
       }
     ]
   },

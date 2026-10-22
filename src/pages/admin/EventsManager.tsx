@@ -93,40 +93,42 @@ const EventsManager: React.FC = () => {
         )}
 
         {!loading && events.length > 0 && (
-          <table className="w-full table-auto border-collapse">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="p-2 text-left">Title</th>
-                <th className="p-2 text-left">Slug</th>
-                <th className="p-2 text-left">Start</th>
-                <th className="p-2 text-left">Status</th>
-                <th className="p-2 text-left">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {events.map((ev) => (
-                <tr key={ev.id} className="border-b">
-                  <td className="p-2">{ev.title || "—"}</td>
-                  <td className="p-2">{ev.slug || "—"}</td>
-                  <td className="p-2">
-                    {ev.start_time
-                      ? new Date(ev.start_time).toLocaleString()
-                      : "—"}
-                  </td>
-                  <td className="p-2">{ev.status}</td>
-                  <td className="p-2 space-x-2">
-                    <Link
-                      to={`/admin/events/edit/${ev.id}`}
-                      className="text-blue-600 hover:underline"
-                    >
-                      Edit
-                    </Link>
-                    {/* Example: You could wire up delete/cancel here */}
-                  </td>
+          <div className="overflow-x-auto -mx-2 sm:mx-0">
+            <table className="w-full table-auto border-collapse">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="p-2 text-left">Title</th>
+                  <th className="p-2 text-left">Slug</th>
+                  <th className="p-2 text-left">Start</th>
+                  <th className="p-2 text-left">Status</th>
+                  <th className="p-2 text-left">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {events.map((ev) => (
+                  <tr key={ev.id} className="border-b">
+                    <td className="p-2">{ev.title || "—"}</td>
+                    <td className="p-2">{ev.slug || "—"}</td>
+                    <td className="p-2">
+                      {ev.start_time
+                        ? new Date(ev.start_time).toLocaleString()
+                        : "—"}
+                    </td>
+                    <td className="p-2">{ev.status}</td>
+                    <td className="p-2 space-x-2">
+                      <Link
+                        to={`/admin/events/edit/${ev.id}`}
+                        className="text-blue-600 hover:underline"
+                      >
+                        Edit
+                      </Link>
+                      {/* Example: You could wire up delete/cancel here */}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

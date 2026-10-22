@@ -160,9 +160,11 @@ const Navbar = () => {
     { title: 'AI-Powered Chatbots', slug: 'ai-chatbots', key: 'ai-chatbots' },
     { title: 'Agentic AI Workflows', slug: 'agentic-ai-workflows', key: 'agentic-ai-workflows' },
     { title: 'Smart Process Automation', slug: 'smart-process-automation', key: 'smart-process-automation' },
+    { title: 'n8n Automations', slug: 'n8n-automations', key: 'n8n-automations' },
     { title: 'Claude Automation', slug: 'claude-automation', key: 'claude-automation' },
     { title: 'Lightweight AI Apps', slug: 'ai-apps-micro-saas', key: 'ai-apps-micro-saas' },
     { title: 'Custom AI Integrations', slug: 'custom-ai-integrations', key: 'custom-ai-integrations' },
+    { title: 'Automations', slug: 'automations', key: 'automations' },
   ];
 
   const techTrekkersProducts = [
@@ -178,7 +180,7 @@ const Navbar = () => {
       key: 'services',
       hash: '#services',
       path: '/',
-      href: isHomePage ? '#services' : '/#services',
+      href: '/services',
       subLinks: services.map((service) => ({
         name: service.title,
         href: `/services/${service.slug}`,
@@ -222,7 +224,7 @@ const Navbar = () => {
         case 'solutions':
           return path === '/solutions' || path === '/use-cases';
         case 'resources':
-          return path === '/blogs'  || path === '/audit-form';
+          return path === '/blogs' || path === '/audit-form';
         case 'pricing':
         case 'contact':
           return false;
@@ -298,16 +300,16 @@ const Navbar = () => {
           <MotionLink
             to="/#home"
             smooth
-            className="z-50 flex items-center flex-shrink-0 min-w-0 gap-2 mr-6 sm:gap-3 lg:mr-8 xl:mr-10"
+            className="z-50 flex items-center flex-shrink-0 min-w-0 gap-2 mr-3 sm:gap-3 lg:mr-4 xl:mr-10"
             style={{ scale: logoScale }}
             whileHover={{ scale: 1.1 }}
             transition={{ type: 'spring', stiffness: 300 }}
             onClick={() => setActiveSection('#home')}
           >
-            <motion.img 
-              src={logo} 
-              alt="Teeny Tech Trek Logo" 
-              className="w-8 h-10 sm:w-10 sm:h-12 md:w-12 md:h-15 ml-[-8px] sm:ml-[-10px] md:ml-[-15px] flex-shrink-0" 
+            <motion.img
+              src={logo}
+              alt="Teeny Tech Trek Logo"
+              className="w-8 h-10 sm:w-10 sm:h-12 md:w-12 md:h-15 ml-[-8px] sm:ml-[-10px] md:ml-[-15px] flex-shrink-0"
             />
             <motion.span
               className="text-sm font-semibold tracking-tight text-blue-900 truncate sm:text-lg md:text-xl"
@@ -321,8 +323,8 @@ const Navbar = () => {
           </MotionLink>
 
           {/* Desktop Navigation - Multiple breakpoints with proper spacing */}
-          <div className="items-center justify-center hidden lg:flex lg:absolute lg:left-1/2 lg:top-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2">
-            <ul className="flex items-center gap-3 xl:gap-6">
+          <div className="items-center justify-center hidden lg:flex lg:static lg:mx-auto xl:absolute xl:left-1/2 xl:top-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2 xl:mx-0">
+            <ul className="flex items-center gap-2.5 lg:gap-3 xl:gap-6">
               {topNavLinks.map((link, index) => (
                 <motion.li
                   key={link.key}
@@ -339,9 +341,8 @@ const Navbar = () => {
                       <MotionLink
                         smooth
                         to={link.href}
-                        className={`relative text-xs xl:text-sm font-medium text-blue-900/70 transition-colors hover:text-blue-600 flex items-center cursor-pointer whitespace-nowrap ${
-                          isLinkActive(link) ? 'text-blue-600' : ''
-                        }`}
+                        className={`relative text-xs xl:text-sm font-medium text-blue-900/70 transition-colors hover:text-blue-600 flex items-center cursor-pointer whitespace-nowrap ${isLinkActive(link) ? 'text-blue-600' : ''
+                          }`}
                         whileHover={{ scale: 1.05 }}
                         transition={{ type: 'spring', stiffness: 300 }}
                         onClick={() => setActiveSection(link.hash || `#${link.key}`)}
@@ -358,9 +359,8 @@ const Navbar = () => {
                       </MotionLink>
                     ) : link.key === 'resources' || link.key === 'solutions' ? (
                       <span
-                        className={`relative text-xs xl:text-sm font-medium text-blue-900/70 transition-colors hover:text-blue-600 flex items-center cursor-pointer whitespace-nowrap ${
-                          isLinkActive(link) ? 'text-blue-600' : ''
-                        }`}
+                        className={`relative text-xs xl:text-sm font-medium text-blue-900/70 transition-colors hover:text-blue-600 flex items-center cursor-pointer whitespace-nowrap ${isLinkActive(link) ? 'text-blue-600' : ''
+                          }`}
                       >
                         <span className="hidden xl:inline">{link.name}</span>
                         <span className="xl:hidden">
@@ -376,9 +376,8 @@ const Navbar = () => {
                       <MotionLink
                         smooth
                         to={link.href}
-                        className={`relative text-xs xl:text-sm font-medium text-blue-900/70 transition-colors hover:text-blue-600 flex items-center whitespace-nowrap ${
-                          isLinkActive(link) ? 'text-blue-600' : ''
-                        }`}
+                        className={`relative text-xs xl:text-sm font-medium text-blue-900/70 transition-colors hover:text-blue-600 flex items-center whitespace-nowrap ${isLinkActive(link) ? 'text-blue-600' : ''
+                          }`}
                         whileHover={{ scale: 1.05 }}
                         transition={{ type: 'spring', stiffness: 300 }}
                         onClick={() => setActiveSection(link.hash || `#${link.key}`)}
@@ -404,13 +403,14 @@ const Navbar = () => {
                     <AnimatePresence>
                       {link.subLinks && openDropdown === link.key && (
                         <motion.div
-                          className="absolute top-full left-0 mt-2 bg-white rounded-lg shadow-xl py-2 z-50 border border-gray-100 min-w-[180px] xl:min-w-[240px]"
+                          className={`absolute top-full mt-2 bg-white rounded-lg shadow-xl py-2 z-50 border border-gray-100 min-w-[180px] xl:min-w-[240px] ${link.key === 'resources' ? 'right-0 left-auto' : 'left-0'
+                            }`}
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
                           transition={{ duration: 0.15 }}
                         >
-                         {link.subLinks.map((sub) => (
+                          {link.subLinks.map((sub) => (
                             <div
                               key={sub.key}
                               className="relative block px-3 py-2 text-xs text-gray-700 transition-colors cursor-pointer xl:px-4 xl:py-3 xl:text-sm hover:bg-gray-100 hover:text-blue-600 group/item"
@@ -434,9 +434,9 @@ const Navbar = () => {
                               </div>
                               {'products' in sub && sub.products && (
                                 <>
-                                  <span className="absolute top-0 left-full hidden w-3 h-full group-hover/item:block" />
+                                  <span className="absolute top-0 left-full lg:max-xl:left-auto lg:max-xl:right-full hidden w-3 h-full group-hover/item:block" />
                                   <div
-                                    className="absolute top-0 left-[calc(100%+0.75rem)] z-50 hidden min-w-[180px] overflow-hidden bg-white border border-gray-100 rounded-lg shadow-xl group-hover/item:block"
+                                    className="absolute top-0 left-[calc(100%+0.75rem)] lg:max-xl:left-auto lg:max-xl:right-[calc(100%+0.75rem)] z-50 hidden min-w-[180px] overflow-hidden bg-white border border-gray-100 rounded-lg shadow-xl group-hover/item:block"
                                     onClick={(event) => event.stopPropagation()}
                                   >
                                     {sub.products.map((product) => (
@@ -465,9 +465,9 @@ const Navbar = () => {
                 </motion.li>
               ))}
             </ul>
-            
-           
-            
+
+
+
             {/* AI Call Button - Responsive */}
             {/* <motion.button
               onClick={handleTalkToAI}
@@ -521,8 +521,8 @@ const Navbar = () => {
           {/* Mobile Navigation - Enhanced for different mobile sizes */}
           <div className="flex items-center gap-1 sm:gap-2 lg:hidden">
             {/* Mobile AI Call Button */}
-           
-            
+
+
             {/* Mobile Menu Button */}
             <motion.button
               className="z-50 p-1.5 sm:p-2 transition-colors rounded-full hover:bg-blue-50/50"
@@ -550,7 +550,7 @@ const Navbar = () => {
               transition={{ duration: 0.3, ease: 'easeInOut' }}
               className="fixed inset-0 top-[60px] sm:top-[80px] z-40 bg-white/95 backdrop-blur-md lg:hidden overflow-y-auto"
             >
-           <div className="flex flex-col items-end justify-start min-h-screen px-8 py-8 space-y-4 sm:space-y-6 sm:px-12">
+              <div className="flex flex-col items-end justify-start min-h-[calc(100vh-60px)] sm:min-h-[calc(100vh-80px)] pb-24 px-8 py-8 space-y-4 sm:space-y-6 sm:px-12">
                 {topNavLinks.map((link, index) => {
                   const delay = 0.1 * index;
                   return (
@@ -566,9 +566,8 @@ const Navbar = () => {
                           <MotionLink
                             smooth
                             to={link.href}
-                            className={`block py-3 pr-4 text-base sm:text-lg font-semibold transition-colors text-right ${
-                              isLinkActive(link) ? 'text-blue-600' : 'text-blue-900/80 hover:text-blue-600'
-                            }`}
+                            className={`block py-3 pr-4 text-base sm:text-lg font-semibold transition-colors text-right ${isLinkActive(link) ? 'text-blue-600' : 'text-blue-900/80 hover:text-blue-600'
+                              }`}
                             onClick={() => {
                               setIsMenuOpen(false);
                               setActiveSection(link.hash || `#${link.key}`);
@@ -585,9 +584,8 @@ const Navbar = () => {
                             }
                           >
                             <ChevronDown
-                              className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-200 mr-2 ${
-                                mobileOpenSub[link.key] ? 'rotate-180' : ''
-                              }`}
+                              className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-200 mr-2 ${mobileOpenSub[link.key] ? 'rotate-180' : ''
+                                }`}
                             />
                             <span className="text-sm text-blue-900/60">View All Services</span>
                           </div>
@@ -605,9 +603,8 @@ const Navbar = () => {
                                     <MotionLink
                                       key={sub.key}
                                       to={sub.href}
-                                      className={`block py-2 sm:py-3 text-sm sm:text-base transition-colors border-r-2 border-transparent hover:border-blue-600 hover:text-blue-600 cursor-pointer text-right ${
-                                        location.pathname === sub.href ? 'border-blue-600 text-blue-600 bg-blue-50' : 'text-blue-900/70'
-                                      }`}
+                                      className={`block py-2 sm:py-3 text-sm sm:text-base transition-colors border-r-2 border-transparent hover:border-blue-600 hover:text-blue-600 cursor-pointer text-right ${location.pathname === sub.href ? 'border-blue-600 text-blue-600 bg-blue-50' : 'text-blue-900/70'
+                                        }`}
                                       whileHover={{ x: 2 }}
                                       onClick={() => {
                                         setIsMenuOpen(false);
@@ -633,14 +630,12 @@ const Navbar = () => {
                             }
                           >
                             <ChevronDown
-                              className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-200 mr-2 ${
-                                mobileOpenSub[link.key] ? 'rotate-180' : ''
-                              }`}
+                              className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-200 mr-2 ${mobileOpenSub[link.key] ? 'rotate-180' : ''
+                                }`}
                             />
                             <span
-                              className={`text-base sm:text-lg font-semibold transition-colors ${
-                                isLinkActive(link) ? 'text-blue-600' : 'text-blue-900/80 hover:text-blue-600'
-                              }`}
+                              className={`text-base sm:text-lg font-semibold transition-colors ${isLinkActive(link) ? 'text-blue-600' : 'text-blue-900/80 hover:text-blue-600'
+                                }`}
                             >
                               {link.name}
                             </span>
@@ -659,9 +654,8 @@ const Navbar = () => {
                                     <MotionLink
                                       key={sub.key}
                                       to={sub.href}
-                                      className={`block py-2 sm:py-3 text-sm sm:text-base transition-colors border-r-2 border-transparent hover:border-blue-600 hover:text-blue-600 cursor-pointer text-right ${
-                                        location.pathname === sub.href ? 'border-blue-600 text-blue-600 bg-blue-50' : 'text-blue-900/70'
-                                      }`}
+                                      className={`block py-2 sm:py-3 text-sm sm:text-base transition-colors border-r-2 border-transparent hover:border-blue-600 hover:text-blue-600 cursor-pointer text-right ${location.pathname === sub.href ? 'border-blue-600 text-blue-600 bg-blue-50' : 'text-blue-900/70'
+                                        }`}
                                       whileHover={{ x: 2 }}
                                       onClick={() => {
                                         setIsMenuOpen(false);
@@ -683,9 +677,8 @@ const Navbar = () => {
                         <MotionLink
                           smooth
                           to={link.href}
-                          className={`block py-3 pr-4 text-base sm:text-lg font-semibold transition-colors text-right ${
-                            isLinkActive(link) ? 'text-blue-600' : 'text-blue-900/80 hover:text-blue-600'
-                          }`}
+                          className={`block py-3 pr-4 text-base sm:text-lg font-semibold transition-colors text-right ${isLinkActive(link) ? 'text-blue-600' : 'text-blue-900/80 hover:text-blue-600'
+                            }`}
                           onClick={() => {
                             setIsMenuOpen(false);
                             setActiveSection(link.hash || `#${link.key}`);
@@ -699,9 +692,9 @@ const Navbar = () => {
                     </motion.div>
                   );
                 })}
-                
-                
-                
+
+
+
                 {/* Mobile Get Started Button - Only show if not logged in */}
                 {!user && (
                   <motion.div

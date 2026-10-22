@@ -1,197 +1,236 @@
 import React from 'react';
-import { ArrowRight, CheckCircle, Clock, Users, Settings, Rocket, Shield, FileText } from 'lucide-react';
-import HashLink from '../../components/ui/SectionLink';
+import { useNavigate } from 'react-router-dom';
+import {
+  FileSearch,
+  Cpu,
+  Sliders,
+  ShieldCheck,
+  Rocket,
+  Clock,
+  CheckCircle2,
+  Users2,
+  ArrowRight,
+  Headphones,
+  Award,
+  Sparkles,
+  Layers,
+} from 'lucide-react';
 
-const ImplementationSection = () => {
+const ImplementationSection: React.FC = () => {
+  const navigate = useNavigate();
+
   const steps = [
     {
-      step: '01',
-      title: 'Assessment & Planning',
-      description: 'Comprehensive analysis of your current systems, processes, and regulatory requirements to create a tailored implementation roadmap.',
-      icon: FileText,
-      duration: '1-2 weeks'
+      num: '01',
+      title: 'Discovery & Planning',
+      duration: 'Week 1–2',
+      icon: FileSearch,
+      desc: 'In-depth analysis of existing core banking pipelines, document taxonomies, compliance reporting mandates, and integration specs.',
+      deliverables: ['Architecture Blueprint', 'Risk & Regulatory Mapping', 'Security Scoping'],
     },
     {
-      step: '02', 
+      num: '02',
       title: 'System Integration',
-      description: 'Secure connection to your core banking systems, databases, and third-party platforms with thorough testing protocols.',
-      icon: Settings,
-      duration: '2-3 weeks'
+      duration: 'Week 2–3',
+      icon: Cpu,
+      desc: 'Establish encrypted private interconnects (VPC Peering / TLS 1.3) with core banking nodes, document repositories, and ledger databases.',
+      deliverables: ['API Endpoints Configured', 'Encrypted Data Pipes', 'Auth & RBAC Setup'],
     },
     {
-      step: '03',
+      num: '03',
       title: 'Model Training & Customization',
-      description: 'Train AI models on your historical data and customize workflows to match your specific business processes and compliance needs.',
-      icon: Users,
-      duration: '1-2 weeks'
+      duration: 'Week 3–5',
+      icon: Sliders,
+      desc: 'Fine-tune OCR and biometric models against institutional historical documents; calibrate risk thresholds and automated acceptance rules.',
+      deliverables: ['Custom Document Models', 'Threshold Calibration', 'Fraud Heuristics Ready'],
     },
     {
-      step: '04',
+      num: '04',
       title: 'Testing & Validation',
-      description: 'Comprehensive testing including security audits, compliance validation, and performance optimization before go-live.',
-      icon: Shield,
-      duration: '1 week'
+      duration: 'Week 5–6',
+      icon: ShieldCheck,
+      desc: 'End-to-end sandbox validation, simulated penetration testing, stress testing for peak transaction volumes, and mock regulatory audits.',
+      deliverables: ['Security Audit Signoff', 'Pen-Test Reports', 'Performance Benchmarks'],
     },
     {
-      step: '05',
-      title: 'Deployment & Go-Live',
-      description: 'Phased deployment with real-time monitoring, staff training, and immediate support to ensure smooth transition.',
+      num: '05',
+      title: 'Go-Live & Hypercare',
+      duration: 'Week 6–8',
       icon: Rocket,
-      duration: '1 week'
-    }
+      desc: 'Phased rollout with shadow processing, continuous live telemetry, comprehensive team training workshops, and 24/7 dedicated hypercare.',
+      deliverables: ['Production Cutover', 'Staff Certification', '24/7 Support Active'],
+    },
+  ];
+
+  const supportFeatures = [
+    {
+      icon: Users2,
+      title: 'Dedicated Project Manager',
+      desc: 'Senior financial engineering specialist who coordinates technical, legal, and operational tracks.',
+    },
+    {
+      icon: Headphones,
+      title: '24/7 Technical Support',
+      desc: 'Priority hotline with <15 min response time SLAs from dedicated infrastructure engineers.',
+    },
+    {
+      icon: Award,
+      title: 'Comprehensive Training',
+      desc: 'Hands-on operational training and certification for compliance officers, fraud analysts, and IT leads.',
+    },
+    {
+      icon: Sliders,
+      title: 'Ongoing Optimization',
+      desc: 'Quarterly model accuracy reviews, regulatory update patches, and automated policy refreshes.',
+    },
   ];
 
   return (
-    <div className="py-8 bg-white sm:py-12 md:py-16 lg:py-20 xl:py-24">
-      <div className="px-4 mx-auto sm:px-6 lg:px-8 xl:px-12 max-w-7xl">
-        {/* Header Section */}
-        <div className="mb-8 text-center sm:mb-12 md:mb-16">
-          <h2 className="mb-4 text-2xl font-bold leading-tight text-black sm:mb-6 sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl">
-            Seamless <span className="text-blue-900">Implementation Process</span>
+    <section className="py-16 sm:py-20 lg:py-24 bg-[#f8fafc] border-b border-slate-200/80 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center max-w-3xl mx-auto space-y-4 mb-14 sm:mb-18">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase bg-[#eff6ff] text-[#2563eb] border border-blue-100/80 shadow-2xs">
+            <Sparkles className="w-3.5 h-3.5 text-[#2563eb]" />
+            <span>From Strategy to Scale · Expert Support</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0f172a] tracking-tight">
+            A Proven Path From <span className="text-[#1d4ed8]">Kickoff to Go-Live</span>
           </h2>
-          <p className="max-w-xs px-2 mx-auto text-sm leading-relaxed text-black sm:max-w-md md:max-w-2xl lg:max-w-3xl xl:max-w-4xl sm:text-base md:text-lg lg:text-xl xl:text-2xl">
-            Our proven methodology ensures rapid deployment with minimal disruption to your operations
+
+          <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
+            Our dedicated implementation architects ensure your success every step of the way with white-glove engineering support, rigorous testing, and comprehensive team enablement.
           </p>
         </div>
 
-        {/* Implementation Timeline */}
-        <div className="mb-8 space-y-4 sm:mb-12 md:mb-16 sm:space-y-6 md:space-y-8">
-          {steps.map((step, index) => {
-            const IconComponent = step.icon;
+        {/* 5 Implementation Steps Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-14">
+          {steps.map((step) => {
+            const Icon = step.icon;
             return (
-              <div key={index} className="relative">
-                {/* Mobile Layout (stacked) */}
-                <div className="block sm:hidden">
-                  <div className="flex flex-col items-center p-4 text-center bg-white border border-gray-300 shadow-sm rounded-xl">
-                    <div className="flex items-center justify-center w-12 h-12 mb-3 text-white bg-blue-900 rounded-full">
-                      <IconComponent className="w-6 h-6" />
-                    </div>
-                    <div className="mb-2 text-lg font-bold text-gray-400">{step.step}</div>
-                    <h3 className="mb-2 text-lg font-semibold text-blue-900">{step.title}</h3>
-                    <div className="flex items-center gap-2 mb-3">
-                      <Clock className="w-3 h-3 text-gray-600" />
-                      <span className="text-xs text-gray-600">{step.duration}</span>
-                    </div>
-                    <p className="text-sm leading-relaxed text-black">{step.description}</p>
+              <div
+                key={step.num}
+                className="p-5 rounded-2xl bg-white border border-slate-200/80 hover:border-blue-300 hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-extrabold px-2.5 py-1 rounded-md bg-[#eff6ff] text-[#2563eb] border border-blue-100">
+                      {step.duration}
+                    </span>
+                    <span className="text-xs font-bold text-slate-300 font-mono">
+                      STEP {step.num}
+                    </span>
                   </div>
-                  {/* Mobile Connector */}
-                  {index < steps.length - 1 && (
-                    <div className="flex justify-center">
-                      <div className="w-px h-6 my-2 bg-gray-300"></div>
-                    </div>
-                  )}
+
+                  <div className="w-11 h-11 rounded-xl bg-[#f8fafc] border border-slate-100 text-[#2563eb] flex items-center justify-center mb-3">
+                    <Icon className="w-5 h-5" />
+                  </div>
+
+                  <h3 className="text-base font-bold text-[#0f172a] mb-2 leading-snug">
+                    {step.title}
+                  </h3>
+
+                  <p className="text-xs text-slate-500 leading-relaxed mb-4">
+                    {step.desc}
+                  </p>
                 </div>
 
-                {/* Desktop/Tablet Layout */}
-                <div className="items-start hidden gap-4 sm:flex md:gap-6 lg:gap-8">
-                  {/* Step Number & Icon */}
-                  <div className="flex flex-col items-center flex-shrink-0">
-                    <div className="flex items-center justify-center w-12 h-12 mb-2 text-white bg-blue-900 rounded-full sm:w-14 md:w-16 lg:w-18 xl:w-20 sm:h-14 md:h-16 lg:h-18 xl:h-20">
-                      <IconComponent className="w-5 h-5 sm:w-6 md:w-7 lg:w-8 xl:w-9 sm:h-6 md:h-7 lg:h-8 xl:h-9" />
+                <div className="pt-3 border-t border-slate-100 space-y-1">
+                  <div className="text-[10px] uppercase font-bold text-slate-400">Deliverables</div>
+                  {step.deliverables.map((d, i) => (
+                    <div key={i} className="flex items-center gap-1.5 text-[11px] text-slate-600">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0" />
+                      <span>{d}</span>
                     </div>
-                    <div className="text-lg font-bold text-gray-400 sm:text-xl md:text-2xl lg:text-3xl">{step.step}</div>
-                  </div>
-                  
-                  {/* Content */}
-                  <div className="flex-1 p-4 bg-white border border-gray-300 shadow-sm sm:p-5 md:p-6 lg:p-7 xl:p-8 rounded-xl">
-                    <div className="flex flex-col gap-2 mb-3 sm:flex-row sm:items-start sm:justify-between sm:mb-4 sm:gap-4">
-                      <h3 className="text-lg font-semibold leading-tight text-blue-900 sm:text-xl md:text-2xl lg:text-3xl">
-                        {step.title}
-                      </h3>
-                      <div className="flex items-center flex-shrink-0 gap-2">
-                        <Clock className="w-3 h-3 text-gray-600 sm:w-4 md:w-5 sm:h-4 md:h-5" />
-                        <span className="text-xs text-gray-600 sm:text-sm md:text-base whitespace-nowrap">
-                          {step.duration}
-                        </span>
-                      </div>
-                    </div>
-                    <p className="text-sm leading-relaxed text-black sm:text-base md:text-lg lg:text-xl">
-                      {step.description}
-                    </p>
-                  </div>
+                  ))}
                 </div>
-                
-                {/* Desktop Connector Line */}
-                {index < steps.length - 1 && (
-                  <div className="absolute hidden w-px h-8 bg-gray-300 sm:block sm:h-10 md:h-12 left-6 sm:left-7 md:left-8 lg:left-9 xl:left-10 top-16 sm:top-18 md:top-20 lg:top-22 xl:top-24"></div>
-                )}
               </div>
             );
           })}
         </div>
 
-        {/* Implementation Support */}
-        <div className="p-4 bg-white border border-gray-300 shadow-lg sm:p-6 md:p-8 lg:p-10 xl:p-12 rounded-xl sm:rounded-2xl">
-          <div className="grid gap-6 sm:gap-8 md:gap-10 lg:gap-12 xl:gap-16 lg:grid-cols-2 lg:items-start">
-            {/* Left Column - Content */}
-            <div className="order-2 lg:order-1">
-              <h3 className="mb-3 text-xl font-bold leading-tight text-blue-900 sm:mb-4 md:mb-6 sm:text-2xl md:text-3xl lg:text-4xl">
-                Expert Implementation Support
-              </h3>
-              <p className="mb-4 text-sm leading-relaxed text-black sm:mb-6 md:mb-8 sm:text-base md:text-lg lg:text-xl">
-                Our dedicated implementation team ensures your success every step of the way with comprehensive support and guidance.
-              </p>
-              
-              <div className="mb-6 space-y-3 sm:mb-8 sm:space-y-4">
-                {[
-                  'Dedicated project manager assigned to your implementation',
-                  '24/7 technical support during deployment phase',
-                  'Comprehensive staff training and documentation',
-                  'Ongoing optimization and performance monitoring'
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-start gap-3">
-                    <CheckCircle className="w-4 sm:w-5 md:w-6 h-4 sm:h-5 md:h-6 text-blue-900 flex-shrink-0 mt-0.5" />
-                    <span className="text-sm leading-relaxed text-black sm:text-base md:text-lg">
-                      {item}
-                    </span>
-                  </div>
-                ))}
-              </div>
+        {/* Timeline Stats Strip */}
+        <div className="bg-white rounded-2xl border border-blue-100/90 shadow-sm p-6 mb-14">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div>
+              <div className="text-2xl sm:text-3xl font-extrabold text-[#0f172a]">6–8 Weeks</div>
+              <div className="text-xs text-slate-500 mt-0.5">Total Deployment Duration</div>
+            </div>
+            <div>
+              <div className="text-2xl sm:text-3xl font-extrabold text-[#1d4ed8]">Week 6</div>
+              <div className="text-xs text-slate-500 mt-0.5">Go-Live Readiness</div>
+            </div>
+            <div>
+              <div className="text-2xl sm:text-3xl font-extrabold text-[#0f172a]">Week 8</div>
+              <div className="text-xs text-slate-500 mt-0.5">Full Ecosystem Optimization</div>
+            </div>
+            <div>
+              <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600">100%</div>
+              <div className="text-xs text-slate-500 mt-0.5">Success Guarantee</div>
+            </div>
+          </div>
+        </div>
 
+        {/* Support Included Grid + Proof Points */}
+        <div className="grid lg:grid-cols-12 gap-8 items-center">
+          {/* Support Pillars (8 Cols) */}
+          <div className="lg:col-span-8">
+            <h3 className="text-xl sm:text-2xl font-bold text-[#0f172a] mb-6">
+              Expert Implementation Support Included
+            </h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {supportFeatures.map((feat) => {
+                const Icon = feat.icon;
+                return (
+                  <div
+                    key={feat.title}
+                    className="p-4 rounded-2xl bg-white border border-slate-200/80 hover:border-blue-200 transition-colors"
+                  >
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-9 h-9 rounded-lg bg-[#eff6ff] text-[#2563eb] flex items-center justify-center shrink-0">
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <h4 className="text-sm font-bold text-[#0f172a]">{feat.title}</h4>
+                    </div>
+                    <p className="text-xs text-slate-500 leading-relaxed">{feat.desc}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Proof Point Card (4 Cols) */}
+          <div className="lg:col-span-4 p-6 sm:p-7 rounded-3xl bg-white border border-blue-100 shadow-[0_4px_25px_rgba(30,58,138,0.06)] space-y-5">
+            <div>
+              <div className="text-4xl font-extrabold text-[#1d4ed8]">98%</div>
+              <div className="text-sm font-bold text-[#0f172a] mt-1">Client Satisfaction Score</div>
+              <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                95% of enterprise implementations are completed on time and within scope.
+              </p>
             </div>
 
-            {/* Right Column - Timeline Box */}
-            <div className="order-1 p-4 bg-white border border-gray-300 rounded-lg lg:order-2 sm:p-6 sm:rounded-xl">
-              <div className="mb-4 text-center sm:mb-6">
-                <h4 className="mb-2 text-lg font-semibold text-blue-900 sm:text-xl md:text-2xl">
-                  Implementation Timeline
-                </h4>
-                <p className="text-xs text-black sm:text-sm md:text-base">
-                  Typical deployment schedule
-                </p>
-              </div>
-              
-              <div className="space-y-3 sm:space-y-4">
-                {[
-                  { label: 'Total Duration', value: '6-8 weeks' },
-                  { label: 'Go-Live Ready', value: 'Week 6' },
-                  { label: 'Full Optimization', value: 'Week 8' }
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-3 bg-white border border-gray-300 rounded-lg sm:p-4">
-                    <span className="text-sm font-medium text-black sm:text-base">
-                      {item.label}
-                    </span>
-                    <span className="text-sm font-semibold text-blue-900 sm:text-base">
-                      {item.value}
-                    </span>
-                  </div>
-                ))}
-              </div>
+            <div className="pt-4 border-t border-slate-100 space-y-3">
+              <button
+                onClick={() => navigate('/book-consultation')}
+                className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl font-bold text-sm text-white bg-[#1d4ed8] hover:bg-[#1e40af] shadow-[0_4px_14px_rgba(29,78,216,0.3)] transition-all cursor-pointer"
+              >
+                <span>Talk to Implementation Team</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
 
-              <div className="p-3 mt-4 bg-white border rounded-lg sm:p-4 sm:mt-6 border-blue-900/40">
-                <div className="flex items-start gap-2 mb-1 text-blue-900">
-                  <CheckCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm font-medium sm:text-base">Success Guarantee</span>
-                </div>
-                <p className="pl-6 text-xs leading-relaxed text-black sm:text-sm">
-                  We guarantee successful implementation or full refund
-                </p>
-              </div>
+              <button
+                onClick={() => navigate('/book-consultation')}
+                className="w-full inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs text-slate-700 bg-[#f8fafc] hover:bg-slate-100 border border-slate-200 transition-all cursor-pointer"
+              >
+                <span>View Detailed Guide</span>
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
