@@ -8,9 +8,9 @@ import { StatItem } from '../../types/hero.types';
 gsap.registerPlugin(ScrollTrigger);
 
 const STATS: StatItem[] = [
-  { target: 5, unit: '+', label: 'Enterprises Served' },
+  { target: 10, unit: '+', label: 'Enterprises Served' },
   { target: 98, unit: '%', label: 'Client Retention' },
-  { target: 85, unit: 'x', label: 'Avg. Efficiency Gain' },
+  { target: 80, unit: 'x', label: 'Avg. Efficiency Gain' },
   { target: 24, unit: '/7', label: 'Expert Support' },
 ];
 
@@ -246,8 +246,13 @@ const ChatbotRichCard: React.FC = () => (
         <TypingChat />
         <div className="mt-1 sm:mt-1.5 lg:mt-2 flex items-center gap-1 sm:gap-1.5 rounded-full border border-blue-900/15 bg-white px-1.5 sm:px-2 lg:px-2.5 py-0.5 sm:py-1">
           <span className="flex-1 truncate text-[0.4rem] sm:text-[0.5rem] lg:text-[0.6rem] text-slate-400">Type a message...</span>
-          <button className="flex h-3 w-3 sm:h-4 sm:w-4 lg:h-5 lg:w-5 shrink-0 items-center justify-center rounded-full bg-blue-900">
-            <svg className="h-2 w-2 sm:h-2.5 sm:w-2.5 lg:h-3 lg:w-3 text-white" viewBox="0 0 24 24" fill="currentColor">
+          <button
+            type="button"
+            aria-hidden="true"
+            tabIndex={-1}
+            className="flex h-3 w-3 sm:h-4 sm:w-4 lg:h-5 lg:w-5 shrink-0 items-center justify-center rounded-full bg-blue-900"
+          >
+            <svg className="h-2 w-2 sm:h-2.5 sm:w-2.5 lg:h-3 lg:w-3 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M3 11l18-8-8 18-2-7-8-3z" />
             </svg>
           </button>
@@ -531,9 +536,9 @@ const Hero: React.FC<HeroProps> = ({ onOpenChatbot }) => {
         {/* ── Scene: brain + floating cards (3 left, 2-card stack right) ── */}
         <div className="relative z-20 mx-auto w-full max-w-[1000px]">
           {/* ─── MOBILE, TABLET & iPad LAYOUT (uses heroImg2): flex row [left cards | brain | rich stack] ─── */}
-          <div className="flex items-center justify-center gap-1 sm:gap-3 md:gap-5 lg:gap-7 mt-4 sm:mt-6 px-1 sm:px-4 lg:px-6 xl:hidden">
+          <div className="flex items-center justify-center gap-1.5 sm:gap-3 md:gap-5 lg:gap-7 mt-4 sm:mt-6 px-2 sm:px-4 lg:px-6 xl:hidden">
             {/* Left column - 3 simple cards stacked */}
-            <div className="flex flex-shrink-0 flex-col gap-1.5 sm:gap-2.5 lg:gap-3 w-[23vw] max-w-[105px] sm:w-[140px] sm:max-w-none md:w-[175px] lg:w-[215px]">
+            <div className="flex flex-shrink-0 flex-col gap-1.5 sm:gap-2.5 lg:gap-3 w-[24vw] max-w-[105px] sm:w-[140px] sm:max-w-none md:w-[175px] lg:w-[215px]">
               {CARDS.slice(0, 3).map((card, i) => (
                 <div
                   key={card.title}
@@ -563,13 +568,17 @@ const Hero: React.FC<HeroProps> = ({ onOpenChatbot }) => {
               <img
                 src="https://4hooltce8r54joof.public.blob.vercel-storage.com/HeroPage-Assets/HeroImageForMobile.webp"
                 alt="AI Brain Visualization"
-                className="relative block h-auto w-[36vw] max-w-[160px] sm:w-[32vw] sm:max-w-[270px] md:w-[34vw] md:max-w-[320px] lg:w-[36vw] lg:max-w-[380px]"
+                width={575}
+                height={674}
+                fetchPriority="high"
+                decoding="async"
+                className="relative block h-auto w-[38vw] max-w-[170px] sm:w-[32vw] sm:max-w-[270px] md:w-[34vw] md:max-w-[320px] lg:w-[36vw] lg:max-w-[380px]"
               />
             </div>
 
             {/* Right column - rich stack (chatbot + claude automation) */}
             <div
-              className="flex-shrink-0 w-[30vw] max-w-[135px] sm:w-[180px] sm:max-w-none md:w-[220px] lg:w-[270px]"
+              className="flex-shrink-0 w-[32vw] max-w-[140px] sm:w-[180px] sm:max-w-none md:w-[220px] lg:w-[270px]"
               ref={(el) => {
                 cardRefs.current[3] = el;
               }}
@@ -600,6 +609,10 @@ const Hero: React.FC<HeroProps> = ({ onOpenChatbot }) => {
                 ref={imageRef}
                 src="https://4hooltce8r54joof.public.blob.vercel-storage.com/HeroPage-Assets/AiHeroImage.webp"
                 alt="AI Brain Visualization"
+                width={1202}
+                height={789}
+                fetchPriority="high"
+                decoding="async"
                 className="relative block h-auto w-[min(48vw,670px)] max-w-full will-change-transform"
               />
             </div>
