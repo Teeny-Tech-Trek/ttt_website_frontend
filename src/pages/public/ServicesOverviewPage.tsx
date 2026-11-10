@@ -6,7 +6,6 @@ import {
   Boxes,
   Bot,
   MessageSquare,
-  Database,
   Workflow,
   Layers,
   ShieldCheck,
@@ -17,7 +16,6 @@ import servicesHeroImg from '../../Images/services/services page/hero page servi
 import aiAppsCardImg from '../../Images/services/services page/custom ai apps and micro saas.webp';
 import autonomousAgentsCardImg from '../../Images/services/services page/autonomous ai agents.webp';
 import virtualAssistantsCardImg from '../../Images/services/services page/ai virtual assistant.webp';
-import customIntegrationsCardImg from '../../Images/services/services page/Custom AI Integrations.webp';
 import automationsCardImg from '../../Images/services/services page/Automations.webp';
 
 interface ServiceOption {
@@ -36,18 +34,18 @@ const serviceOptions: ServiceOption[] = [
     route: '/services/ai-apps-micro-saas',
     icon: Boxes,
     image: aiAppsCardImg,
-    title: 'Custom AI Apps & Micro-SaaS',
-    tagline: 'A real product, sized right',
+    title: 'AI Apps & Custom Integrations',
+    tagline: 'Built fast, wired into your data',
     description:
-      "Full internal tools and micro-SaaS products — dashboards, billing, the works — built in weeks, with exactly the features your team needs and nothing more. A real product, sized right, not a stripped-down MVP.",
+      "Ship focused micro-SaaS products and internal tools in weeks, or plug AI into your existing product — RAG, semantic search, and secure model integrations grounded in your real documents, systems, and databases.",
   },
   {
     id: 'agentic-agents',
     route: '/services/agentic-ai-workflows',
     icon: Sparkles,
     image: autonomousAgentsCardImg,
-    title: 'Autonomous AI Agents',
-    tagline: 'Plans its own next step',
+    title: 'Agentic AI & Claude Automation',
+    tagline: 'Agents that plan, act, and check in',
     description:
       "AI agents that plan their own next step, take real action across your tools, and check in with you before anything risky happens — so complex, multi-step work gets done without you babysitting every step.",
   },
@@ -62,21 +60,11 @@ const serviceOptions: ServiceOption[] = [
       'Voice agents, retrieval-grounded chatbots that act on your real data, and live AI avatars — one AI presence across phone, chat, and screen.',
   },
   {
-    id: 'custom-integrations',
-    route: '/services/custom-ai-integrations',
-    icon: Database,
-    image: customIntegrationsCardImg,
-    title: 'Custom AI Integrations',
-    tagline: 'AI that knows your business',
-    description:
-      'Make any AI feature actually know your business — not guess. We connect AI models to your real data, so every answer is grounded in your documents, systems, and databases instead of generic training data.',
-  },
-  {
     id: 'automations',
     route: '/services/automations',
     icon: Workflow,
     image: automationsCardImg,
-    title: 'Automations',
+    title: 'Workflow & Process Automation',
     tagline: '3 ways to automate your work',
     description:
       "Connect your apps, clear your inbox, and keep your back office running — automated. Choose the build that fits: self-hosted n8n workflows, Claude-powered document work, or back-office & systems automation.",
@@ -97,7 +85,7 @@ const ServicesOverviewPage: React.FC = () => {
         <title>Services | Teeny Tech Trek</title>
         <meta
           name="description"
-          content="AI apps and micro-SaaS, autonomous agents, virtual assistants, custom AI integrations, and automation — explore what we build."
+          content="AI chatbots, agentic AI and Claude automation, workflow and process automation, AI apps and custom integrations — explore what we build."
         />
       </Helmet>
 
@@ -117,7 +105,7 @@ const ServicesOverviewPage: React.FC = () => {
             </h1>
 
             <p className="text-base sm:text-lg text-slate-600 leading-relaxed mb-8 sm:mb-10 max-w-2xl">
-              Five ways we put AI to work for you — pick the one that matches what you need, or talk to us if you're not sure.
+              Four ways we put AI to work for you — pick the one that matches what you need, or talk to us if you're not sure.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 pt-2 border-t border-slate-200/70">
@@ -144,7 +132,7 @@ const ServicesOverviewPage: React.FC = () => {
                   <Layers className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="text-xs sm:text-sm font-bold text-[#0f172a] leading-tight">5 ways to start</h4>
+                  <h4 className="text-xs sm:text-sm font-bold text-[#0f172a] leading-tight">4 ways to start</h4>
                   <p className="text-[11px] text-slate-500 leading-tight mt-0.5">Pick what fits your need</p>
                 </div>
               </div>
@@ -174,7 +162,7 @@ const ServicesOverviewPage: React.FC = () => {
         {/* ======================================================== */}
         {/* SERVICE CARDS                                             */}
         {/* ======================================================== */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
           {serviceOptions.map((option) => {
             const Icon = option.icon;
             return (

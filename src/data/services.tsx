@@ -1,12 +1,9 @@
-import { Bot, Puzzle as PuzzlePiece, Cog, Sparkles, Rocket, Boxes, Workflow } from 'lucide-react';
+import { Bot, Workflow, Sparkles, Rocket } from 'lucide-react';
 import React from 'react';
 import chatbotImg from '../Images/services/chatbot.webp';
 import agenticImg from '../Images/services/agentic workflow.webp';
-import smartProcessesImg from '../Images/services/smart processes.webp';
-import claudeImg from '../Images/services/claude.webp';
-import lightweightImg from '../Images/services/lightweight api.webp';
-import customAiImg from '../Images/services/custom ai integrations.webp';
 import n8nImg from '../Images/services/n8n automations.webp';
+import lightweightImg from '../Images/services/lightweight api.webp';
 
 export const services = [
   {
@@ -58,277 +55,143 @@ export const services = [
     ]
   },
   {
-    icon: <PuzzlePiece size={32} className="text-primary" />,
-    title: "Agentic AI Workflows",
+    icon: <Sparkles size={32} className="text-primary" />,
+    title: "Agentic AI & Claude Automation",
     slug: "agentic-ai-workflows",
     image: agenticImg,
-    description: "Autonomous agents that can retrieve data, summarize content, make decisions, and complete multi-step tasks using LangChain, AutoGen, or CrewAI.",
-    features: ["Data Retrieval", "Content Summarization", "Decision Making", "Multi-step Task Automation"],
+    description: "Autonomous agents and Claude-powered automation that retrieve data, make decisions, connect to your tools via MCP, and complete multi-step tasks with humans in the loop.",
+    features: ["Multi-step AI Agents", "Tool & MCP Connections", "Decision Making", "Scheduled & Approval Runs"],
     featureDescriptions: [
-      "Build AI agents that can search through your databases, documents, and online sources to find and extract relevant information.",
-      "Create systems that can analyze large volumes of text and produce concise, accurate summaries tailored to your needs.",
-      "Develop AI workflows that can evaluate options, apply business rules, and make or recommend decisions based on available data.",
-      "Automate complex processes by breaking them down into steps that can be handled by specialized AI agents working together."
+      "Build agents with LangChain, AutoGen, or CrewAI that search data, summarize content, and complete multi-step tasks on their own.",
+      "Connect Claude to your CRMs, docs, sheets, email, and APIs — including custom MCP tools that give it safe access to your systems.",
+      "Develop workflows that evaluate options, apply business rules, and make or recommend decisions based on your data.",
+      "Schedule recurring runs for digests, reports, and routine ops, with approval gates before any significant action."
     ],
     detailedContent: `
-      <h2>The Power of Agentic AI</h2>
-      <p>Agentic AI represents the next evolution in artificial intelligence - systems that can plan and execute multi-step tasks with minimal human supervision. These systems can:</p>
-      
+      <h2>Agents That Actually Finish the Job</h2>
+      <p>Agentic AI plans and executes multi-step tasks with minimal supervision. We pair agent frameworks with Anthropic's Claude and your existing tools, so repetitive knowledge work runs on autopilot while humans stay in control of the important moments.</p>
+
+      <h3>What You Get</h3>
       <ul>
-        <li>Break complex problems into manageable steps</li>
-        <li>Coordinate between different specialized AI agents</li>
-        <li>Adapt to changing conditions and requirements</li>
-        <li>Learn from successes and failures to improve over time</li>
+        <li>Agents that break complex problems into steps and coordinate with each other</li>
+        <li>Claude connected to your tools through custom MCP integrations</li>
+        <li>Approval gates before any significant or irreversible action</li>
+        <li>Full audit log of every tool call, and your data is never used to train models</li>
       </ul>
-      
-      <h3>Framework Options</h3>
-      <p>We work with several cutting-edge frameworks to build your agentic AI solution:</p>
-      
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-8">
+
+      <h3>Frameworks We Use</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 my-8">
         <div class="border p-4 rounded-lg">
           <h4 class="font-bold">LangChain</h4>
-          <p>Perfect for building complex chains of AI operations with strong integration capabilities.</p>
+          <p>Complex chains of AI operations with strong integration capabilities.</p>
         </div>
         <div class="border p-4 rounded-lg">
-          <h4 class="font-bold">AutoGen</h4>
-          <p>Excellent for creating conversational agents that can collaborate with each other.</p>
+          <h4 class="font-bold">AutoGen & CrewAI</h4>
+          <p>Role-based agent teams that collaborate on complex tasks.</p>
         </div>
         <div class="border p-4 rounded-lg">
-          <h4 class="font-bold">CrewAI</h4>
-          <p>Ideal for role-based agent teams that need to work together on complex tasks.</p>
+          <h4 class="font-bold">Claude + MCP</h4>
+          <p>Tool-connected Claude workflows with scheduled runs and human approvals.</p>
         </div>
       </div>
     `,
     caseStudies: [
       {
         title: "Research Assistant for Investment Firm",
-        description: "We created an AI system that could research companies, analyze financial reports, and produce investment summaries, saving analysts hours of work per day."
+        description: "We created an AI system that researches companies, analyzes financial reports, and produces investment summaries, saving analysts hours of work per day."
       },
       {
-        title: "Content Creation Workflow",
-        description: "Our agentic system helped a marketing team automate their content pipeline from research to drafting to optimization, increasing output by 300%."
-      }
-    ]
-  },
-  {
-    icon: <Cog size={32} className="text-primary" />,
-    title: "Smart Process Automation",
-    slug: "smart-process-automation",
-    image: smartProcessesImg,
-    description: "Save hours by automating repetitive tasks with Python, APIs, Zapier, and Make. From CRM updates to email replies — we connect your stack, end-to-end.",
-    features: ["CRM Automation", "Email Management", "Data Processing", "Workflow Integration"],
-    featureDescriptions: [
-      "Automate customer relationship management tasks like contact updates, lead scoring, and follow-up scheduling.",
-      "Create systems that can categorize, prioritize, and respond to emails based on content and business rules.",
-      "Build pipelines that can extract, transform, and load data between different systems with minimal manual intervention.",
-      "Connect your various business tools into cohesive workflows that reduce manual handoffs and data entry."
-    ],
-    detailedContent: `
-      <h2>Beyond Basic Automation</h2>
-      <p>While tools like Zapier and Make are powerful, our smart process automation goes further by combining these platforms with custom code and AI capabilities when needed.</p>
-      
-      <h3>Our Approach</h3>
-      <ol>
-        <li><strong>Process Analysis:</strong> We map your current workflows and identify automation opportunities</li>
-        <li><strong>Tool Selection:</strong> We choose the right combination of platforms and technologies</li>
-        <li><strong>Implementation:</strong> We build and connect your automation systems</li>
-        <li><strong>Testing:</strong> We ensure everything works reliably under various conditions</li>
-        <li><strong>Training:</strong> We show your team how to monitor and maintain the system</li>
-        <li><strong>Optimization:</strong> We continuously improve your automation based on results</li>
-      </ol>
-      
-      <h3>Technologies We Use</h3>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 my-8">
-        <div class="text-center p-2">
-          <div class="font-bold">Python</div>
-          <div class="text-sm">For custom automation scripts</div>
-        </div>
-        <div class="text-center p-2">
-          <div class="font-bold">Zapier</div>
-          <div class="text-sm">For no-code integrations</div>
-        </div>
-        <div class="text-center p-2">
-          <div class="font-bold">Make (Integromat)</div>
-          <div class="text-sm">For complex workflow design</div>
-        </div>
-        <div class="text-center p-2">
-          <div class="font-bold">REST APIs</div>
-          <div class="text-sm">For direct system integration</div>
-        </div>
-      </div>
-    `,
-    caseStudies: [
-      {
-        title: "Sales Process Automation",
-        description: "We automated a complex sales workflow from lead capture to proposal generation to follow-up, saving the sales team 15 hours per week."
-      },
-      {
-        title: "Data Synchronization System",
-        description: "Our solution kept product data consistent across an e-commerce platform, inventory system, and accounting software, eliminating manual updates."
-      }
-    ]
-  },
-  {
-    icon: <Sparkles size={32} className="text-primary" />,
-    title: "Claude Automation",
-    slug: "claude-automation",
-    image: claudeImg,
-    description: "Leverage Claude AI to automate complex tasks — tool connections, custom MCP integrations, scheduled runs, and human-in-the-loop workflows for smarter business operations.",
-    features: ["Tool Connections", "Custom MCP Tools", "Cowork Setups", "Recurring Runs"],
-    featureDescriptions: [
-      "Connect Claude to your existing tools — CRMs, docs, sheets, email, and APIs — so it can read, draft, and act across your stack.",
-      "Build bespoke MCP (Model Context Protocol) tools tailored to your workflows, giving Claude safe access to your data and systems.",
-      "Set up Cowork environments where Claude pairs with your team on real work — drafting, reviewing, and routing tasks with approvals.",
-      "Schedule recurring Claude runs for digests, reports, and routine ops — afternoon jobs finished in minutes, not hours."
-    ],
-    detailedContent: `
-      <h2>Claude-Powered Automation, Done Right</h2>
-      <p>Claude Automation pairs Anthropic's Claude with your existing tools and data — so repetitive knowledge work runs on autopilot, with humans staying in control of the important moments.</p>
-
-      <h3>What You Get</h3>
-      <ul>
-        <li>Hours back every week on routine tasks</li>
-        <li>Approval gates before any significant or irreversible action</li>
-        <li>Full audit log of every tool call and file change</li>
-        <li>Your data stays yours — never used to train models</li>
-      </ul>
-
-      <h3>Our 4-Week Rollout</h3>
-      <ol>
-        <li><strong>Audit & Map:</strong> Review your repetitive workflows and pick the highest-ROI ones</li>
-        <li><strong>Connect & Build:</strong> Set up connectors and build custom MCP tools you need</li>
-        <li><strong>Automate:</strong> Configure Cowork runs and scheduled tasks; you test on real work</li>
-        <li><strong>Handover & Train:</strong> Your team learns to trigger, review, and tweak — no engineer required</li>
-      </ol>
-    `,
-    caseStudies: [
-      {
-        title: "Weekly Ops Digest Automation",
-        description: "We set up a scheduled Claude run that compiles weekly ops reports from Slack, email, and sheets — saving the team 6+ hours of manual compilation every week."
-      },
-      {
-        title: "Document Review with MCP Tools",
-        description: "Custom MCP tools let Claude review incoming contracts against the client's playbook, flag issues, and draft response emails for human approval."
-      }
-    ]
-  },
-  {
-    icon: <Rocket size={32} className="text-primary" />,
-    title: "Lightweight AI Apps",
-    slug: "ai-apps-micro-saas",
-    image: lightweightImg,
-    description: "Ship focused micro-SaaS and internal AI tools fast — single-purpose apps with clean UIs, built on modern stacks and ready to launch in weeks, not months.",
-    features: ["Rapid MVPs", "Micro-SaaS Tools", "Internal Dashboards", "API-First Builds"],
-    featureDescriptions: [
-      "Validate ideas quickly with lean, functional MVPs that put a working AI product in front of real users in record time.",
-      "Launch focused micro-SaaS products that solve one problem really well, with billing, auth, and AI baked in.",
-      "Build internal tools and dashboards that wrap your AI workflows in a simple interface your team actually enjoys using.",
-      "Deliver apps designed API-first so they plug cleanly into your existing systems and scale as you grow."
-    ],
-    detailedContent: `
-      <h2>Small Apps, Big Impact</h2>
-      <p>Not every AI project needs a massive platform. Lightweight AI apps let you ship a focused, polished tool fast — proving value before you invest in scale.</p>
-
-      <h3>What We Build</h3>
-      <ul>
-        <li>Single-purpose micro-SaaS products with auth and billing</li>
-        <li>Internal tools and admin dashboards for your team</li>
-        <li>AI-powered utilities that wrap a model in a clean UI</li>
-        <li>Prototypes and MVPs to validate ideas with real users</li>
-      </ul>
-
-      <h3>Our Stack</h3>
-      <p>We build with modern, battle-tested tools — React, Next.js, Tailwind, and serverless backends — so your app is fast, maintainable, and easy to extend.</p>
-    `,
-    caseStudies: [
-      {
-        title: "AI Resume Screener",
-        description: "We shipped a focused micro-SaaS that ranks incoming resumes against a job spec, helping a recruiting agency triage applicants 5x faster."
-      },
-      {
-        title: "Internal Knowledge Search Tool",
-        description: "A lightweight internal app let a client's team search across docs and tickets with natural language, cutting time-to-answer dramatically."
-      }
-    ]
-  },
-  {
-    icon: <Boxes size={32} className="text-primary" />,
-    title: "Custom AI Integrations",
-    slug: "custom-ai-integrations",
-    image: customAiImg,
-    description: "Mock placeholder service — connect AI models into your existing products with tailored integrations, embeddings, and vector search. Replace this copy later.",
-    features: ["Model Integration", "Embeddings & RAG", "Vector Search", "Custom Pipelines"],
-    featureDescriptions: [
-      "Plumb OpenAI, Claude, or open-source models directly into your production databases and custom backend APIs.",
-      "Go beyond simple prompting. We build robust Retrieval-Augmented Generation (RAG) pipelines over your complex datasets.",
-      "Add lightning-fast semantic search across your product inventory, knowledge base, or customer profiles using vector databases.",
-      "Build custom ETL pipelines that clean, chunk, and embed structured or unstructured data for AI consumption in real-time."
-    ],
-    detailedContent: `
-      <h2>Plugging AI Directly Into Your Product</h2>
-      <p>AI is only as good as the context it can access. We design custom AI pipelines that connect large language models to your existing tech stack, databases, and APIs, ensuring secure and accurate responses.</p>
-
-      <h3>How We Integrate AI</h3>
-      <ol>
-        <li><strong>API Integration:</strong> We connect models with your backends via secure, scalable endpoints.</li>
-        <li><strong>Vector Storage:</strong> We set up databases like Pinecone, Pgvector, or Qdrant for semantic storage.</li>
-        <li><strong>Hybrid Search:</strong> We combine keyword and vector search to return the most relevant context.</li>
-        <li><strong>Security & Privacy:</strong> We ensure data is filtered and sanitized so sensitive information is never leaked.</li>
-      </ol>
-
-      <h3>Our Technology Focus</h3>
-      <p>We build integrations that are fast, cost-effective, and fully owned by you:</p>
-      <ul>
-        <li><strong>Vector Databases:</strong> Pinecone, Qdrant, Milvus, and Pgvector</li>
-        <li><strong>Retrieval Frameworks:</strong> Custom LangChain, LlamaIndex, and raw API implementations</li>
-        <li><strong>Data Ingestion:</strong> Automated pipelines to parse, chunk, and embed files and DB records</li>
-        <li><strong>LLM Providers:</strong> Anthropic, OpenAI, DeepSeek, and local open-source models</li>
-      </ul>
-    `,
-    caseStudies: [
-      {
-        title: "Enterprise Semantic Search for SaaS Catalog",
-        description: "We integrated Pinecone and OpenAI embeddings to enable natural-language search across a catalog of 50,000+ items, boosting search conversions by 35%."
-      },
-      {
-        title: "Legacy SQL Query Generator",
-        description: "We built a secure middleware that translates plain English queries into safe, structured SQL statements, allowing business teams to extract reports instantly."
+        title: "Weekly Ops Digest with Claude",
+        description: "A scheduled Claude run compiles weekly ops reports from Slack, email, and sheets — saving the team 6+ hours of manual compilation every week."
       }
     ]
   },
   {
     icon: <Workflow size={32} className="text-primary" />,
-    title: "n8n Automations",
-    slug: "n8n-automations",
+    title: "Workflow & Process Automation",
+    slug: "automations",
     image: n8nImg,
-    description: "Build powerful, self-hosted automation workflows that connect your apps, APIs, AI models, and business processes.",
-    features: ["Self-Hosted Workflows", "API & App Connectors", "AI Model Integrations", "Business Process Automation"],
+    description: "Save hours by automating repetitive work with n8n, Zapier, Make, Python, and APIs. From CRM updates to email replies — we connect your stack end-to-end.",
+    features: ["CRM & Email Automation", "n8n, Zapier & Make", "API & App Connectors", "Data Processing"],
     featureDescriptions: [
-      "Run your automations on infrastructure you control, with no per-task pricing or vendor lock-in.",
-      "Connect n8n to hundreds of apps and any REST API, so data flows automatically between the tools you already use.",
-      "Wire AI models directly into your workflows to classify, summarize, or generate content as part of an automated pipeline.",
-      "Automate multi-step business processes end-to-end — approvals, notifications, data sync, and reporting."
+      "Automate contact updates, lead scoring, follow-ups, and rule-based email triage and replies.",
+      "Build on the right platform for the job — including self-hosted n8n with no per-task pricing or vendor lock-in.",
+      "Connect hundreds of apps and any REST API so data flows between the tools you already use.",
+      "Build pipelines that extract, transform, and load data between systems, with AI steps to classify or summarize."
     ],
     detailedContent: `
-      <h2>Self-Hosted Automation with n8n</h2>
-      <p>n8n gives you the flexibility of a visual workflow builder with the control of self-hosted infrastructure. We design and deploy n8n workflows that connect your apps, APIs, and AI models into a single automated pipeline.</p>
+      <h2>Beyond Basic Automation</h2>
+      <p>Zapier, Make, and n8n are powerful. We combine them with custom code and AI where needed, so your processes run reliably end-to-end instead of breaking at the first edge case.</p>
+
+      <h3>Our Approach</h3>
+      <ol>
+        <li><strong>Process Analysis:</strong> We map your workflows and find the automation opportunities</li>
+        <li><strong>Tool Selection:</strong> We choose the right mix of platforms, self-hosted or cloud</li>
+        <li><strong>Implementation:</strong> We build and connect your automation systems</li>
+        <li><strong>Testing & Training:</strong> We make sure it works reliably and your team can maintain it</li>
+        <li><strong>Optimization:</strong> We keep improving based on results</li>
+      </ol>
+
+      <h3>Technologies We Use</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 my-8">
+        <div class="text-center p-2"><div class="font-bold">n8n</div><div class="text-sm">Self-hosted workflows</div></div>
+        <div class="text-center p-2"><div class="font-bold">Zapier & Make</div><div class="text-sm">No-code integrations</div></div>
+        <div class="text-center p-2"><div class="font-bold">Python</div><div class="text-sm">Custom automation scripts</div></div>
+        <div class="text-center p-2"><div class="font-bold">REST APIs</div><div class="text-sm">Direct system integration</div></div>
+      </div>
+    `,
+    caseStudies: [
+      {
+        title: "Sales Process Automation",
+        description: "We automated a sales workflow from lead capture to proposal generation to follow-up, saving the sales team 15 hours per week."
+      },
+      {
+        title: "Lead Routing with n8n",
+        description: "An n8n workflow enriches inbound leads, scores them with an AI model, and routes them to the right sales rep automatically."
+      }
+    ]
+  },
+  {
+    icon: <Rocket size={32} className="text-primary" />,
+    title: "AI Apps & Custom Integrations",
+    slug: "ai-apps-micro-saas",
+    image: lightweightImg,
+    description: "Ship focused micro-SaaS and internal AI tools in weeks, or plug AI into your existing product with embeddings, RAG, and vector search.",
+    features: ["Rapid MVPs & Micro-SaaS", "Model Integration", "Embeddings & RAG", "Internal Dashboards"],
+    featureDescriptions: [
+      "Launch focused micro-SaaS products and lean MVPs with auth, billing, and AI baked in.",
+      "Plug OpenAI, Claude, or open-source models into your production databases and backend APIs.",
+      "Build Retrieval-Augmented Generation pipelines and semantic vector search over your own data.",
+      "Wrap your AI workflows in simple internal dashboards and API-first apps your team enjoys using."
+    ],
+    detailedContent: `
+      <h2>Small Apps, Deep Integrations</h2>
+      <p>Not every AI project needs a massive platform. We either ship a polished single-purpose app fast, or connect language models to your existing stack, databases, and APIs, securely and accurately.</p>
 
       <h3>What We Build</h3>
       <ul>
-        <li>Custom workflows connecting your CRM, email, and internal tools</li>
-        <li>AI-powered steps for classification, summarization, and generation</li>
-        <li>Scheduled and event-triggered automations</li>
-        <li>Self-hosted deployments you fully own and control</li>
+        <li>Single-purpose micro-SaaS products and MVPs to validate ideas with real users</li>
+        <li>Internal tools and admin dashboards for your team</li>
+        <li>RAG pipelines and semantic search over your documents and records</li>
+        <li>Secure middleware between LLMs and your databases and APIs</li>
+      </ul>
+
+      <h3>Our Stack</h3>
+      <ul>
+        <li><strong>Apps:</strong> React, Next.js, Tailwind, and serverless backends</li>
+        <li><strong>Vector Databases:</strong> Pinecone, Qdrant, Milvus, and Pgvector</li>
+        <li><strong>Retrieval:</strong> LangChain, LlamaIndex, and raw API implementations</li>
+        <li><strong>LLM Providers:</strong> Anthropic, OpenAI, DeepSeek, and local open-source models</li>
       </ul>
     `,
     caseStudies: [
       {
-        title: "Lead Routing Automation",
-        description: "We built an n8n workflow that enriches inbound leads, scores them with an AI model, and routes them to the right sales rep automatically."
+        title: "AI Resume Screener",
+        description: "A focused micro-SaaS that ranks incoming resumes against a job spec, helping a recruiting agency triage applicants 5x faster."
       },
       {
-        title: "Cross-Platform Data Sync",
-        description: "An n8n pipeline kept a client's CRM, billing system, and support desk in sync in real time, eliminating manual data entry."
+        title: "Enterprise Semantic Search",
+        description: "We integrated Pinecone and OpenAI embeddings to enable natural-language search across 50,000+ catalog items, boosting search conversions by 35%."
       }
     ]
   },
