@@ -13,7 +13,6 @@ import WhyUsQuote from '../../components/home/WhyUsQuote';
 import { Helmet } from 'react-helmet-async';
 import Industries from '../../components/home/industries';
 import AIServicesCards from '../../components/home/featuredCase';
-import AutonomousAgentic from '../../components/home/AutonomousAgentic';
 
 interface HomePageProps {
   onOpenChatbot?: () => void;
@@ -63,9 +62,6 @@ const HomePage = ({ onOpenChatbot }: HomePageProps) => {
        <section id="use-cases" className="h-0" aria-hidden="true" />
        <section id="featuredCase">
         <AIServicesCards />
-      </section>
-       <section id="autonomous-agentic">
-       <AutonomousAgentic />
       </section>
 
       {/* <section id="tech-stack">
